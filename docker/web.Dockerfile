@@ -1,5 +1,6 @@
 # Builds the Expo web app as static files and serves them with nginx.
-FROM oven/bun:1 AS build
+# Keep this in sync with "packageManager" in package.json: a newer bun can reject bun.lock.
+FROM oven/bun:1.3.8 AS build
 
 WORKDIR /app
 COPY . .
