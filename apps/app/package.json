@@ -21,6 +21,7 @@
     "@rn-primitives/slot": "^1.5.2",
     "@rn-primitives/types": "^1.5.2",
     "@tanstack/react-query": "^5.107.1",
+    "@workspace/schemas": "workspace:*",
     "babel-preset-expo": "~58.0.0",
     "better-auth": "^1.7.22",
     "class-variance-authority": "^0.7.1",

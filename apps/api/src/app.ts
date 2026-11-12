@@ -5,6 +5,7 @@ import type { Database } from "@workspace/database"
 
 import { createAuth, socialProvidersFromEnv, type AuthEnv } from "./auth.js"
 import { householdRoutes } from "./households/routes.js"
+import { recipeRoutes } from "./recipes/routes.js"
 import { requireSession, type AuthVariables } from "./session.js"
 
 /** Settings for the OpenAPI document served at /api/openapi.json. */
@@ -45,6 +46,9 @@ export function createApp(db: Database, env: AuthEnv) {
 
   // Households: members and invite links.
   app.route("/api", householdRoutes(db, auth, env))
+
+  // Recipes: create, read, update, delete, search.
+  app.route("/api", recipeRoutes(db, auth))
 
   app.openAPIRegistry.registerComponent("securitySchemes", "cookieAuth", {
     type: "apiKey",
