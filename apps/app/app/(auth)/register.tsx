@@ -109,7 +109,7 @@ export default function Register() {
           <SocialButtons onPress={social} disabled={busy} />
           <View className="flex-row justify-center gap-1">
             <Text className="text-muted-foreground">Have an account?</Text>
-            <Link href="/login" className="font-medium text-primary">
+            <Link href="/" className="font-medium text-primary">
               Log in
             </Link>
           </View>
