@@ -4,21 +4,60 @@ import {
   Clock,
   FileText,
   Globe,
+  PenLine,
   Video,
   type LucideIcon,
 } from "lucide-react-native"
 import { Pressable, Text, View } from "react-native"
 
+import type { Recipe } from "@workspace/schemas"
+
 import { Icon } from "@/components/ui/icon"
 import { formatMinutes } from "@/lib/format"
-import type { Recipe, SourceKind } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 
-export const sourceIcons: Record<SourceKind, LucideIcon> = {
+export const sourceIcons: Record<string, LucideIcon> = {
+  manual: PenLine,
+  import: FileText,
   video: Video,
   website: Globe,
   photo: Camera,
   text: FileText,
+}
+
+const sourceNames: Record<string, string> = {
+  manual: "Written by hand",
+  import: "Imported",
+  video: "Video",
+  website: "Website",
+  photo: "Photo",
+  text: "Pasted text",
+}
+
+export const sourceName = (recipe: Recipe) =>
+  recipe.source.label ?? sourceNames[recipe.source.kind] ?? "Recipe"
+
+// Written out in full so Tailwind finds every class.
+const covers = [
+  "bg-amber-200 dark:bg-amber-900",
+  "bg-yellow-200 dark:bg-yellow-900",
+  "bg-lime-200 dark:bg-lime-900",
+  "bg-emerald-200 dark:bg-emerald-900",
+  "bg-sky-200 dark:bg-sky-900",
+  "bg-rose-200 dark:bg-rose-900",
+  "bg-orange-200 dark:bg-orange-900",
+]
+
+function coverFor(id: string) {
+  let hash = 0
+  for (const char of id) hash = (hash * 31 + char.charCodeAt(0)) >>> 0
+  return covers[hash % covers.length]!
+}
+
+/** Total time, or null when neither prep nor cooking time is known. */
+export function totalMinutes(recipe: Recipe) {
+  if (recipe.prepMinutes === null && recipe.cookMinutes === null) return null
+  return (recipe.prepMinutes ?? 0) + (recipe.cookMinutes ?? 0)
 }
 
 /** Placeholder cover until recipes have real images. */
@@ -26,21 +65,22 @@ export function RecipeCover({
   recipe,
   className,
 }: {
-  recipe: Recipe
+  recipe: Pick<Recipe, "id" | "title">
   className?: string
 }) {
   return (
     <View
-      className={cn("items-center justify-center", recipe.cover, className)}
+      className={cn("items-center justify-center", coverFor(recipe.id), className)}
     >
       <Text className="text-4xl font-bold text-foreground/30">
-        {recipe.title.charAt(0)}
+        {recipe.title.charAt(0).toUpperCase()}
       </Text>
     </View>
   )
 }
 
 export function RecipeCard({ recipe }: { recipe: Recipe }) {
+  const total = totalMinutes(recipe)
   return (
     <Pressable
       role="link"
@@ -57,26 +97,30 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
           {recipe.title}
         </Text>
         <View className="flex-row items-center gap-3">
-          <View className="flex-row items-center gap-1">
-            <Icon as={Clock} size={14} className="text-muted-foreground" />
-            <Text className="text-sm text-muted-foreground">
-              {formatMinutes(recipe.prepMinutes + recipe.cookMinutes)}
-            </Text>
-          </View>
+          {total !== null && (
+            <View className="flex-row items-center gap-1">
+              <Icon as={Clock} size={14} className="text-muted-foreground" />
+              <Text className="text-sm text-muted-foreground">
+                {formatMinutes(total)}
+              </Text>
+            </View>
+          )}
           <View className="flex-row items-center gap-1">
             <Icon
-              as={sourceIcons[recipe.source.kind]}
+              as={sourceIcons[recipe.source.kind] ?? FileText}
               size={14}
               className="text-muted-foreground"
             />
-            <Text className="text-sm capitalize text-muted-foreground">
-              {recipe.source.kind}
+            <Text className="text-sm text-muted-foreground">
+              {sourceNames[recipe.source.kind] ?? "Recipe"}
             </Text>
           </View>
         </View>
-        <Text numberOfLines={1} className="text-sm text-muted-foreground">
-          {recipe.tags.join(" · ")}
-        </Text>
+        {recipe.tags.length > 0 && (
+          <Text numberOfLines={1} className="text-sm text-muted-foreground">
+            {recipe.tags.join(" · ")}
+          </Text>
+        )}
       </View>
     </Pressable>
   )

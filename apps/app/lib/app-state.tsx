@@ -1,6 +1,8 @@
 import {
   createContext,
+  useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -8,6 +10,7 @@ import {
 
 import type { Units } from "@/lib/format"
 import type { Space } from "@/lib/mock-data"
+import { loadUnits, saveUnits } from "@/lib/preferences"
 
 export type Appearance = "system" | "light" | "dark"
 /** Lets the prototype show the loading, empty and error states of the main lists. */
@@ -32,15 +35,30 @@ type AppState = {
 const AppStateContext = createContext<AppState | null>(null)
 
 /**
- * UI state for the clickable shell. It lives in memory only; nothing is saved yet.
+ * UI state. It lives in memory, except the chosen units, which stay on this device.
  */
 export function AppStateProvider({ children }: { children: ReactNode }) {
   const [demo, setDemo] = useState(false)
-  const [units, setUnits] = useState<Units>("metric")
+  const [units, setUnitsState] = useState<Units>("metric")
   const [appearance, setAppearance] = useState<Appearance>("system")
   const [space, setSpace] = useState<Space>("personal")
   const [listState, setListState] = useState<ListState>("ready")
   const [offline, setOffline] = useState(false)
+
+  // The chosen units stay on this device.
+  useEffect(() => {
+    let cancelled = false
+    loadUnits().then((saved) => {
+      if (saved && !cancelled) setUnitsState(saved)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+  const setUnits = useCallback((value: Units) => {
+    setUnitsState(value)
+    void saveUnits(value)
+  }, [])
 
   const value = useMemo(
     () => ({
@@ -57,7 +75,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       offline,
       setOffline,
     }),
-    [demo, units, appearance, space, listState, offline]
+    [demo, units, setUnits, appearance, space, listState, offline]
   )
 
   return <AppStateContext value={value}>{children}</AppStateContext>

@@ -655,6 +655,303 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/recipes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List your recipes, or the recipes of a household
+         * @description Newest first. Search matches the title and the names of ingredients; tag filters need every tag to match.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description List the recipes shared with this household. Without it, you get your own recipes. */
+                    householdId?: string;
+                    /** @description Words to look for in the title and in ingredient names */
+                    q?: string;
+                    /** @description Only recipes with all of these tags. Separate tags with commas. */
+                    tags?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Recipes */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            recipes: components["schemas"]["Recipe"][];
+                        };
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Add a recipe
+         * @description An ingredient's quantity is null when the amount is unknown. It is stored as given, never filled in.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RecipeInput"];
+                };
+            };
+            responses: {
+                /** @description Created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            recipe: components["schemas"]["Recipe"];
+                        };
+                    };
+                };
+                /** @description Invalid recipe */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/recipes/{recipeId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a recipe */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    recipeId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Recipe */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            recipe: components["schemas"]["Recipe"];
+                        };
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The recipe doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        /**
+         * Replace a recipe
+         * @description Send the whole recipe. Members of a household can edit its recipes. Only the author can move a recipe between 'only me' and a household (send `householdId`; leave it out to keep the current place).
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    recipeId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RecipeInput"];
+                };
+            };
+            responses: {
+                /** @description Updated */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            recipe: components["schemas"]["Recipe"];
+                        };
+                    };
+                };
+                /** @description Invalid recipe */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Only the author can change who the recipe is shared with */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The recipe or household doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        /**
+         * Delete a recipe
+         * @description The author can delete it. For a household recipe, the household's owners can too.
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    recipeId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Only the author or a household owner can delete it */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The recipe doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -706,6 +1003,70 @@ export interface components {
             expiresAt: string;
             /** @description You are already in this household */
             alreadyMember: boolean;
+        };
+        Recipe: {
+            title: string;
+            description: string;
+            servings: number;
+            prepMinutes: number | null;
+            cookMinutes: number | null;
+            tags: string[];
+            ingredients: {
+                name: string;
+                quantity: number | null;
+                unit: string | null;
+                note: string | null;
+            }[];
+            steps: {
+                text: string;
+            }[];
+            nutrition: {
+                calories: number | null;
+                protein: number | null;
+                carbs: number | null;
+                fat: number | null;
+            };
+            source: {
+                /** @enum {string} */
+                kind: "manual" | "video" | "website" | "photo" | "text" | "import";
+                label: string | null;
+                url: string | null;
+            };
+            id: string;
+            householdId: string | null;
+            userId: string;
+            createdAt: string;
+            updatedAt: string;
+        };
+        RecipeInput: {
+            title: string;
+            description: string;
+            servings: number;
+            prepMinutes: number | null;
+            cookMinutes: number | null;
+            tags: string[];
+            ingredients: {
+                name: string;
+                quantity: number | null;
+                unit: string | null;
+                note: string | null;
+            }[];
+            steps: {
+                text: string;
+            }[];
+            nutrition: {
+                calories: number | null;
+                protein: number | null;
+                carbs: number | null;
+                fat: number | null;
+            };
+            source?: {
+                /** @enum {string} */
+                kind: "manual" | "video" | "website" | "photo" | "text" | "import";
+                label: string | null;
+                url: string | null;
+            };
+            householdId?: string | null;
         };
     };
     responses: never;

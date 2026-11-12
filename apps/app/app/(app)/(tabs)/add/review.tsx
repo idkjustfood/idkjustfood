@@ -1,13 +1,18 @@
 import { router } from "expo-router"
 import { View } from "react-native"
 
-import { RecipeForm } from "@/components/recipe-form"
+import { RecipeForm, useRecipeForm } from "@/components/recipe-form"
 import { Screen } from "@/components/screen"
 import { Button } from "@/components/ui/button"
 import { importedRecipe } from "@/lib/mock-data"
+import { fromSample } from "@/lib/recipes"
 
-/** Check an imported recipe before saving. Missing amounts stay empty, never guessed. */
+/**
+ * Check an imported recipe before saving. Missing amounts stay empty, never guessed.
+ * Still a prototype: the recipe is sample data until the AI pipeline is connected.
+ */
 export default function Review() {
+  const form = useRecipeForm(fromSample(importedRecipe))
   return (
     <Screen
       title="Review recipe"
@@ -34,7 +39,7 @@ export default function Review() {
         </View>
       }
     >
-      <RecipeForm recipe={importedRecipe} highlightMissing />
+      <RecipeForm form={form} highlightMissing />
     </Screen>
   )
 }
