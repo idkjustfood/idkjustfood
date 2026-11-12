@@ -1,0 +1,24 @@
+{
+  "name": "api",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun --hot src/index.ts",
+    "build": "bun build src/index.ts --target bun --outdir dist",
+    "start": "bun dist/index.js",
+    "lint": "eslint",
+    "format": "prettier --write \"**/*.ts\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@workspace/eslint-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "eslint": "^10",
+    "typescript": "^5"
+  }
+}
