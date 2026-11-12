@@ -1,6 +1,6 @@
 const { hairlineWidth } = require("nativewind/theme")
 
-// Design tokens mirror packages/ui/src/styles/globals.css (see global.css).
+// Design tokens are defined in global.css.
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: "class",

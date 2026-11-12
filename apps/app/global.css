@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
- * Same tokens as packages/ui/src/styles/globals.css, converted from oklch to
- * HSL because NativeWind uses Tailwind 3, which cannot read oklch on native.
- * Keep the two files in sync when tokens change.
- */
 @layer base {
   :root {
     --background: 0 0% 100%;
