@@ -1,8 +1,9 @@
-import { Hono } from "hono"
+import { createDatabase } from "@workspace/database"
 
-const app = new Hono()
+import { createApp } from "./app.js"
 
-app.get("/health", (c) => c.json({ status: "ok" }))
+const db = createDatabase(process.env.DATABASE_URL ?? "")
+const app = createApp(db, process.env)
 
 export default {
   port: Number(process.env.PORT ?? 3001),
