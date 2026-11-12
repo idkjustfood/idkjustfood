@@ -2,8 +2,10 @@ import { OpenAPIHono } from "@hono/zod-openapi"
 import { cors } from "hono/cors"
 
 import type { Database } from "@workspace/database"
+import type { InputModule, JobQueue } from "@workspace/extraction"
 
 import { createAuth, socialProvidersFromEnv, type AuthEnv } from "./auth.js"
+import { extractionRoutes } from "./extractions/routes.js"
 import { householdRoutes } from "./households/routes.js"
 import { recipeRoutes } from "./recipes/routes.js"
 import { requireSession, type AuthVariables } from "./session.js"
@@ -20,8 +22,21 @@ export const openApiConfig = {
   },
 }
 
+export type AppDeps = {
+  /** Where extraction jobs are queued. The server uses pg-boss; tests use a fake. */
+  queue?: JobQueue
+  /** Input modules to use instead of the built-in ones (tests). */
+  modules?: InputModule[]
+}
+
+const noQueue: JobQueue = {
+  enqueue: async () => {
+    throw new Error("No job queue is configured")
+  },
+}
+
 /** Builds the API. Takes the database and settings so tests can use their own. */
-export function createApp(db: Database, env: AuthEnv) {
+export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
   const auth = createAuth(db, env)
   const app = new OpenAPIHono<{ Variables: Partial<AuthVariables> }>()
 
@@ -49,6 +64,15 @@ export function createApp(db: Database, env: AuthEnv) {
 
   // Recipes: create, read, update, delete, search.
   app.route("/api", recipeRoutes(db, auth))
+
+  // Recipe extraction: add a recipe from a link, a photo or text (runs in the worker).
+  app.route(
+    "/api",
+    extractionRoutes(db, auth, env, {
+      queue: deps.queue ?? noQueue,
+      modules: deps.modules,
+    })
+  )
 
   app.openAPIRegistry.registerComponent("securitySchemes", "cookieAuth", {
     type: "apiKey",
