@@ -20,12 +20,16 @@ rest of the pipeline.
 
 ## What we are building
 
-Three parts that share one backend:
+Two parts that share one backend:
 
 - **API:** takes a video link, collects caption, audio and frames, uses AI to turn them into a
   structured recipe, and stores it.
-- **Web frontend:** paste a link, read and manage your saved recipes.
-- **Mobile app:** the same, plus sharing a reel straight from Instagram into the app.
+- **App:** one Expo (React Native) codebase for iOS, Android and web. Paste a link, read and manage
+  your saved recipes, and on mobile share a reel straight from Instagram into the app.
+
+**Mobile first.** The app is designed for the phone: touch targets, one-handed use, offline in the
+shop. The web version comes from the same code. Desktop is a bonus and for the initial setup
+(for example trying things on a computer), so it must work, but it never decides a design.
 
 ## Business model
 
@@ -77,18 +81,19 @@ All of them end in the same structured recipe:
 
 TypeScript everywhere, in one monorepo.
 
-- **API:** Hono on Bun, Zod schemas, OpenAPI. Web and mobile use a typed client generated from it.
+- **API:** Hono on Bun, Zod schemas, OpenAPI. The app uses a typed client generated from it.
 - **Database:** PostgreSQL with Drizzle.
 - **Background jobs:** pg-boss (the queue lives in Postgres, no Redis). The worker is the same
   code run as its own process.
-- **Web app:** Vite, React, TanStack Router and Query, Tailwind, shadcn/ui.
-- **Mobile:** Expo (React Native) for iOS and Android. Sharing a reel into the app needs
-  `expo-share-intent` and our own app builds, not Expo Go.
+- **App (`apps/app`):** Expo (React Native) for iOS, Android and web, with Expo Router and
+  TanStack Query. Styling is NativeWind (Tailwind) with React Native Reusables (shadcn-style
+  components), so all platforms share one set of components and design tokens. Sharing a reel into
+  the app needs `expo-share-intent` and our own app builds, not Expo Go.
 - **Auth:** Better Auth, including organizations for households.
 - **AI:** Vercel AI SDK behind our own provider interface.
 - **Payments:** Stripe, as a cloud-only module.
 - **Marketing page:** Astro in `apps/marketing`, cloud only. The self-host setup (`api`, `worker`,
-  `web`, `postgres` in Docker Compose) does not contain it, and neither billing nor pricing screens.
+  `app` as a static web build, `postgres` in Docker Compose) does not contain it, and neither billing nor pricing screens.
 - **Shared schemas:** `packages/schemas` holds the Zod recipe, ingredient and list schemas.
 
 ## Where we are
@@ -96,7 +101,9 @@ TypeScript everywhere, in one monorepo.
 - A prototype CLI in `src/` proves the pipeline works: `bun run parse "<instagram-url>"`. It uses
   yt-dlp and ffmpeg, plus OpenRouter (through `@ai-sdk/openai`) for both transcription and
   parsing. See `README.md` for setup.
-- The API, frontend and mobile app don't exist yet. The prototype's pipeline is the starting
+- Empty shells exist for `apps/api` (Hono health check), `apps/worker`, `apps/app` (Expo with
+  NativeWind, web enabled) and `packages/schemas`. No real features yet.
+- The real API and app screens don't exist yet. The prototype's pipeline is the starting
   point for the API.
 
 ## Modular by design
@@ -110,7 +117,7 @@ The pipeline is built from parts that can be swapped:
   - hosted providers (OpenRouter, OpenAI, Anthropic, Google, ...)
   Transcription and recipe parsing can use different providers. The rest of the code talks to one
   shared interface and never to a specific provider.
-- **Clients:** the web frontend and the mobile app only talk to the API, so other clients can be
+- **Clients:** the app (web and mobile) only talks to the API, so other clients can be
   built on it too.
 
 ## Guiding principles
@@ -119,6 +126,8 @@ The pipeline is built from parts that can be swapped:
   part of the core.
 - **No lock-in.** No feature may depend on one platform or one AI provider. The default provider
   (OpenRouter today) is a setting, not a requirement.
+- **Mobile first.** Design and test on the phone first. Web and desktop are a bonus from the same
+  code, never a separate design.
 - **Open source friendly.** Easy for others to read, run and extend. Keep modules small with
   clear boundaries, and document how to add a source or a provider.
 - **Never invent recipe details.** If an amount isn't in the video, say so instead of guessing.
@@ -128,13 +137,3 @@ The pipeline is built from parts that can be swapped:
 - Commit messages follow Conventional Commits (`.claude/rules/commit-messages.md`).
 - Work is planned as GitHub issues; see the skills in `.claude/skills/`.
 
-
-<!-- BEGIN:nextjs-agent-rules -->
-
-# This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
