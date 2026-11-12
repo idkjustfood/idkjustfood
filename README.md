@@ -38,6 +38,11 @@ domain to `api` (port 3001) and your app domain to `web` (port 80). HTTPS is up 
 
 Settings live in `.env` (see `.env.example`): database password, the public `API_URL` and
 `APP_URL`, and the AI provider (`AI_PROVIDER`, `AI_API_KEY`, optional `AI_BASE_URL` and models).
+Auth needs `BETTER_AUTH_SECRET` (generate with `openssl rand -base64 32`). Email and password
+sign-in works without anything else. To add Google or GitHub sign-in, set that provider's
+`*_CLIENT_ID` and `*_CLIENT_SECRET`; a provider with no keys stays off. The callback URL is
+`<API_URL>/api/auth/callback/<provider>`. A one-shot `migrate` service creates the database tables
+before `api` and `worker` start.
 `API_URL` is baked into the web build, so rebuild `web` after changing it.
 
 ### Plain Docker Compose

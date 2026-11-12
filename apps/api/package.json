@@ -8,16 +8,21 @@
     "build": "bun build src/index.ts --target bun --outdir dist",
     "start": "bun dist/index.js",
     "lint": "eslint",
+    "test": "bun test",
     "format": "prettier --write \"**/*.ts\"",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@workspace/database": "workspace:*",
+    "better-auth": "^1.7.22",
     "hono": "^4"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.16",
     "@types/bun": "latest",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
+    "drizzle-orm": "^0.44.0",
     "eslint": "^10",
     "typescript": "^5"
   }
