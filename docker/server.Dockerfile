@@ -5,7 +5,9 @@ FROM oven/bun:1.3.8
 
 WORKDIR /app
 COPY . .
-RUN bun install --frozen-lockfile --production --filter api --filter worker --filter @workspace/database --filter @workspace/schemas
+# --ignore-scripts: better-auth pulls in optional peers (better-sqlite3, @prisma/client) whose install
+# scripts need a compiler that this image does not have. We only use Postgres, so skip them.
+RUN bun install --frozen-lockfile --production --ignore-scripts --filter api --filter worker --filter @workspace/database --filter @workspace/schemas
 
 ENV NODE_ENV=production
 ENV PORT=3001
