@@ -11,24 +11,52 @@ import { useState } from "react"
 import { Pressable, ScrollView, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
-import { IngredientList, TimerButton } from "@/components/recipe-parts"
+import { IngredientList, StepTimers } from "@/components/recipe-parts"
+import { ErrorState, LoadingState } from "@/components/states"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
 import { Sheet } from "@/components/ui/sheet"
 import { useAppState } from "@/lib/app-state"
-import { findRecipe } from "@/lib/mock-data"
+import { useRecipe, type Recipe } from "@/lib/recipes"
 import { cn } from "@/lib/utils"
 
 /** One step at a time, big text, easy to use with messy hands. */
 export default function CookingMode() {
   const { id } = useLocalSearchParams<{ id: string }>()
-  const recipe = findRecipe(id)
+  const query = useRecipe(id)
+
+  if (query.isPending) {
+    return (
+      <SafeAreaView className="flex-1 bg-background p-4">
+        <LoadingState label="Loading recipe" rows={1} />
+      </SafeAreaView>
+    )
+  }
+  if (query.isError) {
+    return (
+      <SafeAreaView className="flex-1 justify-center bg-background p-4">
+        <ErrorState
+          title="Could not load this recipe"
+          message="Check your connection and try again."
+          onRetry={() => void query.refetch()}
+        />
+        <Button
+          variant="ghost"
+          label="Close"
+          onPress={() => router.replace("/")}
+        />
+      </SafeAreaView>
+    )
+  }
+  if (query.data.steps.length === 0) return <Redirect href={`/recipe/${query.data.id}`} />
+  return <Cooking recipe={query.data} />
+}
+
+function Cooking({ recipe }: { recipe: Recipe }) {
   const { units } = useAppState()
   const [index, setIndex] = useState(0)
   const [listening, setListening] = useState(false)
   const [ingredientsOpen, setIngredientsOpen] = useState(false)
-
-  if (!recipe) return <Redirect href="/" />
 
   const step = recipe.steps[index]
   const last = index === recipe.steps.length - 1
@@ -76,7 +104,7 @@ export default function CookingMode() {
         >
           {recipe.steps.map((s, i) => (
             <View
-              key={s.id}
+              key={i}
               className={cn(
                 "flex-1 rounded-full",
                 i <= index ? "bg-primary" : "bg-muted"
@@ -93,11 +121,14 @@ export default function CookingMode() {
             aria-live="polite"
             className="text-3xl font-semibold leading-tight text-foreground md:text-4xl"
           >
-            {step.text}
+            {step!.text}
           </Text>
-          {step.timerMinutes && (
-            <TimerButton key={step.id} minutes={step.timerMinutes} large />
-          )}
+          <StepTimers
+            recipeId={recipe.id}
+            index={index}
+            text={step!.text}
+            large
+          />
         </ScrollView>
 
         <Pressable

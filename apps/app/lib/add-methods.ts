@@ -2,11 +2,20 @@ import {
   Camera,
   FileText,
   Globe,
+  PenLine,
+  Upload,
   Video,
   type LucideIcon,
 } from "lucide-react-native"
 
-export type AddMethod = "video" | "website" | "photo" | "text"
+/** "write" and "import" need no AI, so they have their own screens and no progress steps. */
+export type AddMethod =
+  | "video"
+  | "website"
+  | "photo"
+  | "text"
+  | "write"
+  | "import"
 
 export const addMethods: Record<
   AddMethod,
@@ -45,6 +54,18 @@ export const addMethods: Record<
     description: "A recipe you copied from a message or a note.",
     icon: FileText,
     steps: ["Reading the text", "Writing the recipe"],
+  },
+  write: {
+    title: "Write it yourself",
+    description: "Type in a recipe from scratch, or one you know by heart.",
+    icon: PenLine,
+    steps: [],
+  },
+  import: {
+    title: "Import a recipe",
+    description: "A recipe saved as JSON, or in the schema.org Recipe format.",
+    icon: Upload,
+    steps: [],
   },
 }
 

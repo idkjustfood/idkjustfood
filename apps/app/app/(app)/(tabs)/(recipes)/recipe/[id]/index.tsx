@@ -13,16 +13,19 @@ import {
 import { useState } from "react"
 import { Text, View } from "react-native"
 
+import { toJson, toMarkdown, toSchemaOrg } from "@workspace/schemas"
+
 import { ListGroup, ListRow } from "@/components/list-row"
-import { RecipeCover, sourceIcons } from "@/components/recipe-card"
+import { RecipeCover, sourceIcons, sourceName } from "@/components/recipe-card"
 import {
+  hasNutrition,
   IngredientList,
   NutritionEstimate,
   ServingsScaler,
   StepList,
 } from "@/components/recipe-parts"
 import { Screen } from "@/components/screen"
-import { EmptyState } from "@/components/states"
+import { EmptyState, ErrorState, LoadingState } from "@/components/states"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, SectionTitle } from "@/components/ui/card"
@@ -31,32 +34,68 @@ import { Sheet } from "@/components/ui/sheet"
 import { useAppState } from "@/lib/app-state"
 import { formatMinutes } from "@/lib/format"
 import { useIsWide } from "@/lib/layout"
-import { findRecipe, shoppingLists } from "@/lib/mock-data"
+import { shoppingLists } from "@/lib/mock-data"
+import { ApiError } from "@/lib/api/client"
+import { useRecipe, type Recipe } from "@/lib/recipes"
+import { canShare, copyText, shareText } from "@/lib/share"
 
 export default function RecipeDetail() {
   const { id } = useLocalSearchParams<{ id: string }>()
-  const recipe = findRecipe(id)
-  const wide = useIsWide()
-  const { units } = useAppState()
-  const [servings, setServings] = useState(recipe?.servings ?? 1)
-  const [exportOpen, setExportOpen] = useState(false)
-  const [listOpen, setListOpen] = useState(false)
+  const query = useRecipe(id)
 
-  if (!recipe) {
+  if (query.isPending) {
     return (
-      <Screen title="Recipe not found" back="/">
-        <EmptyState
-          icon={SearchX}
-          title="This recipe does not exist"
-          message="It may have been deleted."
-          action="Back to recipes"
-          onAction={() => router.replace("/")}
-        />
+      <Screen title="Recipe" back="/">
+        <LoadingState label="Loading recipe" rows={2} />
       </Screen>
     )
   }
 
+  if (query.isError) {
+    const missing = query.error instanceof ApiError && query.error.status === 404
+    return (
+      <Screen title={missing ? "Recipe not found" : "Recipe"} back="/">
+        {missing ? (
+          <EmptyState
+            icon={SearchX}
+            title="This recipe does not exist"
+            message="It may have been deleted, or it is not shared with you."
+            action="Back to recipes"
+            onAction={() => router.replace("/")}
+          />
+        ) : (
+          <ErrorState
+            title="Could not load this recipe"
+            message="Check your connection and try again."
+            onRetry={() => void query.refetch()}
+          />
+        )}
+      </Screen>
+    )
+  }
+
+  return <RecipeView key={query.data.id} recipe={query.data} />
+}
+
+function RecipeView({ recipe }: { recipe: Recipe }) {
+  const wide = useIsWide()
+  const { units } = useAppState()
+  const [servings, setServings] = useState(recipe.servings)
+  const [exportOpen, setExportOpen] = useState(false)
+  const [exportNote, setExportNote] = useState<string | null>(null)
+  const [listOpen, setListOpen] = useState(false)
+
   const factor = servings / recipe.servings
+
+  async function exportAs(name: string, text: string) {
+    if (canShare) {
+      setExportOpen(false)
+      await shareText(text, recipe.title)
+    } else {
+      await copyText(text)
+      setExportNote(`Copied ${name} to the clipboard.`)
+    }
+  }
 
   const ingredients = (
     <Card className="gap-4 p-4">
@@ -64,28 +103,38 @@ export default function RecipeDetail() {
         <SectionTitle>Ingredients</SectionTitle>
         <ServingsScaler servings={servings} onChange={setServings} />
       </View>
-      <IngredientList
-        ingredients={recipe.ingredients}
-        factor={factor}
-        units={units}
-      />
-      <Button
-        variant="outline"
-        icon={ShoppingCart}
-        label="Add to shopping list"
-        onPress={() => setListOpen(true)}
-      />
+      {recipe.ingredients.length > 0 ? (
+        <IngredientList
+          ingredients={recipe.ingredients}
+          factor={factor}
+          units={units}
+        />
+      ) : (
+        <Text className="text-muted-foreground">No ingredients yet.</Text>
+      )}
+      {recipe.ingredients.length > 0 && (
+        <Button
+          variant="outline"
+          icon={ShoppingCart}
+          label="Add to shopping list"
+          onPress={() => setListOpen(true)}
+        />
+      )}
     </Card>
   )
 
   const steps = (
     <Card className="gap-4 p-4">
       <SectionTitle>Steps</SectionTitle>
-      <StepList steps={recipe.steps} />
+      {recipe.steps.length > 0 ? (
+        <StepList recipeId={recipe.id} steps={recipe.steps} />
+      ) : (
+        <Text className="text-muted-foreground">No steps yet.</Text>
+      )}
     </Card>
   )
 
-  const nutrition = (
+  const nutrition = hasNutrition(recipe.nutrition) && (
     <Card className="gap-4 p-4">
       <SectionTitle>Nutrition</SectionTitle>
       <NutritionEstimate nutrition={recipe.nutrition} />
@@ -110,7 +159,10 @@ export default function RecipeDetail() {
             size="icon"
             icon={Download}
             label="Export recipe"
-            onPress={() => setExportOpen(true)}
+            onPress={() => {
+              setExportNote(null)
+              setExportOpen(true)
+            }}
           />
         </>
       }
@@ -121,35 +173,45 @@ export default function RecipeDetail() {
           className="h-40 rounded-lg md:h-48 md:w-72"
         />
         <View className="flex-1 gap-3">
-          <Text className="text-base text-muted-foreground">
-            {recipe.description}
-          </Text>
+          {recipe.description !== "" && (
+            <Text className="text-base text-muted-foreground">
+              {recipe.description}
+            </Text>
+          )}
           <View className="flex-row flex-wrap gap-x-5 gap-y-2">
+            {recipe.prepMinutes !== null && (
+              <Meta
+                icon={Clock}
+                text={`${formatMinutes(recipe.prepMinutes)} prep`}
+              />
+            )}
+            {recipe.cookMinutes !== null && (
+              <Meta
+                icon={ChefHat}
+                text={`${formatMinutes(recipe.cookMinutes)} cooking`}
+              />
+            )}
             <Meta
-              icon={Clock}
-              text={`${formatMinutes(recipe.prepMinutes)} prep`}
+              icon={sourceIcons[recipe.source.kind] ?? FileText}
+              text={sourceName(recipe)}
             />
-            <Meta
+          </View>
+          {recipe.tags.length > 0 && (
+            <View className="flex-row flex-wrap gap-2">
+              {recipe.tags.map((tag) => (
+                <Badge key={tag} label={tag} />
+              ))}
+            </View>
+          )}
+          {recipe.steps.length > 0 && (
+            <Button
+              size="lg"
               icon={ChefHat}
-              text={`${formatMinutes(recipe.cookMinutes)} cooking`}
+              label="Start cooking"
+              className="mt-1 md:self-start"
+              onPress={() => router.push(`/cook/${recipe.id}`)}
             />
-            <Meta
-              icon={sourceIcons[recipe.source.kind]}
-              text={recipe.source.label}
-            />
-          </View>
-          <View className="flex-row flex-wrap gap-2">
-            {recipe.tags.map((tag) => (
-              <Badge key={tag} label={tag} />
-            ))}
-          </View>
-          <Button
-            size="lg"
-            icon={ChefHat}
-            label="Start cooking"
-            className="mt-1 md:self-start"
-            onPress={() => router.push(`/cook/${recipe.id}`)}
-          />
+          )}
         </View>
       </View>
 
@@ -179,24 +241,34 @@ export default function RecipeDetail() {
             icon={FileJson}
             title="JSON"
             detail="For backups and other apps"
-            onPress={() => setExportOpen(false)}
+            onPress={() => void exportAs("JSON", toJson(recipe))}
           />
           <ListRow
             icon={FileText}
             title="Markdown"
             detail="Plain text to read or print"
-            onPress={() => setExportOpen(false)}
+            onPress={() => void exportAs("Markdown", toMarkdown(recipe))}
           />
           <ListRow
             icon={FileCode}
             title="schema.org Recipe"
             detail="Standard recipe format for the web"
-            onPress={() => setExportOpen(false)}
+            onPress={() =>
+              void exportAs(
+                "schema.org Recipe",
+                JSON.stringify(toSchemaOrg(recipe), null, 2)
+              )
+            }
           />
         </ListGroup>
+        {exportNote && (
+          <Text role="status" className="text-sm text-muted-foreground">
+            {exportNote}
+          </Text>
+        )}
         <Button
           variant="outline"
-          label="Cancel"
+          label={exportNote ? "Done" : "Cancel"}
           onPress={() => setExportOpen(false)}
         />
       </Sheet>

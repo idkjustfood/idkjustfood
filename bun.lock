@@ -20,6 +20,7 @@
         "@better-auth/expo": "^1.7.22",
         "@hono/zod-openapi": "^1.6.3",
         "@workspace/database": "workspace:*",
+        "@workspace/schemas": "workspace:*",
         "better-auth": "^1.7.22",
         "drizzle-orm": "^0.44.0",
         "hono": "^4",
@@ -43,6 +44,7 @@
         "@rn-primitives/slot": "^1.5.2",
         "@rn-primitives/types": "^1.5.2",
         "@tanstack/react-query": "^5.107.1",
+        "@workspace/schemas": "workspace:*",
         "babel-preset-expo": "~58.0.0",
         "better-auth": "^1.7.22",
         "class-variance-authority": "^0.7.1",
@@ -132,6 +134,7 @@
         "zod": "^4.6.7",
       },
       "devDependencies": {
+        "@types/bun": "latest",
         "@workspace/eslint-config": "workspace:*",
         "@workspace/typescript-config": "workspace:*",
         "eslint": "^10",
