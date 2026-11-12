@@ -27,6 +27,13 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "idkjustfood reads recipes from the photos you choose.",
+          "cameraPermission": "idkjustfood takes a photo of a recipe to read it."
+        }
+      ],
       "expo-web-browser"
     ]
   }

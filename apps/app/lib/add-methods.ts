@@ -10,12 +10,7 @@ import {
 
 /** "write" and "import" need no AI, so they have their own screens and no progress steps. */
 export type AddMethod =
-  | "video"
-  | "website"
-  | "photo"
-  | "text"
-  | "write"
-  | "import"
+  "video" | "website" | "photo" | "text" | "write" | "import"
 
 export const addMethods: Record<
   AddMethod,
@@ -23,7 +18,7 @@ export const addMethods: Record<
 > = {
   video: {
     title: "Video link",
-    description: "An Instagram reel. YouTube Shorts and TikTok come later.",
+    description: "An Instagram reel, a TikTok or a YouTube Short.",
     icon: Video,
     steps: [
       "Downloading the video",
@@ -79,7 +74,12 @@ export type LinkProblem = "unsupported" | "invalid" | null
 export function checkLink(method: AddMethod, link: string): LinkProblem {
   const url = link.trim().toLowerCase()
   if (!/^https?:\/\/\S+\.\S+/.test(url)) return "invalid"
-  if (method === "video" && !/instagram\.com\/(reel|reels|p)\//.test(url))
+  if (
+    method === "video" &&
+    !/^https?:\/\/([^/]+\.)?(instagram\.com|instagr\.am|tiktok\.com|youtube\.com|youtu\.be)\//.test(
+      url
+    )
+  )
     return "unsupported"
   return null
 }

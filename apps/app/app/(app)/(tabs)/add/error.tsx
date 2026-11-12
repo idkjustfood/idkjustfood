@@ -10,7 +10,7 @@ const messages = {
   unsupported: {
     title: "This link is not supported yet",
     message:
-      "For now idkjustfood reads Instagram reels. YouTube Shorts and TikTok are coming later. You can still paste the recipe text or add a screenshot.",
+      "idkjustfood reads Instagram reels, TikTok videos, YouTube Shorts and recipe websites. You can still paste the recipe text or add a screenshot.",
   },
   failed: {
     title: "We could not read this recipe",
@@ -20,12 +20,14 @@ const messages = {
 }
 
 export default function AddError() {
-  const { reason, link } = useLocalSearchParams<{
+  const { reason, link, message } = useLocalSearchParams<{
     reason?: string
     link?: string
+    message?: string
   }>()
-  const content =
-    reason === "unsupported" ? messages.unsupported : messages.failed
+  const base = reason === "unsupported" ? messages.unsupported : messages.failed
+  // The server says what went wrong (private video, no AI key, ...): show that.
+  const content = { ...base, message: message || base.message }
 
   return (
     <Screen title="Could not add recipe" back="/add" narrow>
