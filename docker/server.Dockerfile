@@ -1,6 +1,7 @@
 # One image for the API and the worker (same code, two processes).
 # The compose file picks the process with `command`.
-FROM oven/bun:1
+# Keep this in sync with "packageManager" in package.json: a newer bun can reject bun.lock.
+FROM oven/bun:1.3.8
 
 WORKDIR /app
 COPY . .
