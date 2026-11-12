@@ -98,13 +98,12 @@ TypeScript everywhere, in one monorepo.
 
 ## Where we are
 
-- A prototype CLI in `src/` proves the pipeline works: `bun run parse "<instagram-url>"`. It uses
-  yt-dlp and ffmpeg, plus OpenRouter (through `@ai-sdk/openai`) for both transcription and
-  parsing. See `README.md` for setup.
-- Empty shells exist for `apps/api` (Hono health check), `apps/worker`, `apps/app` (Expo with
-  NativeWind, web enabled) and `packages/schemas`. No real features yet.
-- The real API and app screens don't exist yet. The prototype's pipeline is the starting
-  point for the API.
+- The API has auth, households, recipes (manual entry) and recipe extraction. The extraction
+  pipeline lives in `packages/extraction`: input modules (Instagram, TikTok, YouTube Shorts,
+  websites, photos, text), swappable AI providers (OpenRouter built in) and the pg-boss job that
+  the worker runs. See `README.md`, `docs/adding-an-input.md` and `docs/ai-providers.md`.
+- The app has all its screens; adding a recipe from a link, photo or text is not connected to the
+  extraction endpoints yet.
 
 ## Modular by design
 

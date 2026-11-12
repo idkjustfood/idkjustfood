@@ -154,7 +154,7 @@ const deleteRecipe = createRoute({
 
 type Env = { Variables: AuthVariables }
 
-function toRecipe(row: RecipeRow): Recipe {
+export function toRecipe(row: RecipeRow): Recipe {
   return {
     id: row.id,
     householdId: row.organizationId,

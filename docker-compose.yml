@@ -51,7 +51,18 @@ services:
       AI_API_KEY: ${AI_API_KEY:-}
       AI_BASE_URL: ${AI_BASE_URL:-}
       AI_TRANSCRIPTION_MODEL: ${AI_TRANSCRIPTION_MODEL:-}
+      AI_VISION_MODEL: ${AI_VISION_MODEL:-}
       AI_PARSING_MODEL: ${AI_PARSING_MODEL:-}
+      # Optional: let one job use a different provider (see docs/ai-providers.md)
+      AI_TRANSCRIPTION_PROVIDER: ${AI_TRANSCRIPTION_PROVIDER:-}
+      AI_TRANSCRIPTION_API_KEY: ${AI_TRANSCRIPTION_API_KEY:-}
+      AI_TRANSCRIPTION_BASE_URL: ${AI_TRANSCRIPTION_BASE_URL:-}
+      AI_VISION_PROVIDER: ${AI_VISION_PROVIDER:-}
+      AI_VISION_API_KEY: ${AI_VISION_API_KEY:-}
+      AI_VISION_BASE_URL: ${AI_VISION_BASE_URL:-}
+      AI_PARSING_PROVIDER: ${AI_PARSING_PROVIDER:-}
+      AI_PARSING_API_KEY: ${AI_PARSING_API_KEY:-}
+      AI_PARSING_BASE_URL: ${AI_PARSING_BASE_URL:-}
     depends_on:
       migrate:
         condition: service_completed_successfully

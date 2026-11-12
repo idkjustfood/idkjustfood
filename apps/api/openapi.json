@@ -567,6 +567,336 @@
           "steps",
           "nutrition"
         ]
+      },
+      "ExtractionJob": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "queued",
+              "running",
+              "succeeded",
+              "failed"
+            ]
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "What went wrong, when the status is `failed`."
+          },
+          "errorCode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "recipe": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 2000
+              },
+              "servings": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              },
+              "prepMinutes": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0,
+                "maximum": 100000
+              },
+              "cookMinutes": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 0,
+                "maximum": 100000
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 40,
+                  "pattern": "^[^,]+$"
+                },
+                "maxItems": 30
+              },
+              "ingredients": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "quantity": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "exclusiveMinimum": 0
+                    },
+                    "unit": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "note": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "minLength": 1,
+                      "maxLength": 300
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "quantity",
+                    "unit",
+                    "note"
+                  ]
+                },
+                "maxItems": 200
+              },
+              "steps": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 2000
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ]
+                },
+                "maxItems": 200
+              },
+              "nutrition": {
+                "type": "object",
+                "properties": {
+                  "calories": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": 0,
+                    "maximum": 100000
+                  },
+                  "protein": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": 0,
+                    "maximum": 10000
+                  },
+                  "carbs": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": 0,
+                    "maximum": 10000
+                  },
+                  "fat": {
+                    "type": [
+                      "number",
+                      "null"
+                    ],
+                    "minimum": 0,
+                    "maximum": 10000
+                  }
+                },
+                "required": [
+                  "calories",
+                  "protein",
+                  "carbs",
+                  "fat"
+                ]
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "manual",
+                      "video",
+                      "website",
+                      "photo",
+                      "text",
+                      "import"
+                    ]
+                  },
+                  "label": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 200
+                  },
+                  "url": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "maxLength": 2000
+                  }
+                },
+                "required": [
+                  "kind",
+                  "label",
+                  "url"
+                ]
+              },
+              "id": {
+                "type": "string"
+              },
+              "householdId": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "userId": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "title",
+              "description",
+              "servings",
+              "prepMinutes",
+              "cookMinutes",
+              "tags",
+              "ingredients",
+              "steps",
+              "nutrition",
+              "source",
+              "id",
+              "householdId",
+              "userId",
+              "createdAt",
+              "updatedAt"
+            ],
+            "description": "The new recipe, when the status is `succeeded`."
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "error",
+          "errorCode",
+          "recipe"
+        ]
+      },
+      "ExtractionError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "That link is not supported."
+          },
+          "code": {
+            "type": "string",
+            "description": "A short code for the problem, for example `unsupported_link`.",
+            "example": "unsupported_link"
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "ExtractionLinkInput": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "description": "A link to an Instagram reel, TikTok, YouTube Short or a recipe website.",
+            "example": "https://www.instagram.com/reel/Cabc123/"
+          },
+          "householdId": {
+            "type": "string",
+            "description": "Share the new recipe with this household. Without it, the recipe is only yours."
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "ExtractionTextInput": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20000,
+            "description": "A recipe as plain text."
+          },
+          "householdId": {
+            "type": "string",
+            "description": "Share the new recipe with this household. Without it, the recipe is only yours."
+          }
+        },
+        "required": [
+          "text"
+        ]
+      },
+      "ExtractionImageInput": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string",
+            "format": "binary",
+            "description": "A photo or screenshot of a recipe: JPEG, PNG, WebP or GIF, up to 10 MB."
+          },
+          "householdId": {
+            "type": "string",
+            "description": "Share the new recipe with this household. Without it, the recipe is only yours."
+          }
+        },
+        "required": [
+          "image"
+        ]
       }
     },
     "parameters": {}
@@ -1657,6 +1987,320 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/extractions/link": {
+      "post": {
+        "tags": [
+          "Recipe extraction"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add a recipe from a video or website link",
+        "description": "Queues a job that reads the link (Instagram Reel, TikTok, YouTube Short or a recipe website) and saves the result as a recipe. Websites with recipe data need no AI key.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractionLinkInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "The job was queued. Poll `GET /extractions/{jobId}` for the result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "job": {
+                      "$ref": "#/components/schemas/ExtractionJob"
+                    }
+                  },
+                  "required": [
+                    "job"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Unsupported or invalid link, or an address on a private network",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No AI key is set on this server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/extractions/text": {
+      "post": {
+        "tags": [
+          "Recipe extraction"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add a recipe from pasted text",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractionTextInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "The job was queued. Poll `GET /extractions/{jobId}` for the result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "job": {
+                      "$ref": "#/components/schemas/ExtractionJob"
+                    }
+                  },
+                  "required": [
+                    "job"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Empty or too long text",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No AI key is set on this server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/extractions/image": {
+      "post": {
+        "tags": [
+          "Recipe extraction"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add a recipe from a photo or screenshot",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractionImageInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "The job was queued. Poll `GET /extractions/{jobId}` for the result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "job": {
+                      "$ref": "#/components/schemas/ExtractionJob"
+                    }
+                  },
+                  "required": [
+                    "job"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not an image, empty, or too large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No AI key is set on this server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/extractions/{jobId}": {
+      "get": {
+        "tags": [
+          "Recipe extraction"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Check a job and get its result",
+        "description": "`status` is `queued`, `running`, `succeeded` or `failed`. When it succeeded, `recipe` is the saved recipe. When it failed, `error` says why.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "jobId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The job",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "job": {
+                      "$ref": "#/components/schemas/ExtractionJob"
+                    }
+                  },
+                  "required": [
+                    "job"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The job doesn't exist, or it is not yours",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractionError"
                 }
               }
             }

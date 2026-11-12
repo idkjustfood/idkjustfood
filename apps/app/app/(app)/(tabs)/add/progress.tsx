@@ -8,45 +8,82 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Icon } from "@/components/ui/icon"
 import { addMethods, isAddMethod } from "@/lib/add-methods"
+import { useAppState } from "@/lib/app-state"
+import { useExtractionJob } from "@/lib/extractions"
 import { cn } from "@/lib/utils"
 
-/** "Working on it". In this prototype the steps tick by on a timer; nothing is sent anywhere. */
+/**
+ * "Working on it". The server tells us only if the job is running, done or failed, so the
+ * steps below are a guide: they tick by while it works, and all finish when the recipe is ready.
+ * In demo mode nothing is sent and the steps run on a timer.
+ */
 export default function Progress() {
-  const params = useLocalSearchParams<{ method: string }>()
+  const params = useLocalSearchParams<{ method: string; job?: string }>()
   const method = isAddMethod(params.method) ? params.method : "video"
   const steps = addMethods[method].steps
-  const [done, setDone] = useState(0)
+  const { demo } = useAppState()
+  const query = useExtractionJob(params.job)
+  const job = query.data
+  const [ticks, setTicks] = useState(0)
+
+  const succeeded = demo ? ticks >= steps.length : job?.status === "succeeded"
+  const recipeId = demo ? "imported" : job?.recipe?.id
 
   useEffect(() => {
-    if (done >= steps.length) return
-    const timeout = setTimeout(() => setDone((d) => d + 1), 900)
+    if (succeeded) return
+    // While waiting, never tick past the last step: only the server says when it is done.
+    if (!demo && ticks >= steps.length - 1) return
+    const timeout = setTimeout(() => setTicks((t) => t + 1), demo ? 900 : 4000)
     return () => clearTimeout(timeout)
-  }, [done, steps.length])
+  }, [ticks, steps.length, demo, succeeded])
 
-  const finished = done >= steps.length
+  useEffect(() => {
+    if (job?.status === "failed") {
+      router.replace({
+        pathname: "/add/error",
+        params: { reason: "failed", message: job.error ?? undefined },
+      })
+    }
+  }, [job?.status, job?.error])
+
+  const done = succeeded ? steps.length : ticks
+  const lostJob = query.isError
 
   return (
     <Screen
-      title={finished ? "Recipe ready" : "Working on it…"}
+      title={succeeded ? "Recipe ready" : "Working on it…"}
       subtitle={
-        finished
-          ? "Check it before you save it."
-          : "This takes up to a minute. You can leave this screen; we will let you know."
+        succeeded
+          ? "Check it before you keep it."
+          : "This takes up to a minute. You can leave this screen: the recipe will be in your recipes when it is ready."
       }
       back="/add"
       narrow
       footer={
-        finished ? (
+        succeeded ? (
           <Button
             label="Review recipe"
-            onPress={() => router.replace("/add/review")}
+            onPress={() =>
+              router.replace({
+                pathname: "/add/review",
+                params: { id: recipeId },
+              })
+            }
           />
         ) : (
-          <Button
-            variant="outline"
-            label="Cancel"
-            onPress={() => router.replace("/add")}
-          />
+          <View className="gap-3">
+            {lostJob && (
+              <Text role="alert" className="text-sm text-destructive">
+                Could not check on the recipe. Check your connection; it may
+                still show up in your recipes.
+              </Text>
+            )}
+            <Button
+              variant="outline"
+              label="Leave this screen"
+              onPress={() => router.replace("/add")}
+            />
+          </View>
         )
       }
     >

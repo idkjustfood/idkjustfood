@@ -1,7 +1,8 @@
+import * as ImagePicker from "expo-image-picker"
 import { Redirect, router, useLocalSearchParams } from "expo-router"
 import { Camera, ImagePlus } from "lucide-react-native"
 import { useState } from "react"
-import { Pressable, Text, View } from "react-native"
+import { Image, Pressable, Text, View } from "react-native"
 
 import { Screen } from "@/components/screen"
 import { Button } from "@/components/ui/button"
@@ -15,11 +16,15 @@ import {
   isAddMethod,
   type AddMethod,
 } from "@/lib/add-methods"
+import type { PickedImage } from "@/lib/api/client"
+import { useAppState } from "@/lib/app-state"
+import { useStartExtraction, type ExtractionRequest } from "@/lib/extractions"
 
+/** Sample links for trying the clickable prototype (demo mode only). */
 const samples: Partial<Record<AddMethod, { good: string; bad: string }>> = {
   video: {
     good: "https://www.instagram.com/reel/example4",
-    bad: "https://www.tiktok.com/@someone/video/123",
+    bad: "https://vimeo.com/123",
   },
   website: {
     good: "https://example-kitchen.com/salmon-traybake",
@@ -33,11 +38,23 @@ export default function AddInput() {
   return <AddForm method={method} />
 }
 
+function pickedImage(asset: ImagePicker.ImagePickerAsset): PickedImage {
+  const mimeType = asset.mimeType ?? "image/jpeg"
+  return {
+    uri: asset.uri,
+    mimeType,
+    name: asset.fileName ?? `recipe.${mimeType.split("/")[1] ?? "jpg"}`,
+    file: asset.file,
+  }
+}
+
 function AddForm({ method }: { method: AddMethod }) {
   const info = addMethods[method]
+  const { demo } = useAppState()
+  const start = useStartExtraction()
   const [link, setLink] = useState("")
   const [text, setText] = useState("")
-  const [photo, setPhoto] = useState(false)
+  const [photo, setPhoto] = useState<PickedImage | null>(null)
   const [problem, setProblem] = useState<string | null>(null)
 
   const isLink = method === "video" || method === "website"
@@ -45,9 +62,37 @@ function AddForm({ method }: { method: AddMethod }) {
     ? link.trim() !== ""
     : method === "text"
       ? text.trim() !== ""
-      : photo
+      : photo !== null
+
+  async function choosePhoto(source: "camera" | "library") {
+    setProblem(null)
+    try {
+      if (source === "camera") {
+        const permission = await ImagePicker.requestCameraPermissionsAsync()
+        if (!permission.granted) {
+          return setProblem(
+            "Allow camera access in your settings to take a photo."
+          )
+        }
+      }
+      // A quality below 1 also turns iPhone HEIC photos into JPEG, which the server reads.
+      const options: ImagePicker.ImagePickerOptions = {
+        mediaTypes: ["images"],
+        quality: 0.8,
+      }
+      const result =
+        source === "camera"
+          ? await ImagePicker.launchCameraAsync(options)
+          : await ImagePicker.launchImageLibraryAsync(options)
+      const asset = result.canceled ? undefined : result.assets[0]
+      if (asset) setPhoto(pickedImage(asset))
+    } catch {
+      setProblem("Could not open the photo. Try a different one.")
+    }
+  }
 
   function submit() {
+    if (!ready || start.isPending) return
     if (isLink) {
       const issue = checkLink(method, link)
       if (issue === "invalid")
@@ -60,10 +105,37 @@ function AddForm({ method }: { method: AddMethod }) {
       }
     }
     setProblem(null)
-    router.push({ pathname: "/add/progress", params: { method } })
+
+    const request: ExtractionRequest = isLink
+      ? { type: "link", url: link }
+      : method === "text"
+        ? { type: "text", text }
+        : { type: "photo", photo: photo! }
+
+    start.mutate(request, {
+      onSuccess: (job) =>
+        router.push({
+          pathname: "/add/progress",
+          params: { method, job: job.id },
+        }),
+      onError: (error) => {
+        if ("code" in error && error.code === "unsupported_link") {
+          router.push({
+            pathname: "/add/error",
+            params: {
+              reason: "unsupported",
+              link: isLink ? link : undefined,
+              message: error.message,
+            },
+          })
+        } else {
+          setProblem(error.message)
+        }
+      },
+    })
   }
 
-  const sample = samples[method]
+  const sample = demo ? samples[method] : undefined
 
   return (
     <Screen
@@ -71,14 +143,27 @@ function AddForm({ method }: { method: AddMethod }) {
       subtitle={info.description}
       back="/add"
       narrow
-      footer={<Button label="Get recipe" disabled={!ready} onPress={submit} />}
+      footer={
+        <View className="gap-3">
+          {problem && method !== "video" && method !== "website" && (
+            <Text role="alert" className="text-sm text-destructive">
+              {problem}
+            </Text>
+          )}
+          <Button
+            label={start.isPending ? "Sending…" : "Get recipe"}
+            disabled={!ready || start.isPending}
+            onPress={submit}
+          />
+        </View>
+      }
     >
       {isLink && (
         <View className="gap-3">
           <Input
             label={
               method === "video"
-                ? "Link to the reel"
+                ? "Link to the video"
                 : "Link to the recipe page"
             }
             value={link}
@@ -123,7 +208,10 @@ function AddForm({ method }: { method: AddMethod }) {
         <Input
           label="Recipe text"
           value={text}
-          onChangeText={setText}
+          onChangeText={(value) => {
+            setText(value)
+            setProblem(null)
+          }}
           multiline
           textAlignVertical="top"
           className="h-64 py-3"
@@ -136,13 +224,16 @@ function AddForm({ method }: { method: AddMethod }) {
       {method === "photo" &&
         (photo ? (
           <Card className="gap-3 p-4">
-            <View className="h-56 items-center justify-center rounded-md bg-muted">
-              <Text className="text-muted-foreground">cookbook-page.jpg</Text>
-            </View>
+            <Image
+              source={{ uri: photo.uri }}
+              accessibilityLabel="The photo you chose"
+              resizeMode="contain"
+              className="h-56 w-full rounded-md bg-muted"
+            />
             <Button
               variant="outline"
               label="Choose a different photo"
-              onPress={() => setPhoto(false)}
+              onPress={() => setPhoto(null)}
             />
           </Card>
         ) : (
@@ -150,12 +241,12 @@ function AddForm({ method }: { method: AddMethod }) {
             <PhotoOption
               icon={Camera}
               label="Take a photo"
-              onPress={() => setPhoto(true)}
+              onPress={() => void choosePhoto("camera")}
             />
             <PhotoOption
               icon={ImagePlus}
               label="Choose from library"
-              onPress={() => setPhoto(true)}
+              onPress={() => void choosePhoto("library")}
             />
           </View>
         ))}

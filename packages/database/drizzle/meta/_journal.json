@@ -22,6 +22,13 @@
       "when": 1794511850533,
       "tag": "0002_recipes",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794513642396,
+      "tag": "0003_extraction_jobs",
+      "breakpoints": true
     }
   ]
 }

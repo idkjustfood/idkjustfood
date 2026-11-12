@@ -952,6 +952,304 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/extractions/link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add a recipe from a video or website link
+         * @description Queues a job that reads the link (Instagram Reel, TikTok, YouTube Short or a recipe website) and saves the result as a recipe. Websites with recipe data need no AI key.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ExtractionLinkInput"];
+                };
+            };
+            responses: {
+                /** @description The job was queued. Poll `GET /extractions/{jobId}` for the result. */
+                202: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            job: components["schemas"]["ExtractionJob"];
+                        };
+                    };
+                };
+                /** @description Unsupported or invalid link, or an address on a private network */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+                /** @description No AI key is set on this server */
+                503: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/extractions/text": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add a recipe from pasted text */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ExtractionTextInput"];
+                };
+            };
+            responses: {
+                /** @description The job was queued. Poll `GET /extractions/{jobId}` for the result. */
+                202: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            job: components["schemas"]["ExtractionJob"];
+                        };
+                    };
+                };
+                /** @description Empty or too long text */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+                /** @description No AI key is set on this server */
+                503: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/extractions/image": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add a recipe from a photo or screenshot */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "multipart/form-data": components["schemas"]["ExtractionImageInput"];
+                };
+            };
+            responses: {
+                /** @description The job was queued. Poll `GET /extractions/{jobId}` for the result. */
+                202: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            job: components["schemas"]["ExtractionJob"];
+                        };
+                    };
+                };
+                /** @description Not an image, empty, or too large */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+                /** @description No AI key is set on this server */
+                503: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/extractions/{jobId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Check a job and get its result
+         * @description `status` is `queued`, `running`, `succeeded` or `failed`. When it succeeded, `recipe` is the saved recipe. When it failed, `error` says why.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    jobId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The job */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            job: components["schemas"]["ExtractionJob"];
+                        };
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+                /** @description The job doesn't exist, or it is not yours */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ExtractionError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1067,6 +1365,82 @@ export interface components {
                 url: string | null;
             };
             householdId?: string | null;
+        };
+        ExtractionJob: {
+            id: string;
+            /** @enum {string} */
+            status: "queued" | "running" | "succeeded" | "failed";
+            /** @description What went wrong, when the status is `failed`. */
+            error: string | null;
+            errorCode: string | null;
+            /** @description The new recipe, when the status is `succeeded`. */
+            recipe: {
+                title: string;
+                description: string;
+                servings: number;
+                prepMinutes: number | null;
+                cookMinutes: number | null;
+                tags: string[];
+                ingredients: {
+                    name: string;
+                    quantity: number | null;
+                    unit: string | null;
+                    note: string | null;
+                }[];
+                steps: {
+                    text: string;
+                }[];
+                nutrition: {
+                    calories: number | null;
+                    protein: number | null;
+                    carbs: number | null;
+                    fat: number | null;
+                };
+                source: {
+                    /** @enum {string} */
+                    kind: "manual" | "video" | "website" | "photo" | "text" | "import";
+                    label: string | null;
+                    url: string | null;
+                };
+                id: string;
+                householdId: string | null;
+                userId: string;
+                createdAt: string;
+                updatedAt: string;
+            } | null;
+        };
+        ExtractionError: {
+            /** @example That link is not supported. */
+            error: string;
+            /**
+             * @description A short code for the problem, for example `unsupported_link`.
+             * @example unsupported_link
+             */
+            code?: string;
+        };
+        ExtractionLinkInput: {
+            /**
+             * @description A link to an Instagram reel, TikTok, YouTube Short or a recipe website.
+             * @example https://www.instagram.com/reel/Cabc123/
+             */
+            url: string;
+            /** @description Share the new recipe with this household. Without it, the recipe is only yours. */
+            householdId?: string;
+        };
+        ExtractionTextInput: {
+            /** @description A recipe as plain text. */
+            text: string;
+            /** @description Share the new recipe with this household. Without it, the recipe is only yours. */
+            householdId?: string;
+        };
+        ExtractionImageInput: {
+            /**
+             * Format: binary
+             * @description A photo or screenshot of a recipe: JPEG, PNG, WebP or GIF, up to 10 MB.
+             */
+            image: string;
+            /** @description Share the new recipe with this household. Without it, the recipe is only yours. */
+            householdId?: string;
         };
     };
     responses: never;
