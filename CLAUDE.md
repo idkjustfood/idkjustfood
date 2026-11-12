@@ -36,6 +36,61 @@ Three parts that share one backend:
 So everything must run self-hosted with simple setup and configuration. Cloud-only features (accounts,
 billing, usage limits) must not be required for a self-hosted install.
 
+## Ways to add a recipe
+
+All of them end in the same structured recipe:
+
+- **Video link:** Instagram Reels first, YouTube Shorts and TikTok later.
+- **Website link:** most recipe pages already contain structured recipe data, so this needs little
+  or no AI.
+- **Photo or screenshot:** a cookbook page or a screenshot of a recipe.
+- **Plain text paste.**
+
+## Features
+
+**Recipes**
+- Structured data, not text. An ingredient has a name, quantity, unit and note. The quantity stays
+  empty when the source doesn't say. Servings, times and steps are structured too.
+- Nutritional values per recipe, looked up in a food database (Open Food Facts, USDA as fallback)
+  and always shown as an estimate.
+- Scale servings (4 to 6 updates every amount).
+- Unit conversion (metric or imperial, grams or cups), set per user.
+- Cooking mode: one step at a time, big text, screen stays on, hands-free "next" by voice.
+- Timers from steps: "bake 30 minutes" becomes a tap-to-start timer.
+- Search and tags. Cuisine, diet and cooking time are tagged by the same AI call that parses the
+  recipe.
+- Export and import: JSON, Markdown and schema.org Recipe.
+
+**Shopping**
+- Add a recipe's ingredients to a shopping list. Same ingredients merge (200 g + 100 g flour).
+- Shared lists. The mobile app has to work offline, because lists are used in shops.
+
+**Households**
+- Shared recipes and lists for a household, built on Better Auth organizations. A self-hosted
+  install supports several users.
+
+**Later**
+- Meal planner, then a calorie and nutrient optimizer on top of it. The optimizer is normal code,
+  not AI. Price optimization is not planned, because there is no good open price data.
+
+## Tech stack (planned)
+
+TypeScript everywhere, in one monorepo.
+
+- **API:** Hono on Bun, Zod schemas, OpenAPI. Web and mobile use a typed client generated from it.
+- **Database:** PostgreSQL with Drizzle.
+- **Background jobs:** pg-boss (the queue lives in Postgres, no Redis). The worker is the same
+  code run as its own process.
+- **Web app:** Vite, React, TanStack Router and Query, Tailwind, shadcn/ui.
+- **Mobile:** Expo (React Native) for iOS and Android. Sharing a reel into the app needs
+  `expo-share-intent` and our own app builds, not Expo Go.
+- **Auth:** Better Auth, including organizations for households.
+- **AI:** Vercel AI SDK behind our own provider interface.
+- **Payments:** Stripe, as a cloud-only module.
+- **Marketing page:** Astro in `apps/marketing`, cloud only. The self-host setup (`api`, `worker`,
+  `web`, `postgres` in Docker Compose) does not contain it, and neither billing nor pricing screens.
+- **Shared schemas:** `packages/schemas` holds the Zod recipe, ingredient and list schemas.
+
 ## Where we are
 
 - A prototype CLI in `src/` proves the pipeline works: `bun run parse "<instagram-url>"`. It uses
