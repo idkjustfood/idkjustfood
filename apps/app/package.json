@@ -12,18 +12,21 @@
     "build": "expo export --platform web --output-dir dist",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "api:generate": "openapi-typescript ../api/openapi.json -o lib/api/schema.d.ts"
   },
   "dependencies": {
     "@better-auth/expo": "^1.7.22",
     "@expo/metro-runtime": "~58.0.17",
     "@rn-primitives/slot": "^1.5.2",
     "@rn-primitives/types": "^1.5.2",
+    "@tanstack/react-query": "^5.107.1",
     "babel-preset-expo": "~58.0.0",
     "better-auth": "^1.7.22",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "expo": "~58.0.24",
+    "expo-clipboard": "~58.0.4",
     "expo-constants": "~58.0.16",
     "expo-linking": "~58.0.17",
     "expo-router": "~58.0.31",
@@ -33,6 +36,7 @@
     "expo-web-browser": "~58.0.8",
     "lucide-react-native": "^1.72.0",
     "nativewind": "^4.2.7",
+    "openapi-fetch": "^0.17.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-native": "0.88.1",
@@ -53,6 +57,7 @@
     "@types/react": "~19.3.0",
     "@workspace/eslint-config": "workspace:*",
     "eslint": "^10",
+    "openapi-typescript": "^7.13.0",
     "typescript": "~6.0.3"
   }
 }

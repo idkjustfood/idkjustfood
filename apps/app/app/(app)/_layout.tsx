@@ -1,8 +1,16 @@
-import { Stack } from "expo-router"
+import { router, Stack } from "expo-router"
+import { useEffect } from "react"
 
 import { isCloud } from "@/lib/edition"
+import { takePendingInvite } from "@/lib/pending-invite"
 
 export default function AppLayout() {
+  // Someone opened an invite link, then logged in: take them back to it.
+  useEffect(() => {
+    const invite = takePendingInvite()
+    if (invite) router.push(`/invite/${invite}`)
+  }, [])
+
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
