@@ -1,0 +1,9 @@
+**/node_modules
+**/.turbo
+**/.expo
+**/dist
+.git
+.env
+**/.env
+graft
+graphify-out
