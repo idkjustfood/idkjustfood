@@ -16,7 +16,7 @@ export function createApp(db: Database, env: AuthEnv) {
   const app = new Hono<{ Variables: Partial<AuthVariables> }>()
 
   if (env.APP_URL) {
-    app.use("/api/auth/*", cors({ origin: env.APP_URL, credentials: true }))
+    app.use("/api/*", cors({ origin: env.APP_URL, credentials: true }))
   }
 
   app.get("/health", (c) => c.json({ status: "ok" }))

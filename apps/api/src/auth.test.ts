@@ -54,6 +54,16 @@ describe("auth config endpoint", () => {
     expect(await res.json()).toEqual({ socialProviders: ["google"] })
   })
 
+  test("allows the app origin to call it from the browser", async () => {
+    const app = createApp(fakeDb, { ...env, APP_URL: "http://localhost:8081" })
+    const res = await app.request("/api/config", {
+      headers: { origin: "http://localhost:8081" },
+    })
+    expect(res.headers.get("access-control-allow-origin")).toBe(
+      "http://localhost:8081"
+    )
+  })
+
   test("lists none without keys", async () => {
     const res = await createApp(fakeDb, env).request("/api/config")
     expect(await res.json()).toEqual({ socialProviders: [] })
