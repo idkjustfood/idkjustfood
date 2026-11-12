@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { SocialButtons } from "@/components/social-buttons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useAppState } from "@/lib/app-state"
 import { authClient } from "@/lib/auth-client"
 import { readableAuthError, validateCredentials } from "@/lib/auth-errors"
 import type { SocialProvider } from "@/lib/use-auth-config"
@@ -21,6 +22,7 @@ export default function Login() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  const { setDemo } = useAppState()
 
   async function submit() {
     const problem = validateCredentials({ email, password })
@@ -61,7 +63,7 @@ export default function Login() {
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView
-          contentContainerClassName="flex-grow justify-center gap-5 p-6"
+          contentContainerClassName="w-full max-w-md flex-grow justify-center gap-5 self-center p-6"
           keyboardShouldPersistTaps="handled"
         >
           <Text className="text-3xl font-semibold text-foreground">Log in</Text>
@@ -101,6 +103,11 @@ export default function Login() {
               Register
             </Link>
           </View>
+          <Button
+            variant="ghost"
+            label="Look around with sample data"
+            onPress={() => setDemo(true)}
+          />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

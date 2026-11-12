@@ -64,7 +64,7 @@ export default function Register() {
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <ScrollView
-          contentContainerClassName="flex-grow justify-center gap-5 p-6"
+          contentContainerClassName="w-full max-w-md flex-grow justify-center gap-5 self-center p-6"
           keyboardShouldPersistTaps="handled"
         >
           <Text className="text-3xl font-semibold text-foreground">
