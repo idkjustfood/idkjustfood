@@ -13,12 +13,8 @@ import { CheckboxBox } from "@/components/ui/checkbox"
 import { Sheet } from "@/components/ui/sheet"
 import { useAppState } from "@/lib/app-state"
 import { formatAmount } from "@/lib/format"
-import {
-  findShoppingList,
-  household,
-  recipes,
-  type ShoppingItem,
-} from "@/lib/mock-data"
+import { useHousehold, useMembers, useMyUserId } from "@/lib/households"
+import { findShoppingList, recipes, type ShoppingItem } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 
 export default function ShoppingListScreen() {
@@ -31,6 +27,9 @@ export default function ShoppingListScreen() {
 function ListView({ listId }: { listId: string }) {
   const list = findShoppingList(listId)!
   const { units } = useAppState()
+  const { household } = useHousehold()
+  const members = useMembers(household?.id)
+  const myUserId = useMyUserId()
   const [items, setItems] = useState(list.items)
   const [draft, setDraft] = useState("")
   const [shareOpen, setShareOpen] = useState(false)
@@ -187,15 +186,17 @@ function ListView({ listId }: { listId: string }) {
         title="Share this list"
       >
         <ListGroup>
-          <ListRow
-            icon={Users}
-            title={`Share with ${household.name}`}
-            detail={household.members
-              .filter((m) => !m.you)
-              .map((m) => m.name)
-              .join(", ")}
-            onPress={() => setShareOpen(false)}
-          />
+          {household && (
+            <ListRow
+              icon={Users}
+              title={`Share with ${household.name}`}
+              detail={(members.data ?? [])
+                .filter((m) => m.userId !== myUserId)
+                .map((m) => m.name)
+                .join(", ")}
+              onPress={() => setShareOpen(false)}
+            />
+          )}
           <ListRow
             icon={Link2}
             title="Copy invite link"

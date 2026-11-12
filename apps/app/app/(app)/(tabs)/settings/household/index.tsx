@@ -20,8 +20,6 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Sheet } from "@/components/ui/sheet"
-import { useAppState } from "@/lib/app-state"
-import { authClient } from "@/lib/auth-client"
 import {
   inviteLink,
   isOwner,
@@ -31,6 +29,7 @@ import {
   useInvites,
   useLeaveHousehold,
   useMembers,
+  useMyUserId,
   useRemoveMember,
   type Household,
   type Member,
@@ -103,9 +102,7 @@ function CreateHousehold() {
 type Confirm = { kind: "remove"; member: Member } | { kind: "leave" } | null
 
 function HouseholdDetails({ household }: { household: Household }) {
-  const { demo } = useAppState()
-  const { data: session } = authClient.useSession()
-  const myUserId = demo ? "demo-user" : session?.user.id
+  const myUserId = useMyUserId()
   const owner = isOwner(household.role)
 
   const members = useMembers(household.id)

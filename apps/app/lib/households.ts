@@ -8,6 +8,7 @@ import * as Linking from "expo-linking"
 
 import { api, ApiError, call, type Schemas } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
+import { authClient } from "@/lib/auth-client"
 import { household as demoHousehold } from "@/lib/mock-data"
 
 export type Household = Schemas["Household"]
@@ -20,6 +21,13 @@ const keys = {
   members: (id: string) => ["households", id, "members"] as const,
   invites: (id: string) => ["households", id, "invites"] as const,
   invite: (id: string) => ["invites", id] as const,
+}
+
+/** The signed-in user's id, or the demo user's id with sample data. */
+export function useMyUserId() {
+  const { demo } = useAppState()
+  const { data: session } = authClient.useSession()
+  return demo ? "demo-user" : session?.user.id
 }
 
 export const isOwner = (role: string | undefined) =>
