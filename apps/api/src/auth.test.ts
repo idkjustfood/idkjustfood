@@ -1,27 +1,10 @@
-import { PGlite } from "@electric-sql/pglite"
-import { readdirSync, readFileSync } from "node:fs"
-import { drizzle } from "drizzle-orm/pglite"
 import { beforeAll, describe, expect, test } from "bun:test"
 
-import { schema, type Database } from "@workspace/database"
+import type { Database } from "@workspace/database"
 
 import { createApp } from "./app.js"
 import { socialProvidersFromEnv } from "./auth.js"
-
-const migrationsDir = new URL(
-  "../../../packages/database/drizzle/",
-  import.meta.url
-)
-const migration = readdirSync(migrationsDir)
-  .filter((file) => file.endsWith(".sql"))
-  .sort()
-  .map((file) => readFileSync(new URL(file, migrationsDir), "utf8"))
-  .join("--> statement-breakpoint")
-
-const env = {
-  BETTER_AUTH_URL: "http://localhost:3001",
-  BETTER_AUTH_SECRET: "test-secret-test-secret-test-secret-00",
-}
+import { createTestDb, testEnv as env } from "./test-helpers.js"
 
 describe("social providers", () => {
   test("are left out without keys", () => {
@@ -74,12 +57,7 @@ describe("auth API", () => {
   let app: ReturnType<typeof createApp>
 
   beforeAll(async () => {
-    const pg = new PGlite()
-    for (const statement of migration.split("--> statement-breakpoint")) {
-      await pg.exec(statement)
-    }
-    const db = drizzle(pg, { schema }) as unknown as Database
-    app = createApp(db, env)
+    app = createApp(await createTestDb(), env)
   })
 
   const json = (path: string, body: unknown, cookie?: string) =>

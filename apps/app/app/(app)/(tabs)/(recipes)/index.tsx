@@ -12,11 +12,13 @@ import { Chip } from "@/components/ui/chip"
 import { SearchField } from "@/components/ui/search-field"
 import { useAppState } from "@/lib/app-state"
 import { useIsWide } from "@/lib/layout"
-import { household, recipes, recipeTags } from "@/lib/mock-data"
+import { useHousehold } from "@/lib/households"
+import { recipes, recipeTags } from "@/lib/mock-data"
 
 export default function RecipeList() {
   const wide = useIsWide()
   const { space, listState, setListState } = useAppState()
+  const { household } = useHousehold()
   const [query, setQuery] = useState("")
   const [tags, setTags] = useState<string[]>([])
 
@@ -55,7 +57,7 @@ export default function RecipeList() {
       title="Recipes"
       subtitle={
         space === "household"
-          ? `Shared with ${household.name}`
+          ? `Shared with ${household?.name ?? "your household"}`
           : "Your own recipes"
       }
       toolbar={

@@ -29,7 +29,8 @@ import { Sheet } from "@/components/ui/sheet"
 import { useAppState } from "@/lib/app-state"
 import { API_URL, authClient } from "@/lib/auth-client"
 import { isCloud } from "@/lib/edition"
-import { aiProviders, household } from "@/lib/mock-data"
+import { useHousehold } from "@/lib/households"
+import { aiProviders } from "@/lib/mock-data"
 
 type Open = "language" | "export" | "import" | null
 
@@ -38,6 +39,7 @@ export default function Settings() {
   const { data: session } = authClient.useSession()
   const [open, setOpen] = useState<Open>(null)
   const close = () => setOpen(null)
+  const { household, isPending: householdPending } = useHousehold()
 
   const name = state.demo ? "Demo" : (session?.user.name ?? "You")
   const email = state.demo
@@ -61,8 +63,15 @@ export default function Settings() {
       <ListGroup title="Household">
         <ListRow
           icon={Home}
-          title={household.name}
-          detail={`${household.members.length} members · shared recipes and lists`}
+          title={
+            household?.name ??
+            (householdPending ? "Household" : "No household yet")
+          }
+          detail={
+            household
+              ? "Members, invites and shared recipes and lists"
+              : "Create one, or join with an invite link"
+          }
           onPress={() => router.push("/settings/household")}
         />
       </ListGroup>

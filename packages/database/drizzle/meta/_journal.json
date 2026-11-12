@@ -8,6 +8,13 @@
       "when": 1794494627555,
       "tag": "0000_elite_molten_man",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794506520821,
+      "tag": "0001_household_invite",
+      "breakpoints": true
     }
   ]
 }

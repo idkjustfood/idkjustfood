@@ -529,27 +529,58 @@ export function findShoppingList(id: string | undefined) {
 
 export type Member = {
   id: string
+  userId: string
   name: string
   email: string
-  role: "owner" | "admin" | "member"
+  role: "owner" | "member"
+  joinedAt: string
   you?: boolean
 }
 
+/** The demo household. Same shape as the API's answers, so the screens can use both. */
 export const household = {
+  id: "demo-household",
   name: "Flat 3B",
   members: [
     {
       id: "m1",
+      userId: "demo-user",
       name: "You",
       email: "you@example.com",
       role: "owner",
+      joinedAt: daysAgo(90),
       you: true,
     },
-    { id: "m2", name: "Sam", email: "sam@example.com", role: "admin" },
-    { id: "m3", name: "Alex", email: "alex@example.com", role: "member" },
+    {
+      id: "m2",
+      userId: "u2",
+      name: "Sam",
+      email: "sam@example.com",
+      role: "member",
+      joinedAt: daysAgo(60),
+    },
+    {
+      id: "m3",
+      userId: "u3",
+      name: "Alex",
+      email: "alex@example.com",
+      role: "member",
+      joinedAt: daysAgo(30),
+    },
   ] satisfies Member[],
-  pendingInvites: ["jo@example.com"],
-  inviteLink: "https://idkjustfood.example/invite/3b7f2c",
+  invites: [
+    {
+      id: "3b7f2c",
+      url: "https://idkjustfood.example/invite/3b7f2c",
+      inviterName: "You",
+      createdAt: daysAgo(2),
+      expiresAt: daysAgo(-5),
+    },
+  ],
+}
+
+function daysAgo(days: number) {
+  return new Date(Date.now() - days * 86_400_000).toISOString()
 }
 
 /** Shown on the self-host settings screen. Set by the server admin, not in the app. */

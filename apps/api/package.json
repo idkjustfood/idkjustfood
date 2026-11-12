@@ -9,21 +9,24 @@
     "start": "bun dist/index.js",
     "lint": "eslint",
     "test": "bun test",
+    "openapi": "bun src/openapi.ts",
     "format": "prettier --write \"**/*.ts\"",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@better-auth/expo": "^1.7.22",
+    "@hono/zod-openapi": "^1.6.3",
     "@workspace/database": "workspace:*",
     "better-auth": "^1.7.22",
-    "hono": "^4"
+    "drizzle-orm": "^0.44.0",
+    "hono": "^4",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.5.16",
     "@types/bun": "latest",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
-    "drizzle-orm": "^0.44.0",
     "eslint": "^10",
     "typescript": "^5"
   }
