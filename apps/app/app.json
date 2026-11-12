@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "idkjustfood",
+    "scheme": "idkjustfood",
     "slug": "idkjustfood",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -22,6 +23,11 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro",
       "output": "single"
-    }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-web-browser"
+    ]
   }
 }

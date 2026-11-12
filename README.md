@@ -28,6 +28,8 @@ bun run lint
 ```
 
 Web preview: press `w` in the Expo terminal, or `bun run build` in `apps/app` for a static web build.
+
+The app reads the API address from `EXPO_PUBLIC_API_URL` (see `apps/app/.env.example`; default `http://localhost:3001`). On a phone, `localhost` is the phone itself, so use your computer's network address instead.
 Copy `apps/api/.env.example` to `apps/api/.env` to change the api port (default 3001).
 
 ## Self-hosting

@@ -1,5 +1,6 @@
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { expo } from "@better-auth/expo"
 import { organization } from "better-auth/plugins"
 
 import type { Database } from "@workspace/database"
@@ -28,7 +29,10 @@ export function socialProvidersFromEnv(env: AuthEnv) {
 
 /** Creates the Better Auth instance. Reads its settings from `env`. */
 export function createAuth(db: Database, env: AuthEnv) {
-  const trustedOrigins = [env.APP_URL].filter((url): url is string => !!url)
+  // The native app sends its own scheme as origin; Expo Go uses exp://.
+  const trustedOrigins = [env.APP_URL, "idkjustfood://", "exp://"].filter(
+    (url): url is string => !!url
+  )
 
   return betterAuth({
     baseURL: env.BETTER_AUTH_URL,
@@ -38,7 +42,7 @@ export function createAuth(db: Database, env: AuthEnv) {
     emailAndPassword: { enabled: true },
     socialProviders: socialProvidersFromEnv(env),
     // Organizations are used as households later.
-    plugins: [organization()],
+    plugins: [expo(), organization()],
   })
 }
 

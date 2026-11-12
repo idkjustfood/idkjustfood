@@ -40,6 +40,36 @@ describe("social providers", () => {
   })
 })
 
+describe("auth config endpoint", () => {
+  const fakeDb = {} as Database
+
+  test("lists only the configured social providers", async () => {
+    const app = createApp(fakeDb, {
+      ...env,
+      GOOGLE_CLIENT_ID: "g",
+      GOOGLE_CLIENT_SECRET: "gs",
+    })
+    const res = await app.request("/api/config")
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ socialProviders: ["google"] })
+  })
+
+  test("allows the app origin to call it from the browser", async () => {
+    const app = createApp(fakeDb, { ...env, APP_URL: "http://localhost:8081" })
+    const res = await app.request("/api/config", {
+      headers: { origin: "http://localhost:8081" },
+    })
+    expect(res.headers.get("access-control-allow-origin")).toBe(
+      "http://localhost:8081"
+    )
+  })
+
+  test("lists none without keys", async () => {
+    const res = await createApp(fakeDb, env).request("/api/config")
+    expect(await res.json()).toEqual({ socialProviders: [] })
+  })
+})
+
 describe("auth API", () => {
   let app: ReturnType<typeof createApp>
 
