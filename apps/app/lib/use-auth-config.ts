@@ -3,28 +3,60 @@ import { useEffect, useState } from "react"
 import { API_URL } from "@/lib/auth-client"
 
 export type SocialProvider = "google" | "github"
+export type SignupMode = "first-user-only" | "invite" | "open"
 
-/** Asks the API which social sign-in options are turned on. Empty until it answers. */
-export function useSocialProviders() {
-  const [providers, setProviders] = useState<SocialProvider[]>([])
+export type AuthConfig = {
+  socialProviders: SocialProvider[]
+  signupMode: SignupMode
+  /** Whether anyone can register right now. In `invite` mode this is false. */
+  signupOpen: boolean
+  /** False until the server has answered. */
+  loaded: boolean
+}
+
+// Until the server answers, show the sign-up form rather than a false "closed".
+const initial: AuthConfig = {
+  socialProviders: [],
+  signupMode: "open",
+  signupOpen: true,
+  loaded: false,
+}
+
+/** Asks the API which sign-in and sign-up options this server has turned on. */
+export function useAuthConfig() {
+  const [config, setConfig] = useState<AuthConfig>(initial)
 
   useEffect(() => {
     let cancelled = false
     fetch(`${API_URL}/api/config`)
-      .then((res) => (res.ok ? res.json() : { socialProviders: [] }))
-      .then((data: { socialProviders?: string[] }) => {
-        if (cancelled) return
-        setProviders(
-          (data.socialProviders ?? []).filter(
-            (p): p is SocialProvider => p === "google" || p === "github"
-          )
-        )
-      })
+      .then((res) => (res.ok ? res.json() : {}))
+      .then(
+        (data: {
+          socialProviders?: string[]
+          signupMode?: SignupMode
+          signupOpen?: boolean
+        }) => {
+          if (cancelled) return
+          setConfig({
+            socialProviders: (data.socialProviders ?? []).filter(
+              (p): p is SocialProvider => p === "google" || p === "github"
+            ),
+            signupMode: data.signupMode ?? "open",
+            signupOpen: data.signupOpen ?? true,
+            loaded: true,
+          })
+        }
+      )
       .catch(() => {})
     return () => {
       cancelled = true
     }
   }, [])
 
-  return providers
+  return config
+}
+
+/** Just the social sign-in options. Empty until the server answers. */
+export function useSocialProviders() {
+  return useAuthConfig().socialProviders
 }

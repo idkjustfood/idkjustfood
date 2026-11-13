@@ -14,7 +14,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { authClient } from "@/lib/auth-client"
 import { readableAuthError, validateCredentials } from "@/lib/auth-errors"
-import type { SocialProvider } from "@/lib/use-auth-config"
+import { peekPendingInvite } from "@/lib/pending-invite"
+import { useAuthConfig, type SocialProvider } from "@/lib/use-auth-config"
 
 export default function Register() {
   const [name, setName] = useState("")
@@ -22,6 +23,10 @@ export default function Register() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
+  const config = useAuthConfig()
+  // An invite link opened before registering lets you in even when sign-up is closed.
+  const invite = peekPendingInvite()
+  const closed = !config.signupOpen && !invite
 
   async function submit() {
     const problem = validateCredentials({ name, email, password })
@@ -30,11 +35,10 @@ export default function Register() {
     setBusy(true)
     try {
       // On success the session is set and the route guard moves us into the app.
-      const { error } = await authClient.signUp.email({
-        name: name.trim(),
-        email: email.trim(),
-        password,
-      })
+      const { error } = await authClient.signUp.email(
+        { name: name.trim(), email: email.trim(), password },
+        invite ? { headers: { "x-invite-id": invite } } : undefined
+      )
       if (error)
         setError(readableAuthError(error, "Could not create the account."))
     } catch (e) {
@@ -68,45 +72,58 @@ export default function Register() {
           keyboardShouldPersistTaps="handled"
         >
           <Text className="text-3xl font-semibold text-foreground">
-            Create account
+            {closed ? "Registration is closed" : "Create account"}
           </Text>
-          <Input
-            label="Name"
-            value={name}
-            onChangeText={setName}
-            autoComplete="name"
-            textContentType="name"
-          />
-          <Input
-            label="Email"
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            autoComplete="email"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-          />
-          <Input
-            label="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoComplete="new-password"
-            textContentType="newPassword"
-            onSubmitEditing={submit}
-          />
-          {error && (
-            <Text role="alert" className="text-sm text-destructive">
-              {error}
+          {closed && (
+            <Text className="text-base text-muted-foreground">
+              {config.signupMode === "invite"
+                ? "New accounts need an invite link. Ask a member of the household to send you one, then open it."
+                : "This server isn't taking new accounts. Ask the person who runs it for access."}
             </Text>
           )}
-          <Button
-            label={busy ? "Creating account…" : "Create account"}
-            disabled={busy}
-            className="h-12"
-            onPress={submit}
-          />
-          <SocialButtons onPress={social} disabled={busy} />
+          {!closed && (
+            <>
+              <Input
+                label="Name"
+                value={name}
+                onChangeText={setName}
+                autoComplete="name"
+                textContentType="name"
+              />
+              <Input
+                label="Email"
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                autoComplete="email"
+                keyboardType="email-address"
+                textContentType="emailAddress"
+              />
+              <Input
+                label="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                autoComplete="new-password"
+                textContentType="newPassword"
+                onSubmitEditing={submit}
+              />
+              {error && (
+                <Text role="alert" className="text-sm text-destructive">
+                  {error}
+                </Text>
+              )}
+              <Button
+                label={busy ? "Creating account…" : "Create account"}
+                disabled={busy}
+                className="h-12"
+                onPress={submit}
+              />
+              {config.signupMode !== "invite" && (
+                <SocialButtons onPress={social} disabled={busy} />
+              )}
+            </>
+          )}
           <View className="flex-row justify-center gap-1">
             <Text className="text-muted-foreground">Have an account?</Text>
             <Link href="/" className="font-medium text-primary">

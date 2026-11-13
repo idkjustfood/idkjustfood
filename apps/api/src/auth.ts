@@ -1,9 +1,17 @@
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { expo } from "@better-auth/expo"
-import { organization } from "better-auth/plugins"
+import { APIError } from "better-auth/api"
+import { admin, organization } from "better-auth/plugins"
 
 import type { Database } from "@workspace/database"
+
+import {
+  INVITE_HEADER,
+  signupModeFromEnv,
+  signupPolicy,
+  type SignupPolicy,
+} from "./signup-mode.js"
 
 export type AuthEnv = Record<string, string | undefined>
 
@@ -28,7 +36,11 @@ export function socialProvidersFromEnv(env: AuthEnv) {
 }
 
 /** Creates the Better Auth instance. Reads its settings from `env`. */
-export function createAuth(db: Database, env: AuthEnv) {
+export function createAuth(
+  db: Database,
+  env: AuthEnv,
+  policy: SignupPolicy = signupPolicy(db, signupModeFromEnv(env))
+) {
   // The native app sends its own scheme as origin; Expo Go uses exp://.
   const trustedOrigins = [env.APP_URL, "idkjustfood://", "exp://"].filter(
     (url): url is string => !!url
@@ -41,8 +53,28 @@ export function createAuth(db: Database, env: AuthEnv) {
     database: drizzleAdapter(db, { provider: "pg" }),
     emailAndPassword: { enabled: true },
     socialProviders: socialProvidersFromEnv(env),
-    // Organizations are used as households later.
-    plugins: [expo(), organization()],
+    databaseHooks: {
+      user: {
+        create: {
+          // Runs for every new account (email and social). Existing users are
+          // never affected, so they can sign in in every mode.
+          before: async (user, ctx) => {
+            const inviteId = ctx?.request?.headers.get(INVITE_HEADER)
+            const decision = await policy.decide(inviteId)
+            if (!decision.allowed) {
+              throw new APIError("FORBIDDEN", { message: decision.reason })
+            }
+            // The first account runs the server.
+            return {
+              data: { ...user, role: decision.firstUser ? "admin" : "user" },
+            }
+          },
+        },
+      },
+    },
+    // Organizations are used as households. The admin plugin adds the
+    // user role that marks the server admin.
+    plugins: [expo(), organization(), admin()],
   })
 }
 

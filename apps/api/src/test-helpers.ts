@@ -9,6 +9,8 @@ import { createApp } from "./app.js"
 export const testEnv = {
   BETTER_AUTH_URL: "http://localhost:3001",
   BETTER_AUTH_SECRET: "test-secret-test-secret-test-secret-00",
+  // Most tests create several users, so they run with open registration.
+  SIGNUP_MODE: "open",
 }
 
 const migrationsDir = new URL(
