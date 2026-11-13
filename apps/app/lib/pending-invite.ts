@@ -27,14 +27,20 @@ export function setPendingInvite(inviteId: string | null) {
   }
 }
 
-/** Returns the remembered invite and forgets it. */
-export function takePendingInvite() {
+/** Returns the remembered invite without forgetting it. */
+export function peekPendingInvite() {
   let value = pending
   try {
     value ??= webStorage()?.getItem(KEY) ?? null
   } catch {
     // Ignore blocked storage.
   }
+  return value
+}
+
+/** Returns the remembered invite and forgets it. */
+export function takePendingInvite() {
+  const value = peekPendingInvite()
   setPendingInvite(null)
   return value
 }

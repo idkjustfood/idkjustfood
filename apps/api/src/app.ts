@@ -8,6 +8,7 @@ import { createAuth, socialProvidersFromEnv, type AuthEnv } from "./auth.js"
 import { extractionRoutes } from "./extractions/routes.js"
 import { householdRoutes } from "./households/routes.js"
 import { recipeRoutes } from "./recipes/routes.js"
+import { signupModeFromEnv, signupPolicy } from "./signup-mode.js"
 import { requireSession, type AuthVariables } from "./session.js"
 
 /** Settings for the OpenAPI document served at /api/openapi.json. */
@@ -37,7 +38,8 @@ const noQueue: JobQueue = {
 
 /** Builds the API. Takes the database and settings so tests can use their own. */
 export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
-  const auth = createAuth(db, env)
+  const policy = signupPolicy(db, signupModeFromEnv(env))
+  const auth = createAuth(db, env, policy)
   const app = new OpenAPIHono<{ Variables: Partial<AuthVariables> }>()
 
   if (env.APP_URL) {
@@ -46,9 +48,14 @@ export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
 
   app.get("/health", (c) => c.json({ status: "ok" }))
 
-  // Tells the app which sign-in options this server has turned on.
-  app.get("/api/config", (c) =>
-    c.json({ socialProviders: Object.keys(socialProvidersFromEnv(env)) })
+  // Tells the app which sign-in options this server has turned on, and whether
+  // anyone can register right now (`invite` mode needs an invite link).
+  app.get("/api/config", async (c) =>
+    c.json({
+      socialProviders: Object.keys(socialProvidersFromEnv(env)),
+      signupMode: policy.mode,
+      signupOpen: await policy.isOpen(),
+    })
   )
 
   // Better Auth handles sign-up, sign-in, sessions, organizations and OAuth.

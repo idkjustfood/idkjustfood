@@ -83,6 +83,18 @@ sign-in works without anything else. To add Google or GitHub sign-in, set that p
 before `api` and `worker` start.
 `API_URL` is baked into the web build, so rebuild `web` after changing it.
 
+#### Who can register (`SIGNUP_MODE`)
+
+| Value | What happens |
+| --- | --- |
+| `first-user-only` (default) | The first account becomes the admin. Every later sign-up is rejected. A fresh install needs no setup and is safe on the open internet. |
+| `invite` | New accounts can only be created through a household invite link. The first account is still allowed. Social sign-up is not available for new accounts in this mode. |
+| `open` | Anyone can register. Choose this on purpose, because everyone who registers can use your AI key. The cloud version uses it. |
+
+People who already have an account can sign in in every mode. A value that is not one of the three
+stops the server from starting. Existing installs that upgrade keep their users, but nobody is
+admin yet, because only the first account created after the upgrade gets the role.
+
 ### Plain Docker Compose
 
 ```bash

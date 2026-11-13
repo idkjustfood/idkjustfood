@@ -29,6 +29,13 @@
       "when": 1794513642396,
       "tag": "0003_extraction_jobs",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794563928022,
+      "tag": "0004_clean_captain_cross",
+      "breakpoints": true
     }
   ]
 }

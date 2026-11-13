@@ -34,7 +34,11 @@ describe("auth config endpoint", () => {
     })
     const res = await app.request("/api/config")
     expect(res.status).toBe(200)
-    expect(await res.json()).toEqual({ socialProviders: ["google"] })
+    expect(await res.json()).toEqual({
+      socialProviders: ["google"],
+      signupMode: "open",
+      signupOpen: true,
+    })
   })
 
   test("allows the app origin to call it from the browser", async () => {
@@ -49,7 +53,11 @@ describe("auth config endpoint", () => {
 
   test("lists none without keys", async () => {
     const res = await createApp(fakeDb, env).request("/api/config")
-    expect(await res.json()).toEqual({ socialProviders: [] })
+    expect(await res.json()).toEqual({
+      socialProviders: [],
+      signupMode: "open",
+      signupOpen: true,
+    })
   })
 })
 
