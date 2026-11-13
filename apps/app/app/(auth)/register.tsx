@@ -25,7 +25,8 @@ export default function Register() {
   const [busy, setBusy] = useState(false)
   const config = useAuthConfig()
   // An invite link opened before registering lets you in even when sign-up is closed.
-  const invite = peekPendingInvite()
+  // Only `invite` mode honours it; elsewhere an invite can't create an account.
+  const invite = config.signupMode === "invite" ? peekPendingInvite() : null
   const closed = !config.signupOpen && !invite
 
   async function submit() {

@@ -4,6 +4,8 @@ type AuthError = { message?: string; status?: number } | null | undefined
 export function readableAuthError(error: AuthError, fallback: string) {
   if (!error) return fallback
   const message = error.message ?? ""
+  // The server says why sign-up is closed; show that, not "wrong password".
+  if (/registration is closed/i.test(message)) return message
   if (error.status === 401 || error.status === 403)
     return "Wrong email or password."
   if (error.status === 422 || /already exists/i.test(message))
