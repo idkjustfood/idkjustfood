@@ -70,6 +70,16 @@ function lookup(unit: string | null): UnitInfo | undefined {
   return key ? units[key] : undefined
 }
 
+/**
+ * A unit as one comparable word: "grams" and "g" give the same key.
+ * Units we don't know are only lower-cased, so "clove" and "Clove" match.
+ */
+export function unitKey(unit: string | null): string | null {
+  if (!unit) return null
+  const key = aliases[unit.trim().toLowerCase().replace(/\.$/, "")]
+  return key ?? unit.trim().toLowerCase()
+}
+
 export type Amount = { quantity: number | null; unit: string | null }
 
 /** Rounds a metric amount the way a recipe would write it: 235 ml, not 236.6. */

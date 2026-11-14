@@ -8,6 +8,7 @@ import { createAuth, socialProvidersFromEnv, type AuthEnv } from "./auth.js"
 import { extractionRoutes } from "./extractions/routes.js"
 import { householdRoutes } from "./households/routes.js"
 import { recipeRoutes } from "./recipes/routes.js"
+import { shoppingRoutes } from "./shopping/routes.js"
 import { signupModeFromEnv, signupPolicy } from "./signup-mode.js"
 import { requireSession, type AuthVariables } from "./session.js"
 
@@ -71,6 +72,9 @@ export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
 
   // Recipes: create, read, update, delete, search.
   app.route("/api", recipeRoutes(db, auth))
+
+  // Shopping lists: personal or household, with items and recipe ingredients.
+  app.route("/api", shoppingRoutes(db, auth))
 
   // Recipe extraction: add a recipe from a link, a photo or text (runs in the worker).
   app.route(
