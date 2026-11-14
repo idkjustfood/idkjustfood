@@ -35,7 +35,8 @@
       "newest": "Newest first",
       "title": "A to Z",
       "quickest": "Quickest first"
-    }
+    },
+    "timeUnknown": "Time not given"
   },
   "errors": {
     "checkConnection": "Check your connection and try again.",

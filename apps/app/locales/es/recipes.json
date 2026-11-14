@@ -35,7 +35,8 @@
       "newest": "Más recientes primero",
       "title": "De la A a la Z",
       "quickest": "Más rápidas primero"
-    }
+    },
+    "timeUnknown": "Tiempo no indicado"
   },
   "errors": {
     "checkConnection": "Comprueba tu conexión e inténtalo de nuevo.",

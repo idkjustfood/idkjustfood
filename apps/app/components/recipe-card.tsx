@@ -99,15 +99,23 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
         >
           {recipe.title}
         </Text>
-        <View className="flex-row items-center gap-3">
-          {total !== null && (
-            <View className="flex-row items-center gap-1">
-              <Icon as={Clock} size={14} className="text-muted-foreground" />
-              <Text className="text-sm text-muted-foreground">
-                {formatMinutes(total)}
-              </Text>
-            </View>
-          )}
+        <View className="flex-row flex-wrap items-center gap-x-3 gap-y-1">
+          {/* The time is always shown. When the recipe says none, that is said instead of guessed. */}
+          <View className="flex-row items-center gap-1">
+            <Icon as={Clock} size={14} className="text-foreground" />
+            <Text
+              className={cn(
+                "text-sm",
+                total !== null
+                  ? "font-medium text-foreground"
+                  : "text-muted-foreground"
+              )}
+            >
+              {total !== null
+                ? formatMinutes(total)
+                : i18n.t("recipes:list.timeUnknown")}
+            </Text>
+          </View>
           <View className="flex-row items-center gap-1">
             <Icon
               as={sourceIcons[recipe.source.kind] ?? FileText}
