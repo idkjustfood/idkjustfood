@@ -1,7 +1,9 @@
 import { Redirect, router, useLocalSearchParams } from "expo-router"
 import {
   BookPlus,
+  Check,
   EllipsisVertical,
+  Store,
   Pencil,
   Plus,
   Trash2,
@@ -13,6 +15,7 @@ import { Pressable, Text, TextInput, View } from "react-native"
 
 import {
   parseQuantity,
+  sortByRoute,
   type ShoppingItem,
   type ShoppingList,
   type UnitKey,
@@ -40,6 +43,7 @@ import {
   useShoppingActions,
   useShoppingList,
 } from "@/lib/shopping"
+import { useSupermarket } from "@/lib/supermarket"
 import { cn } from "@/lib/utils"
 
 export default function ShoppingListScreen() {
@@ -70,6 +74,8 @@ function ListView({ list }: { list: ShoppingList }) {
   const [amountError, setAmountError] = useState(false)
   const [recipeOpen, setRecipeOpen] = useState(false)
   const [optionsOpen, setOptionsOpen] = useState(false)
+  const [storeOpen, setStoreOpen] = useState(false)
+  const store = useSupermarket()
 
   const open = list.items.filter((i) => !i.checked)
   const checked = list.items.filter((i) => i.checked)
@@ -180,15 +186,32 @@ function ListView({ list }: { list: ShoppingList }) {
         )}
       </View>
 
+      <Pressable
+        role="button"
+        accessibilityLabel={t("shopping:store.change")}
+        onPress={() => setStoreOpen(true)}
+        className="min-h-12 flex-row items-center gap-3 rounded-md border border-border px-3 active:bg-accent web:hover:bg-accent"
+      >
+        <Icon as={Store} className="text-muted-foreground" />
+        <Text className="flex-1 text-base text-foreground">
+          {t("shopping:store.sortedFor", {
+            name: store.nameOf(store.supermarket),
+          })}
+        </Text>
+      </Pressable>
+
       {list.items.length === 0 && (
         <Text className="text-muted-foreground">
           {t("shopping:list.empty")}
         </Text>
       )}
 
-      {open.length > 0 && (
-        <View className="gap-1">
-          {open.map((item) => (
+      {sortByRoute(open, store.supermarket).map((group) => (
+        <View key={group.section} className="gap-1">
+          <SectionTitle className="text-base text-muted-foreground">
+            {t(`shopping:section.${group.section}`)}
+          </SectionTitle>
+          {group.items.map((item) => (
             <ItemRow
               key={item.id}
               item={item}
@@ -200,7 +223,7 @@ function ListView({ list }: { list: ShoppingList }) {
             />
           ))}
         </View>
-      )}
+      ))}
 
       {checked.length > 0 && (
         <View className="gap-1">
@@ -229,6 +252,37 @@ function ListView({ list }: { list: ShoppingList }) {
         </View>
       )}
 
+      <Sheet
+        open={storeOpen}
+        onClose={() => setStoreOpen(false)}
+        title={t("shopping:store.title")}
+      >
+        <Text className="text-muted-foreground">
+          {t("shopping:store.hint")}
+        </Text>
+        <ListGroup>
+          {store.supermarkets.map((option) => (
+            <ListRow
+              key={option.id}
+              title={store.nameOf(option)}
+              right={
+                option.id === store.supermarket.id ? (
+                  <Icon as={Check} className="text-primary" />
+                ) : undefined
+              }
+              onPress={() => {
+                store.choose(option.id)
+                setStoreOpen(false)
+              }}
+            />
+          ))}
+        </ListGroup>
+        <Button
+          variant="outline"
+          label={t("shopping:options.close")}
+          onPress={() => setStoreOpen(false)}
+        />
+      </Sheet>
       <RecipeSheet
         list={list}
         open={recipeOpen}

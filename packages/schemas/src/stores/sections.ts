@@ -1,0 +1,176 @@
+/**
+ * The parts of a supermarket an item can be found in. A supermarket (see `supermarket.ts`)
+ * puts them in the order a shopper walks through the shop. "other" is for everything we
+ * can't place; it is always shown last.
+ */
+export const storeSections = [
+  "produce",
+  "bakery",
+  "dryGoods",
+  "canned",
+  "spices",
+  "sweets",
+  "dairy",
+  "meat",
+  "fish",
+  "frozen",
+  "drinks",
+  "household",
+  "other",
+] as const
+
+export type StoreSection = (typeof storeSections)[number]
+
+/**
+ * Words that put an item in a section, in English, German, Spanish, French and Italian.
+ * An item matches when its name contains one of the words (so German compounds like
+ * "Rinderhack" work). The first section with a match wins, so more specific words come first:
+ * "tomato paste" is canned, not produce. To add a language, add its words to each list.
+ */
+const rules: ReadonlyArray<readonly [Exclude<StoreSection, "other">, string[]]> = [
+  [
+    "frozen",
+    [
+      "frozen", "tiefkühl", "tk-", "eiscreme", "ice cream", "speiseeis",
+      "congelad", "helado", "surgelé", "congelé", "glace", "surgelat", "gelato",
+    ],
+  ],
+  [
+    "canned",
+    [
+      "canned", "tinned", "tomato paste", "passata", "coconut milk", "chickpea", "kidney bean",
+      "dose", "konserve", "tomatenmark", "passierte", "kokosmilch", "kichererbsen", "kidneybohnen",
+      "lata", "conserva", "tomate frito", "leche de coco", "garbanzo", "boîte", "concentré de tomate",
+      "lait de coco", "pois chiche", "scatola", "pelati", "concentrato di pomodoro", "latte di cocco", "ceci",
+    ],
+  ],
+  [
+    "spices",
+    [
+      "salt", "pepper", "paprika powder", "cumin", "cinnamon", "oregano", "thyme", "basil dried",
+      "nutmeg", "curry", "turmeric", "vanilla", "bay leaf", "spice",
+      "salz", "pfeffer", "paprikapulver", "kreuzkümmel", "zimt", "thymian", "muskat", "kurkuma",
+      "vanille", "lorbeer", "gewürz",
+      "sal ", "pimienta", "comino", "canela", "orégano", "tomillo", "nuez moscada", "cúrcuma", "vainilla", "especia",
+      "sel", "poivre", "cumin", "cannelle", "origan", "thym", "muscade", "curcuma", "vanille", "épice",
+      "sale", "pepe", "cumino", "cannella", "timo", "noce moscata", "vaniglia", "spezie",
+    ],
+  ],
+  [
+    "meat",
+    [
+      "chicken", "beef", "pork", "bacon", "ham", "sausage", "mince", "turkey", "lamb", "salami", "steak",
+      "hähnchen", "huhn", "rind", "schwein", "speck", "schinken", "wurst", "hack", "pute", "lamm", "salami", "fleisch",
+      "pollo", "ternera", "cerdo", "jamón", "salchicha", "carne", "cordero", "pavo", "tocino",
+      "poulet", "bœuf", "boeuf", "porc", "jambon", "saucisse", "viande", "agneau", "dinde", "lardons",
+      "manzo", "maiale", "prosciutto", "salsiccia", "carne", "agnello", "tacchino", "pancetta",
+    ],
+  ],
+  [
+    "fish",
+    [
+      "salmon", "tuna", "fish", "shrimp", "prawn", "cod", "trout", "seafood",
+      "lachs", "thunfisch", "fisch", "garnele", "kabeljau", "forelle",
+      "salmón", "atún", "pescado", "gamba", "camarón", "bacalao", "trucha",
+      "saumon", "thon", "poisson", "crevette", "cabillaud", "truite",
+      "salmone", "tonno", "pesce", "gambero", "merluzzo", "trota",
+    ],
+  ],
+  [
+    "dairy",
+    [
+      "milk", "butter", "cheese", "yogurt", "yoghurt", "cream", "egg", "mozzarella", "parmesan", "feta",
+      "quark", "margarine", "sour cream",
+      "milch", "käse", "joghurt", "sahne", "schmand", "ei ", "eier", "frischkäse", "skyr",
+      "leche", "mantequilla", "queso", "yogur", "nata", "huevo", "crema",
+      "lait", "beurre", "fromage", "yaourt", "crème", "œuf", "oeuf",
+      "latte", "burro", "formaggio", "panna", "uovo", "uova", "ricotta", "mascarpone",
+    ],
+  ],
+  [
+    "bakery",
+    [
+      "bread", "bun", "roll", "baguette", "toast", "tortilla", "croissant", "bagel", "pita",
+      "brot", "brötchen", "semmel", "toastbrot", "laugen", "fladenbrot",
+      "pan ", "bollo", "panecillo", "barra de pan",
+      "pain", "baguette", "brioche",
+      "pane", "panino", "focaccia",
+    ],
+  ],
+  [
+    "sweets",
+    [
+      "chocolate", "candy", "sweets", "biscuit", "cookie", "cracker", "chips", "nuts", "jam", "honey",
+      "schokolade", "bonbon", "keks", "kekse", "gummibär", "nüsse", "nuss", "marmelade", "honig", "nutella",
+      "chocolate", "caramelo", "galleta", "frutos secos", "mermelada", "miel",
+      "chocolat", "bonbon", "biscuit", "noix", "confiture", "miel",
+      "cioccolato", "caramella", "biscotto", "noci", "marmellata", "miele",
+    ],
+  ],
+  [
+    "drinks",
+    [
+      "water", "juice", "beer", "wine", "cola", "lemonade", "soda", "coffee", "tea", "sparkling",
+      "wasser", "saft", "bier", "wein", "limonade", "kaffee", "tee", "sprudel", "schorle",
+      "agua", "zumo", "jugo", "cerveza", "vino", "refresco", "café", "té ",
+      "eau", "jus", "bière", "vin", "limonade", "café", "thé",
+      "acqua", "succo", "birra", "vino", "caffè",
+    ],
+  ],
+  [
+    "household",
+    [
+      "toilet paper", "paper towel", "dish soap", "detergent", "sponge", "trash bag", "foil", "baking paper",
+      "toilettenpapier", "küchenrolle", "spülmittel", "waschmittel", "schwamm", "müllbeutel", "alufolie", "backpapier",
+      "papel higiénico", "detergente", "esponja", "bolsa de basura", "papel de horno",
+      "papier toilette", "essuie-tout", "liquide vaisselle", "lessive", "éponge", "papier cuisson",
+      "carta igienica", "scottex", "detersivo", "spugna", "sacchetti", "carta forno",
+    ],
+  ],
+  [
+    "dryGoods",
+    [
+      "flour", "sugar", "rice", "pasta", "noodle", "spaghetti", "oats", "lentil", "bean", "yeast", "baking powder",
+      "oil", "vinegar", "cornstarch", "breadcrumb", "couscous", "quinoa", "stock", "broth",
+      "mehl", "zucker", "reis", "nudel", "haferflocken", "linsen", "bohnen", "hefe", "backpulver",
+      "öl", "essig", "speisestärke", "paniermehl", "brühe", "grieß",
+      "harina", "azúcar", "arroz", "pasta", "fideos", "avena", "lentejas", "levadura", "aceite", "vinagre", "caldo",
+      "farine", "sucre", "riz", "pâtes", "flocons d'avoine", "lentilles", "levure", "huile", "vinaigre", "bouillon",
+      "farina", "zucchero", "riso", "pasta", "avena", "lenticchie", "lievito", "olio", "aceto", "brodo",
+    ],
+  ],
+  [
+    "produce",
+    [
+      "apple", "banana", "tomato", "onion", "garlic", "potato", "carrot", "lettuce", "salad", "cucumber",
+      "pepper", "zucchini", "mushroom", "lemon", "lime", "orange", "berry", "herb", "parsley", "basil",
+      "spinach", "broccoli", "cabbage", "avocado", "ginger", "fruit", "vegetable", "celery", "leek",
+      "apfel", "äpfel", "banane", "tomate", "zwiebel", "knoblauch", "kartoffel", "karotte", "möhre", "salat", "gurke",
+      "paprika", "zucchini", "pilz", "champignon", "zitrone", "limette", "beere", "kräuter", "petersilie",
+      "basilikum", "spinat", "brokkoli", "kohl", "avocado", "ingwer", "obst", "gemüse", "sellerie", "lauch",
+      "manzana", "plátano", "cebolla", "ajo", "patata", "zanahoria", "lechuga", "pepino", "calabacín", "champiñón",
+      "limón", "naranja", "perejil", "albahaca", "espinaca", "brócoli", "jengibre", "fruta", "verdura",
+      "pomme", "banane", "tomate", "oignon", "ail", "pomme de terre", "carotte", "laitue", "concombre", "courgette",
+      "champignon", "citron", "persil", "basilic", "épinard", "brocoli", "gingembre", "légume",
+      "mela", "banana", "pomodoro", "cipolla", "aglio", "patata", "carota", "lattuga", "cetriolo", "zucchina",
+      "funghi", "limone", "prezzemolo", "basilico", "spinaci", "broccoli", "zenzero", "frutta", "verdura",
+    ],
+  ],
+]
+
+/**
+ * Long words match anywhere in the name (German compounds: "Rinderhack"). Words of up to three
+ * letters must start a word, so "ham" does not match "champignon".
+ */
+function matches(text: string, word: string) {
+  return word.length <= 3 ? text.includes(` ${word}`) : text.includes(word)
+}
+
+/** The section an item is found in, from its name. "other" when nothing matches. */
+export function classifySection(name: string): StoreSection {
+  const text = ` ${name.trim().toLowerCase()} `
+  for (const [section, words] of rules) {
+    if (words.some((word) => matches(text, word))) return section
+  }
+  return "other"
+}

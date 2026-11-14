@@ -87,5 +87,27 @@
     "fromRecipesNoAmount_other": "For {{count}} recipes, no amount given",
     "noAmount": "no amount given",
     "remove": "Remove {{name}}"
+  },
+  "store": {
+    "title": "Choose a supermarket",
+    "hint": "Your list is sorted in the order you walk through the shop.",
+    "change": "Change supermarket",
+    "sortedFor": "Sorted for {{name}}",
+    "standard": "Standard supermarket"
+  },
+  "section": {
+    "produce": "Fruit and vegetables",
+    "bakery": "Bread and bakery",
+    "dryGoods": "Pasta, rice and baking",
+    "canned": "Cans and jars",
+    "spices": "Spices and oils",
+    "sweets": "Sweets and snacks",
+    "dairy": "Dairy and eggs",
+    "meat": "Meat and sausage",
+    "fish": "Fish",
+    "frozen": "Frozen food",
+    "drinks": "Drinks",
+    "household": "Household",
+    "other": "Other"
   }
 }

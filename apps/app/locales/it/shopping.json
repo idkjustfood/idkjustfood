@@ -87,5 +87,27 @@
     "fromRecipesNoAmount_other": "Per {{count}} ricette, quantità non indicata",
     "noAmount": "quantità non indicata",
     "remove": "Rimuovi {{name}}"
+  },
+  "store": {
+    "title": "Scegli un supermercato",
+    "hint": "La tua lista è ordinata secondo il percorso nel negozio.",
+    "change": "Cambia supermercato",
+    "sortedFor": "Ordinata per {{name}}",
+    "standard": "Supermercato standard"
+  },
+  "section": {
+    "produce": "Frutta e verdura",
+    "bakery": "Pane e panetteria",
+    "dryGoods": "Pasta, riso e pasticceria",
+    "canned": "Conserve e barattoli",
+    "spices": "Spezie e oli",
+    "sweets": "Dolci e snack",
+    "dairy": "Latticini e uova",
+    "meat": "Carne e salumi",
+    "fish": "Pesce",
+    "frozen": "Surgelati",
+    "drinks": "Bevande",
+    "household": "Casa",
+    "other": "Altro"
   }
 }
