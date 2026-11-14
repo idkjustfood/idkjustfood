@@ -14,13 +14,14 @@ describe("unit names", () => {
     test(`${language} names every unit in the list`, () => {
       const common = JSON.parse(
         readFileSync(join(localesDir, language, "common.json"), "utf8")
-      ) as { units: Record<string, string>; unitPicker: { none: string } }
+      ) as { units: Record<string, string>; unitPicker: { none: string }; unitNames: Record<string, string> }
       const missing = unitKeys.filter(
         (unit) =>
           !(unit in common.units) &&
           !(`${unit}_one` in common.units && `${unit}_other` in common.units)
       )
       expect(missing).toEqual([])
+      expect(unitKeys.filter((unit) => !common.unitNames[unit]?.trim())).toEqual([])
       expect(common.unitPicker.none.trim()).not.toBe("")
     })
   }

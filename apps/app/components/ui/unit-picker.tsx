@@ -75,6 +75,7 @@ export function UnitPicker({
             <Option
               key={unit}
               label={unitName(unit, 1)}
+              fullName={t(`common:unitNames.${unit}`)}
               selected={value === unit}
               onPress={() => choose(unit)}
             />
@@ -87,10 +88,13 @@ export function UnitPicker({
 
 function Option({
   label,
+  fullName,
   selected,
   onPress,
 }: {
   label: string
+  /** The written-out name ("Gram" for "g"), when it differs from the label. */
+  fullName?: string
   selected: boolean
   onPress: () => void
 }) {
@@ -103,11 +107,16 @@ function Option({
     >
       <Text
         className={cn(
-          "text-base text-foreground",
+          "flex-1 text-base text-foreground",
           selected && "font-semibold"
         )}
       >
         {label}
+        {fullName && fullName !== label ? (
+          <Text className="font-normal text-muted-foreground">
+            {`  ${fullName}`}
+          </Text>
+        ) : null}
       </Text>
       {selected && <Icon as={Check} size={18} className="text-primary" />}
     </Pressable>

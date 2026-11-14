@@ -16,6 +16,8 @@ text. This keeps shopping lists merging, unit conversion and translations reliab
 | `tsp`, `tbsp` | spoons | no, used in both systems |
 | `piece`, `pinch`, `clove`, `bunch`, `slice`, `can`, `pack` | counts | no, only scaled |
 
+The dropdown also shows the written-out name next to the short one ("g  Gram"), from `unitNames.*`.
+
 The stored value is the key, the same in every language. The app shows a translated name from
 `apps/app/locales/<lang>/common.json` (`units.*`): "EL", "Stück" and "Prise" in German, "tbsp",
 "piece" and "pinch" in English.
