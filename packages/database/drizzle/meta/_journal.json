@@ -43,6 +43,13 @@
       "when": 1794650598091,
       "tag": "0005_shopping_lists",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794653743632,
+      "tag": "0006_meal_planner",
+      "breakpoints": true
     }
   ]
 }

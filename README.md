@@ -73,6 +73,12 @@ Personal and household shopping lists that work offline on the phone, with recip
 merged into one line per ingredient. See [shopping lists](docs/shopping-lists.md) for the API and
 how offline works.
 
+## Meal planner
+
+Plan breakfast, midday and afternoon meals for as many weeks as you like, by hand or filled
+automatically from your saved recipes and goals (plain code, no AI). Personal or household. See
+[meal planner](docs/meal-planner.md).
+
 ## Self-hosting
 
 One Compose file (`docker-compose.yml`) runs everything: `postgres`, `api`, `worker` and `web` (the
