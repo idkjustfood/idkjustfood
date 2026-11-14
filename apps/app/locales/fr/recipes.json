@@ -113,7 +113,19 @@
     "voiceOff": "Commande vocale désactivée",
     "back": "Retour",
     "next": "Suivant",
-    "done": "Terminé"
+    "done": "Terminé",
+    "heard": {
+      "next": "Compris : suivant",
+      "back": "Compris : retour",
+      "repeat": "Compris : répéter",
+      "startTimer": "Compris : démarrer le minuteur",
+      "stopTimer": "Compris : arrêter le minuteur"
+    },
+    "voiceUnsupported": "La commande vocale ne fonctionne pas dans ce navigateur. Utilisez les boutons.",
+    "voiceDenied": "Le microphone est bloqué. Autorisez-le dans les réglages pour utiliser la commande vocale.",
+    "voiceLanguage": "La commande vocale n’est pas disponible dans cette langue sur cet appareil.",
+    "voiceError": "La commande vocale ne fonctionne plus. Utilisez les boutons ou réactivez-la.",
+    "wakeLockUnsupported": "Ce navigateur ne peut pas garder l’écran allumé. Il peut s’éteindre pendant que vous cuisinez."
   },
   "sources": {
     "manual": "Écrite à la main",

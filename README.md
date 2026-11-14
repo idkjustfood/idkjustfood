@@ -87,6 +87,9 @@ Plan breakfast, midday and afternoon meals for as many weeks as you like, by han
 automatically from your saved recipes and goals (plain code, no AI). Personal or household. See
 [meal planner](docs/meal-planner.md).
 
+Cooking mode keeps the screen on and can be controlled by voice ("next", "start timer"). See
+[cooking mode](docs/cooking-mode.md).
+
 ## Self-hosting
 
 One Compose file (`docker-compose.yml`) runs everything: `postgres`, `api`, `worker` and `web` (the

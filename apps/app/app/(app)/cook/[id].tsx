@@ -7,12 +7,18 @@ import {
   MicOff,
   X,
 } from "lucide-react-native"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Pressable, ScrollView, Text, View } from "react-native"
+import {
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+  type ScrollViewInstance,
+} from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
-import { stepsInOrder } from "@workspace/schemas"
+import { findTimers, stepsInOrder } from "@workspace/schemas"
 
 import {
   IngredientList,
@@ -25,8 +31,12 @@ import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
 import { Sheet } from "@/components/ui/sheet"
 import { useAppState } from "@/lib/app-state"
+import { activeTimers, firstIdle, startTimer, stopTimer } from "@/lib/cook-timers"
 import { useRecipe, type Recipe } from "@/lib/recipes"
+import { useKeepScreenOn } from "@/lib/use-keep-awake"
+import { useVoiceControl } from "@/lib/use-voice-control"
 import { cn } from "@/lib/utils"
+import type { VoiceCommand } from "@/lib/voice-commands"
 
 /** One step at a time, big text, easy to use with messy hands. */
 export default function CookingMode() {
@@ -62,7 +72,7 @@ export default function CookingMode() {
 }
 
 function Cooking({ recipe }: { recipe: Recipe }) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { units } = useAppState()
   const [index, setIndex] = useState(0)
   const [listening, setListening] = useState(false)
@@ -75,6 +85,65 @@ function Cooking({ recipe }: { recipe: Recipe }) {
   const last = index === ordered.length - 1
   const close = () =>
     router.canGoBack() ? router.back() : router.replace(`/recipe/${recipe.id}`)
+
+  // The screen stays on while cooking mode is open.
+  const { unsupported: noWakeLock } = useKeepScreenOn()
+
+  const scroller = useRef<ScrollViewInstance>(null)
+  const [heard, setHeard] = useState<VoiceCommand | null>(null)
+  const heardTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  useEffect(() => () => clearTimeout(heardTimer.current), [])
+
+  function runCommand(command: VoiceCommand) {
+    clearTimeout(heardTimer.current)
+    setHeard(command)
+    heardTimer.current = setTimeout(() => setHeard(null), 1500)
+    const timers = findTimers(step.text)
+    const ids = timers.map((_, n) => `${recipe.id}:${index}:${n}`)
+    switch (command) {
+      case "next":
+        setIndex((i) => Math.min(i + 1, ordered.length - 1))
+        break
+      case "back":
+        setIndex((i) => Math.max(i - 1, 0))
+        break
+      case "repeat":
+        scroller.current?.scrollTo({ y: 0, animated: true })
+        break
+      case "startTimer": {
+        const id = firstIdle(ids)
+        if (id !== null) startTimer(id, timers[ids.indexOf(id)]!.seconds)
+        break
+      }
+      case "stopTimer":
+        activeTimers(ids).forEach(stopTimer)
+        break
+    }
+  }
+
+  const voice = useVoiceControl({
+    enabled: listening,
+    language: i18n.language,
+    onCommand: runCommand,
+  })
+  const blocked =
+    voice.status === "denied" ||
+    voice.status === "unsupported" ||
+    voice.status === "error"
+  // Turn the switch off again when listening cannot go on.
+  useEffect(() => {
+    if (blocked) setListening(false)
+  }, [blocked])
+  const voiceNote =
+    voice.supported === false
+      ? t("recipes:cook.voiceUnsupported")
+      : voice.status === "denied"
+        ? t("recipes:cook.voiceDenied")
+        : voice.status === "unsupported"
+          ? t("recipes:cook.voiceLanguage")
+          : voice.status === "error"
+            ? t("recipes:cook.voiceError")
+            : null
 
   return (
     <SafeAreaView className="flex-1 bg-background">
@@ -130,6 +199,7 @@ function Cooking({ recipe }: { recipe: Recipe }) {
         </View>
 
         <ScrollView
+          ref={scroller}
           className="flex-1"
           contentContainerClassName="flex-grow justify-center gap-8 py-8"
         >
@@ -149,13 +219,29 @@ function Cooking({ recipe }: { recipe: Recipe }) {
           />
         </ScrollView>
 
+        {noWakeLock && (
+          <Text className="mb-2 text-center text-sm text-muted-foreground">
+            {t("recipes:cook.wakeLockUnsupported")}
+          </Text>
+        )}
+        {voiceNote && (
+          <Text
+            role="alert"
+            className="mb-2 text-center text-sm text-destructive"
+          >
+            {voiceNote}
+          </Text>
+        )}
         <Pressable
           role="switch"
           aria-checked={listening}
+          aria-disabled={voice.supported === false}
+          disabled={voice.supported === false}
           onPress={() => setListening((l) => !l)}
           className={cn(
             "mb-3 h-12 flex-row items-center justify-center gap-2 self-center rounded-full px-5",
-            listening ? "bg-primary/15" : "bg-muted"
+            listening ? "bg-primary/15" : "bg-muted",
+            voice.supported === false && "opacity-50"
           )}
         >
           <Icon
@@ -163,14 +249,17 @@ function Cooking({ recipe }: { recipe: Recipe }) {
             className={listening ? "text-primary" : "text-muted-foreground"}
           />
           <Text
+            aria-live="polite"
             className={cn(
               "font-medium",
               listening ? "text-primary" : "text-muted-foreground"
             )}
           >
-            {listening
-              ? t("recipes:cook.listening")
-              : t("recipes:cook.voiceOff")}
+            {heard
+              ? t(`recipes:cook.heard.${heard}`)
+              : listening
+                ? t("recipes:cook.listening")
+                : t("recipes:cook.voiceOff")}
           </Text>
         </Pressable>
 

@@ -113,7 +113,19 @@
     "voiceOff": "Control por voz desactivado",
     "back": "Atrás",
     "next": "Siguiente",
-    "done": "Listo"
+    "done": "Listo",
+    "heard": {
+      "next": "Entendido: siguiente",
+      "back": "Entendido: atrás",
+      "repeat": "Entendido: repetir",
+      "startTimer": "Entendido: iniciar temporizador",
+      "stopTimer": "Entendido: parar temporizador"
+    },
+    "voiceUnsupported": "El control por voz no funciona en este navegador. Usa los botones.",
+    "voiceDenied": "El micrófono está bloqueado. Permítelo en los ajustes para usar el control por voz.",
+    "voiceLanguage": "El control por voz no está disponible en este idioma en este dispositivo.",
+    "voiceError": "El control por voz ha dejado de funcionar. Usa los botones o actívalo de nuevo.",
+    "wakeLockUnsupported": "Este navegador no puede mantener la pantalla encendida. Puede apagarse mientras cocinas."
   },
   "sources": {
     "manual": "Escrita a mano",

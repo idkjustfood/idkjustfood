@@ -113,7 +113,19 @@
     "voiceOff": "Controllo vocale disattivato",
     "back": "Indietro",
     "next": "Avanti",
-    "done": "Fatto"
+    "done": "Fatto",
+    "heard": {
+      "next": "Capito: avanti",
+      "back": "Capito: indietro",
+      "repeat": "Capito: ripeti",
+      "startTimer": "Capito: avvia timer",
+      "stopTimer": "Capito: ferma timer"
+    },
+    "voiceUnsupported": "Il controllo vocale non funziona in questo browser. Usa i pulsanti.",
+    "voiceDenied": "Il microfono è bloccato. Consentilo nelle impostazioni per usare il controllo vocale.",
+    "voiceLanguage": "Il controllo vocale non è disponibile in questa lingua su questo dispositivo.",
+    "voiceError": "Il controllo vocale ha smesso di funzionare. Usa i pulsanti o riattivalo.",
+    "wakeLockUnsupported": "Questo browser non può tenere lo schermo acceso. Potrebbe spegnersi mentre cucini."
   },
   "sources": {
     "manual": "Scritta a mano",

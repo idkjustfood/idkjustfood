@@ -113,7 +113,19 @@
     "voiceOff": "Sprachsteuerung aus",
     "back": "Zurück",
     "next": "Weiter",
-    "done": "Fertig"
+    "done": "Fertig",
+    "heard": {
+      "next": "Verstanden: weiter",
+      "back": "Verstanden: zurück",
+      "repeat": "Verstanden: wiederholen",
+      "startTimer": "Verstanden: Timer starten",
+      "stopTimer": "Verstanden: Timer stoppen"
+    },
+    "voiceUnsupported": "Die Sprachsteuerung funktioniert in diesem Browser nicht. Nutze stattdessen die Tasten.",
+    "voiceDenied": "Das Mikrofon ist blockiert. Erlaube es in den Einstellungen, um die Sprachsteuerung zu nutzen.",
+    "voiceLanguage": "Die Sprachsteuerung ist in dieser Sprache auf diesem Gerät nicht verfügbar.",
+    "voiceError": "Die Sprachsteuerung funktioniert nicht mehr. Nutze die Tasten oder schalte sie wieder ein.",
+    "wakeLockUnsupported": "Dieser Browser kann den Bildschirm nicht anlassen. Er kann sich beim Kochen ausschalten."
   },
   "sources": {
     "manual": "Von Hand geschrieben",

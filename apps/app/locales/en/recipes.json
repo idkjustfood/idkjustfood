@@ -113,7 +113,19 @@
     "voiceOff": "Voice control off",
     "back": "Back",
     "next": "Next",
-    "done": "Done"
+    "done": "Done",
+    "heard": {
+      "next": "Heard: next",
+      "back": "Heard: back",
+      "repeat": "Heard: repeat",
+      "startTimer": "Heard: start timer",
+      "stopTimer": "Heard: stop timer"
+    },
+    "voiceUnsupported": "Voice control does not work in this browser. Use the buttons instead.",
+    "voiceDenied": "The microphone is blocked. Allow it in your settings to use voice control.",
+    "voiceLanguage": "Voice control is not available in this language on this device.",
+    "voiceError": "Voice control stopped working. Use the buttons or turn it on again.",
+    "wakeLockUnsupported": "This browser cannot keep the screen on. It may turn off while you cook."
   },
   "sources": {
     "manual": "Written by hand",
