@@ -3,7 +3,11 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 
 import { silentLogger, type Logger } from "@workspace/logger"
-import type { RecipeContent } from "@workspace/schemas"
+import {
+  toRecipeLanguage,
+  type RecipeContent,
+  type RecipeLanguage,
+} from "@workspace/schemas"
 
 import type { Ai, AiJob } from "./ai/types.js"
 import { ExtractionError } from "./errors.js"
@@ -11,7 +15,12 @@ import { inputModules, selectInput } from "./inputs/index.js"
 import type { ExtractionInput, Gathered, InputModule } from "./inputs/types.js"
 import { systemMedia, type MediaTools } from "./media.js"
 import { fetchPublicPage } from "./net/public-url.js"
-import { readExtractedRecipe, toRecipeContent } from "./recipe-output.js"
+import {
+  keepStructure,
+  readExtractedRecipe,
+  toRecipeContent,
+  type ExtractedRecipe,
+} from "./recipe-output.js"
 
 export type PipelineOptions = {
   ai: Ai
@@ -22,6 +31,11 @@ export type PipelineOptions = {
   /** Where the temporary folder is made. Defaults to the system temp folder. */
   tempRoot?: string
   maxFrames?: number
+  /**
+   * The language to write the recipe in, whatever the language of the source. Empty
+   * keeps the language of the source (nothing is translated).
+   */
+  language?: RecipeLanguage
   /** Where progress and failures are logged. Defaults to a logger that writes nothing. */
   logger?: Logger
 }
@@ -107,6 +121,45 @@ async function readMaterial(gathered: Gathered, ai: Ai, log: Logger) {
 }
 
 /**
+ * Translates a recipe that a web page already contains (no AI was needed to read it).
+ * Skipped when no language is wanted, when the page says it is in that language, and
+ * when no AI key is set: then the recipe stays in the language of the page.
+ * Only the words come from the AI; amounts and units stay as the page has them.
+ */
+async function translateFound(
+  recipe: ExtractedRecipe,
+  pageLanguage: string | undefined,
+  options: PipelineOptions,
+  log: Logger
+): Promise<ExtractedRecipe> {
+  const { language } = options
+  if (!language || toRecipeLanguage(pageLanguage) === language) return recipe
+  try {
+    return await step(
+      log,
+      "translation",
+      { ...aiFields(options.ai, "parsing"), language },
+      async () => {
+        const material = buildMaterial([
+          {
+            label: "Recipe data found in the page",
+            text: JSON.stringify(recipe),
+          },
+        ])
+        const raw = await options.ai.parseRecipe(material, { language })
+        return keepStructure(recipe, readExtractedRecipe(raw))
+      }
+    )
+  } catch (cause) {
+    if (cause instanceof ExtractionError && cause.code === "ai_not_configured") {
+      log.info("no AI key set, the recipe stays in the language of the page")
+      return recipe
+    }
+    throw cause
+  }
+}
+
+/**
  * Turns an input (link, photo, text) into a recipe. Steps: pick the input module,
  * gather text/pictures/audio, let the AI read what is not text yet, parse it all
  * into one recipe, and validate it. Temporary files are always deleted.
@@ -138,7 +191,13 @@ export async function extractRecipe(
 
     if (gathered.recipe) {
       log.info("recipe data found in the source, no AI used", source)
-      return toRecipeContent(gathered.recipe, gathered.source)
+      const recipe = await translateFound(
+        gathered.recipe,
+        gathered.language,
+        options,
+        log
+      )
+      return toRecipeContent(recipe, gathered.source)
     }
 
     const material = await readMaterial(gathered, options.ai, log)
@@ -160,7 +219,9 @@ export async function extractRecipe(
       "parsing",
       { ...aiFields(options.ai, "parsing"), materialChars: material.length },
       async () => {
-        const raw = await options.ai.parseRecipe(material)
+        const raw = await options.ai.parseRecipe(material, {
+          language: options.language,
+        })
         return toRecipeContent(readExtractedRecipe(raw), gathered.source)
       }
     )

@@ -1,0 +1,1 @@
+ALTER TABLE "extraction_job" ADD COLUMN "language" text;

@@ -18,9 +18,26 @@ input ──► module.gather ──► text, pictures, audio ──► AI reads
 3. The pipeline lets the AI turn audio and pictures into text, and parses everything into one
    recipe that follows the schema in `packages/schemas`.
 4. If the module already has a complete recipe (a web page with schema.org data), it returns it as
-   `recipe` and the pipeline makes **no AI call**.
+   `recipe` and the pipeline makes **no AI call**, except to translate it (see "Language").
 5. The temporary folder (`context.workDir`) is deleted after every job. Download things into it, not
    anywhere else, and the cleanup is automatic.
+
+## Language
+
+Every recipe is written in the language the person picked in the app (`en`, `de`, `es`, `fr`
+or `it`; see `packages/schemas/src/language.ts`). The app sends it as `language` with the request,
+the API saves it on the job, and the worker passes it to the pipeline (`PipelineOptions.language`).
+Without it, the recipe stays in the language of the source.
+
+A new module does not handle this: whatever it collects goes through the parsing step, and the AI
+translates there. Only two things are the module's business:
+
+- Put the text as it is in the source into `texts`. Do not translate it yourself.
+- If the module returns a finished `recipe` (no AI), also return `language`, the language the source
+  says it is in (a web page has `<html lang>`; see `pageLanguage`). The pipeline skips the AI when it
+  already is the wanted language, and otherwise asks the AI to translate only the words. Amounts,
+  units, tags, servings and times always stay as the source has them. Without an AI key a finished
+  recipe is kept in its own language.
 
 ## Write the module
 
@@ -32,7 +49,7 @@ An `InputModule` (see `inputs/types.ts`) has four parts:
 | `canHandle(input)` | True when this module is the one for the input. |
 | `needsAi` | True when the module always needs the AI. Only `false` if it can finish without it. |
 | `validate(input)` | Optional. Checks the input fast, before a job is queued, and throws an `ExtractionError` with a message for the person. |
-| `gather(input, context)` | Returns `{ source, texts, images, audio?, recipe? }`. |
+| `gather(input, context)` | Returns `{ source, texts, images, audio?, recipe?, language? }`. |
 
 ### A new video platform
 

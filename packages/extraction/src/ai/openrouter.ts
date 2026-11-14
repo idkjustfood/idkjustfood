@@ -146,14 +146,14 @@ export const openrouter: AiProvider = {
 
   recipeParser(options) {
     return {
-      async parseRecipe(material) {
+      async parseRecipe(material, parseOptions) {
         let reply: string
         try {
           const { text } = await generateText({
             model: modelFor(options),
             temperature: 0,
             maxOutputTokens: 6000,
-            system: parseRecipeSystem,
+            system: parseRecipeSystem(parseOptions?.language),
             prompt: material,
           })
           reply = text

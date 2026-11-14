@@ -119,9 +119,9 @@ export function createAi(env: AiEnv, registry = providers): Ai {
       const { provider, options } = settings("vision")
       return provider.imageReader(options).readImages(images)
     },
-    async parseRecipe(material) {
+    async parseRecipe(material, parseOptions) {
       const { provider, options } = settings("parsing")
-      return provider.recipeParser(options).parseRecipe(material)
+      return provider.recipeParser(options).parseRecipe(material, parseOptions)
     },
   }
 }

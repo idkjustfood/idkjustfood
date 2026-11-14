@@ -1,5 +1,6 @@
 import type { Database } from "@workspace/database"
 import { silentLogger } from "@workspace/logger"
+import { toRecipeLanguage } from "@workspace/schemas"
 
 import { ExtractionError } from "../errors.js"
 import type { ExtractionInput } from "../inputs/types.js"
@@ -53,10 +54,15 @@ export async function runExtractionJob(
 
   const started = performance.now()
   const elapsed = () => Math.round(performance.now() - started)
-  log.info("job started", { kind: job.kind })
+  log.info("job started", {
+    kind: job.kind,
+    language: job.language ?? undefined,
+  })
   try {
     const content = await extractRecipe(inputOf(job), {
       ...options,
+      // The language of the job wins over a default of the worker.
+      language: toRecipeLanguage(job.language) ?? options.language,
       logger: log,
     })
     const recipeId = await store.succeed(job, content)

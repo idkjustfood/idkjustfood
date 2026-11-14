@@ -36,6 +36,11 @@ export const extractionJob = pgTable(
     text: text("text"),
     image: bytea("image"),
     imageType: text("image_type"),
+    /**
+     * The language the recipe is written in ("en", "de", ...). Null keeps the language
+     * of the source. The worker reads it, because the job runs in another process.
+     */
+    language: text("language"),
     /** "queued", "running", "succeeded" or "failed". */
     status: text("status").notNull().default("queued"),
     /** A short code for the failure, like "ai_not_configured". */

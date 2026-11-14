@@ -2794,12 +2794,24 @@ export interface components {
             url: string;
             /** @description Share the new recipe with this household. Without it, the recipe is only yours. */
             householdId?: string;
+            /**
+             * @description Write the recipe in this language (`en`, `de`, `es`, `fr` or `it`), and translate it when the source is in another one. Without it, the recipe stays in the language of the source. The app sends the language the person picked.
+             * @example de
+             * @enum {string}
+             */
+            language?: "en" | "de" | "es" | "fr" | "it";
         };
         ExtractionTextInput: {
             /** @description A recipe as plain text. */
             text: string;
             /** @description Share the new recipe with this household. Without it, the recipe is only yours. */
             householdId?: string;
+            /**
+             * @description Write the recipe in this language (`en`, `de`, `es`, `fr` or `it`), and translate it when the source is in another one. Without it, the recipe stays in the language of the source. The app sends the language the person picked.
+             * @example de
+             * @enum {string}
+             */
+            language?: "en" | "de" | "es" | "fr" | "it";
         };
         ExtractionImageInput: {
             /**
@@ -2809,6 +2821,12 @@ export interface components {
             image: string;
             /** @description Share the new recipe with this household. Without it, the recipe is only yours. */
             householdId?: string;
+            /**
+             * @description Write the recipe in this language (`en`, `de`, `es`, `fr` or `it`), and translate it when the source is in another one. Without it, the recipe stays in the language of the source. The app sends the language the person picked.
+             * @example de
+             * @enum {string}
+             */
+            language?: "en" | "de" | "es" | "fr" | "it";
         };
     };
     responses: never;

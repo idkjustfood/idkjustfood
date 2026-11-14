@@ -17,7 +17,11 @@ import {
   type JobQueue,
   type JobRow,
 } from "@workspace/extraction"
-import { RecipeSchema } from "@workspace/schemas"
+import {
+  RecipeLanguageSchema,
+  RecipeSchema,
+  type RecipeLanguage,
+} from "@workspace/schemas"
 
 import type { Auth } from "../auth.js"
 import { householdStore } from "../households/store.js"
@@ -46,6 +50,13 @@ const householdId = z.string().optional().openapi({
     "Share the new recipe with this household. Without it, the recipe is only yours.",
 })
 
+const language = RecipeLanguageSchema.optional().openapi({
+  description:
+    "Write the recipe in this language (`en`, `de`, `es`, `fr` or `it`), and translate it when the source is in another one. " +
+    "Without it, the recipe stays in the language of the source. The app sends the language the person picked.",
+  example: "de",
+})
+
 const LinkBody = z
   .object({
     url: z.string().min(1).max(2000).openapi({
@@ -54,6 +65,7 @@ const LinkBody = z
       example: "https://www.instagram.com/reel/Cabc123/",
     }),
     householdId,
+    language,
   })
   .openapi("ExtractionLinkInput")
 
@@ -63,6 +75,7 @@ const TextBody = z
       description: "A recipe as plain text.",
     }),
     householdId,
+    language,
   })
   .openapi("ExtractionTextInput")
 
@@ -74,6 +87,7 @@ const ImageBody = z
       description: `A photo or screenshot of a recipe: JPEG, PNG, WebP or GIF, up to ${maxImageBytes / 1024 / 1024} MB.`,
     }),
     householdId,
+    language,
   })
   .openapi("ExtractionImageInput")
 
@@ -283,7 +297,8 @@ export function extractionRoutes(
   async function start(
     c: Context<Env>,
     input: ExtractionInput,
-    household: string | undefined
+    household: string | undefined,
+    recipeLanguage: RecipeLanguage | undefined
   ) {
     const user = c.get("user")
     try {
@@ -301,10 +316,19 @@ export function extractionRoutes(
     if (household && !(await households.membership(household, user.id))) {
       return c.json({ error: "Household not found" }, 404)
     }
-    const job = await jobs.create(user.id, household ?? null, input)
+    const job = await jobs.create(
+      user.id,
+      household ?? null,
+      input,
+      recipeLanguage
+    )
     await deps.queue.enqueue(job.id, c.get("requestId"))
     // The request ID in this line is the same one the worker logs for the job.
-    c.get("log")?.info("extraction queued", { jobId: job.id, kind: input.type })
+    c.get("log")?.info("extraction queued", {
+      jobId: job.id,
+      kind: input.type,
+      language: recipeLanguage,
+    })
     return c.json({ job: await present(job, user.id) }, 202)
   }
 
@@ -332,17 +356,22 @@ export function extractionRoutes(
   }
 
   app.openapi(startLink, async (c) => {
-    const { url, householdId } = c.req.valid("json")
-    return start(c, { type: "link", url: url.trim() }, householdId) as never
+    const { url, householdId, language } = c.req.valid("json")
+    return start(
+      c,
+      { type: "link", url: url.trim() },
+      householdId,
+      language
+    ) as never
   })
 
   app.openapi(startText, async (c) => {
-    const { text, householdId } = c.req.valid("json")
-    return start(c, { type: "text", text }, householdId) as never
+    const { text, householdId, language } = c.req.valid("json")
+    return start(c, { type: "text", text }, householdId, language) as never
   })
 
   app.openapi(startImage, async (c) => {
-    const { image, householdId } = c.req.valid("form")
+    const { image, householdId, language } = c.req.valid("form")
     let input: ExtractionInput
     try {
       const data = new Uint8Array(await image.arrayBuffer())
@@ -350,7 +379,7 @@ export function extractionRoutes(
     } catch (cause) {
       return failure(c, cause) as never
     }
-    return start(c, input, householdId) as never
+    return start(c, input, householdId, language) as never
   })
 
   app.openapi(getJob, async (c) => {

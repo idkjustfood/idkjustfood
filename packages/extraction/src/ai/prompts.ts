@@ -1,4 +1,9 @@
-import { tagGroupKeys, tagsByGroup } from "@workspace/schemas"
+import {
+  recipeLanguageNames,
+  tagGroupKeys,
+  tagsByGroup,
+  type RecipeLanguage,
+} from "@workspace/schemas"
 
 /** Prompts shared by all providers, so every provider is asked the same thing. */
 
@@ -39,12 +44,28 @@ export const readImagesPrompt =
 
 export const nothingFound = "(nothing)"
 
-export const parseRecipeSystem = `You turn the material of a recipe into one JSON object. Reply with the JSON only.
+/**
+ * The rule about the language of the recipe. With a language, the AI writes in it and
+ * translates when the material is in another one. Words, not values, are translated.
+ */
+export function languageRule(language?: RecipeLanguage) {
+  if (!language) return "Write the recipe in the language of the material."
+  const name = recipeLanguageNames[language]
+  return (
+    `Write the recipe in ${name}: the title, the description, the ingredient names, the notes and the steps. ` +
+    `If the material is in another language, translate it into ${name}. If it is already in ${name}, keep its words. ` +
+    "Translating changes words only: keep every quantity, unit, time and number as it is, never add an amount or detail that the material does not give, " +
+    "and leave a missing amount empty. The \"unit\" and the \"tags\" are fixed keys, not words: never translate them."
+  )
+}
+
+/** The system prompt of the recipe parser, for the language the recipe must be written in. */
+export const parseRecipeSystem = (language?: RecipeLanguage) => `You turn the material of a recipe into one JSON object. Reply with the JSON only.
 
 Rules:
 - Use only what the material says. Never invent a detail. If an amount is not given, set "quantity" to null (and "unit" to null if there is no unit too).
 - If the material conflicts with itself (for example caption and on-screen text), prefer on-screen text and written lists over spoken words for amounts.
-- Write the recipe in the language of the material.
+- ${languageRule(language)}
 - "quantity" is a number: write 1/2 as 0.5 and 1 1/2 as 1.5. "unit" is one of these keys, or null when there is no unit: g, kg, mg, ml, l, tsp, tbsp, cup, oz, lb, fl_oz, piece, pinch, clove, bunch, slice, can, pack (tsp = teaspoon, TL; tbsp = tablespoon, EL; piece = Stück). If the material uses a unit that is not in this list (for example "handful"), set "unit" to null and write that word in "note". Put extras like "finely chopped" in "note" too.
 - "servings" is a whole number, or null if the material does not say.
 - "prepMinutes" and "cookMinutes" are whole minutes, or null if not said.

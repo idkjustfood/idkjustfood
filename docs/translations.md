@@ -35,8 +35,11 @@ language updates it.
 - **Numbers, amounts, minutes, dates:** use `formatNumber`, `formatAmount` and
   `formatMinutes` from `lib/format.ts` and `dayLabel` from `lib/planner-format.ts`.
   They follow the current language.
-- **Recipe content** (titles, ingredients, steps) is not translated; it stays
-  in the language of its source.
+- **Recipe content** (titles, ingredients, steps) is not translated by the app.
+  Saved recipes keep their language. New recipes that the AI creates are written
+  in the selected app language (see `docs/ai-providers.md`); the app sends it
+  with the request. A new app language also has to be added to
+  `packages/schemas/src/language.ts`.
 
 ## Adding a language
 

@@ -3,6 +3,7 @@
 export * from "./autoplan.js"
 export * from "./draft.js"
 export * from "./formats.js"
+export * from "./language.js"
 export * from "./planner.js"
 export * from "./quantity.js"
 export * from "./recipe.js"

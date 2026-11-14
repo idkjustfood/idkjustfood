@@ -1,5 +1,7 @@
 import { readdir } from "node:fs/promises"
 
+import type { RecipeLanguage } from "@workspace/schemas"
+
 import type { Ai, ImageInput } from "./ai/types.js"
 import type { MediaTools } from "./media.js"
 
@@ -25,12 +27,15 @@ export function fakeAi(overrides: Partial<Ai> = {}): Ai & {
     transcribe: number
     readImages: ImageInput[][]
     parseRecipe: string[]
+    /** The language asked for in each parseRecipe call. */
+    languages: (RecipeLanguage | undefined)[]
   }
 } {
   const calls = {
     transcribe: 0,
     readImages: [] as ImageInput[][],
     parseRecipe: [] as string[],
+    languages: [] as (RecipeLanguage | undefined)[],
   }
   return {
     calls,
@@ -42,8 +47,9 @@ export function fakeAi(overrides: Partial<Ai> = {}): Ai & {
       calls.readImages.push(images)
       return "200 g flour"
     },
-    async parseRecipe(material) {
+    async parseRecipe(material, options) {
       calls.parseRecipe.push(material)
+      calls.languages.push(options?.language)
       return pancakeJson
     },
     ...overrides,
