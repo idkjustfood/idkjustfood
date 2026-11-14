@@ -93,7 +93,9 @@
     "hint": "Deine Liste wird in der Reihenfolge sortiert, in der du durch den Laden gehst.",
     "change": "Supermarkt ändern",
     "sortedFor": "Sortiert für {{name}}",
-    "standard": "Standard-Supermarkt"
+    "standard": "Standard-Supermarkt",
+    "search": "Supermärkte suchen",
+    "none": "Kein Supermarkt gefunden."
   },
   "section": {
     "produce": "Obst und Gemüse",

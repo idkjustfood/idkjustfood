@@ -93,7 +93,9 @@
     "hint": "Your list is sorted in the order you walk through the shop.",
     "change": "Change supermarket",
     "sortedFor": "Sorted for {{name}}",
-    "standard": "Standard supermarket"
+    "standard": "Standard supermarket",
+    "search": "Search supermarkets",
+    "none": "No supermarket found."
   },
   "section": {
     "produce": "Fruit and vegetables",

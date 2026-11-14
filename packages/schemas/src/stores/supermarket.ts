@@ -13,6 +13,13 @@ export type Supermarket = {
    * brand ("standard"); the app then uses the translation `shopping:store.<id>`.
    */
   name?: string
+  /** Older ids that still mean this supermarket, so choices saved on a device keep working. */
+  aliases?: readonly string[]
+  /**
+   * Where the route comes from, and how sure it is. Required, so nobody has to guess: a route
+   * that was not checked in a shop says so.
+   */
+  source: string
   /** The sections in walking order. A section that is missing here is shown before "other". */
   route: readonly StoreSection[]
 }
