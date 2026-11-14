@@ -122,7 +122,6 @@
     "intro": "Les quantités sont adaptées aux portions de chaque repas, et les mêmes ingrédients sont regroupés. Rien n'est ajouté tant que tu n'as pas touché le bouton.",
     "whichMeals": "Quels repas",
     "wholePlan": "Tout le plan",
-    "weekEmpty": "Rien n'est prévu cette semaine.",
     "whichList": "Quelle liste ?",
     "none": "Tu n'as pas encore de liste de courses. Crées-en une dans l'onglet Courses.",
     "theList": "la liste",
@@ -131,6 +130,20 @@
     "added_other": "Les ingrédients de {{count}} repas ont été ajoutés à {{name}}.",
     "adding": "Ajout en cours…",
     "add": "Ajouter les ingrédients",
-    "error": "Impossible d'ajouter les ingrédients."
+    "error": "Impossible d'ajouter les ingrédients.",
+    "thisWeek": "Cette semaine",
+    "choice": {
+      "next2": "2 prochains jours",
+      "next3": "3 prochains jours",
+      "all": "Tout le plan",
+      "custom": "Choisir les jours"
+    },
+    "from": "Du",
+    "to": "Au",
+    "rangeEmpty": "Aucun repas prévu",
+    "mealCount_one": "{{count}} repas",
+    "mealCount_other": "{{count}} repas",
+    "earlier": "{{label}} : un jour plus tôt",
+    "later": "{{label}} : un jour plus tard"
   }
 }

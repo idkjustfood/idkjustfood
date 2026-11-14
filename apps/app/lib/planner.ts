@@ -25,6 +25,8 @@ const keys = {
   list: (demo: boolean) => ["meal-plans", "list", demo] as const,
   week: (planId: string, start: string) =>
     ["meal-plans", "week", planId, start] as const,
+  range: (planId: string, from: string, to: string) =>
+    ["meal-plans", "range", planId, from, to] as const,
 }
 
 const demoOnly = () => {
@@ -65,6 +67,33 @@ export function useWeek(planId: string | undefined, start: string) {
           })
         )
       ).plan,
+  })
+}
+
+/**
+ * The meals of one plan between two days (both included), or of the whole plan when `range` is
+ * null. Used to tell the person how many meals a shopping list request covers.
+ */
+export function useMealsInRange(
+  planId: string,
+  range: { from: string; to: string } | null
+) {
+  const { demo } = useAppState()
+  return useQuery({
+    queryKey: keys.range(planId, range?.from ?? "", range?.to ?? ""),
+    enabled: !demo,
+    placeholderData: keepPreviousData,
+    queryFn: async (): Promise<number> =>
+      (
+        await call(
+          api.GET("/api/meal-plans/{planId}", {
+            params: {
+              path: { planId },
+              query: range ? { from: range.from, to: range.to } : {},
+            },
+          })
+        )
+      ).plan.meals.length,
   })
 }
 

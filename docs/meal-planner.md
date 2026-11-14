@@ -21,9 +21,12 @@ self-hosted installs have it too.
   nutrition values. They are always estimates. A meal whose recipe has no estimate is not counted, and
   the day says so (a `+` after the number).
 - **Auto-plan** (button at the bottom): a wizard in three steps, see [below](#automatic-planning).
-- **Shopping list** (button at the bottom): adds the ingredients of this week, or of the whole plan,
-  to a shopping list you choose. **Nothing reaches a shopping list unless you tap this.** Amounts are
-  scaled to each meal's servings and merged like when you add a recipe (see
+- **Shopping list** (button at the bottom): adds the ingredients of the meals you choose to a
+  shopping list. Choose "Next 2 days", "Next 3 days", the week shown, the whole plan, or "Choose
+  days" for any range from one day up to a year (arrows move the first and last day). The sheet
+  shows the days and how many meals they cover before anything is added. A range without meals
+  can't be added, so no empty request is sent. **Nothing reaches a shopping list unless you tap
+  this.** Amounts are scaled to each meal's servings and merged like when you add a recipe (see
   [shopping lists](shopping-lists.md#how-merging-works)). It needs a connection.
 
 The plan screen and the wizard use big touch targets and keep their main buttons at the bottom of
@@ -80,7 +83,7 @@ All endpoints need a signed-in user and are in the OpenAPI document (`/api/opena
 | `PATCH /api/meal-plans/{planId}/meals/{date}/{slot}` | Change the servings of a planned meal |
 | `DELETE /api/meal-plans/{planId}/meals/{date}/{slot}` | Empty a slot |
 | `POST /api/meal-plans/{planId}/generate` | Fill days automatically (`goals`, `days`, `servings`, `overwrite`) |
-| `POST /api/meal-plans/{planId}/shopping-list` | Add the plan's ingredients to a list (`listId`, optional `from` and `to`) |
+| `POST /api/meal-plans/{planId}/shopping-list` | Add the plan's ingredients to a list (`listId`, optional `from` and `to`, both days included) |
 
 `slot` is `breakfast`, `midday` or `afternoon`. `date` is a calendar day, `YYYY-MM-DD`, with no
 time zone. A meal in the answer carries a small summary of its recipe (title, times, estimated

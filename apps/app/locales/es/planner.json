@@ -122,7 +122,6 @@
     "intro": "Las cantidades se ajustan a las raciones de cada comida y los ingredientes iguales se juntan. No se añade nada hasta que toques el botón.",
     "whichMeals": "Qué comidas",
     "wholePlan": "Todo el plan",
-    "weekEmpty": "No hay nada planificado esta semana.",
     "whichList": "¿Qué lista?",
     "none": "Aún no tienes listas de la compra. Crea una en la pestaña Compra.",
     "theList": "la lista",
@@ -131,6 +130,20 @@
     "added_other": "Se añadieron los ingredientes de {{count}} comidas a {{name}}.",
     "adding": "Añadiendo…",
     "add": "Añadir ingredientes",
-    "error": "No se pudieron añadir los ingredientes."
+    "error": "No se pudieron añadir los ingredientes.",
+    "thisWeek": "Esta semana",
+    "choice": {
+      "next2": "Próximos 2 días",
+      "next3": "Próximos 3 días",
+      "all": "Todo el plan",
+      "custom": "Elegir días"
+    },
+    "from": "Desde",
+    "to": "Hasta",
+    "rangeEmpty": "No hay comidas planificadas",
+    "mealCount_one": "{{count}} comida",
+    "mealCount_other": "{{count}} comidas",
+    "earlier": "{{label}}: un día antes",
+    "later": "{{label}}: un día después"
   }
 }
