@@ -47,7 +47,9 @@ language updates it.
 2. Translate the values. Keep the keys and `{{placeholders}}` as they are.
 3. Set `languageName` in `common.json` to the language's own name ("Português").
 4. Fill `stepWords` in `common.json`: the unit words and time words (comma separated) the
-   app makes bold in recipe steps, for example `"Minuten, Min."`. English is always added.
+   app makes bold in recipe steps, for example `"Minuten, Min."`. English is always added. `foods` lists common
+   ingredient words ("Öl", "Nudel") that are bold even if the recipe names them differently, and
+   `modifiers` lists describing words ("gemischt") that are not bold on their own.
 
 That is all. The app finds the folder at build time and lists it in the
 language picker. For languages with more plural forms (for example Polish) add

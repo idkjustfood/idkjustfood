@@ -156,6 +156,8 @@
   },
   "stepWords": {
     "units": "g,gram,grams,kg,kilogram,kilograms,mg,ml,milliliter,milliliters,millilitre,millilitres,l,liter,liters,litre,litres,tsp,teaspoon,teaspoons,tbsp,tablespoon,tablespoons,cup,cups,oz,ounce,ounces,lb,lbs,pound,pounds,fl oz,piece,pieces,pinch,pinches,clove,cloves,bunch,bunches,slice,slices,can,cans,pack,packs,packet,packets",
-    "times": "hour,hours,hr,hrs,h,minute,minutes,min,mins,second,seconds,sec,secs"
+    "times": "hour,hours,hr,hrs,h,minute,minutes,min,mins,second,seconds,sec,secs",
+    "foods": "oil,flour,sugar,salt,pepper,water,milk,butter,cream,egg,eggs,pasta,noodle,noodles,rice,onion,garlic,tomato,potato,cheese,meat,beef,pork,chicken,fish,vinegar,sauce,broth,stock,yeast,honey,herbs,spice,spices,lemon,carrot,mushroom,bacon,ham,sausage,bread,vegetables,wine,mustard,paprika,cinnamon,vanilla,chocolate,cocoa,yogurt,beans,lentils,spinach,zucchini,cucumber,apple,banana,nuts,almonds",
+    "modifiers": "fresh,chopped,diced,sliced,minced,ground,large,small,medium,ripe,dried,frozen,soft,melted,whole,mixed,hot,cold,warm,finely,optional,extra,virgin,taste,about"
   }
 }

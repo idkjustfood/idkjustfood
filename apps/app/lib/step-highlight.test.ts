@@ -9,6 +9,8 @@ const en: StepVocabulary = {
 const de: StepVocabulary = {
   units: ["g", "EL", "TL", "Prise", "Tassen"],
   times: ["Stunde", "Stunden", "Minute", "Minuten", "Min."],
+  foods: ["Öl", "Nudel", "Nudeln", "Mehl"],
+  modifiers: ["gemischt", "frisch"],
 }
 
 /** The bold parts of a step, in order. */
@@ -98,5 +100,21 @@ describe("highlightStep", () => {
   test("a step with nothing to find is one normal piece", () => {
     expect(highlightStep("Serve.", [], en)).toEqual([{ text: "Serve.", bold: false }])
     expect(highlightStep("", ["flour"], en)).toEqual([])
+  })
+
+  test("the main word of a longer name is bold too", () => {
+    expect(bold("Das Hackfleisch anbraten", ["Hackfleisch gemischt"], de)).toEqual(["Hackfleisch"])
+    expect(bold("Add the garlic", ["garlic cloves"])).toEqual(["garlic"])
+  })
+
+  test("describing words of a name are not bold alone", () => {
+    expect(bold("Alles gemischt anbraten", ["Hackfleisch gemischt"], de)).toEqual([])
+    expect(bold("Use fresh herbs", ["fresh basil"], { ...en, modifiers: ["fresh"] })).toEqual([])
+  })
+
+  test("common food words are bold even when the recipe lists them differently", () => {
+    expect(bold("Das Öl erhitzen", ["Olivenöl"], de)).toEqual(["Öl"])
+    expect(bold("Die Nudel kochen, dann 2 Nudeln", ["Spaghetti"], de)).toEqual(["Nudel", "2 Nudeln"])
+    expect(bold("Heat the oil", [], { ...en, foods: ["oil"] })).toEqual(["oil"])
   })
 })

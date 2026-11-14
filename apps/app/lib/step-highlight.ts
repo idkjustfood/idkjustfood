@@ -12,6 +12,10 @@ export type StepVocabulary = {
   units: string[]
   /** Time words: "minutes", "min", "hour", "Stunden". */
   times: string[]
+  /** Common food words ("oil", "Öl", "Nudel") that are bold even when the recipe lists them differently. */
+  foods?: string[]
+  /** Words in ingredient names that describe it ("fresh", "gemischt") and are not bold alone. */
+  modifiers?: string[]
 }
 
 export type StepPiece = { text: string; bold: boolean }
@@ -21,7 +25,9 @@ type Span = { start: number; end: number; kind: Kind }
 
 // Letters and digits of the supported languages, so "flour" is not found in "flourish".
 const wordChars = "A-Za-z0-9\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u00FF\\u0100-\\u017F"
-const before = `(?<![${wordChars}])`
+/** Punctuation around a word, like the comma in "flour,". */
+const edges = new RegExp(`^[^${wordChars}]+|[^${wordChars}]+$`, "g")
+const before =`(?<![${wordChars}])`
 const after = `(?![${wordChars}])`
 
 const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
@@ -59,10 +65,28 @@ function cleanName(name: string) {
   return name.replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ").trim()
 }
 
+/**
+ * What can be bold for the ingredient names: each full name, and each main word
+ * of a longer name ("Hackfleisch gemischt" also gives "Hackfleisch"), without
+ * describing words such as "fresh" or "gemischt".
+ */
+function nameParts(names: string[], modifiers: string[]) {
+  const skip = new Set(modifiers.map((word) => word.trim().toLowerCase()))
+  const parts: string[] = []
+  for (const name of names.map(cleanName)) {
+    parts.push(name)
+    const words = name.split(" ").map((word) => word.replace(edges, ""))
+    if (words.length < 2) continue
+    for (const word of words) {
+      if (word.length >= 4 && !skip.has(word.toLowerCase())) parts.push(word)
+    }
+  }
+  return parts
+}
+
 function ingredientPattern(names: string[]) {
   const seen = new Set<string>()
   const cleaned = names
-    .map(cleanName)
     .filter((name) => name.length >= 2)
     .filter((name) => {
       const key = name.toLowerCase()
@@ -91,7 +115,10 @@ export function highlightStep(
   ingredientNames: string[],
   vocabulary: StepVocabulary
 ): StepPiece[] {
-  const ingredients = ingredientPattern(ingredientNames)
+  const ingredients = ingredientPattern([
+    ...nameParts(ingredientNames, vocabulary.modifiers ?? []),
+    ...(vocabulary.foods ?? []),
+  ])
   const units = anyOf(vocabulary.units)
   const times = anyOf(vocabulary.times)
 

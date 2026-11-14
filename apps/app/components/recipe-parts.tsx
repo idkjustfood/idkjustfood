@@ -270,18 +270,25 @@ export function StepText({
 }) {
   const { t } = useTranslation()
   // Words of the app language, and English too: a recipe can be in either.
-  const words = (key: "units" | "times") =>
+  const words = (key: "units" | "times" | "foods" | "modifiers") =>
     [t(`common:stepWords.${key}`), t(`common:stepWords.${key}`, { lng: "en" })]
       .join(",")
       .split(",")
   const unitWords = words("units")
   const timeWords = words("times")
+  const foodWords = words("foods")
+  const modifierWords = words("modifiers")
   const names = ingredients.map((ingredient) => ingredient.name)
   const pieces = useMemo(
     () =>
-      highlightStep(text, names, { units: unitWords, times: timeWords }),
+      highlightStep(text, names, {
+        units: unitWords,
+        times: timeWords,
+        foods: foodWords,
+        modifiers: modifierWords,
+      }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [text, names.join("|"), unitWords.join(","), timeWords.join(",")]
+    [text, names.join("|"), unitWords.join(","), timeWords.join(","), foodWords.length]
   )
   return (
     <Text aria-live={live ? "polite" : undefined} className={className}>
