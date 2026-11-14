@@ -108,7 +108,9 @@ export function useRecipes(filters: RecipeFilters) {
             (r) =>
               (!word ||
                 r.title.toLowerCase().includes(word) ||
-                r.ingredients.some((i) => i.name.toLowerCase().includes(word))) &&
+                r.ingredients.some((i) =>
+                  i.name.toLowerCase().includes(word)
+                )) &&
               tags.every((t) => r.tags.includes(t))
           )
       }
@@ -125,6 +127,31 @@ export function useRecipes(filters: RecipeFilters) {
           })
         )
       ).recipes
+    },
+  })
+}
+
+/** Every recipe you can see: your own and your household's. For picking one, for example for a shopping list. */
+export function useAllRecipes() {
+  const { demo } = useAppState()
+  const { household, isPending } = useHousehold()
+  const householdId = household?.id ?? null
+  return useQuery({
+    queryKey: keys.list({ demo, householdId, all: true }),
+    enabled: !isPending,
+    queryFn: async (): Promise<Recipe[]> => {
+      if (demo) return demoRecipes.map(fromSample)
+      const fetchFor = async (id: string | undefined) =>
+        (
+          await call(
+            api.GET("/api/recipes", { params: { query: { householdId: id } } })
+          )
+        ).recipes
+      const [own, shared] = await Promise.all([
+        fetchFor(undefined),
+        householdId ? fetchFor(householdId) : Promise.resolve([]),
+      ])
+      return [...own, ...shared]
     },
   })
 }
