@@ -1,4 +1,4 @@
-import type { UnitKey } from "@workspace/schemas"
+import type { TagKey, UnitKey } from "@workspace/schemas"
 import { sql } from "drizzle-orm"
 import { index, integer, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
@@ -25,8 +25,10 @@ export const recipe = pgTable(
     servings: integer("servings").notNull(),
     prepMinutes: integer("prep_minutes"),
     cookMinutes: integer("cook_minutes"),
+    // Keys from the fixed list of tags (`tagKeys`), never free text.
     tags: text("tags")
       .array()
+      .$type<TagKey[]>()
       .notNull()
       .default(sql`'{}'::text[]`),
     ingredients: jsonb("ingredients")

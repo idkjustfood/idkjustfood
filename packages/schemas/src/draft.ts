@@ -1,4 +1,5 @@
 import { parseQuantity } from "./quantity.js"
+import { sortTags, TagsSchema, type TagKey } from "./tags.js"
 import { isUnitKey } from "./units.js"
 import type { RecipeContent } from "./recipe.js"
 
@@ -12,8 +13,8 @@ export type RecipeDraft = {
   servings: string
   prepMinutes: string
   cookMinutes: string
-  /** Separated by commas. */
-  tags: string
+  /** Tags from the list (see `tagKeys`). */
+  tags: TagKey[]
   calories: string
   protein: string
   carbs: string
@@ -39,7 +40,7 @@ export function emptyDraft(newKey: () => string): RecipeDraft {
     servings: "4",
     prepMinutes: "",
     cookMinutes: "",
-    tags: "",
+    tags: [],
     calories: "",
     protein: "",
     carbs: "",
@@ -63,7 +64,7 @@ export function draftFromRecipe(
     servings: String(recipe.servings),
     prepMinutes: text(recipe.prepMinutes),
     cookMinutes: text(recipe.cookMinutes),
-    tags: recipe.tags.join(", "),
+    tags: [...recipe.tags],
     calories: text(recipe.nutrition.calories),
     protein: text(recipe.nutrition.protein),
     carbs: text(recipe.nutrition.carbs),
@@ -165,16 +166,9 @@ export function readDraft(draft: RecipeDraft): DraftResult {
     .filter(Boolean)
     .map((t) => ({ text: t }))
 
-  const seen = new Set<string>()
-  const tags = draft.tags
-    .split(",")
-    .map((tag) => tag.trim())
-    .filter((tag) => {
-      const key = tag.toLowerCase()
-      if (!tag || seen.has(key)) return false
-      seen.add(key)
-      return true
-    })
+  const parsedTags = TagsSchema.safeParse(draft.tags)
+  if (!parsedTags.success) errors.tags = "Choose tags from the list."
+  const tags = parsedTags.success ? sortTags(parsedTags.data) : []
 
   if (Object.keys(errors).length > 0) return { ok: false, errors }
   return {

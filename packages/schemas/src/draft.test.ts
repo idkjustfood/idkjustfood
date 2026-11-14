@@ -39,7 +39,7 @@ describe("readDraft", () => {
         ],
         calories: "350",
         fat: "12,5",
-        tags: "Soup, soup , Vegan,,",
+        tags: ["vegan", "soup", "italian"],
       })
     )
     expect(result.ok).toBe(true)
@@ -55,7 +55,8 @@ describe("readDraft", () => {
       carbs: null,
       fat: 12.5,
     })
-    expect(result.content.tags).toEqual(["Soup", "Vegan"])
+    // In the fixed order of the list, not the order they were picked in.
+    expect(result.content.tags).toEqual(["italian", "soup", "vegan"])
     expect(result.content.prepMinutes).toBeNull()
     // What we produce is a valid recipe.
     expect(
@@ -96,7 +97,7 @@ describe("readDraft", () => {
       servings: 4,
       prepMinutes: 10,
       cookMinutes: null,
-      tags: ["Indian"],
+      tags: ["indian"],
       ingredients: [
         { name: "Lentils", quantity: 250, unit: "g", note: null },
         { name: "Salt", quantity: null, unit: null, note: null },

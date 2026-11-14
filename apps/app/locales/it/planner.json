@@ -80,12 +80,7 @@
     "calories": "Calorie al giorno (per persona)",
     "caloriesPlaceholder": "Ad esempio 2000",
     "caloriesHelp": "Usa le stime nutrizionali delle tue ricette. Le ricette senza stima vengono escluse quando lo imposti.",
-    "diet": "Dieta (un tag della ricetta)",
-    "dietPlaceholder": "Ad esempio vegetariana",
-    "diets": {
-      "vegetarian": "Vegetariana",
-      "vegan": "Vegana"
-    },
+    "diet": "Dieta",
     "maxTime": "Tempo massimo per pasto",
     "minutes": "{{count}} min",
     "any": "Qualsiasi",

@@ -13,6 +13,7 @@ import {
   type Nutrition,
   type RecipeContent,
 } from "./recipe.js"
+import { fitTags, tagLabelEn, type TagKey } from "./tags.js"
 import { knownUnitWords, normalizeUnit, unitLabelEn } from "./units.js"
 
 /** The parts of a recipe that export and import care about. */
@@ -85,7 +86,7 @@ export function toMarkdown(recipe: Exportable) {
     facts.push(`**Cooking:** ${minutesText(recipe.cookMinutes)}`)
   }
   lines.push(facts.join(" · "), "")
-  if (recipe.tags.length) lines.push(`**Tags:** ${recipe.tags.join(", ")}`, "")
+  if (recipe.tags.length) lines.push(`**Tags:** ${recipe.tags.map(tagLabelEn).join(", ")}`, "")
 
   if (recipe.ingredients.length) {
     lines.push("## Ingredients", "")
@@ -161,7 +162,7 @@ export function toSchemaOrg(recipe: Exportable): Record<string, unknown> {
       (recipe.prepMinutes ?? 0) + (recipe.cookMinutes ?? 0)
     )
   }
-  if (recipe.tags.length) out.keywords = recipe.tags.join(", ")
+  if (recipe.tags.length) out.keywords = recipe.tags.map(tagLabelEn).join(", ")
   out.recipeIngredient = recipe.ingredients.map(ingredientLine)
   out.recipeInstructions = recipe.steps.map((step) => ({
     "@type": "HowToStep",
@@ -288,9 +289,9 @@ function nutritionFrom(value: unknown): Nutrition {
   }
 }
 
-function tagsFrom(value: unknown): string[] {
-  const list = Array.isArray(value) ? value.map(text) : text(value).split(",")
-  return list.map((tag) => tag.trim().slice(0, 40)).filter(Boolean).slice(0, 30)
+/** Keywords of a web page: the ones that are on our list of tags, the rest is dropped. */
+function tagsFrom(value: unknown): TagKey[] {
+  return fitTags(Array.isArray(value) ? value.map(text) : text(value))
 }
 
 /** Finds the Recipe in JSON-LD: an object, a list, or an `@graph`. */
@@ -382,7 +383,11 @@ export function parseImport(input: string): ImportResult {
 
   const prepared =
     data && typeof data === "object" && "ingredients" in data
-      ? { ...data, ingredients: fitIngredientUnits(data.ingredients) }
+      ? {
+          ...data,
+          ingredients: fitIngredientUnits(data.ingredients),
+          ...("tags" in data ? { tags: fitTags(data.tags) } : {}),
+        }
       : data
   const result = RecipeContentSchema.omit({ source: true }).safeParse(prepared)
   if (!result.success) {

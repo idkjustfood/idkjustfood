@@ -18,7 +18,7 @@ const pancakes: RecipeInput = {
   servings: 4,
   prepMinutes: 10,
   cookMinutes: null,
-  tags: ["Breakfast", "Vegetarian"],
+  tags: ["vegetarian", "breakfast"],
   ingredients: [
     { name: "Flour", quantity: 200, unit: "g", note: null },
     { name: "Milk", quantity: 300, unit: "ml", note: "cold" },
@@ -104,7 +104,12 @@ describe("recipes", () => {
       { ingredients: [{ name: "Flour", quantity: 1, unit: "grams", note: null }] },
       { ingredients: [{ name: "Flour", quantity: 1, unit: "EL", note: null }] },
       { ingredients: [{ name: "Flour", quantity: 1, unit: "", note: null }] },
+      // Tags come from a fixed list: free text, other spellings and repeats are refused.
       { tags: ["a,b"] },
+      { tags: ["Italian"] },
+      { tags: ["italienisch"] },
+      { tags: ["tasty"] },
+      { tags: ["vegan", "vegan"] },
       { nutrition: { calories: -1, protein: null, carbs: null, fat: null } },
     ]) {
       const res = await api.post("/api/recipes", olivia, { ...pancakes, ...bad })
@@ -154,14 +159,14 @@ describe("recipes", () => {
 
 describe("search and tags", () => {
   beforeEach(async () => {
-    await create({ title: "Lentil dal", tags: ["Indian", "Vegan"], ingredients: [
+    await create({ title: "Lentil dal", tags: ["indian", "vegan"], ingredients: [
       { name: "Red lentils", quantity: 250, unit: "g", note: null },
     ] })
-    await create({ title: "Tuscan pasta", tags: ["Italian"], ingredients: [
+    await create({ title: "Tuscan pasta", tags: ["italian"], ingredients: [
       { name: "Penne", quantity: 400, unit: "g", note: "lentil-free" },
       { name: "100% cream", quantity: null, unit: null, note: null },
     ] })
-    await create({ title: "Toast", tags: ["Vegan", "Under 15 min"], ingredients: [] })
+    await create({ title: "Toast", tags: ["vegan", "under_15_min"], ingredients: [] })
   })
 
   const titles = async (query: string) =>
@@ -181,15 +186,20 @@ describe("search and tags", () => {
   })
 
   test("a tag filter needs every tag", async () => {
-    expect(await titles("?tags=Vegan")).toEqual(["Lentil dal", "Toast"])
+    expect(await titles("?tags=vegan")).toEqual(["Lentil dal", "Toast"])
     expect(await titles("?tags=vegan,indian")).toEqual(["Lentil dal"])
-    expect(await titles("?tags=Vegan,Italian")).toEqual([])
-    expect(await titles("?tags=Under%2015%20min")).toEqual(["Toast"])
+    expect(await titles("?tags=vegan,italian")).toEqual([])
+    expect(await titles("?tags=under_15_min")).toEqual(["Toast"])
+  })
+
+  test("a tag filter with a tag that is not on the list is refused", async () => {
+    const res = await api.get("/api/recipes?tags=Vegan", olivia)
+    expect(res.status).toBe(400)
   })
 
   test("search and tags work together", async () => {
-    expect(await titles("?q=l&tags=Vegan")).toEqual(["Lentil dal", "Toast"].filter((t) => /l/i.test(t)))
-    expect(await titles("?q=toast&tags=Indian")).toEqual([])
+    expect(await titles("?q=l&tags=vegan")).toEqual(["Lentil dal", "Toast"].filter((t) => /l/i.test(t)))
+    expect(await titles("?q=toast&tags=indian")).toEqual([])
   })
 })
 

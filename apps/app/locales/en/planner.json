@@ -80,12 +80,7 @@
     "calories": "Calories per day (per person)",
     "caloriesPlaceholder": "For example 2000",
     "caloriesHelp": "Uses the nutrition estimates of your recipes. Recipes without an estimate are left out when you set this.",
-    "diet": "Diet (a tag on the recipe)",
-    "dietPlaceholder": "For example vegetarian",
-    "diets": {
-      "vegetarian": "Vegetarian",
-      "vegan": "Vegan"
-    },
+    "diet": "Diet",
     "maxTime": "Longest time per meal",
     "minutes": "{{count}} min",
     "any": "Any",

@@ -113,7 +113,6 @@
     "prep": "Préparation (min)",
     "cooking": "Cuisson (min)",
     "tags": "Étiquettes",
-    "tagsPlaceholder": "Italien, Végétarien, Moins de 30 min",
     "ingredients": "Ingrédients",
     "amountHint": "Laissez la quantité vide si vous ne la connaissez pas.",
     "missingAmounts_one": "{{count}} quantité ne figurait pas dans la source. Nous l'avons laissée vide plutôt que de deviner. Complétez ce que vous savez.",
@@ -144,7 +143,10 @@
       "number": "Saisissez un nombre, par exemple 12,5.",
       "quantity": "Saisissez un nombre comme 2, 1,5 ou 1/2, ou laissez vide.",
       "ingredientName": "Ajoutez le nom de l'ingrédient."
-    }
+    },
+    "tagsHelp": "Touchez pour choisir des étiquettes dans la liste.",
+    "tagsCount_one": "{{count}} étiquette choisie",
+    "tagsCount_other": "{{count}} étiquettes choisies"
   },
   "parts": {
     "fewerServings": "Moins de portions",

@@ -45,8 +45,8 @@ wishes and recipes always give the same plan, with any AI provider or none.
 
 **How it picks recipes**
 
-- **Diet** is a tag: only recipes with that tag (any capitalisation) are used, for example
-  `vegetarian`.
+- **Diet** is one of the diet tags (`vegetarian`, `vegan`, `gluten_free`, `dairy_free`, see
+  `docs/tags.md`): only recipes with that tag are used.
 - **Time** is preparing plus cooking. A recipe that says neither is skipped, not guessed. A note says
   how many were skipped.
 - **Calories** are split over the day: 30 % breakfast, 40 % midday, 30 % afternoon. A recipe only
@@ -54,8 +54,8 @@ wishes and recipes always give the same plan, with any AI provider or none.
   wins. Recipes without a calorie estimate are skipped (with a note). Meals you keep count with their
   own calories, and the rest of the day is shared by the other slots. A skipped slot keeps its share,
   because you eat something else there.
-- **Meal-time tags:** a recipe tagged `breakfast`, `lunch`/`midday` or `dinner`/`supper`/`afternoon`
-  is only planned in a matching slot (and preferred there). A recipe without these tags fits any slot.
+- **Meal tags:** a recipe tagged `breakfast`, `midday` or `afternoon` is only planned in the slot of
+  that name (and preferred there). A recipe with none of these tags fits any slot.
 - **Variety:** the least used recipe wins ties, and a recipe is never planned twice on one day.
 - **Not enough recipes:** the slot stays empty and is listed in the answer (`unfilled`). Nothing is
   made up.

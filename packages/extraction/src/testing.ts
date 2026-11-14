@@ -10,7 +10,7 @@ export const pancakeJson = {
   servings: 4,
   prepMinutes: 10,
   cookMinutes: 15,
-  tags: ["Breakfast", "Vegetarian", "Under 30 min"],
+  tags: ["vegetarian", "under_30_min", "breakfast"],
   ingredients: [
     { name: "flour", quantity: 200, unit: "g", note: null },
     { name: "milk", quantity: 300, unit: "ml", note: null },

@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button"
 import { Card, SectionTitle } from "@/components/ui/card"
 import { Icon } from "@/components/ui/icon"
 import { Input } from "@/components/ui/input"
+import { TagPicker } from "@/components/tag-picker"
 import { UnitPicker } from "@/components/ui/unit-picker"
 import { cn } from "@/lib/utils"
 
@@ -189,13 +190,7 @@ export function RecipeForm({
             <FieldError message={errors.cookMinutes} />
           </View>
         </View>
-        <Input
-          label={t("recipes:form.tags")}
-          value={draft.tags}
-          placeholder={t("recipes:form.tagsPlaceholder")}
-          autoCapitalize="sentences"
-          onChangeText={(tags) => set({ tags })}
-        />
+        <TagPicker value={draft.tags} onChange={(tags) => set({ tags })} />
       </Card>
 
       <Card className="gap-4 p-4">

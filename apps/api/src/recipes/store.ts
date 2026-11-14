@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto"
 import { and, desc, eq, isNull, sql, type SQL } from "drizzle-orm"
 
 import { schema, type Database } from "@workspace/database"
-import type { RecipeContent } from "@workspace/schemas"
+import type { RecipeContent, TagKey } from "@workspace/schemas"
 
 import { householdStore } from "../households/store.js"
 
@@ -19,7 +19,7 @@ export type RecipeFilters = {
   /** Words to look for in the title and in ingredient names. */
   q?: string
   /** Every one of these tags must be on the recipe. */
-  tags?: string[]
+  tags?: TagKey[]
 }
 
 /** Database queries for recipes. Who may see a recipe is decided in `access`. */
@@ -81,16 +81,10 @@ export function recipeStore(db: Database) {
         )`)
       }
       if (tags?.length) {
-        // Tags are matched without regard to upper and lower case.
-        where.push(sql`(
-          SELECT bool_and(EXISTS (
-            SELECT 1 FROM unnest(${recipe.tags}) AS own WHERE lower(own) = lower(wanted)
-          ))
-          FROM unnest(${sql`ARRAY[${sql.join(
-            tags.map((tag) => sql`${tag}`),
-            sql`, `
-          )}]::text[]`}) AS wanted
-        )`)
+        where.push(sql`${recipe.tags} @> ${sql`ARRAY[${sql.join(
+          tags.map((tag) => sql`${tag}`),
+          sql`, `
+        )}]::text[]`}`)
       }
       return db
         .select()

@@ -5,6 +5,7 @@ import { Text, View } from "react-native"
 
 import {
   mealSlots,
+  tagsByGroup,
   todayString,
   weekStart,
   type GenerateResult,
@@ -13,6 +14,7 @@ import {
 
 import { Screen } from "@/components/screen"
 import { Button } from "@/components/ui/button"
+import { TagChip } from "@/components/tag-badge"
 import { Chip } from "@/components/ui/chip"
 import { Input } from "@/components/ui/input"
 import { Stepper } from "@/components/ui/stepper"
@@ -207,25 +209,16 @@ function GoalsStep({
         </Text>
       </View>
       <View className="gap-2">
-        <Input
-          label={t("planner:wizard.diet")}
-          value={goals.diet}
-          onChangeText={(diet) => set({ diet })}
-          placeholder={t("planner:wizard.dietPlaceholder")}
-          autoCapitalize="none"
-          maxLength={40}
-        />
+        <Text className="text-sm font-medium text-foreground">
+          {t("planner:wizard.diet")}
+        </Text>
         <View className="flex-row flex-wrap gap-2">
-          {["vegetarian", "vegan"].map((diet) => (
-            <Chip
+          {tagsByGroup.diet.map((diet) => (
+            <TagChip
               key={diet}
-              label={t(`planner:wizard.diets.${diet}`)}
-              selected={goals.diet.trim().toLowerCase() === diet}
-              onPress={() =>
-                set({
-                  diet: goals.diet.trim().toLowerCase() === diet ? "" : diet,
-                })
-              }
+              tag={diet}
+              selected={goals.diet === diet}
+              onPress={() => set({ diet: goals.diet === diet ? "" : diet })}
             />
           ))}
         </View>

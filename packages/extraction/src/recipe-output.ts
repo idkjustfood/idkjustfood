@@ -2,9 +2,11 @@ import { z } from "zod"
 
 import {
   fitIngredientUnits,
+  fitTags,
   IngredientSchema,
   RecipeContentSchema,
   StepSchema,
+  TagsSchema,
   emptyNutrition,
   type RecipeContent,
   type Source,
@@ -24,27 +26,12 @@ export const ExtractedRecipeSchema = z.object({
   servings: z.number().int().min(1).max(1000).nullable().default(null),
   prepMinutes: minutes.default(null),
   cookMinutes: minutes.default(null),
-  tags: z.array(z.string()).default([]),
+  /** Only tags from the fixed list; `readExtractedRecipe` fits what the AI wrote. */
+  tags: TagsSchema.default([]),
   ingredients: z.array(IngredientSchema).max(200),
   steps: z.array(StepSchema).max(200),
 })
 export type ExtractedRecipe = z.infer<typeof ExtractedRecipeSchema>
-
-/** Tags from a model can be too long or repeat: keep the usable ones. */
-export function cleanTags(tags: unknown[]) {
-  const seen = new Set<string>()
-  const result: string[] = []
-  for (const tag of tags) {
-    if (typeof tag !== "string") continue
-    const text = tag.replace(/,/g, " ").replace(/\s+/g, " ").trim()
-    const key = text.toLowerCase()
-    if (!text || text.length > 40 || seen.has(key)) continue
-    seen.add(key)
-    result.push(text)
-    if (result.length === 30) break
-  }
-  return result
-}
 
 function describe(error: z.ZodError) {
   const issue = error.issues[0]
@@ -68,7 +55,8 @@ export function readExtractedRecipe(raw: unknown): ExtractedRecipe {
       ? {
           ...raw,
           ...(Array.isArray((raw as { tags?: unknown }).tags)
-            ? { tags: cleanTags((raw as { tags: unknown[] }).tags) }
+            ? // Only tags from the list stay; anything else the AI wrote is dropped.
+              { tags: fitTags((raw as { tags: unknown[] }).tags) }
             : {}),
           // The AI writes units as the material does: fit them to our list.
           ...("ingredients" in raw

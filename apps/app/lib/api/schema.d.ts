@@ -673,7 +673,7 @@ export interface paths {
                     householdId?: string;
                     /** @description Words to look for in the title and in ingredient names */
                     q?: string;
-                    /** @description Only recipes with all of these tags. Separate tags with commas. */
+                    /** @description Only recipes with all of these tags. Separate tags with commas. Use the tag keys, for example `italian,vegetarian`; see `tagKeys` in the docs. */
                     tags?: string;
                 };
                 header?: never;
@@ -691,6 +691,15 @@ export interface paths {
                         "application/json": {
                             recipes: components["schemas"]["Recipe"][];
                         };
+                    };
+                };
+                /** @description A tag in the filter is not on the list of tags */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
                     };
                 };
                 /** @description Not signed in */
@@ -2512,7 +2521,7 @@ export interface components {
             servings: number;
             prepMinutes: number | null;
             cookMinutes: number | null;
-            tags: string[];
+            tags: ("italian" | "french" | "spanish" | "greek" | "mediterranean" | "german" | "american" | "mexican" | "turkish" | "middle_eastern" | "indian" | "thai" | "vietnamese" | "chinese" | "japanese" | "korean" | "pasta" | "pizza" | "salad" | "soup" | "stew" | "curry" | "rice" | "noodles" | "burger" | "sandwich" | "bread" | "bake" | "sauce" | "snack" | "dessert" | "cake" | "drink" | "vegetarian" | "vegan" | "gluten_free" | "dairy_free" | "high_protein" | "low_carb" | "low_calorie" | "low_fat" | "under_15_min" | "under_30_min" | "under_45_min" | "under_60_min" | "under_90_min" | "breakfast" | "midday" | "afternoon")[];
             ingredients: {
                 name: string;
                 quantity: number | null;
@@ -2547,7 +2556,7 @@ export interface components {
             servings: number;
             prepMinutes: number | null;
             cookMinutes: number | null;
-            tags: string[];
+            tags: ("italian" | "french" | "spanish" | "greek" | "mediterranean" | "german" | "american" | "mexican" | "turkish" | "middle_eastern" | "indian" | "thai" | "vietnamese" | "chinese" | "japanese" | "korean" | "pasta" | "pizza" | "salad" | "soup" | "stew" | "curry" | "rice" | "noodles" | "burger" | "sandwich" | "bread" | "bake" | "sauce" | "snack" | "dessert" | "cake" | "drink" | "vegetarian" | "vegan" | "gluten_free" | "dairy_free" | "high_protein" | "low_carb" | "low_calorie" | "low_fat" | "under_15_min" | "under_30_min" | "under_45_min" | "under_60_min" | "under_90_min" | "breakfast" | "midday" | "afternoon")[];
             ingredients: {
                 name: string;
                 quantity: number | null;
@@ -2700,7 +2709,8 @@ export interface components {
         GeneratePlan: {
             goals: {
                 caloriesPerDay?: number | null;
-                diet?: string | null;
+                /** @enum {string|null} */
+                diet?: "vegetarian" | "vegan" | "gluten_free" | "dairy_free" | null;
                 maxMinutes?: number | null;
             };
             days: {
@@ -2737,7 +2747,7 @@ export interface components {
                 servings: number;
                 prepMinutes: number | null;
                 cookMinutes: number | null;
-                tags: string[];
+                tags: ("italian" | "french" | "spanish" | "greek" | "mediterranean" | "german" | "american" | "mexican" | "turkish" | "middle_eastern" | "indian" | "thai" | "vietnamese" | "chinese" | "japanese" | "korean" | "pasta" | "pizza" | "salad" | "soup" | "stew" | "curry" | "rice" | "noodles" | "burger" | "sandwich" | "bread" | "bake" | "sauce" | "snack" | "dessert" | "cake" | "drink" | "vegetarian" | "vegan" | "gluten_free" | "dairy_free" | "high_protein" | "low_carb" | "low_calorie" | "low_fat" | "under_15_min" | "under_30_min" | "under_45_min" | "under_60_min" | "under_90_min" | "breakfast" | "midday" | "afternoon")[];
                 ingredients: {
                     name: string;
                     quantity: number | null;

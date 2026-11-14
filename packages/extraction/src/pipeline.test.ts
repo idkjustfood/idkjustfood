@@ -186,7 +186,7 @@ describe("the recipe", () => {
       ai: withAnswer(pancakeJson),
       tempRoot,
     })
-    expect(recipe.tags).toEqual(["Breakfast", "Vegetarian", "Under 30 min"])
+    expect(recipe.tags).toEqual(["vegetarian", "under_30_min", "breakfast"])
     expect(recipe.cookMinutes).toBe(15)
     expect(recipe.nutrition).toEqual({
       calories: null,
@@ -196,15 +196,16 @@ describe("the recipe", () => {
     })
   })
 
-  test("unusable tags are dropped instead of failing the job", async () => {
+  test("tags outside the list are dropped instead of failing the job", async () => {
     const recipe = await extractRecipe(text, {
       ai: withAnswer({
         ...pancakeJson,
-        tags: ["Italian, Pasta", "x".repeat(60), "Italian pasta", 5, ""],
+        tags: ["Pasta", "x".repeat(60), "tasty", "Italienisch", "italian", 5, ""],
       }),
       tempRoot,
     })
-    expect(recipe.tags).toEqual(["Italian Pasta"])
+    // Known spellings become the key, repeats go, the rest is in the list's order.
+    expect(recipe.tags).toEqual(["italian", "pasta"])
   })
 
   test("servings the source does not state become 1, not a guess", async () => {
@@ -279,5 +280,14 @@ describe("the recipe", () => {
         tempRoot,
       })
     ).rejects.toMatchObject({ code: "no_recipe_found" })
+  })
+})
+
+describe("the AI prompt for tags", () => {
+  test("lists every tag of the list and says to choose only from it", async () => {
+    const { parseRecipeSystem } = await import("./ai/prompts.js")
+    const { tagKeys } = await import("@workspace/schemas")
+    for (const tag of tagKeys) expect(parseRecipeSystem).toContain(tag)
+    expect(parseRecipeSystem).toMatch(/choose ONLY from the list/)
   })
 })

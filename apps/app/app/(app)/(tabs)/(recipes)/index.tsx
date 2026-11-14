@@ -4,12 +4,14 @@ import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ScrollView, View } from "react-native"
 
+import { isTagKey, sortTags, type TagKey } from "@workspace/schemas"
+
 import { Grid } from "@/components/grid"
 import { RecipeCard } from "@/components/recipe-card"
 import { Screen } from "@/components/screen"
 import { SpaceSwitcher } from "@/components/space-switcher"
 import { EmptyState, ErrorState, LoadingState } from "@/components/states"
-import { Chip } from "@/components/ui/chip"
+import { TagChip } from "@/components/tag-badge"
 import { SearchField } from "@/components/ui/search-field"
 import { useAppState } from "@/lib/app-state"
 import { useHousehold } from "@/lib/households"
@@ -27,12 +29,12 @@ function useDebounced<T>(value: T, ms = 250) {
 }
 
 export default function RecipeList() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const wide = useIsWide()
   const { space } = useAppState()
   const { household } = useHousehold()
   const [query, setQuery] = useState("")
-  const [tags, setTags] = useState<string[]>([])
+  const [tags, setTags] = useState<TagKey[]>([])
   const search = useDebounced(query)
 
   // Everything in this space: gives the tag chips and tells empty from "nothing found".
@@ -40,14 +42,15 @@ export default function RecipeList() {
   const found = useRecipes({ q: search, tags })
 
   const allTags = useMemo(() => {
-    const names = new Set<string>(tags)
+    const names = new Set<TagKey>(tags)
     for (const recipe of all.data ?? []) {
-      for (const tag of recipe.tags) names.add(tag)
+      for (const tag of recipe.tags) if (isTagKey(tag)) names.add(tag)
     }
-    return [...names].sort((a, b) => a.localeCompare(b, i18n.language))
-  }, [all.data, tags, i18n.language])
+    // The tags in use, in the fixed order of the list: grouped, same everywhere.
+    return sortTags([...names])
+  }, [all.data, tags])
 
-  function toggleTag(tag: string) {
+  function toggleTag(tag: TagKey) {
     setTags((current) =>
       current.includes(tag)
         ? current.filter((t) => t !== tag)
@@ -59,9 +62,9 @@ export default function RecipeList() {
   const shown = found.data ?? []
 
   const tagChips = allTags.map((tag) => (
-    <Chip
+    <TagChip
       key={tag}
-      label={tag}
+      tag={tag}
       selected={tags.includes(tag)}
       onPress={() => toggleTag(tag)}
     />

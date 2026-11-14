@@ -80,12 +80,7 @@
     "calories": "Kalorien pro Tag (pro Person)",
     "caloriesPlaceholder": "Zum Beispiel 2000",
     "caloriesHelp": "Nutzt die Nährwertschätzungen deiner Rezepte. Rezepte ohne Schätzung bleiben außen vor, wenn du das einstellst.",
-    "diet": "Ernährungsform (ein Tag am Rezept)",
-    "dietPlaceholder": "Zum Beispiel vegetarisch",
-    "diets": {
-      "vegetarian": "Vegetarisch",
-      "vegan": "Vegan"
-    },
+    "diet": "Ernährung",
     "maxTime": "Maximale Zeit pro Mahlzeit",
     "minutes": "{{count}} Min.",
     "any": "Egal",

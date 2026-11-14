@@ -6,7 +6,7 @@ import {
   type QueryClient,
 } from "@tanstack/react-query"
 
-import type { Recipe, RecipeContent } from "@workspace/schemas"
+import type { Recipe, RecipeContent, TagKey } from "@workspace/schemas"
 
 import { api, ApiError, call } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
@@ -25,7 +25,7 @@ export type { Recipe }
 export type RecipeFields = Omit<RecipeContent, "source"> &
   Partial<Pick<RecipeContent, "source">>
 
-export type RecipeFilters = { q: string; tags: string[] }
+export type RecipeFilters = { q: string; tags: TagKey[] }
 
 const keys = {
   all: ["recipes"] as const,

@@ -45,7 +45,7 @@ describe("toGenerateRequest", () => {
     days[3]!.slots = { breakfast: false, midday: false, afternoon: false }
 
     const request = toGenerateRequest(
-      { calories: "1800", diet: " vegetarian ", maxMinutes: "" },
+      { calories: "1800", diet: "vegetarian", maxMinutes: "" },
       days,
       2,
       false
