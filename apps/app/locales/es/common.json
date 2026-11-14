@@ -153,5 +153,9 @@
     "nutrition": "Nutrición",
     "time": "Tiempo",
     "meal": "Comida"
+  },
+  "stepWords": {
+    "units": "g,gramo,gramos,kg,kilo,kilos,kilogramo,kilogramos,mg,ml,mililitro,mililitros,l,litro,litros,cdta.,cdta,cucharadita,cucharaditas,cda.,cda,cucharada,cucharadas,taza,tazas,oz,onza,onzas,lb,libra,libras,fl oz,pieza,piezas,pizca,pizcas,diente,dientes,manojo,manojos,rebanada,rebanadas,lata,latas,paquete,paquetes",
+    "times": "hora,horas,h,minuto,minutos,min,segundo,segundos,seg"
   }
 }

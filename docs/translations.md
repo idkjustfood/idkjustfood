@@ -46,6 +46,8 @@ language updates it.
 1. Copy `apps/app/locales/en` to `apps/app/locales/<code>` (for example `pt`).
 2. Translate the values. Keep the keys and `{{placeholders}}` as they are.
 3. Set `languageName` in `common.json` to the language's own name ("Português").
+4. Fill `stepWords` in `common.json`: the unit words and time words (comma separated) the
+   app makes bold in recipe steps, for example `"Minuten, Min."`. English is always added.
 
 That is all. The app finds the folder at build time and lists it in the
 language picker. For languages with more plural forms (for example Polish) add

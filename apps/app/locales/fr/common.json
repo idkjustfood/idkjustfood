@@ -153,5 +153,9 @@
     "nutrition": "Nutrition",
     "time": "Temps",
     "meal": "Repas"
+  },
+  "stepWords": {
+    "units": "g,gramme,grammes,kg,kilo,kilos,kilogramme,kilogrammes,mg,ml,millilitre,millilitres,l,litre,litres,c. à c.,c. à s.,c à c,c à s,cuillère à café,cuillères à café,cuillère à soupe,cuillères à soupe,tasse,tasses,oz,once,onces,lb,livre,livres,fl oz,pièce,pièces,pincée,pincées,gousse,gousses,botte,bottes,tranche,tranches,boîte,boîtes,paquet,paquets",
+    "times": "heure,heures,h,minute,minutes,min,seconde,secondes,sec"
   }
 }

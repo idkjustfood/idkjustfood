@@ -153,5 +153,9 @@
     "nutrition": "Nutrition",
     "time": "Time",
     "meal": "Meal"
+  },
+  "stepWords": {
+    "units": "g,gram,grams,kg,kilogram,kilograms,mg,ml,milliliter,milliliters,millilitre,millilitres,l,liter,liters,litre,litres,tsp,teaspoon,teaspoons,tbsp,tablespoon,tablespoons,cup,cups,oz,ounce,ounces,lb,lbs,pound,pounds,fl oz,piece,pieces,pinch,pinches,clove,cloves,bunch,bunches,slice,slices,can,cans,pack,packs,packet,packets",
+    "times": "hour,hours,hr,hrs,h,minute,minutes,min,mins,second,seconds,sec,secs"
   }
 }

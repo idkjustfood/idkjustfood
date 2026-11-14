@@ -153,5 +153,9 @@
     "nutrition": "Nutrizione",
     "time": "Tempo",
     "meal": "Pasto"
+  },
+  "stepWords": {
+    "units": "g,grammo,grammi,kg,chilo,chili,chilogrammo,chilogrammi,mg,ml,millilitro,millilitri,l,litro,litri,cucchiaino,cucchiaini,cucchiaio,cucchiai,tazza,tazze,oz,oncia,once,lb,libbra,libbre,fl oz,pezzo,pezzi,pizzico,pizzichi,spicchio,spicchi,mazzo,mazzi,fetta,fette,scatola,scatole,confezione,confezioni",
+    "times": "ora,ore,h,minuto,minuti,min,secondo,secondi,sec"
   }
 }

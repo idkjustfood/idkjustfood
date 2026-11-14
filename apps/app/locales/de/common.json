@@ -150,5 +150,9 @@
     "nutrition": "Nährwerte",
     "time": "Zeit",
     "meal": "Mahlzeit"
+  },
+  "stepWords": {
+    "units": "g,Gramm,kg,Kilogramm,mg,ml,Milliliter,l,Liter,TL,Teelöffel,EL,Esslöffel,Tasse,Tassen,oz,Unze,Unzen,lb,Pfund,fl oz,Stück,Prise,Prisen,Zehe,Zehen,Bund,Scheibe,Scheiben,Dose,Dosen,Päckchen,Packung,Packungen",
+    "times": "Stunde,Stunden,Std.,Std,h,Minute,Minuten,Min.,Min,Sekunde,Sekunden,Sek.,Sek"
   }
 }
