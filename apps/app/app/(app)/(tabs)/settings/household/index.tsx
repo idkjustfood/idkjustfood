@@ -4,6 +4,7 @@ import {
   House,
   Link2,
   LogOut,
+  Package,
   UserMinus,
   UserPlus,
   X,
@@ -78,7 +79,16 @@ export default function HouseholdScreen() {
           title={t("settings:manage.pickTitle")}
           message={t("settings:manage.pickMessage")}
         />
-        <CreateHouseholdCard title={t("settings:manage.createAnother")} />
+        <ListGroup>
+        <ListRow
+          icon={Package}
+          title={t("settings:pantry.title")}
+          detail={t("settings:pantry.rowDetailHousehold")}
+          onPress={() => router.push("/settings/pantry")}
+        />
+      </ListGroup>
+
+      <CreateHouseholdCard title={t("settings:manage.createAnother")} />
       </Screen>
     )
   }
@@ -105,12 +115,16 @@ function CreateHouseholdCard({ title }: { title?: string }) {
   const [name, setName] = useState("")
   const create = useCreateHousehold()
   const { setHouseholdId } = useAppState()
+  const [created, setCreated] = useState<string | null>(null)
   const submit = () => {
     if (!name.trim()) return
     create.mutate(name.trim(), {
       onSuccess: (created) => {
         setName("")
-        if (created) setHouseholdId(created.id)
+        if (created) {
+          setHouseholdId(created.id)
+          setCreated(created.name)
+        }
       },
     })
   }
@@ -130,6 +144,18 @@ function CreateHouseholdCard({ title }: { title?: string }) {
         onSubmitEditing={submit}
         maxLength={80}
       />
+      {created && (
+        <View className="gap-2 rounded-md bg-muted p-3">
+          <Text role="status" className="text-foreground">
+            {t("settings:manage.createdPantry", { name: created })}
+          </Text>
+          <Button
+            variant="outline"
+            label={t("settings:manage.viewPantry")}
+            onPress={() => router.push("/settings/pantry")}
+          />
+        </View>
+      )}
       {create.error && (
         <Text role="alert" className="text-sm text-destructive">
           {create.error.message}

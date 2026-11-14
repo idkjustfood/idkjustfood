@@ -71,6 +71,13 @@
       "when": 1794666363718,
       "tag": "0009_light_klaw",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1794669209610,
+      "tag": "0010_swift_molten_man",
+      "breakpoints": true
     }
   ]
 }

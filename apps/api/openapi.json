@@ -1057,11 +1057,128 @@
             "type": "integer",
             "minimum": 1,
             "maximum": 1000
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "de",
+              "es",
+              "fr",
+              "it"
+            ]
           }
         },
         "required": [
           "recipeId"
         ]
+      },
+      "Pantry": {
+        "type": "object",
+        "properties": {
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                }
+              },
+              "required": [
+                "id",
+                "name"
+              ]
+            }
+          }
+        },
+        "required": [
+          "householdId",
+          "items"
+        ]
+      },
+      "PantryItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "PantryItemInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "de",
+              "es",
+              "fr",
+              "it"
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "PantryReset": {
+        "type": "object",
+        "properties": {
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "de",
+              "es",
+              "fr",
+              "it"
+            ]
+          }
+        }
       },
       "MealPlan": {
         "type": "object",
@@ -2015,6 +2132,17 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 80
+                  },
+                  "language": {
+                    "type": "string",
+                    "enum": [
+                      "en",
+                      "de",
+                      "es",
+                      "fr",
+                      "it"
+                    ],
+                    "description": "The language of the household's starting list of pantry staples (`en`, `de`, `es`, `fr` or `it`)"
                   }
                 },
                 "required": [
@@ -3694,7 +3822,7 @@
           }
         ],
         "summary": "Add a recipe's ingredients to a list",
-        "description": "Scales the amounts to `servings` (the recipe's own servings by default) and merges identical ingredients: the same name with the same unit adds up (200 g + 100 g flour is 300 g). Different units stay on separate lines, and an ingredient without an amount is added without one. You need to be able to see the recipe.",
+        "description": "Scales the amounts to `servings` (the recipe's own servings by default) and merges identical ingredients: the same name with the same unit adds up (200 g + 100 g flour is 300 g). Different units stay on separate lines, and an ingredient without an amount is added without one. Ingredients on the pantry list of the list's space (your own, or the household's) are left out and returned in `skipped`. You need to be able to see the recipe.",
         "parameters": [
           {
             "schema": {
@@ -3725,10 +3853,21 @@
                   "properties": {
                     "list": {
                       "$ref": "#/components/schemas/ShoppingList"
+                    },
+                    "skipped": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Names of the ingredients that were left out because they are on the pantry list",
+                      "example": [
+                        "Salt"
+                      ]
                     }
                   },
                   "required": [
-                    "list"
+                    "list",
+                    "skipped"
                   ]
                 }
               }
@@ -3756,6 +3895,281 @@
           },
           "404": {
             "description": "The list or the recipe doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pantry": {
+      "get": {
+        "tags": [
+          "Pantry"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Get the pantry staples",
+        "description": "The things you always have at home. They are left out when a recipe's ingredients are added to a shopping list. Without `householdId` this is your own pantry; with it, the pantry of that household. A pantry is made with the default list the first time it is needed. `language` (`en`, `de`, `es`, `fr` or `it`) picks the default list's language.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "householdId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "en",
+                "de",
+                "es",
+                "fr",
+                "it"
+              ]
+            },
+            "required": false,
+            "name": "language",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The pantry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pantry": {
+                      "$ref": "#/components/schemas/Pantry"
+                    }
+                  },
+                  "required": [
+                    "pantry"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pantry/items": {
+      "post": {
+        "tags": [
+          "Pantry"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add a pantry staple",
+        "description": "Names are compared without upper/lower case and extra spaces, so adding \"salt\" when \"Salt\" is there returns the existing one. You may choose the `id`. Without `householdId` this is your own pantry; with it, the pantry of that household. A pantry is made with the default list the first time it is needed. `language` (`en`, `de`, `es`, `fr` or `it`) picks the default list's language.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PantryItemInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added, or already there",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "item": {
+                      "$ref": "#/components/schemas/PantryItem"
+                    }
+                  },
+                  "required": [
+                    "item"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id is already used by another item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pantry/items/{itemId}": {
+      "delete": {
+        "tags": [
+          "Pantry"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Remove a pantry staple",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "itemId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Removed"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The item doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pantry/reset": {
+      "post": {
+        "tags": [
+          "Pantry"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Reset the pantry to the default list",
+        "description": "Replaces the whole list. Items that were added are removed. Without `householdId` this is your own pantry; with it, the pantry of that household. A pantry is made with the default list the first time it is needed. `language` (`en`, `de`, `es`, `fr` or `it`) picks the default list's language.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PantryReset"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The default list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pantry": {
+                      "$ref": "#/components/schemas/Pantry"
+                    }
+                  },
+                  "required": [
+                    "pantry"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
             "content": {
               "application/json": {
                 "schema": {

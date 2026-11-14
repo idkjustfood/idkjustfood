@@ -70,7 +70,8 @@
     "listDetail_other": "{{kind}} · {{count}} items",
     "adding": "Adding…",
     "newList": "New list",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "skipped": "Left out because you always have them at home: {{items}}."
   },
   "edit": {
     "title": "Edit recipe",

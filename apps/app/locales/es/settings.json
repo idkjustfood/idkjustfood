@@ -115,7 +115,9 @@
     "removeText": "{{name}} dejará de ver las recetas y listas de la compra de este hogar. Podrás invitarle de nuevo más tarde.",
     "leaveText": "Dejarás de ver las recetas y listas de la compra de este hogar. Necesitarás una nueva invitación para volver.",
     "removeConfirm": "Quitar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "createdPantry": "Se creó {{name}} con una lista de básicos de despensa. No se añaden a la lista de la compra cuando añades una receta.",
+    "viewPantry": "Ver la lista"
   },
   "invite": {
     "title": "Invitar a alguien",
@@ -134,5 +136,28 @@
   "billing": {
     "title": "Plan y facturación",
     "message": "Gestiona aquí tu plan de idkjustfood Cloud."
+  },
+  "pantry": {
+    "title": "Básicos de despensa",
+    "subtitlePersonal": "Lo que siempre tienes en casa",
+    "subtitleHousehold": "Lo que {{name}} siempre tiene en casa",
+    "hint": "Los productos de esta lista no se añaden a la lista de la compra cuando añades una receta. Después ves cuáles se omitieron.",
+    "loading": "Cargando los básicos de despensa",
+    "loadError": "No se pudieron cargar los básicos de despensa",
+    "addLabel": "Añadir un producto",
+    "addPlaceholder": "Por ejemplo harina",
+    "add": "Añadir a la lista",
+    "emptyTitle": "La lista está vacía",
+    "emptyMessage": "Todos los ingredientes se añaden a las listas de la compra. Añade lo que siempre tienes o restablece la lista predeterminada.",
+    "count_one": "{{count}} producto",
+    "count_other": "{{count}} productos",
+    "remove": "Quitar {{name}}",
+    "reset": "Restablecer la lista predeterminada",
+    "resetTitle": "¿Restablecer la lista predeterminada?",
+    "resetText": "Esto sustituye toda la lista por la predeterminada. Los productos que añadiste se eliminan.",
+    "resetConfirm": "Restablecer la lista",
+    "cancel": "Cancelar",
+    "rowDetail": "La sal, el aceite y más no se añaden a las listas de la compra",
+    "rowDetailHousehold": "Lo que el hogar siempre tiene en casa"
   }
 }

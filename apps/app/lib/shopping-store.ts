@@ -15,17 +15,23 @@ const statusOf = (error: unknown) =>
     ? Number((error as { status: unknown }).status)
     : 0
 
+/** What adding a recipe gives back: the new list and the ingredients that were left out. */
+export type AddedRecipe = { list: ShoppingList; skipped: string[] }
+
 export type ShoppingDeps = {
   /** All lists the user can see. Missing in the demo, which has no server. */
   fetchLists?: () => Promise<ShoppingList[]>
   /** Sends one change. Throws an error with a `status` when it fails. */
   send: (op: ShoppingOp) => Promise<void>
-  /** Adds a recipe to a list on the server and returns the list. */
+  /**
+   * Adds a recipe to a list on the server and returns the list, with the names of the
+   * ingredients that were left out because they are pantry staples.
+   */
   addRecipe: (
     list: ShoppingList,
     recipeId: string,
     servings: number | undefined
-  ) => Promise<ShoppingList>
+  ) => Promise<AddedRecipe>
   /** Where the lists and waiting changes are kept on this device. Missing in the demo. */
   storage?: {
     read: () => Promise<string | null>
@@ -219,10 +225,14 @@ export class ShoppingStore {
     const list = this.snapshot.find((l) => l.id === listId)
     if (!list)
       throw Object.assign(new Error("Shopping list not found"), { status: 404 })
-    const updated = await this.deps.addRecipe(list, recipeId, servings)
+    const { list: updated, skipped } = await this.deps.addRecipe(
+      list,
+      recipeId,
+      servings
+    )
     this.snapshot = this.snapshot.map((l) => (l.id === listId ? updated : l))
     await this.persist()
     this.emit()
-    return updated
+    return { list: updated, skipped }
   }
 }

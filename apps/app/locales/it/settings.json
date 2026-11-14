@@ -115,7 +115,9 @@
     "removeText": "{{name}} non vedrà più le ricette e le liste della spesa di questa famiglia. Potrai invitarlo di nuovo più tardi.",
     "leaveText": "Non vedrai più le ricette e le liste della spesa di questa famiglia. Ti servirà un nuovo invito per tornare.",
     "removeConfirm": "Rimuovi",
-    "cancel": "Annulla"
+    "cancel": "Annulla",
+    "createdPantry": "{{name}} è stato creato con una lista di basi della dispensa. Non vengono aggiunte alla lista della spesa quando aggiungi una ricetta.",
+    "viewPantry": "Vedi la lista"
   },
   "invite": {
     "title": "Invita qualcuno",
@@ -134,5 +136,28 @@
   "billing": {
     "title": "Piano e fatturazione",
     "message": "Gestisci qui il tuo piano idkjustfood Cloud."
+  },
+  "pantry": {
+    "title": "Basi della dispensa",
+    "subtitlePersonal": "Quello che hai sempre in casa",
+    "subtitleHousehold": "Quello che {{name}} ha sempre in casa",
+    "hint": "Gli elementi di questa lista non vengono aggiunti alla lista della spesa quando aggiungi una ricetta. Dopo vedi quali sono stati saltati.",
+    "loading": "Caricamento delle basi della dispensa",
+    "loadError": "Impossibile caricare le basi della dispensa",
+    "addLabel": "Aggiungi un elemento",
+    "addPlaceholder": "Per esempio farina",
+    "add": "Aggiungi alla lista",
+    "emptyTitle": "La lista è vuota",
+    "emptyMessage": "Tutti gli ingredienti vengono aggiunti alle liste della spesa. Aggiungi ciò che hai sempre o ripristina la lista predefinita.",
+    "count_one": "{{count}} elemento",
+    "count_other": "{{count}} elementi",
+    "remove": "Rimuovi {{name}}",
+    "reset": "Ripristina la lista predefinita",
+    "resetTitle": "Ripristinare la lista predefinita?",
+    "resetText": "Tutta la lista viene sostituita da quella predefinita. Gli elementi che hai aggiunto vengono rimossi.",
+    "resetConfirm": "Ripristina la lista",
+    "cancel": "Annulla",
+    "rowDetail": "Sale, olio e altro non vanno nelle liste della spesa",
+    "rowDetailHousehold": "Quello che la famiglia ha sempre in casa"
   }
 }

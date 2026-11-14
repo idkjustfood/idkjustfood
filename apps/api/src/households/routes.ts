@@ -4,8 +4,10 @@ import type { Context } from "hono"
 import type { ContentfulStatusCode } from "hono/utils/http-status"
 
 import type { Database } from "@workspace/database"
+import { RecipeLanguageSchema } from "@workspace/schemas"
 
 import type { Auth, AuthEnv } from "../auth.js"
+import { pantryStore } from "../pantry/store.js"
 import { requireSession, type AuthVariables } from "../session.js"
 import { hasRole, householdStore } from "./store.js"
 
@@ -133,7 +135,13 @@ const createHousehold = createRoute({
     body: {
       content: {
         "application/json": {
-          schema: z.object({ name: z.string().trim().min(1).max(80) }),
+          schema: z.object({
+            name: z.string().trim().min(1).max(80),
+            language: RecipeLanguageSchema.optional().openapi({
+              description:
+                "The language of the household's starting list of pantry staples (`en`, `de`, `es`, `fr` or `it`)",
+            }),
+          }),
         },
       },
       required: true,
@@ -285,6 +293,7 @@ const iso = (date: Date) => date.toISOString()
 /** Household, member and invite endpoints. Mounted under /api. */
 export function householdRoutes(db: Database, auth: Auth, env: AuthEnv) {
   const store = householdStore(db)
+  const pantry = pantryStore(db)
   const appUrl = env.APP_URL?.replace(/\/+$/, "")
   const inviteUrl = (id: string) => (appUrl ? `${appUrl}/invite/${id}` : null)
 
@@ -351,12 +360,14 @@ export function householdRoutes(db: Database, auth: Auth, env: AuthEnv) {
   })
 
   app.openapi(createHousehold, async (c) => {
-    const { name } = c.req.valid("json")
+    const { name, language } = c.req.valid("json")
     const slug = `${slugify(name)}-${crypto.randomUUID().slice(0, 8)}`
     const org = await auth.api.createOrganization({
       body: { name, slug },
       headers: c.req.raw.headers,
     })
+    // Every household starts with a list of pantry staples.
+    await pantry.access(c.get("user").id, org!.id, language)
     return c.json(
       { household: { id: org!.id, name: org!.name, role: "owner" } },
       201

@@ -56,6 +56,11 @@ export interface paths {
                 content: {
                     "application/json": {
                         name: string;
+                        /**
+                         * @description The language of the household's starting list of pantry staples (`en`, `de`, `es`, `fr` or `it`)
+                         * @enum {string}
+                         */
+                        language?: "en" | "de" | "es" | "fr" | "it";
                     };
                 };
             };
@@ -1492,7 +1497,7 @@ export interface paths {
         put?: never;
         /**
          * Add a recipe's ingredients to a list
-         * @description Scales the amounts to `servings` (the recipe's own servings by default) and merges identical ingredients: the same name with the same unit adds up (200 g + 100 g flour is 300 g). Different units stay on separate lines, and an ingredient without an amount is added without one. You need to be able to see the recipe.
+         * @description Scales the amounts to `servings` (the recipe's own servings by default) and merges identical ingredients: the same name with the same unit adds up (200 g + 100 g flour is 300 g). Different units stay on separate lines, and an ingredient without an amount is added without one. Ingredients on the pantry list of the list's space (your own, or the household's) are left out and returned in `skipped`. You need to be able to see the recipe.
          */
         post: {
             parameters: {
@@ -1517,6 +1522,13 @@ export interface paths {
                     content: {
                         "application/json": {
                             list: components["schemas"]["ShoppingList"];
+                            /**
+                             * @description Names of the ingredients that were left out because they are on the pantry list
+                             * @example [
+                             *       "Salt"
+                             *     ]
+                             */
+                            skipped: string[];
                         };
                     };
                 };
@@ -1539,6 +1551,266 @@ export interface paths {
                     };
                 };
                 /** @description The list or the recipe doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/pantry": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get the pantry staples
+         * @description The things you always have at home. They are left out when a recipe's ingredients are added to a shopping list. Without `householdId` this is your own pantry; with it, the pantry of that household. A pantry is made with the default list the first time it is needed. `language` (`en`, `de`, `es`, `fr` or `it`) picks the default list's language.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    householdId?: string;
+                    language?: "en" | "de" | "es" | "fr" | "it";
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The pantry */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            pantry: components["schemas"]["Pantry"];
+                        };
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/pantry/items": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add a pantry staple
+         * @description Names are compared without upper/lower case and extra spaces, so adding "salt" when "Salt" is there returns the existing one. You may choose the `id`. Without `householdId` this is your own pantry; with it, the pantry of that household. A pantry is made with the default list the first time it is needed. `language` (`en`, `de`, `es`, `fr` or `it`) picks the default list's language.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PantryItemInput"];
+                };
+            };
+            responses: {
+                /** @description Added, or already there */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            item: components["schemas"]["PantryItem"];
+                        };
+                    };
+                };
+                /** @description Invalid item */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description That id is already used by another item */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/pantry/items/{itemId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove a pantry staple */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    itemId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Removed */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The item doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/pantry/reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reset the pantry to the default list
+         * @description Replaces the whole list. Items that were added are removed. Without `householdId` this is your own pantry; with it, the pantry of that household. A pantry is made with the default list the first time it is needed. `language` (`en`, `de`, `es`, `fr` or `it`) picks the default list's language.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PantryReset"];
+                };
+            };
+            responses: {
+                /** @description The default list */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            pantry: components["schemas"]["Pantry"];
+                        };
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -2636,6 +2908,31 @@ export interface components {
         AddRecipeToList: {
             recipeId: string;
             servings?: number;
+            /** @enum {string} */
+            language?: "en" | "de" | "es" | "fr" | "it";
+        };
+        Pantry: {
+            householdId: string | null;
+            items: {
+                id: string;
+                name: string;
+            }[];
+        };
+        PantryItem: {
+            id: string;
+            name: string;
+        };
+        PantryItemInput: {
+            id?: string;
+            name: string;
+            householdId?: string | null;
+            /** @enum {string} */
+            language?: "en" | "de" | "es" | "fr" | "it";
+        };
+        PantryReset: {
+            householdId?: string | null;
+            /** @enum {string} */
+            language?: "en" | "de" | "es" | "fr" | "it";
         };
         MealPlan: {
             id: string;

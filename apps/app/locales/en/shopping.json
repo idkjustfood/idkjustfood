@@ -56,7 +56,10 @@
     "add": "Add {{title}}",
     "adding": "Adding…",
     "addError": "Could not add {{title}}. Try again.",
-    "offline": "You need a connection to add a recipe. Your other changes are saved and will be sent first."
+    "offline": "You need a connection to add a recipe. Your other changes are saved and will be sent first.",
+    "addedTitle": "Recipe added",
+    "skipped": "Left out because you always have them at home: {{items}}.",
+    "done": "Done"
   },
   "options": {
     "title": "List options",
