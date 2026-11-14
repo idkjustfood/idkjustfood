@@ -67,6 +67,12 @@ docker compose up -d
 More: [how to add an input or platform](docs/adding-an-input.md) and
 [how to add an AI provider](docs/ai-providers.md).
 
+## Shopping lists
+
+Personal and household shopping lists that work offline on the phone, with recipe ingredients
+merged into one line per ingredient. See [shopping lists](docs/shopping-lists.md) for the API and
+how offline works.
+
 ## Self-hosting
 
 One Compose file (`docker-compose.yml`) runs everything: `postgres`, `api`, `worker` and `web` (the
