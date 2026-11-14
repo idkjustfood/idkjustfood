@@ -7,6 +7,7 @@ import type { InputModule, JobQueue } from "@workspace/extraction"
 import { createAuth, socialProvidersFromEnv, type AuthEnv } from "./auth.js"
 import { extractionRoutes } from "./extractions/routes.js"
 import { householdRoutes } from "./households/routes.js"
+import { plannerRoutes } from "./planner/routes.js"
 import { recipeRoutes } from "./recipes/routes.js"
 import { shoppingRoutes } from "./shopping/routes.js"
 import { signupModeFromEnv, signupPolicy } from "./signup-mode.js"
@@ -75,6 +76,9 @@ export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
 
   // Shopping lists: personal or household, with items and recipe ingredients.
   app.route("/api", shoppingRoutes(db, auth))
+
+  // Meal plans: personal or household, three meals a day for any number of weeks.
+  app.route("/api", plannerRoutes(db, auth))
 
   // Recipe extraction: add a recipe from a link, a photo or text (runs in the worker).
   app.route(

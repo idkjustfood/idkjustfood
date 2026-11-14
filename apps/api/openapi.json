@@ -853,6 +853,450 @@
           "recipeId"
         ]
       },
+      "MealPlan": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "userId": {
+            "type": "string"
+          },
+          "meals": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "slot": {
+                  "type": "string",
+                  "enum": [
+                    "breakfast",
+                    "midday",
+                    "afternoon"
+                  ]
+                },
+                "servings": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                },
+                "recipe": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "servings": {
+                      "type": "integer"
+                    },
+                    "prepMinutes": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "cookMinutes": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "calories": {
+                      "type": [
+                        "number",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "servings",
+                    "prepMinutes",
+                    "cookMinutes",
+                    "calories"
+                  ]
+                }
+              },
+              "required": [
+                "date",
+                "slot",
+                "servings",
+                "recipe"
+              ]
+            }
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "householdId",
+          "userId",
+          "meals",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "MealPlanInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "MealPlanRename": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "SetMeal": {
+        "type": "object",
+        "properties": {
+          "recipeId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "servings": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 2
+          }
+        },
+        "required": [
+          "recipeId"
+        ]
+      },
+      "MealServings": {
+        "type": "object",
+        "properties": {
+          "servings": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          }
+        },
+        "required": [
+          "servings"
+        ]
+      },
+      "GeneratePlanResult": {
+        "type": "object",
+        "properties": {
+          "plan": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "householdId": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "userId": {
+                "type": "string"
+              },
+              "meals": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                    },
+                    "slot": {
+                      "type": "string",
+                      "enum": [
+                        "breakfast",
+                        "midday",
+                        "afternoon"
+                      ]
+                    },
+                    "servings": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 1000
+                    },
+                    "recipe": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "servings": {
+                          "type": "integer"
+                        },
+                        "prepMinutes": {
+                          "type": [
+                            "integer",
+                            "null"
+                          ]
+                        },
+                        "cookMinutes": {
+                          "type": [
+                            "integer",
+                            "null"
+                          ]
+                        },
+                        "calories": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "title",
+                        "servings",
+                        "prepMinutes",
+                        "cookMinutes",
+                        "calories"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "date",
+                    "slot",
+                    "servings",
+                    "recipe"
+                  ]
+                }
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "householdId",
+              "userId",
+              "meals",
+              "createdAt",
+              "updatedAt"
+            ]
+          },
+          "unfilled": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "slot": {
+                  "type": "string",
+                  "enum": [
+                    "breakfast",
+                    "midday",
+                    "afternoon"
+                  ]
+                },
+                "reason": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "date",
+                "slot",
+                "reason"
+              ]
+            }
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "plan",
+          "unfilled",
+          "notes"
+        ]
+      },
+      "GeneratePlan": {
+        "type": "object",
+        "properties": {
+          "goals": {
+            "type": "object",
+            "properties": {
+              "caloriesPerDay": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 500,
+                "maximum": 10000
+              },
+              "diet": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "minLength": 1,
+                "maxLength": 40
+              },
+              "maxMinutes": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "minimum": 1,
+                "maximum": 1000
+              }
+            }
+          },
+          "days": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "skip": {
+                  "type": "boolean"
+                },
+                "servings": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000
+                },
+                "skipSlots": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "breakfast",
+                      "midday",
+                      "afternoon"
+                    ]
+                  },
+                  "maxItems": 3
+                }
+              },
+              "required": [
+                "date"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 56
+          },
+          "servings": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 2
+          },
+          "overwrite": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": [
+          "goals",
+          "days"
+        ]
+      },
+      "PlanAddedToList": {
+        "type": "object",
+        "properties": {
+          "listId": {
+            "type": "string"
+          },
+          "added": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "listId",
+          "added"
+        ]
+      },
+      "PlanToList": {
+        "type": "object",
+        "properties": {
+          "listId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "from": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "to": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        },
+        "required": [
+          "listId"
+        ]
+      },
       "ExtractionJob": {
         "type": "object",
         "properties": {
@@ -2984,6 +3428,804 @@
           },
           "404": {
             "description": "The list or the recipe doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meal-plans": {
+      "get": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "List your meal plans",
+        "description": "Your personal plans and the plans of every household you are in. The meals are left out; get one plan to see them.",
+        "responses": {
+          "200": {
+            "description": "Plans, oldest first",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plans": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/MealPlan"
+                      }
+                    }
+                  },
+                  "required": [
+                    "plans"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Make a meal plan",
+        "description": "Send `householdId` to share the plan with a household you are in; leave it out for a personal plan. A plan has no fixed length: it holds meals for any days, so you can plan weeks ahead.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MealPlanInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/components/schemas/MealPlan"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid plan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id is already used by another plan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meal-plans/{planId}": {
+      "get": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Get a meal plan with its meals",
+        "description": "Every meal is a recipe in one of three slots of a day: `breakfast`, `midday` or `afternoon`. Use `from` and `to` to get only some days. Calories are an estimate per serving.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "description": "Only meals from this day on (YYYY-MM-DD)."
+            },
+            "required": false,
+            "description": "Only meals from this day on (YYYY-MM-DD).",
+            "name": "from",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "description": "Only meals up to and including this day (YYYY-MM-DD)."
+            },
+            "required": false,
+            "description": "Only meals up to and including this day (YYYY-MM-DD).",
+            "name": "to",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The plan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/components/schemas/MealPlan"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Rename a meal plan",
+        "description": "Everyone who can see the plan can rename it.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MealPlanRename"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Renamed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/components/schemas/MealPlan"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a meal plan",
+        "description": "The person who made the plan can delete it. For a household plan, the household's owners can too.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Only the person who made the plan or a household owner can delete it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meal-plans/{planId}/meals/{date}/{slot}": {
+      "put": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Put a recipe in a slot",
+        "description": "Plans or swaps the meal of one slot. A household plan can only use the household's recipes, so that every member can open them. A personal plan can use your own recipes and your households'.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "required": true,
+            "name": "date",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "breakfast",
+                "midday",
+                "afternoon"
+              ]
+            },
+            "required": true,
+            "name": "slot",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetMeal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The plan with the meal set",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/components/schemas/MealPlan"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid meal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan or the recipe doesn't exist, or you can't use it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Change the servings of a meal",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "required": true,
+            "name": "date",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "breakfast",
+                "midday",
+                "afternoon"
+              ]
+            },
+            "required": true,
+            "name": "slot",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MealServings"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The plan with the new servings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/components/schemas/MealPlan"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid servings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan doesn't exist, or nothing is planned in that slot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Empty a slot",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "required": true,
+            "name": "date",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "breakfast",
+                "midday",
+                "afternoon"
+              ]
+            },
+            "required": true,
+            "name": "slot",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The plan without the meal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/components/schemas/MealPlan"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan doesn't exist, or nothing is planned in that slot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meal-plans/{planId}/generate": {
+      "post": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Fill days automatically from your saved recipes",
+        "description": "Plain code, not AI: the same wishes give the same plan, whichever AI provider (or none) the server uses. Wishes: `caloriesPerDay`, `diet` (a tag) and `maxMinutes`. `days` lists the days to fill; a day can be skipped (`skip`), have meals skipped (`skipSlots`) or its own `servings`. By default only empty slots are filled; `overwrite` replaces planned meals. Recipes that lack the data a wish needs (a calorie estimate, a cooking time) are skipped, never guessed. When nothing matches, the slot stays empty and is listed in `unfilled`. Calories are estimates.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GeneratePlan"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The plan, and the slots that stayed empty",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratePlanResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meal-plans/{planId}/shopping-list": {
+      "post": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add the plan's ingredients to a shopping list",
+        "description": "Nothing is added to a list unless you call this. Every meal's ingredients are scaled to its servings and merged into the list like a recipe is. Use `from` and `to` to take only some days.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanToList"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The ingredients were added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanAddedToList"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan or the list doesn't exist, or you can't see it",
             "content": {
               "application/json": {
                 "schema": {

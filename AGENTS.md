@@ -104,6 +104,10 @@ TypeScript everywhere, in one monorepo.
   the worker runs. See `README.md`, `docs/adding-an-input.md` and `docs/ai-providers.md`.
 - Shopping lists (personal and household) work end to end, including merging ingredients and
   offline use on the phone. See `docs/shopping-lists.md`.
+- The meal planner works end to end: personal and household plans, three meals a day for any
+  number of weeks, manual planning, an automatic planner in plain code (goals, wizard) and adding a
+  plan's ingredients to a shopping list. See `docs/meal-planner.md`. The calorie and nutrient
+  optimizer on top of it is not built yet.
 - The app has all its screens; adding a recipe from a link, photo or text is not connected to the
   extraction endpoints yet.
 

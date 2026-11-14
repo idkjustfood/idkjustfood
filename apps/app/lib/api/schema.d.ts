@@ -1546,6 +1546,616 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/meal-plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List your meal plans
+         * @description Your personal plans and the plans of every household you are in. The meals are left out; get one plan to see them.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Plans, oldest first */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            plans: components["schemas"]["MealPlan"][];
+                        };
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Make a meal plan
+         * @description Send `householdId` to share the plan with a household you are in; leave it out for a personal plan. A plan has no fixed length: it holds meals for any days, so you can plan weeks ahead.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["MealPlanInput"];
+                };
+            };
+            responses: {
+                /** @description Created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            plan: components["schemas"]["MealPlan"];
+                        };
+                    };
+                };
+                /** @description Invalid plan */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description That id is already used by another plan */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/meal-plans/{planId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a meal plan with its meals
+         * @description Every meal is a recipe in one of three slots of a day: `breakfast`, `midday` or `afternoon`. Use `from` and `to` to get only some days. Calories are an estimate per serving.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description Only meals from this day on (YYYY-MM-DD). */
+                    from?: string;
+                    /** @description Only meals up to and including this day (YYYY-MM-DD). */
+                    to?: string;
+                };
+                header?: never;
+                path: {
+                    planId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The plan */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            plan: components["schemas"]["MealPlan"];
+                        };
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        /**
+         * Delete a meal plan
+         * @description The person who made the plan can delete it. For a household plan, the household's owners can too.
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    planId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Only the person who made the plan or a household owner can delete it */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /**
+         * Rename a meal plan
+         * @description Everyone who can see the plan can rename it.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    planId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["MealPlanRename"];
+                };
+            };
+            responses: {
+                /** @description Renamed */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            plan: components["schemas"]["MealPlan"];
+                        };
+                    };
+                };
+                /** @description Invalid name */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/meal-plans/{planId}/meals/{date}/{slot}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Put a recipe in a slot
+         * @description Plans or swaps the meal of one slot. A household plan can only use the household's recipes, so that every member can open them. A personal plan can use your own recipes and your households'.
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    planId: string;
+                    date: string;
+                    slot: "breakfast" | "midday" | "afternoon";
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["SetMeal"];
+                };
+            };
+            responses: {
+                /** @description The plan with the meal set */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            plan: components["schemas"]["MealPlan"];
+                        };
+                    };
+                };
+                /** @description Invalid meal */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan or the recipe doesn't exist, or you can't use it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        /** Empty a slot */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    planId: string;
+                    date: string;
+                    slot: "breakfast" | "midday" | "afternoon";
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The plan without the meal */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            plan: components["schemas"]["MealPlan"];
+                        };
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan doesn't exist, or nothing is planned in that slot */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /** Change the servings of a meal */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    planId: string;
+                    date: string;
+                    slot: "breakfast" | "midday" | "afternoon";
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["MealServings"];
+                };
+            };
+            responses: {
+                /** @description The plan with the new servings */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            plan: components["schemas"]["MealPlan"];
+                        };
+                    };
+                };
+                /** @description Invalid servings */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan doesn't exist, or nothing is planned in that slot */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/meal-plans/{planId}/generate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Fill days automatically from your saved recipes
+         * @description Plain code, not AI: the same wishes give the same plan, whichever AI provider (or none) the server uses. Wishes: `caloriesPerDay`, `diet` (a tag) and `maxMinutes`. `days` lists the days to fill; a day can be skipped (`skip`), have meals skipped (`skipSlots`) or its own `servings`. By default only empty slots are filled; `overwrite` replaces planned meals. Recipes that lack the data a wish needs (a calorie estimate, a cooking time) are skipped, never guessed. When nothing matches, the slot stays empty and is listed in `unfilled`. Calories are estimates.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    planId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["GeneratePlan"];
+                };
+            };
+            responses: {
+                /** @description The plan, and the slots that stayed empty */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["GeneratePlanResult"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/meal-plans/{planId}/shopping-list": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add the plan's ingredients to a shopping list
+         * @description Nothing is added to a list unless you call this. Every meal's ingredients are scaled to its servings and merged into the list like a recipe is. Use `from` and `to` to take only some days.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    planId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["PlanToList"];
+                };
+            };
+            responses: {
+                /** @description The ingredients were added */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PlanAddedToList"];
+                    };
+                };
+                /** @description Invalid request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan or the list doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/extractions/link": {
         parameters: {
             query?: never;
@@ -2011,6 +2621,101 @@ export interface components {
         AddRecipeToList: {
             recipeId: string;
             servings?: number;
+        };
+        MealPlan: {
+            id: string;
+            name: string;
+            householdId: string | null;
+            userId: string;
+            meals: {
+                date: string;
+                /** @enum {string} */
+                slot: "breakfast" | "midday" | "afternoon";
+                servings: number;
+                recipe: {
+                    id: string;
+                    title: string;
+                    servings: number;
+                    prepMinutes: number | null;
+                    cookMinutes: number | null;
+                    calories: number | null;
+                };
+            }[];
+            createdAt: string;
+            updatedAt: string;
+        };
+        MealPlanInput: {
+            id?: string;
+            name: string;
+            householdId?: string | null;
+        };
+        MealPlanRename: {
+            name: string;
+        };
+        SetMeal: {
+            recipeId: string;
+            /** @default 2 */
+            servings: number;
+        };
+        MealServings: {
+            servings: number;
+        };
+        GeneratePlanResult: {
+            plan: {
+                id: string;
+                name: string;
+                householdId: string | null;
+                userId: string;
+                meals: {
+                    date: string;
+                    /** @enum {string} */
+                    slot: "breakfast" | "midday" | "afternoon";
+                    servings: number;
+                    recipe: {
+                        id: string;
+                        title: string;
+                        servings: number;
+                        prepMinutes: number | null;
+                        cookMinutes: number | null;
+                        calories: number | null;
+                    };
+                }[];
+                createdAt: string;
+                updatedAt: string;
+            };
+            unfilled: {
+                date: string;
+                /** @enum {string} */
+                slot: "breakfast" | "midday" | "afternoon";
+                reason: string;
+            }[];
+            notes: string[];
+        };
+        GeneratePlan: {
+            goals: {
+                caloriesPerDay?: number | null;
+                diet?: string | null;
+                maxMinutes?: number | null;
+            };
+            days: {
+                date: string;
+                skip?: boolean;
+                servings?: number;
+                skipSlots?: ("breakfast" | "midday" | "afternoon")[];
+            }[];
+            /** @default 2 */
+            servings: number;
+            /** @default false */
+            overwrite: boolean;
+        };
+        PlanAddedToList: {
+            listId: string;
+            added: number;
+        };
+        PlanToList: {
+            listId: string;
+            from?: string;
+            to?: string;
         };
         ExtractionJob: {
             id: string;
