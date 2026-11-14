@@ -1,11 +1,13 @@
 import { Pressable, Text, View } from "react-native"
-import type { TagKey } from "@workspace/schemas"
+import { isTagKey, type TagKey } from "@workspace/schemas"
 
 import { tagColors, tagName } from "@/lib/tags"
 import { cn } from "@/lib/utils"
 
 /** A tag in the color of its group, in the current language. */
 export function TagBadge({ tag, className }: { tag: TagKey; className?: string }) {
+  // Not on the list (for example old data before the migration ran): show nothing.
+  if (!isTagKey(tag)) return null
   const colors = tagColors(tag)
   return (
     <View
@@ -35,6 +37,7 @@ export function TagChip({
   selected: boolean
   onPress: () => void
 }) {
+  if (!isTagKey(tag)) return null
   const colors = tagColors(tag)
   return (
     <Pressable

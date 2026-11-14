@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ScrollView, View } from "react-native"
 
-import { sortTags, type TagKey } from "@workspace/schemas"
+import { isTagKey, sortTags, type TagKey } from "@workspace/schemas"
 
 import { Grid } from "@/components/grid"
 import { RecipeCard } from "@/components/recipe-card"
@@ -44,7 +44,7 @@ export default function RecipeList() {
   const allTags = useMemo(() => {
     const names = new Set<TagKey>(tags)
     for (const recipe of all.data ?? []) {
-      for (const tag of recipe.tags) names.add(tag)
+      for (const tag of recipe.tags) if (isTagKey(tag)) names.add(tag)
     }
     // The tags in use, in the fixed order of the list: grouped, same everywhere.
     return sortTags([...names])
