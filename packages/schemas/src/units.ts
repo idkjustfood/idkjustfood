@@ -86,6 +86,19 @@ const units: Partial<Record<UnitKey, UnitInfo>> = {
   fl_oz: { kind: "volume", system: "imperial", size: 29.5735 },
 }
 
+const metricOnly: UnitKey[] = ["mg", "g", "kg", "ml", "l"]
+const imperialOnly: UnitKey[] = ["oz", "lb", "fl_oz"]
+
+/**
+ * The units to offer in a dropdown for a unit system: its own units (g, kg, ml
+ * for metric; oz, lb, fl oz for imperial) and the generic ones that both
+ * systems use (spoons, cups, pieces, pinches, …). Keeps the order of `unitKeys`.
+ */
+export function unitsForSystem(system: UnitSystem): UnitKey[] {
+  const other = system === "metric" ? imperialOnly : metricOnly
+  return unitKeys.filter((unit) => !other.includes(unit))
+}
+
 /** Spellings people and sources use, in the app's languages, for each unit. */
 const spellings: Record<UnitKey, string[]> = {
   g: ["g", "gr", "gram", "grams", "gramm", "gramo", "gramos", "gramme", "grammes", "grammo", "grammi"],

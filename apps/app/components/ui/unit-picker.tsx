@@ -3,10 +3,11 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, ScrollView, Text } from "react-native"
 
-import { unitKeys, type UnitKey } from "@workspace/schemas"
+import { unitsForSystem, type UnitKey } from "@workspace/schemas"
 
 import { Icon } from "@/components/ui/icon"
 import { Sheet } from "@/components/ui/sheet"
+import { useAppState } from "@/lib/app-state"
 import { unitName } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
@@ -28,7 +29,12 @@ export function UnitPicker({
   className?: string
 }) {
   const { t } = useTranslation()
+  const { units: system } = useAppState()
   const [open, setOpen] = useState(false)
+  // Only the chosen system's units. A saved unit from the other system stays
+  // visible so editing a recipe never hides what it uses.
+  const options = unitsForSystem(system)
+  if (value && !options.includes(value)) options.push(value)
 
   function choose(unit: UnitKey | null) {
     onChange(unit)
@@ -65,7 +71,7 @@ export function UnitPicker({
             selected={value === null}
             onPress={() => choose(null)}
           />
-          {unitKeys.map((unit) => (
+          {options.map((unit) => (
             <Option
               key={unit}
               label={unitName(unit, 1)}

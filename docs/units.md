@@ -20,6 +20,12 @@ The stored value is the key, the same in every language. The app shows a transla
 `apps/app/locales/<lang>/common.json` (`units.*`): "EL", "Stück" and "Prise" in German, "tbsp",
 "piece" and "pinch" in English.
 
+## What the dropdown shows
+
+The dropdown follows the person's unit system (Settings). Metric shows `mg`, `g`, `kg`, `ml`, `l`;
+imperial shows `oz`, `lb`, `fl_oz`. The generic units (spoons, `cup`, `piece`, `pinch`, `clove`, …)
+show for both (`unitsForSystem`). A saved unit from the other system stays visible on its own row.
+
 ## Where it is enforced
 
 - **API:** `IngredientSchema` (recipes) and the shopping item schemas accept only these keys, so the API

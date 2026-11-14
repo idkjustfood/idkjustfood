@@ -8,6 +8,7 @@ import {
   isUnitKey,
   normalizeUnit,
   unitKeys,
+  unitsForSystem,
   unitSpellings,
 } from "./units.js"
 import { ShoppingItemInputSchema } from "./shopping.js"
@@ -117,5 +118,24 @@ describe("validation", () => {
       ok: false,
       errors: { "ingredient.a.unit": expect.any(String) },
     })
+  })
+})
+
+describe("unitsForSystem", () => {
+  test("metric shows g but not oz, imperial the other way round", () => {
+    const metric = unitsForSystem("metric")
+    const imperial = unitsForSystem("imperial")
+    expect(metric).toContain("g")
+    expect(metric).not.toContain("oz")
+    expect(imperial).toContain("oz")
+    expect(imperial).not.toContain("g")
+  })
+
+  test("generic units are in both", () => {
+    for (const system of ["metric", "imperial"] as const) {
+      for (const unit of ["cup", "tsp", "tbsp", "piece", "pinch", "clove"] as const) {
+        expect(unitsForSystem(system)).toContain(unit)
+      }
+    }
   })
 })
