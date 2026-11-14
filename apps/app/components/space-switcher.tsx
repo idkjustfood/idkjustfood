@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils"
  * bottom sheet on phones, so it works with one hand. Without a household there
  * is nothing to pick, so it is not shown.
  */
-export function SpaceSwitcher({ compact }: { compact?: boolean }) {
+export function SpaceSwitcher() {
   const { householdId, setHouseholdId } = useAppState()
   const { households } = useHouseholds()
   // Also falls back to the personal space when the selected household is gone.
@@ -46,8 +46,7 @@ export function SpaceSwitcher({ compact }: { compact?: boolean }) {
         accessibilityLabel={`Space: ${current}. Change`}
         onPress={() => setOpen(true)}
         className={cn(
-          "h-11 flex-row items-center gap-2 rounded-md border border-border bg-card px-3 active:bg-accent web:hover:bg-accent",
-          compact ? "self-start" : "self-stretch"
+          "h-11 w-full flex-row items-center gap-2 self-stretch rounded-md border border-border bg-card px-3 active:bg-accent web:hover:bg-accent"
         )}
       >
         <Icon
