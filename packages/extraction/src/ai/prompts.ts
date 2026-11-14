@@ -61,7 +61,7 @@ export function languageRule(language?: RecipeLanguage) {
 
 /** Asked for every recipe the AI parses: sources rarely state nutrition. */
 const nutritionRule =
-  '- "nutrition": your best estimate per serving, worked out from the ingredients and the number of servings, as numbers: "calories" (kcal), "protein", "carbs" and "fat" (grams). The material rarely states these, so estimate them yourself. Set a value to null when you cannot estimate it (for example when amounts are missing); never make one up. If the material itself states the values, use those.'
+  '- "nutrition": your best estimate per serving, worked out from the ingredients and the number of servings, as numbers: "calories" (kcal), "protein", "carbs" and "fat" (grams). The material rarely states these, so estimate them yourself. Give all four values as plain numbers without units. Set a value to null only when you really cannot estimate it (for example when amounts are missing); never make one up. If the material itself states the values, use those.'
 
 /** The system prompt of the recipe parser, for the language the recipe must be written in. */
 export const parseRecipeSystem = (

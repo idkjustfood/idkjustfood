@@ -17,6 +17,33 @@ import { ExtractionError } from "./errors.js"
 
 const minutes = z.number().int().min(0).max(100_000).nullable()
 
+/** A number, also when the model wrote it as text ("45 g", "12,5"). Anything else is empty. */
+function nutrientNumber(value: unknown): number | null {
+  if (typeof value === "number") return Number.isFinite(value) ? value : null
+  if (typeof value !== "string") return null
+  const found = /\d+(?:[.,]\d+)?/.exec(value)
+  return found ? Number(found[0].replace(",", ".")) : null
+}
+
+/** Reads the model's nutrition object; it may name the values a bit differently. */
+function prepareNutrition(value: unknown) {
+  if (!value || typeof value !== "object") return undefined
+  const n = value as Record<string, unknown>
+  const pick = (...names: string[]) => {
+    for (const name of names) {
+      const found = nutrientNumber(n[name])
+      if (found !== null) return found
+    }
+    return null
+  }
+  return {
+    calories: pick("calories", "kcal", "energy"),
+    protein: pick("protein", "proteins"),
+    carbs: pick("carbs", "carbohydrates", "carbohydrate", "carbs_g"),
+    fat: pick("fat", "fats", "total_fat"),
+  }
+}
+
 const nutrient = (max: number) =>
   z.number().min(0).max(max).nullable().catch(null).default(null)
 
@@ -110,11 +137,8 @@ export function readExtractedRecipe(raw: unknown): ExtractedRecipe {
     prepared && typeof prepared === "object" && "nutrition" in prepared
       ? {
           ...prepared,
-          // An estimate that is not an object is dropped: it must never fail the recipe.
-          nutrition:
-            prepared.nutrition && typeof prepared.nutrition === "object"
-              ? prepared.nutrition
-              : undefined,
+          // An estimate that is not usable is dropped: it must never fail the recipe.
+          nutrition: prepareNutrition(prepared.nutrition),
         }
       : prepared
   )

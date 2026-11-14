@@ -502,6 +502,19 @@ describe("nutrition estimate", () => {
     })
   })
 
+  test("values written as text or with other names are still read", async () => {
+    const recipe = await run(
+      withEstimate({ kcal: "320 kcal", proteins: 9, carbohydrates: "41,5 g", total_fat: "12 g" })
+    )
+    expect(recipe.nutrition).toEqual({
+      calories: 320,
+      protein: 9,
+      carbs: 41.5,
+      fat: 12,
+      estimated: true,
+    })
+  })
+
   test("the prompt asks for nutrition only when an estimate is wanted", () => {
     expect(parseRecipeSystem("en", true)).toContain('"nutrition"')
     expect(parseRecipeSystem("en")).not.toContain('"nutrition"')
