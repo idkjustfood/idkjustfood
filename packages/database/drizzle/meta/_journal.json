@@ -36,6 +36,13 @@
       "when": 1794563928022,
       "tag": "0004_clean_captain_cross",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794650598091,
+      "tag": "0005_shopping_lists",
+      "breakpoints": true
     }
   ]
 }

@@ -2,12 +2,12 @@ import { CloudOff } from "lucide-react-native"
 import { Text, View } from "react-native"
 
 import { Icon } from "@/components/ui/icon"
-import { useAppState } from "@/lib/app-state"
+import { useShoppingState } from "@/lib/shopping"
 
-/** Tells the user they can keep using lists without a connection. */
+/** Tells the user they can keep using lists without a connection, and what is waiting to be sent. */
 export function OfflineBanner() {
-  const { offline } = useAppState()
-  if (!offline) return null
+  const { online, pending } = useShoppingState()
+  if (online) return null
   return (
     <View
       role="status"
@@ -21,6 +21,9 @@ export function OfflineBanner() {
         <Text className="text-amber-900 dark:text-amber-200">
           You can keep ticking things off. Changes sync when you are back
           online.
+          {pending > 0
+            ? ` ${pending} ${pending === 1 ? "change is" : "changes are"} waiting.`
+            : ""}
         </Text>
       </View>
     </View>

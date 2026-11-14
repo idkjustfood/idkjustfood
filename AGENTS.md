@@ -102,6 +102,8 @@ TypeScript everywhere, in one monorepo.
   pipeline lives in `packages/extraction`: input modules (Instagram, TikTok, YouTube Shorts,
   websites, photos, text), swappable AI providers (OpenRouter built in) and the pg-boss job that
   the worker runs. See `README.md`, `docs/adding-an-input.md` and `docs/ai-providers.md`.
+- Shopping lists (personal and household) work end to end, including merging ingredients and
+  offline use on the phone. See `docs/shopping-lists.md`.
 - The app has all its screens; adding a recipe from a link, photo or text is not connected to the
   extraction endpoints yet.
 

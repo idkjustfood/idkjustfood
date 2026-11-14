@@ -34,10 +34,15 @@ import { Sheet } from "@/components/ui/sheet"
 import { useAppState } from "@/lib/app-state"
 import { formatMinutes } from "@/lib/format"
 import { useIsWide } from "@/lib/layout"
-import { shoppingLists } from "@/lib/mock-data"
 import { ApiError } from "@/lib/api/client"
 import { useRecipe, type Recipe } from "@/lib/recipes"
 import { canShare, copyText, shareText } from "@/lib/share"
+import {
+  useListKind,
+  useShoppingActions,
+  useShoppingState,
+} from "@/lib/shopping"
+import { useHousehold } from "@/lib/households"
 
 export default function RecipeDetail() {
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -84,6 +89,35 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
   const [exportOpen, setExportOpen] = useState(false)
   const [exportNote, setExportNote] = useState<string | null>(null)
   const [listOpen, setListOpen] = useState(false)
+  const [added, setAdded] = useState<{ id: string; name: string } | null>(null)
+  const [adding, setAdding] = useState<string | null>(null)
+  const [listError, setListError] = useState<string | null>(null)
+  const { lists } = useShoppingState()
+  const { addRecipe } = useShoppingActions()
+  const { household } = useHousehold()
+  const kindOf = useListKind()
+
+  /** Puts the ingredients on a list, for the servings chosen above. */
+  async function addToList(listId: string, name: string) {
+    setAdding(listId)
+    setListError(null)
+    try {
+      await addRecipe(listId, recipe.id, servings)
+      setAdded({ id: listId, name })
+    } catch (error) {
+      setListError(
+        error instanceof Error ? error.message : "Could not add the recipe."
+      )
+    } finally {
+      setAdding(null)
+    }
+  }
+
+  function closeListSheet() {
+    setListOpen(false)
+    setAdded(null)
+    setListError(null)
+  }
 
   const factor = servings / recipe.servings
 
@@ -275,28 +309,68 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
 
       <Sheet
         open={listOpen}
-        onClose={() => setListOpen(false)}
-        title="Add to which list?"
+        onClose={closeListSheet}
+        title={added ? "Added to your list" : "Add to which list?"}
       >
-        <ListGroup>
-          {shoppingLists.map((list) => (
-            <ListRow
-              key={list.id}
-              icon={ShoppingCart}
-              title={list.name}
-              detail={`${list.items.length} items`}
+        {added ? (
+          <>
+            <Text role="status" className="text-foreground">
+              The ingredients for {servings} servings of {recipe.title} are on{" "}
+              {added.name}. Same ingredients were merged.
+            </Text>
+            <Button
+              label="Open the list"
               onPress={() => {
-                setListOpen(false)
-                router.push(`/shopping/${list.id}`)
+                closeListSheet()
+                router.push(`/shopping/${added.id}`)
               }}
             />
-          ))}
-        </ListGroup>
-        <Button
-          variant="outline"
-          label="Cancel"
-          onPress={() => setListOpen(false)}
-        />
+            <Button variant="outline" label="Done" onPress={closeListSheet} />
+          </>
+        ) : (
+          <>
+            {lists.length === 0 ? (
+              <Text className="text-muted-foreground">
+                You have no shopping lists yet. Make one first.
+              </Text>
+            ) : (
+              <ListGroup>
+                {lists.map((list) => (
+                  <ListRow
+                    key={list.id}
+                    icon={ShoppingCart}
+                    title={list.name}
+                    detail={`${kindOf(list, household?.name)} · ${list.items.length} items`}
+                    right={
+                      adding === list.id ? (
+                        <Text className="text-sm text-muted-foreground">
+                          Adding…
+                        </Text>
+                      ) : undefined
+                    }
+                    onPress={
+                      adding ? undefined : () => void addToList(list.id, list.name)
+                    }
+                  />
+                ))}
+              </ListGroup>
+            )}
+            {listError && (
+              <Text role="alert" className="text-sm text-destructive">
+                {listError}
+              </Text>
+            )}
+            <Button
+              variant="outline"
+              label="New list"
+              onPress={() => {
+                closeListSheet()
+                router.push("/shopping")
+              }}
+            />
+            <Button variant="outline" label="Cancel" onPress={closeListSheet} />
+          </>
+        )}
       </Sheet>
     </Screen>
   )
