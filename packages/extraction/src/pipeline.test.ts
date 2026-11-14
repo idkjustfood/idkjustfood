@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 import { createLogger } from "@workspace/logger"
 
 import { ExtractionError } from "./errors.js"
+import { parseRecipeSystem } from "./ai/prompts.js"
 import { extractRecipe } from "./pipeline.js"
 import { fakeAi, fakeMedia, filesIn, pancakeJson, tinyPng } from "./testing.js"
 
@@ -440,5 +441,82 @@ describe("logging", () => {
     expect(text).not.toContain("Easy pancakes!")
     expect(text).not.toContain("Two hundred grams of flour")
     expect(text).not.toContain("Fry for 2 minutes")
+  })
+})
+
+describe("nutrition estimate", () => {
+  const text = { type: "text", text: "Pancakes" } as const
+  const estimate = { calories: 320, protein: 9, carbs: 41.5, fat: null }
+  const withEstimate = (nutrition: unknown) =>
+    fakeAi({ parseRecipe: async () => ({ ...pancakeJson, nutrition }) })
+  const run = (ai: ReturnType<typeof fakeAi>, input = reel) =>
+    extractRecipe(input, { ai, media: fakeMedia(), tempRoot })
+
+  test("a video gets the AI's estimate, marked as an estimate", async () => {
+    const ai = withEstimate(estimate)
+    const recipe = await run(ai)
+    expect(recipe.nutrition).toEqual({ ...estimate, estimated: true })
+  })
+
+  test("pasted text and photos get an estimate too", async () => {
+    const asked: (boolean | undefined)[] = []
+    const ai = fakeAi({
+      parseRecipe: async (_material, options) => {
+        asked.push(options?.estimateNutrition)
+        return { ...pancakeJson, nutrition: estimate }
+      },
+    })
+    const fromText = await extractRecipe(text, { ai, tempRoot })
+    const fromPhoto = await extractRecipe(
+      { type: "image", data: tinyPng, mediaType: "image/png" },
+      { ai, tempRoot }
+    )
+    expect(asked).toEqual([true, true])
+    expect(fromText.nutrition).toEqual({ ...estimate, estimated: true })
+    expect(fromPhoto.nutrition).toEqual({ ...estimate, estimated: true })
+  })
+
+  test("without an estimate the values stay empty and nothing breaks", async () => {
+    const empty = {
+      calories: null,
+      protein: null,
+      carbs: null,
+      fat: null,
+    }
+    for (const answer of [undefined, null, "unknown", empty]) {
+      const recipe = await run(withEstimate(answer))
+      expect(recipe.nutrition).toEqual(empty)
+    }
+  })
+
+  test("a value that is not a usable number stays empty, the rest is kept", async () => {
+    const recipe = await run(
+      withEstimate({ calories: "lots", protein: -4, carbs: 30, fat: 12 })
+    )
+    expect(recipe.nutrition).toEqual({
+      calories: null,
+      protein: null,
+      carbs: 30,
+      fat: 12,
+      estimated: true,
+    })
+  })
+
+  test("values written as text or with other names are still read", async () => {
+    const recipe = await run(
+      withEstimate({ kcal: "320 kcal", proteins: 9, carbohydrates: "41,5 g", total_fat: "12 g" })
+    )
+    expect(recipe.nutrition).toEqual({
+      calories: 320,
+      protein: 9,
+      carbs: 41.5,
+      fat: 12,
+      estimated: true,
+    })
+  })
+
+  test("the prompt asks for nutrition only when an estimate is wanted", () => {
+    expect(parseRecipeSystem("en", true)).toContain('"nutrition"')
+    expect(parseRecipeSystem("en")).not.toContain('"nutrition"')
   })
 })

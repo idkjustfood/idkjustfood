@@ -169,6 +169,7 @@
     "servings_other": "{{count}} Portionen",
     "noAmount": "keine Menge",
     "perServing": "Pro Portion. Eine Schätzung, nicht exakt.",
+    "perServingAi": "Pro Portion. Von der KI aus den Zutaten geschätzt, nicht exakt.",
     "nutrients": {
       "Calories": "Kalorien",
       "Protein": "Eiweiß",

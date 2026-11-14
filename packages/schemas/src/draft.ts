@@ -20,6 +20,8 @@ export type RecipeDraft = {
   protein: string
   carbs: string
   fat: string
+  /** Set when the values were estimated by an AI. Kept while the recipe is edited. */
+  nutritionEstimated?: boolean
   ingredients: {
     key: string
     quantity: string
@@ -102,6 +104,7 @@ export function draftFromRecipe(
     protein: text(recipe.nutrition.protein),
     carbs: text(recipe.nutrition.carbs),
     fat: text(recipe.nutrition.fat),
+    ...(recipe.nutrition.estimated ? { nutritionEstimated: true } : {}),
     ingredients,
     steps,
     sections,
@@ -163,6 +166,7 @@ export function readDraft(draft: RecipeDraft): DraftResult {
     protein: nutrient("protein"),
     carbs: nutrient("carbs"),
     fat: nutrient("fat"),
+    ...(draft.nutritionEstimated ? { estimated: true } : {}),
   }
 
   // Sections: empty ones are dropped, and one with rows needs a name.

@@ -72,6 +72,8 @@ export const NutritionSchema = z.object({
   protein: z.number().min(0).max(10_000).nullable(),
   carbs: z.number().min(0).max(10_000).nullable(),
   fat: z.number().min(0).max(10_000).nullable(),
+  /** True when an AI estimated the values from the ingredients. Absent for values a person entered. */
+  estimated: z.boolean().optional(),
 })
 export type Nutrition = z.infer<typeof NutritionSchema>
 

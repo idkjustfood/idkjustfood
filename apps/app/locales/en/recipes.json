@@ -169,6 +169,7 @@
     "servings_other": "{{count}} servings",
     "noAmount": "no amount",
     "perServing": "Per serving. An estimate, not exact.",
+    "perServingAi": "Per serving. Estimated by AI from the ingredients, not exact.",
     "nutrients": {
       "Calories": "Calories",
       "Protein": "Protein",

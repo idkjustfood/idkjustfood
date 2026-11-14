@@ -214,6 +214,9 @@ export async function extractRecipe(
       })
       throw error
     }
+    // Every recipe the AI writes gets an estimate (sources rarely state nutrition).
+    // Recipes a page already contains (no AI) keep the page's own data.
+    const estimateNutrition = true
     return await step(
       log,
       "parsing",
@@ -221,8 +224,13 @@ export async function extractRecipe(
       async () => {
         const raw = await options.ai.parseRecipe(material, {
           language: options.language,
+          estimateNutrition,
         })
-        return toRecipeContent(readExtractedRecipe(raw), gathered.source)
+        return toRecipeContent(
+          readExtractedRecipe(raw),
+          gathered.source,
+          estimateNutrition
+        )
       }
     )
   } finally {
