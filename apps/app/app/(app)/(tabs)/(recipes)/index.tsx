@@ -1,5 +1,5 @@
 import { router } from "expo-router"
-import { BookOpen, ChevronDown, SearchX, SlidersHorizontal, X } from "lucide-react-native"
+import { BookOpen, ChevronDown, SearchX } from "lucide-react-native"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
@@ -12,8 +12,7 @@ import { Screen } from "@/components/screen"
 import { SpaceSwitcher } from "@/components/space-switcher"
 import { EmptyState, ErrorState, LoadingState } from "@/components/states"
 import { MealTabs } from "@/components/meal-tabs"
-import { RecipeFilterSheet } from "@/components/recipe-filter-sheet"
-import { Button } from "@/components/ui/button"
+import { RecipeFilterPills } from "@/components/recipe-filter-pills"
 import { Chip } from "@/components/ui/chip"
 import { Icon } from "@/components/ui/icon"
 import { Sheet } from "@/components/ui/sheet"
@@ -31,7 +30,6 @@ import {
   type RecipeSort,
 } from "@/lib/recipe-filters"
 import { useRecipes } from "@/lib/recipes"
-import { tagName } from "@/lib/tags"
 
 /** Waits a moment after typing before the search is sent. */
 function useDebounced<T>(value: T, ms = 250) {
@@ -52,7 +50,6 @@ export default function RecipeList() {
   const [meal, setMeal] = useState<MealTab>("all")
   const [others, setOthers] = useState<TagKey[]>([])
   const [sort, setSort] = useState<RecipeSort>("newest")
-  const [filtersOpen, setFiltersOpen] = useState(false)
   const [sortOpen, setSortOpen] = useState(false)
   const search = useDebounced(query)
 
@@ -94,54 +91,18 @@ export default function RecipeList() {
           {!wide && <SpaceSwitcher />}
           {hasRecipes && (
             <>
-              <View className="flex-row items-center gap-2">
-                <View className="flex-1">
-                  <SearchField
-                    value={query}
-                    onChangeText={setQuery}
-                    placeholder={t("recipes:list.searchPlaceholder")}
-                  />
-                </View>
-                <View>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    icon={SlidersHorizontal}
-                    label={t("recipes:list.filters")}
-                    onPress={() => setFiltersOpen(true)}
-                  />
-                  {others.length > 0 && (
-                    <View className="absolute -right-1 -top-1 h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1">
-                      <Text className="text-xs font-medium text-primary-foreground">
-                        {others.length}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-              </View>
+              <SearchField
+                value={query}
+                onChangeText={setQuery}
+                placeholder={t("recipes:list.searchPlaceholder")}
+              />
               <MealTabs value={meal} onChange={setMeal} counts={counts} />
-              {others.length > 0 && (
-                <View className="flex-row flex-wrap gap-2">
-                  {others.map((tag) => (
-                    <Pressable
-                      key={tag}
-                      role="button"
-                      accessibilityLabel={t("recipes:list.removeFilter", {
-                        name: tagName(tag),
-                      })}
-                      onPress={() =>
-                        setOthers(others.filter((x) => x !== tag))
-                      }
-                      className="h-10 flex-row items-center gap-1 rounded-full bg-secondary pl-3 pr-2 active:opacity-80"
-                    >
-                      <Text className="text-sm font-medium text-secondary-foreground">
-                        {tagName(tag)}
-                      </Text>
-                      <Icon as={X} size={16} className="text-muted-foreground" />
-                    </Pressable>
-                  ))}
-                </View>
-              )}
+              <RecipeFilterPills
+                available={available}
+                value={others}
+                onChange={setOthers}
+                resultCount={shown.length}
+              />
               <Pressable
                 role="button"
                 onPress={() => setSortOpen(true)}
@@ -209,14 +170,6 @@ export default function RecipeList() {
         />
       )}
 
-      <RecipeFilterSheet
-        open={filtersOpen}
-        onClose={() => setFiltersOpen(false)}
-        available={available}
-        value={others}
-        onChange={setOthers}
-        resultCount={shown.length}
-      />
       <Sheet
         open={sortOpen}
         onClose={() => setSortOpen(false)}

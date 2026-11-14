@@ -55,7 +55,7 @@ Tags are sorted by group and then in the order above, so a recipe's tags look th
 - **Meal planner:** the `meal` tags `breakfast`, `midday` and `afternoon` put a recipe in the slot of
   that name. `snack` has no slot.
 - **Recipe overview:** a row of meal tabs (All, Breakfast, Midday, Afternoon, Snack) with counts, and
-  a Filters sheet for the other groups. The diet wish of the wizard is one of the `diet` tags. See `docs/meal-planner.md`.
+  a scrolling row of pills (Cuisine, Diet, Time, ...) that each open a picker for the other groups. The diet wish of the wizard is one of the `diet` tags. See `docs/meal-planner.md`.
 - **Export and import:** JSON keeps the keys. Markdown and the schema.org `keywords` use English names
   ("Under 30 min"). Importing fits what it reads: known spellings become their key, other tags are
   dropped, so older files still work.

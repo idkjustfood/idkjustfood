@@ -20,13 +20,9 @@
     },
     "mealsLabel": "Repas",
     "mealAll": "Tous",
-    "filters": "Filtres",
-    "filtersTitle": "Filtres",
-    "filtersEmpty": "Rien d'autre à filtrer pour l'instant.",
     "filtersClear": "Effacer",
     "filtersShow_one": "Afficher {{count}} recette",
     "filtersShow_other": "Afficher {{count}} recettes",
-    "removeFilter": "Retirer le filtre {{name}}",
     "count_one": "{{count}} recette",
     "count_other": "{{count}} recettes",
     "moreTags": "+{{count}}",
@@ -36,7 +32,9 @@
       "title": "De A à Z",
       "quickest": "Les plus rapides d'abord"
     },
-    "timeUnknown": "Durée non indiquée"
+    "timeUnknown": "Durée non indiquée",
+    "reset": "Réinitialiser",
+    "filterSearch": "Rechercher"
   },
   "errors": {
     "checkConnection": "Vérifiez votre connexion et réessayez.",

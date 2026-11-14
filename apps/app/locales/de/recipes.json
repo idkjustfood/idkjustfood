@@ -20,13 +20,9 @@
     },
     "mealsLabel": "Mahlzeit",
     "mealAll": "Alle",
-    "filters": "Filter",
-    "filtersTitle": "Filter",
-    "filtersEmpty": "Es gibt noch nichts weiter zum Filtern.",
     "filtersClear": "Zurücksetzen",
     "filtersShow_one": "{{count}} Rezept anzeigen",
     "filtersShow_other": "{{count}} Rezepte anzeigen",
-    "removeFilter": "Filter {{name}} entfernen",
     "count_one": "{{count}} Rezept",
     "count_other": "{{count}} Rezepte",
     "moreTags": "+{{count}}",
@@ -36,7 +32,9 @@
       "title": "A bis Z",
       "quickest": "Schnellste zuerst"
     },
-    "timeUnknown": "Zeit nicht angegeben"
+    "timeUnknown": "Zeit nicht angegeben",
+    "reset": "Zurücksetzen",
+    "filterSearch": "Suchen"
   },
   "errors": {
     "checkConnection": "Prüfe deine Verbindung und versuche es noch einmal.",
