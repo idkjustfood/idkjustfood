@@ -6,7 +6,8 @@
     "demoName": "Demo",
     "demoEmail": "Du siehst Beispieldaten und bist nicht angemeldet",
     "leaveDemo": "Demo verlassen",
-    "logOut": "Abmelden"
+    "logOut": "Abmelden",
+    "changePassword": "Passwort ändern"
   },
   "household": {
     "title": "Haushalt",
@@ -159,5 +160,22 @@
     "cancel": "Abbrechen",
     "rowDetail": "Salz, Öl und mehr kommen nicht auf Einkaufslisten",
     "rowDetailHousehold": "Das, was der Haushalt immer zu Hause hat"
+  },
+  "password": {
+    "title": "Passwort ändern",
+    "current": "Aktuelles Passwort",
+    "new": "Neues Passwort",
+    "repeat": "Neues Passwort wiederholen",
+    "submit": "Passwort ändern",
+    "busy": "Wird geändert…",
+    "success": "Dein Passwort wurde geändert.",
+    "failed": "Das Passwort konnte nicht geändert werden.",
+    "problem": {
+      "currentMissing": "Gib dein aktuelles Passwort ein.",
+      "tooShort": "Das neue Passwort braucht mindestens 8 Zeichen.",
+      "mismatch": "Die neuen Passwörter stimmen nicht überein.",
+      "sameAsCurrent": "Das neue Passwort muss sich vom aktuellen unterscheiden.",
+      "wrongCurrent": "Das aktuelle Passwort ist falsch. Es wurde nichts geändert."
+    }
   }
 }

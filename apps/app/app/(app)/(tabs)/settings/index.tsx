@@ -10,6 +10,7 @@ import {
   Code,
   Globe,
   Home,
+  KeyRound,
   Languages,
   LogOut,
   Package,
@@ -61,6 +62,13 @@ export default function Settings() {
     <Screen title={t("settings:title")} narrow>
       <ListGroup title={t("settings:account.title")}>
         <ListRow icon={User} title={name} detail={email} />
+        {!state.demo && (
+          <ListRow
+            icon={KeyRound}
+            title={t("settings:account.changePassword")}
+            onPress={() => router.push("/settings/password")}
+          />
+        )}
         <ListRow
           icon={LogOut}
           title={

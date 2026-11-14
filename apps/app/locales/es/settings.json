@@ -6,7 +6,8 @@
     "demoName": "Demo",
     "demoEmail": "Viendo datos de ejemplo, sin sesión iniciada",
     "leaveDemo": "Salir de la demo",
-    "logOut": "Cerrar sesión"
+    "logOut": "Cerrar sesión",
+    "changePassword": "Cambiar contraseña"
   },
   "household": {
     "title": "Hogar",
@@ -159,5 +160,22 @@
     "cancel": "Cancelar",
     "rowDetail": "La sal, el aceite y más no se añaden a las listas de la compra",
     "rowDetailHousehold": "Lo que el hogar siempre tiene en casa"
+  },
+  "password": {
+    "title": "Cambiar contraseña",
+    "current": "Contraseña actual",
+    "new": "Contraseña nueva",
+    "repeat": "Repite la contraseña nueva",
+    "submit": "Cambiar contraseña",
+    "busy": "Cambiando…",
+    "success": "Tu contraseña se ha cambiado.",
+    "failed": "No se pudo cambiar la contraseña.",
+    "problem": {
+      "currentMissing": "Introduce tu contraseña actual.",
+      "tooShort": "La contraseña nueva necesita al menos 8 caracteres.",
+      "mismatch": "Las contraseñas nuevas no coinciden.",
+      "sameAsCurrent": "La contraseña nueva debe ser distinta de la actual.",
+      "wrongCurrent": "La contraseña actual es incorrecta. No se ha cambiado nada."
+    }
   }
 }

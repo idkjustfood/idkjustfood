@@ -99,7 +99,9 @@ With only `AI_PROVIDER=openrouter` and `AI_API_KEY` set, every input type works.
 Auth needs `BETTER_AUTH_SECRET` (generate with `openssl rand -base64 32`). Email and password
 sign-in works without anything else. To add Google or GitHub sign-in, set that provider's
 `*_CLIENT_ID` and `*_CLIENT_SECRET`; a provider with no keys stays off. The callback URL is
-`<API_URL>/api/auth/callback/<provider>`. A one-shot `migrate` service creates the database tables
+`<API_URL>/api/auth/callback/<provider>`. Signed-in people change their own password in the app
+under Settings → Account → Change password (current password plus a new one of at least 8
+characters). No email is needed or sent, so this works without an email setup. A one-shot `migrate` service creates the database tables
 before `api` and `worker` start.
 `API_URL` is baked into the web build, so rebuild `web` after changing it.
 

@@ -125,6 +125,44 @@ describe("auth API", () => {
     expect((await app.request("/api/me")).status).toBe(401)
   })
 
+  test("change password: wrong current fails, new one works, old one stops working", async () => {
+    const signIn = (password: string) =>
+      json("/api/auth/sign-in/email", { email: "ada@example.com", password })
+    const cookie = cookieFrom(await signIn("correct-horse-battery"))
+
+    const wrong = await json(
+      "/api/auth/change-password",
+      { currentPassword: "not-the-password", newPassword: "brand-new-password" },
+      cookie
+    )
+    expect(wrong.status).toBe(400)
+    expect((await signIn("brand-new-password")).status).toBe(401)
+
+    const short = await json(
+      "/api/auth/change-password",
+      { currentPassword: "correct-horse-battery", newPassword: "short" },
+      cookie
+    )
+    expect(short.status).toBe(400)
+
+    const ok = await json(
+      "/api/auth/change-password",
+      { currentPassword: "correct-horse-battery", newPassword: "brand-new-password" },
+      cookie
+    )
+    expect(ok.status).toBe(200)
+    expect((await signIn("brand-new-password")).status).toBe(200)
+    expect((await signIn("correct-horse-battery")).status).toBe(401)
+
+    // Put it back so the tests below keep working.
+    const back = await json(
+      "/api/auth/change-password",
+      { currentPassword: "brand-new-password", newPassword: "correct-horse-battery" },
+      cookie
+    )
+    expect(back.status).toBe(200)
+  })
+
   test("wrong password is rejected", async () => {
     const res = await json("/api/auth/sign-in/email", {
       email: "ada@example.com",
