@@ -297,8 +297,8 @@ describe("the AI prompt for tags", () => {
   test("lists every tag of the list and says to choose only from it", async () => {
     const { parseRecipeSystem } = await import("./ai/prompts.js")
     const { tagKeys } = await import("@workspace/schemas")
-    for (const tag of tagKeys) expect(parseRecipeSystem).toContain(tag)
-    expect(parseRecipeSystem).toMatch(/choose ONLY from the list/)
+    for (const tag of tagKeys) expect(parseRecipeSystem()).toContain(tag)
+    expect(parseRecipeSystem()).toMatch(/choose ONLY from the list/)
   })
 })
 

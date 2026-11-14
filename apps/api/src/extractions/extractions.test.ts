@@ -306,6 +306,55 @@ describe("running a job and reading the result", () => {
     ).toEqual([])
   })
 
+  test("the language of the request is kept on the job and used by the worker", async () => {
+    for (const language of ["en", "de", "es", "fr", "it"] as const) {
+      const { job: started } = await body<{ job: Job }>(
+        await startLink(reel, olivia, { language })
+      )
+      const [row] = await db
+        .select()
+        .from(schema.extractionJob)
+        .where(eq(schema.extractionJob.id, started.id))
+      expect(row!.language).toBe(language)
+
+      const ai = fakeAi()
+      await runExtractionJob(db, started.id, { ai, media: fakeMedia() })
+      expect(ai.calls.languages).toEqual([language])
+      expect((await job(started.id)).status).toBe("succeeded")
+    }
+  })
+
+  test("text and photos take the language too", async () => {
+    const text = await body<{ job: Job }>(
+      await api.post("/api/extractions/text", olivia, {
+        text: "Pancakes: 200 g flour",
+        language: "it",
+      })
+    )
+    const photo = await body<{ job: Job }>(
+      await upload(new Blob([tinyPng], { type: "image/png" }), olivia, {
+        language: "es",
+      })
+    )
+    const ai = fakeAi()
+    await runExtractionJob(db, text.job.id, { ai })
+    await runExtractionJob(db, photo.job.id, { ai })
+    expect(ai.calls.languages).toEqual(["it", "es"])
+  })
+
+  test("without a language the source language is kept", async () => {
+    const { job: started } = await body<{ job: Job }>(await startLink(reel))
+    const ai = fakeAi()
+    await runExtractionJob(db, started.id, { ai, media: fakeMedia() })
+    expect(ai.calls.languages).toEqual([undefined])
+  })
+
+  test("an unknown language is refused", async () => {
+    const res = await startLink(reel, olivia, { language: "xx" })
+    expect(res.status).toBe(400)
+    expect(queued).toEqual([])
+  })
+
   test("a photo becomes a recipe and the upload is not kept", async () => {
     const { job: started } = await body<{ job: Job }>(
       await upload(new Blob([tinyPng], { type: "image/png" }))

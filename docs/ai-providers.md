@@ -27,6 +27,19 @@ Environment variables, read by both the API and the worker:
 Changing a model needs no code change and no rebuild, only a restart. If the vision model cannot
 read images, the job fails with the message "The model … can't read images" and does not guess.
 
+## Language
+
+Recipes are written in the language the person selected in the app (English, German, Spanish,
+French or Italian), also when the source is in another language. The language reaches the parsing
+job as `parseRecipe(material, { language })`. `parseRecipeSystem(language)` in `ai/prompts.ts`
+turns it into the instruction: write the title, description, ingredient names, notes and steps in
+that language, translate when the source differs, keep a text that already is in it, and never
+change or add an amount. Units and tags are fixed keys, so they are the same in every language.
+The same call translates recipes that a website already contains (the pipeline then keeps amounts,
+units, tags, servings and times from the page and only takes the words). Without `language`, the
+recipe stays in the language of the material. Nothing to set up on a self-hosted install: it works
+with any provider and model that the parsing job uses.
+
 ## Add a provider
 
 1. Create `packages/extraction/src/ai/<name>.ts` that exports an `AiProvider`:
@@ -38,12 +51,15 @@ read images, the job fails with the message "The model … can't read images" an
      defaultModels: { transcription: "...", vision: "llava", parsing: "llama3.1" },
      transcriber: (options) => ({ async transcribe(audio) { /* return the text */ } }),
      imageReader: (options) => ({ async readImages(images) { /* return the text */ } }),
-     recipeParser: (options) => ({ async parseRecipe(material) { /* return the JSON */ } }),
+     recipeParser: (options) => ({ async parseRecipe(material, { language }) { /* return the JSON */ } }),
    }
    ```
 
    `options` has `apiKey`, `baseUrl` and `model`. Use the shared prompts from `ai/prompts.ts` so every
    provider is asked the same thing, and `parseJsonReply` to read the model's answer.
+   `parseRecipe` gets the language the recipe must be written in: give the model
+   `parseRecipeSystem(language)` as its system prompt, so every provider receives the same
+   instruction (see "Language" below).
 
 2. Add it to `providers` in `ai/index.ts`.
 

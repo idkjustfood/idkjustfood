@@ -1,6 +1,6 @@
 import { ExtractionError } from "../errors.js"
 import { assertPublicUrl } from "../net/public-url.js"
-import { htmlToText, readPageRecipe } from "./schema-org.js"
+import { htmlToText, pageLanguage, readPageRecipe } from "./schema-org.js"
 import type { ExtractionInput, InputModule } from "./types.js"
 
 function httpUrl(input: ExtractionInput) {
@@ -44,7 +44,9 @@ export const website: InputModule = {
       url: page.url,
     }
     const { complete, partial } = readPageRecipe(page.html)
-    if (complete) return { source, texts: [], images: [], recipe: complete }
+    const language = pageLanguage(page.html)
+    if (complete)
+      return { source, texts: [], images: [], recipe: complete, language }
 
     const texts = []
     if (partial) {
@@ -54,6 +56,6 @@ export const website: InputModule = {
       })
     }
     texts.push({ label: "Text of the web page", text: htmlToText(page.html) })
-    return { source, texts, images: [] }
+    return { source, texts, images: [], language }
   },
 }

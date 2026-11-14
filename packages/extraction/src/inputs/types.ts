@@ -22,6 +22,11 @@ export type Gathered = {
   images: ImageInput[]
   /** Speech to transcribe (videos). */
   audio?: AudioInput
+  /**
+   * The language the source says it is written in, when it says (a web page does).
+   * Used to skip the translation when the recipe is already in the wanted language.
+   */
+  language?: string
   /** Label for what the images show, if "Text read from the images" is not right. */
   imagesLabel?: string
   /**

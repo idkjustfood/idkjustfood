@@ -1868,6 +1868,18 @@
           "householdId": {
             "type": "string",
             "description": "Share the new recipe with this household. Without it, the recipe is only yours."
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "de",
+              "es",
+              "fr",
+              "it"
+            ],
+            "description": "Write the recipe in this language (`en`, `de`, `es`, `fr` or `it`), and translate it when the source is in another one. Without it, the recipe stays in the language of the source. The app sends the language the person picked.",
+            "example": "de"
           }
         },
         "required": [
@@ -1886,6 +1898,18 @@
           "householdId": {
             "type": "string",
             "description": "Share the new recipe with this household. Without it, the recipe is only yours."
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "de",
+              "es",
+              "fr",
+              "it"
+            ],
+            "description": "Write the recipe in this language (`en`, `de`, `es`, `fr` or `it`), and translate it when the source is in another one. Without it, the recipe stays in the language of the source. The app sends the language the person picked.",
+            "example": "de"
           }
         },
         "required": [
@@ -1903,6 +1927,18 @@
           "householdId": {
             "type": "string",
             "description": "Share the new recipe with this household. Without it, the recipe is only yours."
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "de",
+              "es",
+              "fr",
+              "it"
+            ],
+            "description": "Write the recipe in this language (`en`, `de`, `es`, `fr` or `it`), and translate it when the source is in another one. Without it, the recipe stays in the language of the source. The app sends the language the person picked.",
+            "example": "de"
           }
         },
         "required": [

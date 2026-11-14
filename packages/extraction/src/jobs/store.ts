@@ -18,7 +18,8 @@ export function jobStore(db: Database) {
     async create(
       userId: string,
       householdId: string | null,
-      input: ExtractionInput
+      input: ExtractionInput,
+      language?: string | null
     ) {
       const [row] = await db
         .insert(extractionJob)
@@ -31,6 +32,7 @@ export function jobStore(db: Database) {
           text: input.type === "text" ? input.text : null,
           image: input.type === "image" ? input.data : null,
           imageType: input.type === "image" ? input.mediaType : null,
+          language: language ?? null,
         })
         .returning()
       return row!

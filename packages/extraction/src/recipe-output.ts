@@ -82,6 +82,40 @@ export function readExtractedRecipe(raw: unknown): ExtractedRecipe {
 }
 
 /**
+ * Takes the words of a translated recipe and keeps everything else from the original:
+ * amounts, units, tags, servings and times. So a translation can never change a number
+ * or invent a detail. Fails when the translation lost or added an ingredient or a step.
+ */
+export function keepStructure(
+  original: ExtractedRecipe,
+  translated: ExtractedRecipe
+): ExtractedRecipe {
+  if (
+    translated.ingredients.length !== original.ingredients.length ||
+    translated.steps.length !== original.steps.length
+  ) {
+    throw new ExtractionError(
+      "invalid_recipe",
+      "The translation changed the number of ingredients or steps. Try again."
+    )
+  }
+  return {
+    ...original,
+    title: translated.title,
+    description: original.description ? translated.description : "",
+    ingredients: original.ingredients.map((ingredient, index) => ({
+      ...ingredient,
+      name: translated.ingredients[index]!.name,
+      note: ingredient.note ? translated.ingredients[index]!.note : null,
+    })),
+    steps: original.steps.map((step, index) => ({
+      ...step,
+      text: translated.steps[index]!.text,
+    })),
+  }
+}
+
+/**
  * Adds the source and empty nutrition. When the source does not say how many
  * servings the recipe makes, it is 1: we do not guess a number.
  */

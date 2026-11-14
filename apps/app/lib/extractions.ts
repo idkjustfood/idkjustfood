@@ -1,3 +1,4 @@
+import { toRecipeLanguage } from "@workspace/schemas"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 import {
@@ -84,11 +85,17 @@ export function useStartExtraction() {
         }
       }
       const household = householdId ?? undefined
+      // The recipe is written in the language the person uses the app in.
+      const language = toRecipeLanguage(i18n.language)
       if (request.type === "link") {
         return (
           await call(
             api.POST("/api/extractions/link", {
-              body: { url: request.url.trim(), householdId: household },
+              body: {
+                url: request.url.trim(),
+                householdId: household,
+                language,
+              },
             })
           )
         ).job
@@ -97,7 +104,7 @@ export function useStartExtraction() {
         return (
           await call(
             api.POST("/api/extractions/text", {
-              body: { text: request.text, householdId: household },
+              body: { text: request.text, householdId: household, language },
             })
           )
         ).job
@@ -106,7 +113,7 @@ export function useStartExtraction() {
         await uploadImage<{ job: ExtractionJob }>(
           "/api/extractions/image",
           request.photo,
-          { householdId: household }
+          { householdId: household, language }
         )
       ).job
     },

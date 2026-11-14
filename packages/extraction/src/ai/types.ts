@@ -3,6 +3,8 @@
  * never a specific provider. See `docs/ai-providers.md` for how to add one.
  */
 
+import type { RecipeLanguage } from "@workspace/schemas"
+
 export type ImageInput = { data: Uint8Array; mediaType: string }
 export type AudioInput = { data: Uint8Array; mediaType: string }
 
@@ -22,13 +24,22 @@ export interface ImageReader {
   readImages(images: ImageInput[]): Promise<string>
 }
 
+export type ParseOptions = {
+  /**
+   * The language to write the recipe in. When the material is in another language, the
+   * AI translates it. Empty keeps the language of the material. Every provider must
+   * give the model the instruction from `parseRecipeSystem(language)`.
+   */
+  language?: RecipeLanguage
+}
+
 /** Turns messy text into a recipe. */
 export interface RecipeParser {
   /**
    * Returns the recipe as a JSON value. The pipeline validates it, so the
    * provider only has to hand over what the model answered.
    */
-  parseRecipe(material: string): Promise<unknown>
+  parseRecipe(material: string, options?: ParseOptions): Promise<unknown>
 }
 
 /** What the pipeline works with: one object with the three jobs. */

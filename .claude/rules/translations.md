@@ -15,7 +15,7 @@ directly in the code. See `docs/translations.md` for the setup.
 - Plurals use `key_one` / `key_other` (more forms where the language needs them) with `{{count}}`.
 - Numbers, amounts, minutes and dates go through `formatNumber`, `formatAmount`, `formatMinutes` and
   the helpers in `lib/planner-format.ts`. Never hardcode a locale such as `"en-GB"`.
-- Recipe content (titles, ingredients, steps) is not translated. It stays in the language of its source.
+- Saved recipe content (titles, ingredients, steps) is not translated by the app. New recipes from the AI are written in the selected language by the API (`docs/ai-providers.md`). A new language is added to `packages/schemas/src/language.ts` too.
 - Names of brands and technical terms (Instagram, OpenRouter, JSON) stay as they are.
 - Run `bun test lib` in `apps/app`. `lib/i18n/locales.test.ts` fails on missing keys, empty texts, lost
   placeholders and hardcoded text in `.tsx` files. Fix the cause; do not weaken the test.

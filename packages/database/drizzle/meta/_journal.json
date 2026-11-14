@@ -64,6 +64,13 @@
       "when": 1794662074216,
       "tag": "0008_fixed_tags",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1794666363718,
+      "tag": "0009_light_klaw",
+      "breakpoints": true
     }
   ]
 }

@@ -324,6 +324,13 @@ export function readPageRecipe(html: string): {
   return { partial: nodes[0] }
 }
 
+/** The language a page says it is written in (the lang of its html tag), as written there. */
+export function pageLanguage(html: string): string | undefined {
+  const tag = /<html\b[^>]*>/i.exec(html)?.[0]
+  const lang = tag && /\blang\s*=\s*["']?([a-zA-Z]{2,3})(?![a-zA-Z])/i.exec(tag)
+  return lang?.[1]
+}
+
 /** The readable text of a page, without scripts and styles, cut to `maxChars`. */
 export function htmlToText(html: string, maxChars = 20_000) {
   const text = html
