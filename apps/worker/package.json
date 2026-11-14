@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@workspace/database": "workspace:*",
+    "@workspace/logger": "workspace:*",
     "@workspace/extraction": "workspace:*"
   }
 }

@@ -103,6 +103,14 @@ export function createAi(env: AiEnv, registry = providers): Ai {
     }
   }
   return {
+    describe(job) {
+      try {
+        const found = jobSettings(job, env, registry)
+        return found && { provider: found.provider.id, model: found.model }
+      } catch {
+        return undefined
+      }
+    },
     async transcribe(audio) {
       const { provider, options } = settings("transcription")
       return provider.transcriber(options).transcribe(audio)

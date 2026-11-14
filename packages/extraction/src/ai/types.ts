@@ -32,7 +32,13 @@ export interface RecipeParser {
 }
 
 /** What the pipeline works with: one object with the three jobs. */
-export interface Ai extends Transcriber, ImageReader, RecipeParser {}
+export interface Ai extends Transcriber, ImageReader, RecipeParser {
+  /**
+   * Which provider and model a job uses, for the logs. Never include keys or addresses.
+   * Optional: fakes in tests leave it out.
+   */
+  describe?(job: AiJob): { provider: string; model: string } | undefined
+}
 
 export type AiJob = "transcription" | "vision" | "parsing"
 

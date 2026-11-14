@@ -195,7 +195,10 @@ export function parseIngredientLine(
   if (!fitted.note) return split
   return {
     ...split,
-    note: (split.note ? `${fitted.note}, ${split.note}` : fitted.note).slice(0, 300),
+    note: (split.note ? `${fitted.note}, ${split.note}` : fitted.note).slice(
+      0,
+      300
+    ),
   }
 }
 

@@ -3,10 +3,16 @@ import { cors } from "hono/cors"
 
 import type { Database } from "@workspace/database"
 import type { InputModule, JobQueue } from "@workspace/extraction"
+import { silentLogger, type Logger } from "@workspace/logger"
 
 import { createAuth, socialProvidersFromEnv, type AuthEnv } from "./auth.js"
 import { extractionRoutes } from "./extractions/routes.js"
 import { householdRoutes } from "./households/routes.js"
+import {
+  logUnhandledError,
+  requestLogging,
+  type LogVariables,
+} from "./logging.js"
 import { plannerRoutes } from "./planner/routes.js"
 import { recipeRoutes } from "./recipes/routes.js"
 import { shoppingRoutes } from "./shopping/routes.js"
@@ -30,6 +36,8 @@ export type AppDeps = {
   queue?: JobQueue
   /** Input modules to use instead of the built-in ones (tests). */
   modules?: InputModule[]
+  /** Where requests and errors are logged. Defaults to a logger that writes nothing. */
+  logger?: Logger
 }
 
 const noQueue: JobQueue = {
@@ -42,7 +50,13 @@ const noQueue: JobQueue = {
 export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
   const policy = signupPolicy(db, signupModeFromEnv(env))
   const auth = createAuth(db, env, policy)
-  const app = new OpenAPIHono<{ Variables: Partial<AuthVariables> }>()
+  const logger = deps.logger ?? silentLogger
+  const app = new OpenAPIHono<{
+    Variables: Partial<AuthVariables & LogVariables>
+  }>()
+
+  app.use(requestLogging(logger))
+  app.onError(logUnhandledError(logger))
 
   if (env.APP_URL) {
     app.use("/api/*", cors({ origin: env.APP_URL, credentials: true }))

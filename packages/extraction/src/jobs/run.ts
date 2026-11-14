@@ -1,4 +1,5 @@
 import type { Database } from "@workspace/database"
+import { silentLogger } from "@workspace/logger"
 
 import { ExtractionError } from "../errors.js"
 import type { ExtractionInput } from "../inputs/types.js"
@@ -19,6 +20,11 @@ function inputOf(job: JobRow): ExtractionInput {
   throw new ExtractionError("invalid_input", "The job has no input.")
 }
 
+export type JobContext = {
+  /** The ID of the API request that created the job, to link the two in the logs. */
+  requestId?: string
+}
+
 /**
  * Runs one job: reads the input, builds the recipe, saves it. Never throws for a
  * failed extraction: the job row gets the message instead. Safe to call twice for
@@ -27,21 +33,44 @@ function inputOf(job: JobRow): ExtractionInput {
 export async function runExtractionJob(
   db: Database,
   jobId: string,
-  options: PipelineOptions
+  options: PipelineOptions,
+  context: JobContext = {}
 ) {
+  const log = (options.logger ?? silentLogger).child({
+    jobId,
+    requestId: context.requestId,
+  })
   const store = jobStore(db)
-  if (!(await store.start(jobId))) return
+  if (!(await store.start(jobId))) {
+    log.debug("job skipped: it is not queued (already taken or gone)")
+    return
+  }
   const job = await store.get(jobId)
-  if (!job) return
+  if (!job) {
+    log.warn("job skipped: it no longer exists")
+    return
+  }
 
+  const started = performance.now()
+  const elapsed = () => Math.round(performance.now() - started)
+  log.info("job started", { kind: job.kind })
   try {
-    const content = await extractRecipe(inputOf(job), options)
-    await store.succeed(job, content)
+    const content = await extractRecipe(inputOf(job), {
+      ...options,
+      logger: log,
+    })
+    const recipeId = await store.succeed(job, content)
+    log.info("job finished", { durationMs: elapsed(), recipeId })
   } catch (cause) {
     if (cause instanceof ExtractionError) {
+      log.warn("job failed", {
+        durationMs: elapsed(),
+        code: cause.code,
+        reason: cause.message,
+      })
       await store.fail(jobId, cause.code, cause.message)
     } else {
-      console.error(`extraction job ${jobId} crashed`, cause)
+      log.error("job crashed", { durationMs: elapsed(), err: cause })
       await store.fail(
         jobId,
         "ai_failed",
