@@ -65,6 +65,8 @@ export const MealRecipeSchema = z.object({
 export type MealRecipe = z.infer<typeof MealRecipeSchema>
 
 export const MealSchema = z.object({
+  /** Identifies this meal. A slot can hold several meals, so a meal is addressed by its id. */
+  id: z.string(),
   date: DateSchema,
   slot: MealSlotSchema,
   /** How many servings are cooked for this meal. */
@@ -99,36 +101,46 @@ export const MealPlanRenameSchema = z.object({
   name: z.string().trim().min(1).max(100),
 })
 
-/** Puts a recipe in a slot, replacing what is there. */
+/** A recipe for a slot, with the servings to cook. */
 export const SetMealSchema = z.object({
   recipeId: z.string().min(1),
   servings: z.number().int().min(1).max(1000).default(2),
 })
 export type SetMeal = z.infer<typeof SetMealSchema>
 
-export const MealServingsSchema = z.object({
-  servings: z.number().int().min(1).max(1000),
-})
+/** Changes one meal: its servings, its recipe (a swap), or both. */
+export const UpdateMealSchema = z
+  .object({
+    servings: z.number().int().min(1).max(1000).optional(),
+    recipeId: z.string().min(1).optional(),
+  })
+  .refine((value) => value.servings !== undefined || value.recipeId, {
+    message: "Send servings, recipeId or both",
+  })
+export type UpdateMeal = z.infer<typeof UpdateMealSchema>
 
 /** One slot of one day. */
 export type SlotKey = { date: string; slot: MealSlot }
 
-/** The plan's meals of one week, as seven days with three slots each (empty slots are null). */
+/**
+ * The plan's meals of one week, as seven days with three slots each. A slot holds the
+ * meals planned there, in the order they were added (an empty slot is an empty list).
+ */
 export type WeekView = {
   start: string
-  days: { date: string; slots: Record<MealSlot, Meal | null> }[]
+  days: { date: string; slots: Record<MealSlot, Meal[]> }[]
 }
 
 /** Lays the meals of the week starting on `start` out as days and slots. */
 export function buildWeek(meals: Meal[], start: string): WeekView {
   const days = weekDays(weekStart(start)).map((date) => {
-    const slots: Record<MealSlot, Meal | null> = {
-      breakfast: null,
-      midday: null,
-      afternoon: null,
+    const slots: Record<MealSlot, Meal[]> = {
+      breakfast: [],
+      midday: [],
+      afternoon: [],
     }
     for (const meal of meals) {
-      if (meal.date === date) slots[meal.slot] = meal
+      if (meal.date === date) slots[meal.slot].push(meal)
     }
     return { date, slots }
   })
@@ -139,12 +151,11 @@ export function buildWeek(meals: Meal[], start: string): WeekView {
  * The calories one person eats in a day, from the recipes' estimates. `missing`
  * counts meals whose recipe has no estimate, so the total is only a lower bound.
  */
-export function dayCalories(meals: (Meal | null)[]) {
+export function dayCalories(meals: Meal[]) {
   let calories = 0
   let missing = 0
   let planned = 0
   for (const meal of meals) {
-    if (!meal) continue
     planned += 1
     if (meal.recipe.calories === null) missing += 1
     else calories += meal.recipe.calories

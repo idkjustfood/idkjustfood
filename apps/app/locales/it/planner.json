@@ -37,8 +37,9 @@
     "kcal": "≈ {{value}} kcal{{plus}}",
     "missing_one": "{{count}} pasto non ha una stima delle calorie.",
     "missing_other": "{{count}} pasti non hanno una stima delle calorie.",
-    "changeLabel_one": "{{slot}}, {{title}}, {{count}} porzione. Modifica",
-    "changeLabel_other": "{{slot}}, {{title}}, {{count}} porzioni. Modifica",
+    "changeLabel": "{{slot}}: {{titles}}. Modifica",
+    "mealLabel_one": "{{title}}, {{count}} porzione",
+    "mealLabel_other": "{{title}}, {{count}} porzioni",
     "addLabel": "{{slot}}, vuoto. Aggiungi un pasto",
     "add": "Aggiungi"
   },
@@ -104,8 +105,11 @@
   "slot": {
     "remove": "Rimuovi",
     "save": "Salva le porzioni",
-    "swap": "Sostituisci con un'altra ricetta",
+    "swap": "Sostituisci",
+    "cancelSwap": "Annulla sostituzione",
+    "swapping": "Scegli una ricetta per sostituire {{title}}",
     "pick": "Scegli una ricetta",
+    "addAnother": "Aggiungi un'altra ricetta",
     "search": "Cerca ricette",
     "loading": "Caricamento delle ricette",
     "loadError": "Impossibile caricare le ricette",
@@ -114,7 +118,8 @@
     "noMatch": "Nessuna ricetta corrisponde.",
     "planLabel": "Pianifica {{title}}",
     "kcalPerServing": "≈ {{value}} kcal a porzione",
-    "error": "Qualcosa è andato storto."
+    "error": "Qualcosa è andato storto.",
+    "done": "Fatto"
   },
   "list": {
     "title": "Aggiungi gli ingredienti a una lista della spesa",

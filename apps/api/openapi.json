@@ -1241,6 +1241,9 @@
             "items": {
               "type": "object",
               "properties": {
+                "id": {
+                  "type": "string"
+                },
                 "date": {
                   "type": "string",
                   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
@@ -1300,6 +1303,7 @@
                 }
               },
               "required": [
+                "id",
                 "date",
                 "slot",
                 "servings",
@@ -1379,18 +1383,19 @@
           "recipeId"
         ]
       },
-      "MealServings": {
+      "UpdateMeal": {
         "type": "object",
         "properties": {
           "servings": {
             "type": "integer",
             "minimum": 1,
             "maximum": 1000
+          },
+          "recipeId": {
+            "type": "string",
+            "minLength": 1
           }
-        },
-        "required": [
-          "servings"
-        ]
+        }
       },
       "GeneratePlanResult": {
         "type": "object",
@@ -1418,6 +1423,9 @@
                 "items": {
                   "type": "object",
                   "properties": {
+                    "id": {
+                      "type": "string"
+                    },
                     "date": {
                       "type": "string",
                       "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
@@ -1477,6 +1485,7 @@
                     }
                   },
                   "required": [
+                    "id",
                     "date",
                     "slot",
                     "servings",
@@ -4537,7 +4546,7 @@
           }
         ],
         "summary": "Get a meal plan with its meals",
-        "description": "Every meal is a recipe in one of three slots of a day: `breakfast`, `midday` or `afternoon`. Use `from` and `to` to get only some days. Calories are an estimate per serving.",
+        "description": "Every meal is a recipe in one of three slots of a day: `breakfast`, `midday` or `afternoon`. A slot can hold several meals. Use `from` and `to` to get only some days. Calories are an estimate per serving.",
         "parameters": [
           {
             "schema": {
@@ -4752,6 +4761,110 @@
       }
     },
     "/api/meal-plans/{planId}/meals/{date}/{slot}": {
+      "post": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add a recipe to a slot",
+        "description": "A slot can hold several recipes, for example a bread and a smoothie for breakfast. The recipe is added next to what is already there. Adding a recipe that is already in the slot changes its servings instead of adding it twice. A household plan can only use the household's recipes, so that every member can open them. A personal plan can use your own recipes and your households'.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "required": true,
+            "name": "date",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "breakfast",
+                "midday",
+                "afternoon"
+              ]
+            },
+            "required": true,
+            "name": "slot",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetMeal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The plan with the meal added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/components/schemas/MealPlan"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid meal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan or the recipe doesn't exist, or you can't use it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
       "put": {
         "tags": [
           "Meal plans"
@@ -4761,8 +4874,8 @@
             "cookieAuth": []
           }
         ],
-        "summary": "Put a recipe in a slot",
-        "description": "Plans or swaps the meal of one slot. A household plan can only use the household's recipes, so that every member can open them. A personal plan can use your own recipes and your households'.",
+        "summary": "Put one recipe in a slot",
+        "description": "Makes the recipe the only meal of the slot: everything else in that slot is taken out. To keep what is there, add a recipe with POST instead.",
         "parameters": [
           {
             "schema": {
@@ -4856,7 +4969,7 @@
           }
         }
       },
-      "patch": {
+      "delete": {
         "tags": [
           "Meal plans"
         ],
@@ -4865,7 +4978,8 @@
             "cookieAuth": []
           }
         ],
-        "summary": "Change the servings of a meal",
+        "summary": "Empty a slot",
+        "description": "Takes out every meal of the slot. To remove one meal, use its id.",
         "parameters": [
           {
             "schema": {
@@ -4898,19 +5012,9 @@
             "in": "path"
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MealServings"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "The plan with the new servings",
+            "description": "The plan without the meals",
             "content": {
               "application/json": {
                 "schema": {
@@ -4923,16 +5027,6 @@
                   "required": [
                     "plan"
                   ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid servings",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -4958,8 +5052,10 @@
             }
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/api/meal-plans/{planId}/meals/{mealId}": {
+      "patch": {
         "tags": [
           "Meal plans"
         ],
@@ -4968,7 +5064,8 @@
             "cookieAuth": []
           }
         ],
-        "summary": "Empty a slot",
+        "summary": "Change one meal",
+        "description": "Change the servings, swap the recipe, or both. The meal stays in its slot and keeps its place. A recipe that is already in that slot can't be used twice.",
         "parameters": [
           {
             "schema": {
@@ -4980,24 +5077,110 @@
           },
           {
             "schema": {
-              "type": "string",
-              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              "type": "string"
             },
             "required": true,
-            "name": "date",
+            "name": "mealId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMeal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The plan with the changed meal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/components/schemas/MealPlan"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan, the meal or the recipe doesn't exist, or you can't use it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That recipe is already in this slot",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Remove one meal",
+        "description": "Other meals in the same slot stay.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
             "in": "path"
           },
           {
             "schema": {
-              "type": "string",
-              "enum": [
-                "breakfast",
-                "midday",
-                "afternoon"
-              ]
+              "type": "string"
             },
             "required": true,
-            "name": "slot",
+            "name": "mealId",
             "in": "path"
           }
         ],
@@ -5031,7 +5214,7 @@
             }
           },
           "404": {
-            "description": "The plan doesn't exist, or nothing is planned in that slot",
+            "description": "The plan or the meal doesn't exist",
             "content": {
               "application/json": {
                 "schema": {

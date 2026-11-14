@@ -37,8 +37,9 @@
     "kcal": "≈ {{value}} kcal{{plus}}",
     "missing_one": "{{count}} meal has no calorie estimate.",
     "missing_other": "{{count}} meals have no calorie estimate.",
-    "changeLabel_one": "{{slot}}, {{title}}, {{count}} serving. Change",
-    "changeLabel_other": "{{slot}}, {{title}}, {{count}} servings. Change",
+    "changeLabel": "{{slot}}: {{titles}}. Change",
+    "mealLabel_one": "{{title}}, {{count}} serving",
+    "mealLabel_other": "{{title}}, {{count}} servings",
     "addLabel": "{{slot}}, empty. Add a meal",
     "add": "Add"
   },
@@ -104,8 +105,11 @@
   "slot": {
     "remove": "Remove",
     "save": "Save servings",
-    "swap": "Swap for another recipe",
+    "swap": "Swap",
+    "cancelSwap": "Cancel swap",
+    "swapping": "Pick a recipe to replace {{title}}",
     "pick": "Pick a recipe",
+    "addAnother": "Add another recipe",
     "search": "Search recipes",
     "loading": "Loading recipes",
     "loadError": "Could not load recipes",
@@ -114,7 +118,8 @@
     "noMatch": "No recipe matches.",
     "planLabel": "Plan {{title}}",
     "kcalPerServing": "≈ {{value}} kcal per serving",
-    "error": "Something went wrong."
+    "error": "Something went wrong.",
+    "done": "Done"
   },
   "list": {
     "title": "Add ingredients to a shopping list",

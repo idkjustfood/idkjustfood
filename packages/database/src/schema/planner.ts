@@ -41,7 +41,8 @@ export const mealPlan = pgTable(
 
 /**
  * One meal: a recipe in one of the three slots (breakfast, midday, afternoon) of one
- * day. A slot holds at most one recipe. The date is a calendar day (`YYYY-MM-DD`).
+ * day. A slot can hold several recipes (a bread and a smoothie), but the same recipe only
+ * once. The date is a calendar day (`YYYY-MM-DD`).
  */
 export const mealPlanMeal = pgTable(
   "meal_plan_meal",
@@ -64,11 +65,13 @@ export const mealPlanMeal = pgTable(
       .notNull(),
   },
   (table) => [
-    unique("meal_plan_meal_slot_unique").on(
+    unique("meal_plan_meal_recipe_unique").on(
       table.planId,
       table.date,
-      table.slot
+      table.slot,
+      table.recipeId
     ),
+    index("meal_plan_meal_day_idx").on(table.planId, table.date),
     index("meal_plan_meal_recipeId_idx").on(table.recipeId),
   ]
 )

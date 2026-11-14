@@ -78,6 +78,13 @@
       "when": 1794669209610,
       "tag": "0010_swift_molten_man",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1794687418113,
+      "tag": "0011_nice_magus",
+      "breakpoints": true
     }
   ]
 }

@@ -19,7 +19,7 @@ self-hosted installs have it too.
   see and where "New plan" puts the new one. Plans of other spaces never show. The choice is
   remembered on the device and is the same one the recipes and shopping lists use.
 - **Calories:** every day shows the estimated calories for one person, added up from the recipes'
-  nutrition values. They are always estimates. A meal whose recipe has no estimate is not counted, and
+  nutrition values (every recipe of every slot counts). They are always estimates. A meal whose recipe has no estimate is not counted, and
   the day says so (a `+` after the number).
 - **Auto-plan** (button at the bottom): a wizard in three steps, see [below](#automatic-planning).
 - **Shopping list** (button at the bottom): adds the ingredients of the meals you choose to a
@@ -27,7 +27,7 @@ self-hosted installs have it too.
   days" for any range from one day up to a year (arrows move the first and last day). The sheet
   shows the days and how many meals they cover before anything is added. A range without meals
   can't be added, so no empty request is sent. **Nothing reaches a shopping list unless you tap
-  this.** Amounts are scaled to each meal's servings and merged like when you add a recipe (see
+  this.** Every recipe of every slot is included. Amounts are scaled to each meal's servings and merged like when you add a recipe (see
   [shopping lists](shopping-lists.md#how-merging-works)). It needs a connection.
 
 The plan screen and the wizard use big touch targets and keep their main buttons at the bottom of
@@ -67,8 +67,10 @@ wishes and recipes always give the same plan, with any AI provider or none.
 - A household plan only uses the household's recipes, so every member can open them. A personal plan
   uses your own recipes and your households'.
 
-By default only **empty** slots are filled. With "Replace them" (`overwrite`) the slots the planner
-works on are emptied first. Skipped days and skipped meals are never touched.
+By default only **empty** slots are filled. A slot with any recipe counts as planned, and all its
+recipes are kept (and counted for the day's calories). The planner itself puts one recipe in a slot.
+With "Replace them" (`overwrite`) the slots the planner works on are emptied first, every recipe in
+them. Skipped days and skipped meals are never touched.
 
 ## API
 
@@ -81,13 +83,17 @@ All endpoints need a signed-in user and are in the OpenAPI document (`/api/opena
 | `GET /api/meal-plans/{planId}` | One plan with its meals. `?from=` and `?to=` (`YYYY-MM-DD`) pick some days |
 | `PATCH /api/meal-plans/{planId}` | Rename. Everyone who can see the plan can |
 | `DELETE /api/meal-plans/{planId}` | Delete. The person who made it, or a household owner |
-| `PUT /api/meal-plans/{planId}/meals/{date}/{slot}` | Put a recipe in a slot (also to swap it), with `servings` |
-| `PATCH /api/meal-plans/{planId}/meals/{date}/{slot}` | Change the servings of a planned meal |
-| `DELETE /api/meal-plans/{planId}/meals/{date}/{slot}` | Empty a slot |
+| `POST /api/meal-plans/{planId}/meals/{date}/{slot}` | Add a recipe to a slot, next to the others, with `servings`. Adding a recipe that is already in the slot only changes its servings |
+| `PUT /api/meal-plans/{planId}/meals/{date}/{slot}` | Make a recipe the only meal of the slot (everything else in the slot goes) |
+| `DELETE /api/meal-plans/{planId}/meals/{date}/{slot}` | Empty a slot (every meal in it) |
+| `PATCH /api/meal-plans/{planId}/meals/{mealId}` | Change one meal: `servings`, `recipeId` (a swap that keeps its place) or both. `409` if the new recipe is already in that slot |
+| `DELETE /api/meal-plans/{planId}/meals/{mealId}` | Remove one meal, the others in its slot stay |
 | `POST /api/meal-plans/{planId}/generate` | Fill days automatically (`goals`, `days`, `servings`, `overwrite`) |
 | `POST /api/meal-plans/{planId}/shopping-list` | Add the plan's ingredients to a list (`listId`, optional `from` and `to`, both days included) |
 
-`slot` is `breakfast`, `midday` or `afternoon`. `date` is a calendar day, `YYYY-MM-DD`, with no
+`slot` is `breakfast`, `midday` or `afternoon`. A meal has its own `id`; use it to change or remove
+one meal when a slot holds several. Within a slot, meals come back in the order they were added. A
+recipe is in a slot only once (the same recipe in two slots of a day is fine). `date` is a calendar day, `YYYY-MM-DD`, with no
 time zone. A meal in the answer carries a small summary of its recipe (title, times, estimated
 calories per serving), so a plan can be shown without loading every recipe.
 
@@ -111,8 +117,8 @@ in the future without making anything first. If a recipe is deleted, its slots b
 
 - `packages/schemas/src/planner.ts`: plan, meal and request schemas, week helpers.
 - `packages/schemas/src/autoplan.ts`: the automatic planner (pure function, with tests).
-- `packages/database/src/schema/planner.ts`: the `meal_plan` and `meal_plan_meal` tables. A slot is
-  unique per plan, date and slot.
+- `packages/database/src/schema/planner.ts`: the `meal_plan` and `meal_plan_meal` tables. A meal is unique
+  per plan, date, slot and recipe, so a slot can hold several recipes.
 - `apps/api/src/planner/`: routes and database queries.
 - `apps/app/app/(app)/(tabs)/planner/`: the plan screen and the wizard. `apps/app/lib/planner.ts`
   holds the queries, `planner-wizard.ts` turns the wizard's state into a request.

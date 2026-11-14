@@ -6,15 +6,18 @@ import {
   dayCalories,
   DateSchema,
   GeneratePlanSchema,
+  UpdateMealSchema,
   weekStart,
   type Meal,
 } from "./planner.js"
 
+let counter = 0
 const meal = (
   date: string,
   slot: Meal["slot"],
   calories: number | null
 ): Meal => ({
+  id: `m${(counter += 1)}`,
   date,
   slot,
   servings: 2,
@@ -59,25 +62,35 @@ describe("buildWeek", () => {
         "afternoon",
       ])
     }
-    expect(week.days[1]!.slots.midday?.recipe.calories).toBe(500)
-    expect(week.days[1]!.slots.breakfast).toBeNull()
+    expect(week.days[1]!.slots.midday[0]?.recipe.calories).toBe(500)
+    expect(week.days[1]!.slots.breakfast).toEqual([])
+  })
+
+  test("keeps several meals in one slot, in the order given", () => {
+    const bread = meal("2026-01-06", "breakfast", 250)
+    const smoothie = meal("2026-01-06", "breakfast", 150)
+    const week = buildWeek([bread, smoothie], "2026-01-05")
+    expect(week.days[1]!.slots.breakfast).toEqual([bread, smoothie])
+    expect(week.days[1]!.slots.midday).toEqual([])
   })
 
   test("ignores meals of other weeks", () => {
     const week = buildWeek([meal("2026-01-13", "midday", 500)], "2026-01-05")
-    expect(week.days.every((d) => d.slots.midday === null)).toBe(true)
+    expect(week.days.every((d) => d.slots.midday.length === 0)).toBe(true)
   })
 })
 
 describe("dayCalories", () => {
   test("adds the estimates and counts meals without one", () => {
     expect(
-      dayCalories([
-        meal("d", "breakfast", 300),
-        meal("d", "midday", null),
-        null,
-      ])
+      dayCalories([meal("d", "breakfast", 300), meal("d", "midday", null)])
     ).toEqual({ calories: 300, missing: 1, planned: 2 })
+  })
+
+  test("counts every meal of a slot", () => {
+    expect(
+      dayCalories([meal("d", "breakfast", 250), meal("d", "breakfast", 150)])
+    ).toEqual({ calories: 400, missing: 0, planned: 2 })
   })
 })
 
@@ -89,5 +102,14 @@ describe("GeneratePlanSchema", () => {
     })
     expect(parsed.servings).toBe(2)
     expect(parsed.overwrite).toBe(false)
+  })
+})
+
+describe("UpdateMealSchema", () => {
+  test("needs servings, a recipe or both", () => {
+    expect(UpdateMealSchema.safeParse({}).success).toBe(false)
+    expect(UpdateMealSchema.safeParse({ servings: 3 }).success).toBe(true)
+    expect(UpdateMealSchema.safeParse({ recipeId: "r" }).success).toBe(true)
+    expect(UpdateMealSchema.safeParse({ servings: 0 }).success).toBe(false)
   })
 })

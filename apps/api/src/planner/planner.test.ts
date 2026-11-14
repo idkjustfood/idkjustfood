@@ -68,6 +68,20 @@ async function getPlan(planId: string, cookie = olivia, query = "") {
 const slotPath = (planId: string, date: string, slot: string) =>
   `/api/meal-plans/${planId}/meals/${date}/${slot}`
 
+const mealPath = (planId: string, mealId: string) =>
+  `/api/meal-plans/${planId}/meals/${mealId}`
+
+async function addMeal(
+  planId: string,
+  date: string,
+  slot: string,
+  recipeId: string,
+  servings?: number,
+  cookie = olivia
+) {
+  return api.post(slotPath(planId, date, slot), cookie, { recipeId, servings })
+}
+
 async function setMeal(
   planId: string,
   date: string,
@@ -209,8 +223,10 @@ describe("meals", () => {
 
     const set = await setMeal(plan.id, "2026-01-05", "midday", dal.id, 3)
     expect(set.status).toBe(200)
-    expect((await body<{ plan: MealPlan }>(set)).plan.meals).toEqual([
+    const planned = (await body<{ plan: MealPlan }>(set)).plan.meals
+    expect(planned).toEqual([
       {
+        id: expect.any(String),
         date: "2026-01-05",
         slot: "midday",
         servings: 3,
@@ -225,7 +241,7 @@ describe("meals", () => {
       },
     ])
 
-    // Swapping keeps one meal per slot.
+    // PUT makes the recipe the only meal of the slot.
     await setMeal(plan.id, "2026-01-05", "midday", pasta.id, 2)
     let meals = (await getPlan(plan.id)).meals
     expect(meals).toHaveLength(1)
@@ -233,7 +249,7 @@ describe("meals", () => {
 
     const servings = await api.request(
       "PATCH",
-      slotPath(plan.id, "2026-01-05", "midday"),
+      mealPath(plan.id, meals[0]!.id),
       olivia,
       { servings: 6 }
     )
@@ -241,7 +257,7 @@ describe("meals", () => {
     expect((await getPlan(plan.id)).meals[0]!.servings).toBe(6)
 
     expect(
-      (await api.del(slotPath(plan.id, "2026-01-05", "midday"), olivia)).status
+      (await api.del(mealPath(plan.id, meals[0]!.id), olivia)).status
     ).toBe(200)
     meals = (await getPlan(plan.id)).meals
     expect(meals).toEqual([])
@@ -249,18 +265,15 @@ describe("meals", () => {
     expect(
       (await api.del(slotPath(plan.id, "2026-01-05", "midday"), olivia)).status
     ).toBe(404)
+    expect((await api.del(mealPath(plan.id, "gone"), olivia)).status).toBe(404)
     expect(
       (
-        await api.request(
-          "PATCH",
-          slotPath(plan.id, "2026-01-05", "midday"),
-          olivia,
-          { servings: 2 }
-        )
+        await api.request("PATCH", mealPath(plan.id, "gone"), olivia, {
+          servings: 2,
+        })
       ).status
     ).toBe(404)
   })
-
   test("rejects a date that is not a day, and bad servings", async () => {
     const plan = await makePlan()
     const dal = await makeRecipe("Dal")
@@ -300,6 +313,146 @@ describe("meals", () => {
     expect(
       (await setMeal(plan.id, "2026-01-05", "midday", secret.id)).status
     ).toBe(404)
+  })
+
+  test("a slot can hold several recipes, each with its own servings", async () => {
+    const plan = await makePlan()
+    const bread = await makeRecipe("Bread", {
+      nutrition: { calories: 250, protein: null, carbs: null, fat: null },
+    })
+    const smoothie = await makeRecipe("Smoothie", {
+      nutrition: { calories: 150, protein: null, carbs: null, fat: null },
+    })
+
+    expect(
+      (await addMeal(plan.id, "2026-01-05", "breakfast", bread.id, 2)).status
+    ).toBe(200)
+    const added = await addMeal(
+      plan.id,
+      "2026-01-05",
+      "breakfast",
+      smoothie.id,
+      1
+    )
+    expect(added.status).toBe(200)
+
+    const meals = (await getPlan(plan.id)).meals
+    // In the order they were added.
+    expect(meals.map((m) => [m.slot, m.recipe.title, m.servings])).toEqual([
+      ["breakfast", "Bread", 2],
+      ["breakfast", "Smoothie", 1],
+    ])
+    expect(new Set(meals.map((m) => m.id)).size).toBe(2)
+  })
+
+  test("changing or removing one meal leaves the others in the slot alone", async () => {
+    const plan = await makePlan()
+    const bread = await makeRecipe("Bread")
+    const smoothie = await makeRecipe("Smoothie")
+    const jam = await makeRecipe("Jam")
+    await addMeal(plan.id, "2026-01-05", "breakfast", bread.id, 2)
+    await addMeal(plan.id, "2026-01-05", "breakfast", smoothie.id, 1)
+    const [first, second] = (await getPlan(plan.id)).meals
+
+    // Servings change only that meal.
+    await api.request("PATCH", mealPath(plan.id, second!.id), olivia, {
+      servings: 4,
+    })
+    // Swapping keeps the place in the slot.
+    const swap = await api.request(
+      "PATCH",
+      mealPath(plan.id, first!.id),
+      olivia,
+      {
+        recipeId: jam.id,
+      }
+    )
+    expect(swap.status).toBe(200)
+    let meals = (await getPlan(plan.id)).meals
+    expect(meals.map((m) => [m.recipe.title, m.servings])).toEqual([
+      ["Jam", 2],
+      ["Smoothie", 4],
+    ])
+
+    // Removing one meal keeps the other.
+    expect((await api.del(mealPath(plan.id, first!.id), olivia)).status).toBe(
+      200
+    )
+    meals = (await getPlan(plan.id)).meals
+    expect(meals.map((m) => m.recipe.title)).toEqual(["Smoothie"])
+  })
+
+  test("the same recipe is in a slot only once", async () => {
+    const plan = await makePlan()
+    const bread = await makeRecipe("Bread")
+    const smoothie = await makeRecipe("Smoothie")
+    await addMeal(plan.id, "2026-01-05", "breakfast", bread.id, 2)
+    // Adding it again changes its servings instead of adding a second one.
+    await addMeal(plan.id, "2026-01-05", "breakfast", bread.id, 5)
+    await addMeal(plan.id, "2026-01-05", "breakfast", smoothie.id, 1)
+    let meals = (await getPlan(plan.id)).meals
+    expect(meals.map((m) => [m.recipe.title, m.servings])).toEqual([
+      ["Bread", 5],
+      ["Smoothie", 1],
+    ])
+    // Swapping to a recipe that is already there is refused.
+    const clash = await api.request(
+      "PATCH",
+      mealPath(plan.id, meals[1]!.id),
+      olivia,
+      { recipeId: bread.id }
+    )
+    expect(clash.status).toBe(409)
+    // The same recipe in another slot is fine.
+    expect(
+      (await addMeal(plan.id, "2026-01-05", "afternoon", bread.id)).status
+    ).toBe(200)
+    meals = (await getPlan(plan.id)).meals
+    expect(meals).toHaveLength(3)
+  })
+
+  test("PUT replaces everything in the slot and DELETE on a slot empties it", async () => {
+    const plan = await makePlan()
+    const bread = await makeRecipe("Bread")
+    const smoothie = await makeRecipe("Smoothie")
+    const soup = await makeRecipe("Soup")
+    await addMeal(plan.id, "2026-01-05", "breakfast", bread.id)
+    await addMeal(plan.id, "2026-01-05", "breakfast", smoothie.id)
+    await addMeal(plan.id, "2026-01-05", "midday", soup.id)
+
+    await setMeal(plan.id, "2026-01-05", "breakfast", soup.id, 1)
+    let meals = (await getPlan(plan.id)).meals
+    expect(meals.map((m) => [m.slot, m.recipe.title])).toEqual([
+      ["breakfast", "Soup"],
+      ["midday", "Soup"],
+    ])
+
+    await addMeal(plan.id, "2026-01-05", "breakfast", bread.id)
+    expect(
+      (await api.del(slotPath(plan.id, "2026-01-05", "breakfast"), olivia))
+        .status
+    ).toBe(200)
+    meals = (await getPlan(plan.id)).meals
+    expect(meals.map((m) => m.slot)).toEqual(["midday"])
+  })
+
+  test("a meal can't be changed through another plan", async () => {
+    const mine = await makePlan("Mine")
+    const other = await makePlan("Other")
+    const bread = await makeRecipe("Bread")
+    await addMeal(mine.id, "2026-01-05", "breakfast", bread.id)
+    const [meal] = (await getPlan(mine.id)).meals
+    expect((await api.del(mealPath(other.id, meal!.id), olivia)).status).toBe(
+      404
+    )
+    expect(
+      (
+        await api.request("PATCH", mealPath(other.id, meal!.id), olivia, {
+          servings: 9,
+        })
+      ).status
+    ).toBe(404)
+    expect((await getPlan(mine.id)).meals[0]!.servings).toBe(2)
   })
 
   test("deleting a recipe empties its slots", async () => {
@@ -534,6 +687,40 @@ describe("automatic planning", () => {
     )
   })
 
+  test("keeps every meal of a slot, and overwrite clears them all", async () => {
+    const plan = await makePlan()
+    const bread = await makeRecipe("Bread")
+    const smoothie = await makeRecipe("Smoothie")
+    for (const title of ["A", "B", "C"]) await makeRecipe(title)
+    await addMeal(plan.id, "2026-01-05", "breakfast", bread.id, 1)
+    await addMeal(plan.id, "2026-01-05", "breakfast", smoothie.id, 1)
+
+    const kept = await generate(plan.id, {
+      goals: {},
+      days: [{ date: "2026-01-05" }],
+    })
+    // The breakfast slot is already planned, so only midday and afternoon are filled.
+    expect(
+      kept.plan.meals
+        .filter((m) => m.slot === "breakfast")
+        .map((m) => m.recipe.title)
+    ).toEqual(["Bread", "Smoothie"])
+    expect(kept.plan.meals).toHaveLength(4)
+
+    const replaced = await generate(plan.id, {
+      goals: {},
+      overwrite: true,
+      days: [{ date: "2026-01-05" }],
+    })
+    // One new recipe per slot: both old breakfast meals are gone.
+    expect(replaced.plan.meals).toHaveLength(3)
+    expect(replaced.plan.meals.map((m) => m.slot)).toEqual([
+      "breakfast",
+      "midday",
+      "afternoon",
+    ])
+  })
+
   test("overwrite empties slots that find no recipe", async () => {
     const plan = await makePlan()
     const big = await makeRecipe("Big", { nutrition: n(5000) })
@@ -651,6 +838,30 @@ describe("shopping list", () => {
     expect(
       (await listOf(list.id)).items.find((i) => i.name === "Flour")?.quantity
     ).toBe(450 + 450 + 200)
+  })
+
+  test("adds the ingredients of every recipe in a slot", async () => {
+    const plan = await makePlan()
+    const list = await makeList()
+    const bread = await makeRecipe("Bread", {
+      ingredients: [{ name: "Flour", quantity: 200, unit: "g", note: null }],
+    })
+    const smoothie = await makeRecipe("Smoothie", {
+      servings: 1,
+      ingredients: [{ name: "Banana", quantity: 1, unit: null, note: null }],
+    })
+    await addMeal(plan.id, "2026-01-05", "breakfast", bread.id, 4)
+    await addMeal(plan.id, "2026-01-05", "breakfast", smoothie.id, 2)
+
+    const res = await api.post(
+      `/api/meal-plans/${plan.id}/shopping-list`,
+      olivia,
+      { listId: list.id }
+    )
+    expect(await body(res)).toEqual({ listId: list.id, added: 2 })
+    const items = (await listOf(list.id)).items
+    expect(items.find((i) => i.name === "Flour")?.quantity).toBe(200)
+    expect(items.find((i) => i.name === "Banana")?.quantity).toBe(2)
   })
 
   test("needs access to the plan and to the list", async () => {
