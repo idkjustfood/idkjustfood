@@ -14,6 +14,7 @@ import { Pressable, Text, View } from "react-native"
 import type { Recipe } from "@workspace/schemas"
 
 import { TagBadge } from "@/components/tag-badge"
+import { cardTags } from "@/lib/recipe-filters"
 import { Icon } from "@/components/ui/icon"
 import { formatMinutes } from "@/lib/format"
 import i18n from "@/lib/i18n"
@@ -82,6 +83,7 @@ export function RecipeCover({
 export function RecipeCard({ recipe }: { recipe: Recipe }) {
   useTranslation()
   const total = totalMinutes(recipe)
+  const { shown, more } = cardTags(recipe.tags)
   return (
     <Pressable
       role="link"
@@ -117,11 +119,17 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
             </Text>
           </View>
         </View>
-        {recipe.tags.length > 0 && (
-          <View className="flex-row flex-wrap gap-1.5">
-            {recipe.tags.map((tag) => (
+        {shown.length > 0 && (
+          // Two tags at most keep the cards short; the recipe page shows them all.
+          <View className="flex-row flex-wrap items-center gap-1.5">
+            {shown.map((tag) => (
               <TagBadge key={tag} tag={tag} />
             ))}
+            {more > 0 && (
+              <Text className="text-xs text-muted-foreground">
+                {i18n.t("recipes:list.moreTags", { count: more })}
+              </Text>
+            )}
           </View>
         )}
       </View>

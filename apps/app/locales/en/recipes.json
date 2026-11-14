@@ -17,6 +17,24 @@
       "title": "Nothing found",
       "message": "No recipe matches your search and filters.",
       "action": "Clear filters"
+    },
+    "mealsLabel": "Meal",
+    "mealAll": "All",
+    "filters": "Filters",
+    "filtersTitle": "Filters",
+    "filtersEmpty": "Nothing else to filter by yet.",
+    "filtersClear": "Clear",
+    "filtersShow_one": "Show {{count}} recipe",
+    "filtersShow_other": "Show {{count}} recipes",
+    "removeFilter": "Remove filter {{name}}",
+    "count_one": "{{count}} recipe",
+    "count_other": "{{count}} recipes",
+    "moreTags": "+{{count}}",
+    "sortTitle": "Sort recipes",
+    "sort": {
+      "newest": "Newest first",
+      "title": "A to Z",
+      "quickest": "Quickest first"
     }
   },
   "errors": {

@@ -17,6 +17,24 @@
       "title": "Nessun risultato",
       "message": "Nessuna ricetta corrisponde alla ricerca e ai filtri.",
       "action": "Cancella i filtri"
+    },
+    "mealsLabel": "Pasto",
+    "mealAll": "Tutte",
+    "filters": "Filtri",
+    "filtersTitle": "Filtri",
+    "filtersEmpty": "Per ora non c'è altro da filtrare.",
+    "filtersClear": "Cancella",
+    "filtersShow_one": "Mostra {{count}} ricetta",
+    "filtersShow_other": "Mostra {{count}} ricette",
+    "removeFilter": "Rimuovi il filtro {{name}}",
+    "count_one": "{{count}} ricetta",
+    "count_other": "{{count}} ricette",
+    "moreTags": "+{{count}}",
+    "sortTitle": "Ordina le ricette",
+    "sort": {
+      "newest": "Prima le più recenti",
+      "title": "Dalla A alla Z",
+      "quickest": "Prima le più veloci"
     }
   },
   "errors": {

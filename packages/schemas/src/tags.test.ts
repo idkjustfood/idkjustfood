@@ -30,7 +30,15 @@ describe("the list of tags", () => {
     for (const group of tagGroupKeys) {
       expect(tagsByGroup[group].length).toBeGreaterThan(0)
     }
-    expect(tagsByGroup.meal).toEqual(["breakfast", "midday", "afternoon"])
+    expect(tagsByGroup.meal).toEqual([
+      "breakfast",
+      "midday",
+      "afternoon",
+      "snack",
+    ])
+    // `snack` is a meal, not a dish.
+    expect(tagGroup("snack")).toBe("meal")
+    expect(tagsByGroup.dish).not.toContain("snack")
     expect(tagGroup("vegan")).toBe("diet")
   })
 
@@ -91,6 +99,8 @@ describe("fitting outside tags to the list", () => {
     expect(fitTag("Lunch")).toBe("midday")
     expect(fitTag("Dinner")).toBe("afternoon")
     expect(fitTag("Frühstück")).toBe("breakfast")
+    expect(fitTag("Snacks")).toBe("snack")
+    expect(fitTag("Zwischenmahlzeit")).toBe("snack")
     expect(fitTag("  HIGH-PROTEIN ")).toBe("high_protein")
   })
 

@@ -35,6 +35,8 @@ job as `parseRecipe(material, { language })`. `parseRecipeSystem(language)` in `
 turns it into the instruction: write the title, description, ingredient names, notes and steps in
 that language, translate when the source differs, keep a text that already is in it, and never
 change or add an amount. Units and tags are fixed keys, so they are the same in every language.
+The prompt gives the AI the same meal definitions as `docs/tags.md` (breakfast, midday, afternoon,
+snack). It picks at most one meal tag and leaves it out when unsure, never guessing.
 The same call translates recipes that a website already contains (the pipeline then keeps amounts,
 units, tags, servings and times from the page and only takes the words). Without `language`, the
 recipe stays in the language of the material. Nothing to set up on a self-hosted install: it works

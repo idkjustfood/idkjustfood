@@ -17,6 +17,24 @@
       "title": "No se encontró nada",
       "message": "Ninguna receta coincide con tu búsqueda y los filtros.",
       "action": "Borrar filtros"
+    },
+    "mealsLabel": "Comida",
+    "mealAll": "Todas",
+    "filters": "Filtros",
+    "filtersTitle": "Filtros",
+    "filtersEmpty": "Todavía no hay nada más por lo que filtrar.",
+    "filtersClear": "Borrar",
+    "filtersShow_one": "Mostrar {{count}} receta",
+    "filtersShow_other": "Mostrar {{count}} recetas",
+    "removeFilter": "Quitar el filtro {{name}}",
+    "count_one": "{{count}} receta",
+    "count_other": "{{count}} recetas",
+    "moreTags": "+{{count}}",
+    "sortTitle": "Ordenar recetas",
+    "sort": {
+      "newest": "Más recientes primero",
+      "title": "De la A a la Z",
+      "quickest": "Más rápidas primero"
     }
   },
   "errors": {

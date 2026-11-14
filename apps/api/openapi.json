@@ -217,7 +217,6 @@
                 "bread",
                 "bake",
                 "sauce",
-                "snack",
                 "dessert",
                 "cake",
                 "drink",
@@ -236,7 +235,8 @@
                 "under_90_min",
                 "breakfast",
                 "midday",
-                "afternoon"
+                "afternoon",
+                "snack"
               ]
             },
             "maxItems": 49
@@ -521,7 +521,6 @@
                 "bread",
                 "bake",
                 "sauce",
-                "snack",
                 "dessert",
                 "cake",
                 "drink",
@@ -540,7 +539,8 @@
                 "under_90_min",
                 "breakfast",
                 "midday",
-                "afternoon"
+                "afternoon",
+                "snack"
               ]
             },
             "maxItems": 49
@@ -1924,7 +1924,6 @@
                     "bread",
                     "bake",
                     "sauce",
-                    "snack",
                     "dessert",
                     "cake",
                     "drink",
@@ -1943,7 +1942,8 @@
                     "under_90_min",
                     "breakfast",
                     "midday",
-                    "afternoon"
+                    "afternoon",
+                    "snack"
                   ]
                 },
                 "maxItems": 49

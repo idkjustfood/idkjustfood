@@ -17,6 +17,24 @@
       "title": "Nichts gefunden",
       "message": "Kein Rezept passt zu deiner Suche und den Filtern.",
       "action": "Filter zurücksetzen"
+    },
+    "mealsLabel": "Mahlzeit",
+    "mealAll": "Alle",
+    "filters": "Filter",
+    "filtersTitle": "Filter",
+    "filtersEmpty": "Es gibt noch nichts weiter zum Filtern.",
+    "filtersClear": "Zurücksetzen",
+    "filtersShow_one": "{{count}} Rezept anzeigen",
+    "filtersShow_other": "{{count}} Rezepte anzeigen",
+    "removeFilter": "Filter {{name}} entfernen",
+    "count_one": "{{count}} Rezept",
+    "count_other": "{{count}} Rezepte",
+    "moreTags": "+{{count}}",
+    "sortTitle": "Rezepte sortieren",
+    "sort": {
+      "newest": "Neueste zuerst",
+      "title": "A bis Z",
+      "quickest": "Schnellste zuerst"
     }
   },
   "errors": {

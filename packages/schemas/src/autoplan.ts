@@ -58,7 +58,8 @@ const slotShare: Record<MealSlot, number> = {
 /**
  * The meal tags (`breakfast`, `midday`, `afternoon`) have the names of the
  * slots. A recipe with one of them is only planned for a matching slot; a
- * recipe without any fits every slot.
+ * recipe without any fits every slot. The `snack` tag has no slot, so snacks
+ * are never planned.
  */
 const slotTags: Record<MealSlot, MealTag> = {
   breakfast: "breakfast",
