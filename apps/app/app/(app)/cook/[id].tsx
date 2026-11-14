@@ -17,6 +17,7 @@ import { stepsInOrder } from "@workspace/schemas"
 import {
   IngredientList,
   SectionHeading,
+  StepText,
   StepTimers,
 } from "@/components/recipe-parts"
 import { ErrorState, LoadingState } from "@/components/states"
@@ -133,12 +134,13 @@ function Cooking({ recipe }: { recipe: Recipe }) {
           contentContainerClassName="flex-grow justify-center gap-8 py-8"
         >
           {current.section && <SectionHeading name={current.section} />}
-          <Text
-            aria-live="polite"
-            className="text-3xl font-semibold leading-tight text-foreground md:text-4xl"
-          >
-            {step.text}
-          </Text>
+          <StepText
+            text={step.text}
+            ingredients={recipe.ingredients}
+            className="text-3xl font-normal leading-tight text-foreground md:text-4xl"
+            boldClassName="font-extrabold"
+            live
+          />
           <StepTimers
             recipeId={recipe.id}
             index={index}

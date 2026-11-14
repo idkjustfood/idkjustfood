@@ -153,5 +153,11 @@
     "nutrition": "Nutrizione",
     "time": "Tempo",
     "meal": "Pasto"
+  },
+  "stepWords": {
+    "units": "g,grammo,grammi,kg,chilo,chili,chilogrammo,chilogrammi,mg,ml,millilitro,millilitri,l,litro,litri,cucchiaino,cucchiaini,cucchiaio,cucchiai,tazza,tazze,oz,oncia,once,lb,libbra,libbre,fl oz,pezzo,pezzi,pizzico,pizzichi,spicchio,spicchi,mazzo,mazzi,fetta,fette,scatola,scatole,confezione,confezioni",
+    "times": "ora,ore,h,minuto,minuti,min,secondo,secondi,sec",
+    "foods": "olio,farina,zucchero,sale,pepe,acqua,latte,burro,panna,uovo,uova,pasta,spaghetti,riso,cipolla,cipolle,aglio,pomodoro,pomodori,patata,patate,formaggio,carne,manzo,maiale,pollo,pesce,aceto,salsa,brodo,lievito,miele,erbe,spezie,limone,carota,carote,funghi,pancetta,prosciutto,salsiccia,pane,verdure,vino,senape,paprika,cannella,vaniglia,cioccolato,cacao,yogurt,fagioli,lenticchie,spinaci,zucchina,zucchine,cetriolo,mela,banana,noci,mandorle",
+    "modifiers": "fresco,fresca,freschi,fresche,tritato,tritata,tagliato,tagliata,grattugiato,grattugiata,macinato,macinata,grande,piccolo,piccola,medio,media,maturo,matura,secco,secca,congelato,congelata,morbido,morbida,fuso,fusa,intero,intera,misto,mista,caldo,calda,freddo,fredda,tiepido,facoltativo,extra,vergine,gusto,circa"
   }
 }

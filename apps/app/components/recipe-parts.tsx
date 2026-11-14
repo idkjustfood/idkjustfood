@@ -1,5 +1,5 @@
 import { BellRing, Minus, Plus, Timer } from "lucide-react-native"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, Text, Vibration, View } from "react-native"
 
@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
 import { formatAmount, formatMinutes, type Units } from "@/lib/format"
 import i18n from "@/lib/i18n"
+import { highlightStep } from "@/lib/step-highlight"
 import { cn } from "@/lib/utils"
 
 export function ServingsScaler({
@@ -249,6 +250,61 @@ export function TimerButton({
   )
 }
 
+/**
+ * The text of a step with the recipe's ingredients, amounts and times in bold.
+ * Only the way it is shown changes; the saved text stays as it is.
+ */
+export function StepText({
+  text,
+  ingredients,
+  className,
+  boldClassName = "font-bold",
+  live,
+}: {
+  text: string
+  ingredients: Pick<Ingredient, "name">[]
+  className?: string
+  boldClassName?: string
+  /** Tells a screen reader when the step changes. */
+  live?: boolean
+}) {
+  const { t } = useTranslation()
+  // Words of the app language, and English too: a recipe can be in either.
+  const words = (key: "units" | "times" | "foods" | "modifiers") =>
+    [t(`common:stepWords.${key}`), t(`common:stepWords.${key}`, { lng: "en" })]
+      .join(",")
+      .split(",")
+  const unitWords = words("units")
+  const timeWords = words("times")
+  const foodWords = words("foods")
+  const modifierWords = words("modifiers")
+  const names = ingredients.map((ingredient) => ingredient.name)
+  const pieces = useMemo(
+    () =>
+      highlightStep(text, names, {
+        units: unitWords,
+        times: timeWords,
+        foods: foodWords,
+        modifiers: modifierWords,
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [text, names.join("|"), unitWords.join(","), timeWords.join(","), foodWords.length]
+  )
+  return (
+    <Text aria-live={live ? "polite" : undefined} className={className}>
+      {pieces.map((piece, n) =>
+        piece.bold ? (
+          <Text key={n} className={boldClassName}>
+            {piece.text}
+          </Text>
+        ) : (
+          piece.text
+        )
+      )}
+    </Text>
+  )
+}
+
 /** The timers in a step's text, one button each. */
 export function StepTimers({
   recipeId,
@@ -280,9 +336,11 @@ export function StepTimers({
 export function StepList({
   recipeId,
   steps,
+  ingredients,
 }: {
   recipeId: string
   steps: Step[]
+  ingredients: Pick<Ingredient, "name">[]
 }) {
   // Numbers go on across sections, so a step has one number everywhere.
   return (
@@ -299,9 +357,11 @@ export function StepList({
                   </Text>
                 </View>
                 <View className="flex-1 gap-2">
-                  <Text className="text-base leading-6 text-foreground">
-                    {step.text}
-                  </Text>
+                  <StepText
+                    text={step.text}
+                    ingredients={ingredients}
+                    className="text-base leading-6 text-foreground"
+                  />
                   <StepTimers
                     recipeId={recipeId}
                     index={index}

@@ -153,5 +153,11 @@
     "nutrition": "Nutrición",
     "time": "Tiempo",
     "meal": "Comida"
+  },
+  "stepWords": {
+    "units": "g,gramo,gramos,kg,kilo,kilos,kilogramo,kilogramos,mg,ml,mililitro,mililitros,l,litro,litros,cdta.,cdta,cucharadita,cucharaditas,cda.,cda,cucharada,cucharadas,taza,tazas,oz,onza,onzas,lb,libra,libras,fl oz,pieza,piezas,pizca,pizcas,diente,dientes,manojo,manojos,rebanada,rebanadas,lata,latas,paquete,paquetes",
+    "times": "hora,horas,h,minuto,minutos,min,segundo,segundos,seg",
+    "foods": "aceite,harina,azúcar,sal,pimienta,agua,leche,mantequilla,nata,crema,huevo,huevos,pasta,fideos,arroz,cebolla,ajo,tomate,patata,patatas,papa,queso,carne,ternera,cerdo,pollo,pescado,vinagre,salsa,caldo,levadura,miel,hierbas,especias,limón,zanahoria,champiñones,setas,beicon,jamón,salchicha,pan,verduras,vino,mostaza,pimentón,canela,vainilla,chocolate,cacao,yogur,judías,lentejas,espinacas,calabacín,pepino,manzana,plátano,nueces,almendras",
+    "modifiers": "fresco,fresca,frescos,frescas,picado,picada,cortado,cortada,rallado,rallada,molido,molida,grande,pequeño,pequeña,mediano,mediana,maduro,madura,seco,seca,congelado,congelada,blando,blanda,derretido,derretida,entero,entera,mixto,mixta,mezclado,mezclada,caliente,frío,fría,templado,opcional,extra,virgen,gusto,aprox."
   }
 }

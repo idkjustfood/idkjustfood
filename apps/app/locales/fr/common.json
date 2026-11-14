@@ -153,5 +153,11 @@
     "nutrition": "Nutrition",
     "time": "Temps",
     "meal": "Repas"
+  },
+  "stepWords": {
+    "units": "g,gramme,grammes,kg,kilo,kilos,kilogramme,kilogrammes,mg,ml,millilitre,millilitres,l,litre,litres,c. à c.,c. à s.,c à c,c à s,cuillère à café,cuillères à café,cuillère à soupe,cuillères à soupe,tasse,tasses,oz,once,onces,lb,livre,livres,fl oz,pièce,pièces,pincée,pincées,gousse,gousses,botte,bottes,tranche,tranches,boîte,boîtes,paquet,paquets",
+    "times": "heure,heures,h,minute,minutes,min,seconde,secondes,sec",
+    "foods": "huile,farine,sucre,sel,poivre,eau,lait,beurre,crème,œuf,œufs,oeuf,oeufs,pâtes,nouilles,riz,oignon,oignons,ail,tomate,tomates,pomme de terre,pommes de terre,fromage,viande,bœuf,boeuf,porc,poulet,poisson,vinaigre,sauce,bouillon,levure,miel,herbes,épices,citron,carotte,carottes,champignons,lard,jambon,saucisse,pain,légumes,vin,moutarde,paprika,cannelle,vanille,chocolat,cacao,yaourt,haricots,lentilles,épinards,courgette,concombre,pomme,banane,noix,amandes",
+    "modifiers": "frais,fraîche,fraîches,haché,hachée,coupé,coupée,émincé,émincée,râpé,râpée,moulu,moulue,grand,grande,petit,petite,moyen,moyenne,mûr,mûre,sec,sèche,congelé,congelée,mou,molle,fondu,fondue,entier,entière,mélangé,mélangée,mixte,chaud,chaude,froid,froide,tiède,facultatif,extra,vierge,goût,env."
   }
 }

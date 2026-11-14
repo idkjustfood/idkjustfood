@@ -171,7 +171,11 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
     <Card className="gap-4 p-4">
       <SectionTitle>{t("recipes:detail.steps")}</SectionTitle>
       {recipe.steps.length > 0 ? (
-        <StepList recipeId={recipe.id} steps={recipe.steps} />
+        <StepList
+          recipeId={recipe.id}
+          steps={recipe.steps}
+          ingredients={recipe.ingredients}
+        />
       ) : (
         <Text className="text-muted-foreground">{t("recipes:detail.noSteps")}</Text>
       )}
