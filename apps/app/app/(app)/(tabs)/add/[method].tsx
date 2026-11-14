@@ -2,6 +2,7 @@ import * as ImagePicker from "expo-image-picker"
 import { Redirect, router, useLocalSearchParams } from "expo-router"
 import { Camera, ImagePlus } from "lucide-react-native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Image, Pressable, Text, View } from "react-native"
 
 import { Screen } from "@/components/screen"
@@ -18,7 +19,11 @@ import {
 } from "@/lib/add-methods"
 import type { PickedImage } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
-import { useStartExtraction, type ExtractionRequest } from "@/lib/extractions"
+import {
+  extractionErrorMessage,
+  useStartExtraction,
+  type ExtractionRequest,
+} from "@/lib/extractions"
 
 /** Sample links for trying the clickable prototype (demo mode only). */
 const samples: Partial<Record<AddMethod, { good: string; bad: string }>> = {
@@ -49,6 +54,7 @@ function pickedImage(asset: ImagePicker.ImagePickerAsset): PickedImage {
 }
 
 function AddForm({ method }: { method: AddMethod }) {
+  const { t } = useTranslation()
   const info = addMethods[method]
   const { demo } = useAppState()
   const start = useStartExtraction()
@@ -70,9 +76,7 @@ function AddForm({ method }: { method: AddMethod }) {
       if (source === "camera") {
         const permission = await ImagePicker.requestCameraPermissionsAsync()
         if (!permission.granted) {
-          return setProblem(
-            "Allow camera access in your settings to take a photo."
-          )
+          return setProblem(t("add:form.cameraDenied"))
         }
       }
       // A quality below 1 also turns iPhone HEIC photos into JPEG, which the server reads.
@@ -87,7 +91,7 @@ function AddForm({ method }: { method: AddMethod }) {
       const asset = result.canceled ? undefined : result.assets[0]
       if (asset) setPhoto(pickedImage(asset))
     } catch {
-      setProblem("Could not open the photo. Try a different one.")
+      setProblem(t("add:form.photoFailed"))
     }
   }
 
@@ -96,7 +100,7 @@ function AddForm({ method }: { method: AddMethod }) {
     if (isLink) {
       const issue = checkLink(method, link)
       if (issue === "invalid")
-        return setProblem("That does not look like a link.")
+        return setProblem(t("add:form.invalidLink"))
       if (issue === "unsupported") {
         return router.push({
           pathname: "/add/error",
@@ -125,11 +129,11 @@ function AddForm({ method }: { method: AddMethod }) {
             params: {
               reason: "unsupported",
               link: isLink ? link : undefined,
-              message: error.message,
+              code: error.code,
             },
           })
         } else {
-          setProblem(error.message)
+          setProblem(extractionErrorMessage(error))
         }
       },
     })
@@ -139,8 +143,8 @@ function AddForm({ method }: { method: AddMethod }) {
 
   return (
     <Screen
-      title={info.title}
-      subtitle={info.description}
+      title={t(info.titleKey)}
+      subtitle={t(info.descriptionKey)}
       back="/add"
       narrow
       footer={
@@ -151,7 +155,7 @@ function AddForm({ method }: { method: AddMethod }) {
             </Text>
           )}
           <Button
-            label={start.isPending ? "Sending…" : "Get recipe"}
+            label={start.isPending ? t("add:form.sending") : t("add:form.getRecipe")}
             disabled={!ready || start.isPending}
             onPress={submit}
           />
@@ -163,8 +167,8 @@ function AddForm({ method }: { method: AddMethod }) {
           <Input
             label={
               method === "video"
-                ? "Link to the video"
-                : "Link to the recipe page"
+                ? t("add:form.videoLabel")
+                : t("add:form.websiteLabel")
             }
             value={link}
             onChangeText={(value) => {
@@ -185,16 +189,18 @@ function AddForm({ method }: { method: AddMethod }) {
           {sample && (
             <View className="gap-2">
               <Text className="text-sm text-muted-foreground">
-                Try it with a sample link:
+                {t("add:form.sampleIntro")}
               </Text>
               <View className="flex-row flex-wrap gap-2">
                 <Chip
-                  label="Working link"
+                  label={t("add:form.sampleGood")}
                   onPress={() => setLink(sample.good)}
                 />
                 <Chip
                   label={
-                    method === "video" ? "Unsupported link" : "Broken link"
+                    method === "video"
+                      ? t("add:form.sampleUnsupported")
+                      : t("add:form.sampleBroken")
                   }
                   onPress={() => setLink(sample.bad)}
                 />
@@ -206,7 +212,7 @@ function AddForm({ method }: { method: AddMethod }) {
 
       {method === "text" && (
         <Input
-          label="Recipe text"
+          label={t("add:form.textLabel")}
           value={text}
           onChangeText={(value) => {
             setText(value)
@@ -215,9 +221,7 @@ function AddForm({ method }: { method: AddMethod }) {
           multiline
           textAlignVertical="top"
           className="h-64 py-3"
-          placeholder={
-            "Paste the recipe here.\n\nFor example:\n2 eggs, 80 g oats…"
-          }
+          placeholder={t("add:form.textPlaceholder")}
         />
       )}
 
@@ -226,13 +230,13 @@ function AddForm({ method }: { method: AddMethod }) {
           <Card className="gap-3 p-4">
             <Image
               source={{ uri: photo.uri }}
-              accessibilityLabel="The photo you chose"
+              accessibilityLabel={t("add:form.photoChosen")}
               resizeMode="contain"
               className="h-56 w-full rounded-md bg-muted"
             />
             <Button
               variant="outline"
-              label="Choose a different photo"
+              label={t("add:form.photoChange")}
               onPress={() => setPhoto(null)}
             />
           </Card>
@@ -240,12 +244,12 @@ function AddForm({ method }: { method: AddMethod }) {
           <View className="gap-3 md:flex-row">
             <PhotoOption
               icon={Camera}
-              label="Take a photo"
+              label={t("add:form.takePhoto")}
               onPress={() => void choosePhoto("camera")}
             />
             <PhotoOption
               icon={ImagePlus}
-              label="Choose from library"
+              label={t("add:form.chooseLibrary")}
               onPress={() => void choosePhoto("library")}
             />
           </View>

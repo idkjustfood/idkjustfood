@@ -1,5 +1,6 @@
 import { router } from "expo-router"
 import { ChevronRight, Share2 } from "lucide-react-native"
+import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
 
 import { Grid } from "@/components/grid"
@@ -8,6 +9,7 @@ import { Icon } from "@/components/ui/icon"
 import { addMethods, type AddMethod } from "@/lib/add-methods"
 
 export default function ChooseMethod() {
+  const { t } = useTranslation()
   const methods = Object.entries(addMethods) as [
     AddMethod,
     (typeof addMethods)[AddMethod],
@@ -15,8 +17,8 @@ export default function ChooseMethod() {
 
   return (
     <Screen
-      title="Add a recipe"
-      subtitle="Every way ends in the same clean recipe."
+      title={t("add:index.title")}
+      subtitle={t("add:index.subtitle")}
     >
       <Grid
         items={methods}
@@ -32,10 +34,10 @@ export default function ChooseMethod() {
             </View>
             <View className="flex-1 gap-0.5">
               <Text className="text-base font-semibold text-foreground">
-                {method.title}
+                {t(method.titleKey)}
               </Text>
               <Text className="text-sm text-muted-foreground">
-                {method.description}
+                {t(method.descriptionKey)}
               </Text>
             </View>
             <Icon as={ChevronRight} className="text-muted-foreground" />
@@ -45,8 +47,7 @@ export default function ChooseMethod() {
       <View className="flex-row gap-3 rounded-lg bg-muted p-4">
         <Icon as={Share2} className="text-muted-foreground" />
         <Text className="flex-1 text-muted-foreground">
-          Tip: on your phone, tap Share on a reel in Instagram and pick
-          idkjustfood.
+          {t("add:index.shareTip")}
         </Text>
       </View>
     </Screen>

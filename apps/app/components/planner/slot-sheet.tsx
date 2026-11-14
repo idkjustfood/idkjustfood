@@ -1,8 +1,9 @@
 import { Trash2 } from "lucide-react-native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Pressable, ScrollView, Text, View } from "react-native"
 
-import { slotLabels, type Meal, type MealSlot } from "@workspace/schemas"
+import { type Meal, type MealSlot } from "@workspace/schemas"
 
 import { RecipeCover } from "@/components/recipe-card"
 import { ErrorState, LoadingState } from "@/components/states"
@@ -10,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Sheet } from "@/components/ui/sheet"
 import { Stepper } from "@/components/ui/stepper"
+import { formatNumber } from "@/lib/format"
 import { useRemoveMeal, useSetMeal, useSetServings } from "@/lib/planner"
 import { dayLabel } from "@/lib/planner-format"
 import { useAllRecipes, type Recipe } from "@/lib/recipes"
@@ -36,6 +38,7 @@ export function SlotSheet({
   meal: Meal | null
   onClose: () => void
 }) {
+  const { t } = useTranslation()
   const recipes = useAllRecipes()
   const setMeal = useSetMeal(planId)
   const setServings = useSetServings(planId)
@@ -56,7 +59,7 @@ export function SlotSheet({
       onClose()
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : "Something went wrong."
+        error instanceof Error ? error.message : t("planner:slot.error")
       )
     }
   }
@@ -73,7 +76,7 @@ export function SlotSheet({
     <Sheet
       open
       onClose={onClose}
-      title={`${slotLabels[slot]} · ${dayLabel(date)}`}
+      title={`${t(`planner:slots.${slot}`)} · ${dayLabel(date)}`}
     >
       {meal && (
         <View className="gap-3 rounded-md border border-border p-3">
@@ -81,9 +84,9 @@ export function SlotSheet({
             {meal.recipe.title}
           </Text>
           <View className="flex-row items-center justify-between gap-3">
-            <Text className="text-foreground">Servings</Text>
+            <Text className="text-foreground">{t("planner:servings")}</Text>
             <Stepper
-              label="Servings"
+              label={t("planner:servings")}
               value={servings}
               max={100}
               onChange={(value) => {
@@ -96,7 +99,7 @@ export function SlotSheet({
             <Button
               variant="outline"
               icon={Trash2}
-              label="Remove"
+              label={t("planner:slot.remove")}
               disabled={busy}
               className="flex-1"
               onPress={() =>
@@ -104,7 +107,7 @@ export function SlotSheet({
               }
             />
             <Button
-              label="Save servings"
+              label={t("planner:slot.save")}
               disabled={busy || servings === meal.servings}
               className="flex-1"
               onPress={() =>
@@ -118,13 +121,13 @@ export function SlotSheet({
       )}
 
       <Text className="text-sm font-medium text-foreground">
-        {meal ? "Swap for another recipe" : "Pick a recipe"}
+        {meal ? t("planner:slot.swap") : t("planner:slot.pick")}
       </Text>
       {!meal && (
         <View className="flex-row items-center justify-between gap-3">
-          <Text className="text-foreground">Servings</Text>
+          <Text className="text-foreground">{t("planner:servings")}</Text>
           <Stepper
-            label="Servings"
+            label={t("planner:servings")}
             value={servings}
             max={100}
             onChange={setLocalServings}
@@ -132,26 +135,26 @@ export function SlotSheet({
         </View>
       )}
       <Input
-        label="Search recipes"
+        label={t("planner:slot.search")}
         value={search}
         onChangeText={setSearch}
-        placeholder="Search recipes"
+        placeholder={t("planner:slot.search")}
       />
-      {recipes.isPending && <LoadingState label="Loading recipes" rows={1} />}
+      {recipes.isPending && <LoadingState label={t("planner:slot.loading")} rows={1} />}
       {recipes.isError && (
         <ErrorState
-          title="Could not load recipes"
-          message="Check your connection and try again."
+          title={t("planner:slot.loadError")}
+          message={t("planner:checkConnection")}
           onRetry={() => void recipes.refetch()}
         />
       )}
       {recipes.data && usable.length === 0 && (
         <Text className="text-muted-foreground">
           {recipes.data.length === 0
-            ? "You have no saved recipes yet."
+            ? t("planner:slot.noRecipes")
             : householdId && !word
-              ? "A household plan uses the household's recipes. None are shared yet."
-              : "No recipe matches."}
+              ? t("planner:slot.noHouseholdRecipes")
+              : t("planner:slot.noMatch")}
         </Text>
       )}
       <ScrollView className="max-h-72" keyboardShouldPersistTaps="handled">
@@ -161,7 +164,7 @@ export function SlotSheet({
               key={recipe.id}
               role="button"
               disabled={busy}
-              accessibilityLabel={`Plan ${recipe.title}`}
+              accessibilityLabel={t("planner:slot.planLabel", { title: recipe.title })}
               onPress={() => void pick(recipe)}
               className={cn(
                 "h-14 flex-row items-center gap-3 overflow-hidden rounded-md border border-border active:bg-accent web:hover:bg-accent",
@@ -176,7 +179,9 @@ export function SlotSheet({
                 </Text>
                 {recipe.nutrition.calories !== null && (
                   <Text className="text-xs text-muted-foreground">
-                    ≈ {Math.round(recipe.nutrition.calories)} kcal per serving
+                    {t("planner:slot.kcalPerServing", {
+                      value: formatNumber(Math.round(recipe.nutrition.calories)),
+                    })}
                   </Text>
                 )}
               </View>
@@ -189,7 +194,7 @@ export function SlotSheet({
           {message}
         </Text>
       )}
-      <Button variant="outline" label="Cancel" onPress={onClose} />
+      <Button variant="outline" label={t("planner:cancel")} onPress={onClose} />
     </Sheet>
   )
 }

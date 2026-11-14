@@ -8,12 +8,14 @@ import {
   Video,
   type LucideIcon,
 } from "lucide-react-native"
+import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
 
 import type { Recipe } from "@workspace/schemas"
 
 import { Icon } from "@/components/ui/icon"
 import { formatMinutes } from "@/lib/format"
+import i18n from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 export const sourceIcons: Record<string, LucideIcon> = {
@@ -25,17 +27,14 @@ export const sourceIcons: Record<string, LucideIcon> = {
   text: FileText,
 }
 
-const sourceNames: Record<string, string> = {
-  manual: "Written by hand",
-  import: "Imported",
-  video: "Video",
-  website: "Website",
-  photo: "Photo",
-  text: "Pasted text",
-}
+const sourceKinds = ["manual", "import", "video", "website", "photo", "text"]
+
+/** The name of a kind of source ("Video", "Website") in the current language. */
+const kindName = (kind: string) =>
+  i18n.t(`recipes:sources.${sourceKinds.includes(kind) ? kind : "other"}`)
 
 export const sourceName = (recipe: Recipe) =>
-  recipe.source.label ?? sourceNames[recipe.source.kind] ?? "Recipe"
+  recipe.source.label ?? kindName(recipe.source.kind)
 
 // Written out in full so Tailwind finds every class.
 const covers = [
@@ -80,6 +79,7 @@ export function RecipeCover({
 }
 
 export function RecipeCard({ recipe }: { recipe: Recipe }) {
+  useTranslation()
   const total = totalMinutes(recipe)
   return (
     <Pressable
@@ -112,7 +112,7 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
               className="text-muted-foreground"
             />
             <Text className="text-sm text-muted-foreground">
-              {sourceNames[recipe.source.kind] ?? "Recipe"}
+              {kindName(recipe.source.kind)}
             </Text>
           </View>
         </View>

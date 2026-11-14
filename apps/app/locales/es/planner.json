@@ -1,0 +1,141 @@
+{
+  "title": "Planificador de comidas",
+  "newPlan": "Nuevo plan",
+  "shoppingList": "Lista de la compra",
+  "autoPlan": "Planificar automáticamente",
+  "demo": "Los planes de comidas necesitan una cuenta. Inicia sesión para planificar tus comidas.",
+  "demoOnly": "Esto no funciona con datos de ejemplo. Inicia sesión para planificar tus comidas.",
+  "loadingPlans": "Cargando tus planes",
+  "plansError": "No se pudieron cargar tus planes",
+  "checkConnection": "Comprueba tu conexión e inténtalo de nuevo.",
+  "empty": {
+    "title": "Aún no hay plan de comidas",
+    "titleHousehold": "Aún no hay plan para {{name}}",
+    "message": "Planifica tus comidas a mano o deja que la app llene una semana con tus recetas guardadas. Después añade los ingredientes a una lista de la compra.",
+    "action": "Crear un plan"
+  },
+  "weekError": "No se pudo cargar esta semana",
+  "loadingWeek": "Cargando la semana",
+  "weekEmpty": "No hay nada planificado esta semana. Toca un hueco para elegir una receta o usa la planificación automática.",
+  "caloriesNote": "Las calorías son estimaciones de las recetas, para una persona.",
+  "deletePlan": "Eliminar este plan",
+  "cancel": "Cancelar",
+  "servings": "Raciones",
+  "slots": {
+    "breakfast": "Desayuno",
+    "midday": "Mediodía",
+    "afternoon": "Tarde"
+  },
+  "week": {
+    "previous": "Semana anterior",
+    "next": "Semana siguiente",
+    "goToThis": "Ir a esta semana",
+    "thisWeek": "Esta semana"
+  },
+  "day": {
+    "today": "Hoy",
+    "kcal": "≈ {{value}} kcal{{plus}}",
+    "missing_one": "{{count}} comida no tiene estimación de calorías.",
+    "missing_other": "{{count}} comidas no tienen estimación de calorías.",
+    "changeLabel_one": "{{slot}}, {{title}}, {{count}} ración. Cambiar",
+    "changeLabel_other": "{{slot}}, {{title}}, {{count}} raciones. Cambiar",
+    "addLabel": "{{slot}}, vacío. Añadir una comida",
+    "add": "Añadir"
+  },
+  "new": {
+    "title": "Nuevo plan de comidas",
+    "name": "Nombre",
+    "placeholder": "Nuestras comidas",
+    "shared": "Todos en {{name}} pueden ver y cambiar este plan. Usa las recetas del hogar.",
+    "theHousehold": "el hogar",
+    "personal": "Solo tú puedes ver este plan.",
+    "create": "Crear",
+    "error": "No se pudo crear el plan."
+  },
+  "delete": {
+    "title": "¿Eliminar este plan?",
+    "message": "{{name}} y todas sus comidas se eliminan para todos los que pueden verlo. Tus recetas y listas de la compra se conservan.",
+    "confirm": "Eliminar",
+    "error": "No se pudo eliminar el plan."
+  },
+  "wizard": {
+    "step": "Paso {{current}} de 3 · {{name}}",
+    "steps": {
+      "goals": "Objetivos",
+      "days": "Días",
+      "result": "Resultado"
+    },
+    "next": "Siguiente: elegir días",
+    "back": "Atrás",
+    "fill": "Llenar mi plan",
+    "planning": "Planificando…",
+    "open": "Abrir mi plan",
+    "noPlan": "Abre el planificador y elige primero un plan.",
+    "fillError": "No se pudo llenar el plan. Inténtalo de nuevo.",
+    "problem": {
+      "calories": "Las calorías por día deben ser un número entre 500 y 10.000.",
+      "minutes": "El tiempo por comida debe ser un número de minutos, por ejemplo 30."
+    },
+    "intro": "Dile al planificador lo que quieres. Elige entre tus recetas guardadas y nunca se inventa una comida. Deja un objetivo vacío para ignorarlo.",
+    "calories": "Calorías por día (por persona)",
+    "caloriesPlaceholder": "Por ejemplo 2000",
+    "caloriesHelp": "Usa las estimaciones nutricionales de tus recetas. Las recetas sin estimación se dejan fuera si lo indicas.",
+    "diet": "Dieta (una etiqueta de la receta)",
+    "dietPlaceholder": "Por ejemplo vegetariana",
+    "diets": {
+      "vegetarian": "Vegetariana",
+      "vegan": "Vegana"
+    },
+    "maxTime": "Tiempo máximo por comida",
+    "minutes": "{{count}} min",
+    "any": "Cualquiera",
+    "weeksLabel": "Cuántas semanas",
+    "weeks": "Semanas",
+    "servingsPerMeal": "Raciones por comida",
+    "existing": "Comidas que ya planificaste",
+    "keep": "Mantenerlas",
+    "replace": "Reemplazarlas",
+    "daysIntro": "Omite días o comidas sueltas y cambia las raciones de un día. Las comidas omitidas quedan vacías.",
+    "planned": "Planificado",
+    "skipped": "Omitido",
+    "result": {
+      "filled": "Tu plan está lleno",
+      "partly": "Tu plan está lleno en parte",
+      "filledMessage": "Cada comida que pediste tiene una receta. Puedes cambiar cualquiera a mano en el plan.",
+      "partlyMessage_one": "{{count}} comida quedó vacía porque ninguna receta guardada encaja. Guarda más recetas o relaja tus objetivos e inténtalo de nuevo.",
+      "partlyMessage_other": "{{count}} comidas quedaron vacías porque ninguna receta guardada encaja. Guarda más recetas o relaja tus objetivos e inténtalo de nuevo."
+    }
+  },
+  "slot": {
+    "remove": "Quitar",
+    "save": "Guardar raciones",
+    "swap": "Cambiar por otra receta",
+    "pick": "Elegir una receta",
+    "search": "Buscar recetas",
+    "loading": "Cargando recetas",
+    "loadError": "No se pudieron cargar las recetas",
+    "noRecipes": "Aún no tienes recetas guardadas.",
+    "noHouseholdRecipes": "Un plan del hogar usa las recetas del hogar. Aún no se ha compartido ninguna.",
+    "noMatch": "Ninguna receta coincide.",
+    "planLabel": "Planificar {{title}}",
+    "kcalPerServing": "≈ {{value}} kcal por ración",
+    "error": "Algo salió mal."
+  },
+  "list": {
+    "title": "Añadir ingredientes a una lista de la compra",
+    "done": "Listo",
+    "intro": "Las cantidades se ajustan a las raciones de cada comida y los ingredientes iguales se juntan. No se añade nada hasta que toques el botón.",
+    "whichMeals": "Qué comidas",
+    "wholePlan": "Todo el plan",
+    "weekEmpty": "No hay nada planificado esta semana.",
+    "whichList": "¿Qué lista?",
+    "none": "Aún no tienes listas de la compra. Crea una en la pestaña Compra.",
+    "theList": "la lista",
+    "nothing": "No hay comidas que añadir.",
+    "added_one": "Se añadieron los ingredientes de {{count}} comida a {{name}}.",
+    "added_other": "Se añadieron los ingredientes de {{count}} comidas a {{name}}.",
+    "adding": "Añadiendo…",
+    "add": "Añadir ingredientes",
+    "error": "No se pudieron añadir los ingredientes."
+  }
+}

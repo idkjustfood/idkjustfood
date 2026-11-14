@@ -1,0 +1,59 @@
+{
+  "languageName": "Italiano",
+  "minutes_one": "{{count}} min",
+  "minutes_other": "{{count}} min",
+  "hours_one": "{{count}} h",
+  "hours_other": "{{count}} h",
+  "hoursMinutes": "{{hours}} h {{minutes}} min",
+  "units": {
+    "g": "g",
+    "kg": "kg",
+    "oz": "oz",
+    "lb": "lb",
+    "ml": "ml",
+    "l": "l",
+    "tsp": "cucchiaino",
+    "tbsp": "cucchiaio",
+    "cup_one": "tazza",
+    "cup_other": "tazze"
+  },
+  "back": "Indietro",
+  "close": "Chiudi",
+  "clearSearch": "Cancella ricerca",
+  "tryAgain": "Riprova",
+  "comingSoon": "In arrivo",
+  "offline": {
+    "title": "Sei offline",
+    "message": "Puoi continuare a spuntare le voci. Le modifiche si sincronizzeranno quando torni online.",
+    "pending_one": "{{count}} modifica in attesa.",
+    "pending_other": "{{count}} modifiche in attesa."
+  },
+  "tabs": {
+    "recipes": "Ricette",
+    "shopping": "Spesa",
+    "add": "Aggiungi",
+    "planner": "Planner",
+    "settings": "Impostazioni",
+    "addRecipe": "Aggiungi una ricetta",
+    "addRecipeButton": "Aggiungi ricetta"
+  },
+  "space": {
+    "personal": "Personale",
+    "onlyYou": "Solo tu",
+    "shared": "Famiglia condivisa",
+    "change": "Spazio: {{name}}. Cambia",
+    "choose": "Scegli uno spazio",
+    "label": "Spazio"
+  },
+  "demoOnly": "Non funziona con i dati di esempio. Accedi per gestire una vera famiglia.",
+  "stepper": {
+    "fewer": "Meno {{label}}",
+    "more": "Più {{label}}"
+  },
+  "relativeDays": {
+    "today": "oggi",
+    "tomorrow": "domani",
+    "inDays_one": "tra {{count}} giorno",
+    "inDays_other": "tra {{count}} giorni"
+  }
+}

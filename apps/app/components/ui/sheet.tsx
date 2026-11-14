@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { useTranslation } from "react-i18next"
 import { Modal, Pressable, Text, View } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -19,6 +20,7 @@ export function Sheet({
   title: string
   children: ReactNode
 }) {
+  const { t } = useTranslation("common")
   const wide = useIsWide()
   const insets = useSafeAreaInsets()
 
@@ -36,7 +38,7 @@ export function Sheet({
         )}
       >
         <Pressable
-          accessibilityLabel="Close"
+          accessibilityLabel={t("close")}
           onPress={onClose}
           className="absolute inset-0 bg-black/50"
         />

@@ -1,0 +1,139 @@
+{
+  "methods": {
+    "video": {
+      "title": "Link a un video",
+      "description": "Un reel di Instagram, un TikTok o uno YouTube Short."
+    },
+    "website": {
+      "title": "Link a un sito web",
+      "description": "Una pagina di ricetta da qualsiasi sito di cucina."
+    },
+    "photo": {
+      "title": "Foto o screenshot",
+      "description": "Una pagina di un libro di cucina o lo screenshot di una ricetta."
+    },
+    "text": {
+      "title": "Incolla testo",
+      "description": "Una ricetta copiata da un messaggio o da una nota."
+    },
+    "write": {
+      "title": "Scrivila tu",
+      "description": "Scrivi una ricetta da zero, o una che conosci a memoria."
+    },
+    "import": {
+      "title": "Importa una ricetta",
+      "description": "Una ricetta salvata come JSON o nel formato schema.org Recipe."
+    }
+  },
+  "steps": {
+    "video": {
+      "download": "Scaricamento del video",
+      "caption": "Lettura della didascalia",
+      "audio": "Ascolto di ciò che viene detto",
+      "onScreenText": "Lettura del testo mostrato nel video",
+      "write": "Scrittura della ricetta"
+    },
+    "website": {
+      "open": "Apertura della pagina",
+      "find": "Ricerca della ricetta nella pagina",
+      "write": "Scrittura della ricetta"
+    },
+    "photo": {
+      "upload": "Caricamento della foto",
+      "read": "Lettura del testo",
+      "write": "Scrittura della ricetta"
+    },
+    "text": {
+      "read": "Lettura del testo",
+      "write": "Scrittura della ricetta"
+    }
+  },
+  "index": {
+    "title": "Aggiungi una ricetta",
+    "subtitle": "Ogni strada porta alla stessa ricetta chiara.",
+    "shareTip": "Suggerimento: sul telefono, tocca Condividi su un reel in Instagram e scegli idkjustfood."
+  },
+  "form": {
+    "cameraDenied": "Consenti l'accesso alla fotocamera nelle impostazioni per scattare una foto.",
+    "photoFailed": "Impossibile aprire la foto. Provane un'altra.",
+    "invalidLink": "Non sembra un link.",
+    "sending": "Invio in corso…",
+    "getRecipe": "Ottieni la ricetta",
+    "videoLabel": "Link al video",
+    "websiteLabel": "Link alla pagina della ricetta",
+    "sampleIntro": "Provalo con un link di esempio:",
+    "sampleGood": "Link funzionante",
+    "sampleUnsupported": "Link non supportato",
+    "sampleBroken": "Link non valido",
+    "textLabel": "Testo della ricetta",
+    "textPlaceholder": "Incolla qui la ricetta.\n\nAd esempio:\n2 uova, 80 g di fiocchi d'avena…",
+    "photoChosen": "La foto che hai scelto",
+    "photoChange": "Scegli un'altra foto",
+    "takePhoto": "Scatta una foto",
+    "chooseLibrary": "Scegli dalla libreria"
+  },
+  "progress": {
+    "readyTitle": "Ricetta pronta",
+    "workingTitle": "Ci stiamo lavorando…",
+    "readySubtitle": "Controllala prima di salvarla.",
+    "workingSubtitle": "Ci vuole fino a un minuto. Puoi lasciare questa schermata: la ricetta sarà tra le tue ricette quando è pronta.",
+    "review": "Controlla la ricetta",
+    "lostJob": "Impossibile verificare la ricetta. Controlla la connessione; potrebbe comunque comparire tra le tue ricette.",
+    "leave": "Lascia questa schermata"
+  },
+  "error": {
+    "title": "Impossibile aggiungere la ricetta",
+    "unsupportedTitle": "Questo link non è ancora supportato",
+    "unsupportedMessage": "idkjustfood legge reel di Instagram, video di TikTok, YouTube Shorts e siti di ricette. Puoi comunque incollare il testo della ricetta o aggiungere uno screenshot.",
+    "failedTitle": "Non siamo riusciti a leggere questa ricetta",
+    "failedMessage": "Qualcosa è andato storto durante la lettura della ricetta. Riprova o incolla invece il testo della ricetta.",
+    "pasteText": "Incolla invece il testo",
+    "usePhoto": "Usa una foto o uno screenshot",
+    "backToOptions": "Torna a tutte le opzioni"
+  },
+  "errors": {
+    "generic": "Qualcosa è andato storto durante la lettura della ricetta. Riprova o incolla invece il testo della ricetta.",
+    "network": "Impossibile raggiungere il server. Controlla la connessione.",
+    "unsupported_link": "Questo link non è ancora supportato. Incolla invece il testo della ricetta o aggiungi uno screenshot.",
+    "private_address": "Questo link punta a un indirizzo privato e non può essere aperto.",
+    "invalid_input": "Non c'era nulla da leggere. Controlla il link, il testo o la foto e riprova.",
+    "ai_not_configured": "Su questo server non è ancora configurata alcuna IA. Chiedi a chi lo gestisce di aggiungerne una.",
+    "model_cannot_read_images": "Il modello di IA configurato non può leggere le foto. Prova con un link o con il testo della ricetta.",
+    "ai_failed": "L'IA non è riuscita a ricavarne una ricetta. Riprova tra un momento.",
+    "video_unavailable": "Non è stato possibile scaricare il video. Potrebbe essere privato o rimosso.",
+    "video_too_long": "Questo video è troppo lungo per essere letto.",
+    "tools_missing": "Su questo server mancano gli strumenti necessari per leggere i video.",
+    "page_unreachable": "Non è stato possibile aprire la pagina. Controlla il link e riprova.",
+    "no_recipe_found": "Nessuna ricetta trovata. Prova a incollare il testo della ricetta o ad aggiungere uno screenshot.",
+    "invalid_recipe": "Quanto trovato non formava una ricetta completa. Prova invece a incollare il testo della ricetta."
+  },
+  "review": {
+    "title": "Controlla la ricetta",
+    "loading": "Caricamento della ricetta",
+    "missingTitle": "Questa ricetta non esiste",
+    "missingMessage": "Potrebbe essere stata eliminata.",
+    "backToOptions": "Torna a tutte le opzioni",
+    "loadErrorTitle": "Impossibile caricare questa ricetta",
+    "loadErrorMessage": "Controlla la connessione e riprova.",
+    "from": "Da {{source}}",
+    "discard": "Scarta",
+    "discarding": "Eliminazione…"
+  },
+  "write": {
+    "title": "Scrivi una ricetta",
+    "subtitle": "Serve solo il titolo. Aggiungi il resto ora o più tardi."
+  },
+  "import": {
+    "title": "Importa una ricetta",
+    "subtitle": "Incolla una ricetta esportata da idkjustfood (JSON) o una schema.org Recipe.",
+    "label": "JSON della ricetta",
+    "placeholder": "{ \"title\": \"…\", \"ingredients\": […] }",
+    "read": "Leggi la ricetta",
+    "reviewTitle": "Controlla la ricetta",
+    "reviewSubtitle": "Controllala prima di salvarla. Le quantità mancanti restano vuote.",
+    "back": "Indietro"
+  },
+  "saving": "Salvataggio…",
+  "saveRecipe": "Salva ricetta",
+  "fieldsNeedFix": "Alcuni campi vanno corretti. Sono segnati qui sotto."
+}

@@ -1,0 +1,59 @@
+{
+  "languageName": "Deutsch",
+  "minutes_one": "{{count}} Min.",
+  "minutes_other": "{{count}} Min.",
+  "hours_one": "{{count}} Std.",
+  "hours_other": "{{count}} Std.",
+  "hoursMinutes": "{{hours}} Std. {{minutes}} Min.",
+  "units": {
+    "g": "g",
+    "kg": "kg",
+    "oz": "oz",
+    "lb": "lb",
+    "ml": "ml",
+    "l": "l",
+    "tsp": "TL",
+    "tbsp": "EL",
+    "cup_one": "Tasse",
+    "cup_other": "Tassen"
+  },
+  "back": "Zurück",
+  "close": "Schließen",
+  "clearSearch": "Suche löschen",
+  "tryAgain": "Erneut versuchen",
+  "comingSoon": "Demnächst",
+  "offline": {
+    "title": "Du bist offline",
+    "message": "Du kannst weiter Dinge abhaken. Änderungen werden synchronisiert, sobald du wieder online bist.",
+    "pending_one": "{{count}} Änderung wartet.",
+    "pending_other": "{{count}} Änderungen warten."
+  },
+  "tabs": {
+    "recipes": "Rezepte",
+    "shopping": "Einkauf",
+    "add": "Neu",
+    "planner": "Planer",
+    "settings": "Einstellungen",
+    "addRecipe": "Rezept hinzufügen",
+    "addRecipeButton": "Rezept hinzufügen"
+  },
+  "space": {
+    "personal": "Persönlich",
+    "onlyYou": "Nur du",
+    "shared": "Geteilter Haushalt",
+    "change": "Bereich: {{name}}. Ändern",
+    "choose": "Bereich wählen",
+    "label": "Bereich"
+  },
+  "demoOnly": "Das funktioniert mit Beispieldaten nicht. Melde dich an, um einen echten Haushalt zu verwalten.",
+  "stepper": {
+    "fewer": "Weniger {{label}}",
+    "more": "Mehr {{label}}"
+  },
+  "relativeDays": {
+    "today": "heute",
+    "tomorrow": "morgen",
+    "inDays_one": "in {{count}} Tag",
+    "inDays_other": "in {{count}} Tagen"
+  }
+}

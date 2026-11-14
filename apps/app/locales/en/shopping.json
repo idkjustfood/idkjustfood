@@ -1,0 +1,89 @@
+{
+  "title": "Shopping",
+  "sharedWith": "Shared with {{name}}",
+  "ownLists": "Your own lists",
+  "newList": "New list",
+  "loading": "Loading lists",
+  "cancel": "Cancel",
+  "kind": {
+    "personal": "Personal",
+    "household": "Household"
+  },
+  "loadError": {
+    "title": "Could not load your lists",
+    "message": "Your lists are saved on this phone once they have loaded. Try again when you are online."
+  },
+  "empty": {
+    "title": "No shopping lists yet",
+    "message": "Make a list, then add the ingredients of a recipe with one tap."
+  },
+  "new": {
+    "title": "New shopping list",
+    "name": "Name",
+    "placeholder": "Weekly shop",
+    "visibleHousehold": "Everyone in {{name}} can see and change this list.",
+    "visiblePersonal": "Only you can see this list.",
+    "create": "Create"
+  },
+  "card": {
+    "label": "{{name}}, {{kind}} list",
+    "progress": "{{done}} of {{total}}"
+  },
+  "list": {
+    "title": "Shopping list",
+    "loading": "Loading list",
+    "subtitle": "{{kind}} · {{open}} to get · {{done}} done",
+    "addRecipe": "Add a recipe",
+    "addItem": "Add an item",
+    "addItemButton": "Add item",
+    "amount": "Amount",
+    "amountPlaceholder": "Amount (optional)",
+    "unit": "Unit",
+    "unitPlaceholder": "Unit (g, ml, tbsp…)",
+    "amountError": "The amount must be a number, like 2, 1.5 or 1/2.",
+    "empty": "Nothing on this list yet. Type an item above, or add the ingredients of a recipe.",
+    "inBasket": "In the basket",
+    "clear": "Clear"
+  },
+  "recipe": {
+    "title": "Add a recipe's ingredients",
+    "hint": "Same ingredients are merged, for example 200 g + 100 g flour becomes 300 g. Amounts are for the recipe's own servings.",
+    "loading": "Loading recipes",
+    "loadError": {
+      "title": "Could not load recipes",
+      "message": "Check your connection and try again."
+    },
+    "none": "You have no recipes yet.",
+    "add": "Add {{title}}",
+    "adding": "Adding…",
+    "addError": "Could not add {{title}}. Try again.",
+    "offline": "You need a connection to add a recipe. Your other changes are saved and will be sent first."
+  },
+  "options": {
+    "title": "List options",
+    "rename": "Rename",
+    "delete": "Delete list",
+    "close": "Close"
+  },
+  "rename": {
+    "title": "Rename list",
+    "save": "Save"
+  },
+  "delete": {
+    "title": "Delete this list?",
+    "message_one": "\"{{name}}\" and its {{count}} item will be deleted. This cannot be undone.",
+    "message_other": "\"{{name}}\" and its {{count}} items will be deleted. This cannot be undone.",
+    "messageHousehold_one": "\"{{name}}\" and its {{count}} item will be deleted for everyone in the household. This cannot be undone.",
+    "messageHousehold_other": "\"{{name}}\" and its {{count}} items will be deleted for everyone in the household. This cannot be undone.",
+    "keep": "Keep it",
+    "confirm": "Delete"
+  },
+  "item": {
+    "fromRecipes_one": "For {{count}} recipe",
+    "fromRecipes_other": "For {{count}} recipes",
+    "fromRecipesNoAmount_one": "For {{count}} recipe, no amount given",
+    "fromRecipesNoAmount_other": "For {{count}} recipes, no amount given",
+    "noAmount": "no amount given",
+    "remove": "Remove {{name}}"
+  }
+}

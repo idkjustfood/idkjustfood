@@ -1,0 +1,138 @@
+{
+  "title": "Réglages",
+  "account": {
+    "title": "Compte",
+    "defaultName": "Vous",
+    "demoName": "Démo",
+    "demoEmail": "Vous parcourez des données d'exemple, sans être connecté",
+    "leaveDemo": "Quitter la démo",
+    "logOut": "Se déconnecter"
+  },
+  "household": {
+    "title": "Foyer",
+    "count_one": "{{count}} foyer",
+    "count_other": "{{count}} foyers",
+    "none": "Pas encore de foyer",
+    "detailHas": "Membres, invitations, recettes et listes partagées",
+    "detailNone": "Créez-en un ou rejoignez-en un avec un lien d'invitation"
+  },
+  "preferences": {
+    "title": "Préférences",
+    "units": "Unités",
+    "metric": "Métrique (g, ml)",
+    "imperial": "Impérial (oz, tasses)",
+    "appearance": "Apparence",
+    "system": "Système",
+    "light": "Clair",
+    "dark": "Sombre",
+    "language": "Langue"
+  },
+  "language": {
+    "title": "Langue",
+    "system": "Suivre la langue de l'appareil",
+    "close": "Fermer"
+  },
+  "data": {
+    "title": "Vos données",
+    "exportTitle": "Exporter toutes les recettes",
+    "exportDetail": "JSON, Markdown ou schema.org",
+    "importTitle": "Importer des recettes",
+    "importDetail": "Depuis un export idkjustfood ou schema.org",
+    "json": "JSON",
+    "jsonDetail": "Sauvegarde complète, peut être réimportée",
+    "markdown": "Markdown",
+    "markdownDetail": "Un fichier par recette",
+    "schema": "Recette schema.org",
+    "schemaDetail": "Pour d'autres applis de recettes",
+    "importHelp": "Choisissez un fichier JSON ou schema.org. Les recettes que vous avez déjà sont ignorées.",
+    "chooseFile": "Choisir un fichier",
+    "cancel": "Annuler"
+  },
+  "plan": {
+    "title": "Formule",
+    "billing": "Formule et facturation"
+  },
+  "server": {
+    "title": "Ce serveur",
+    "address": "Adresse du serveur",
+    "transcription": "Transcription",
+    "parsing": "Analyse des recettes",
+    "note": "Les fournisseurs d'IA sont choisis par la personne qui gère ce serveur, dans ses réglages. Tous les fournisseurs conviennent, y compris les modèles que vous hébergez vous-même."
+  },
+  "prototype": {
+    "title": "Prototype",
+    "listStateLabel": "Afficher les recettes et listes de courses comme",
+    "listState": "État de la liste",
+    "normal": "Normal",
+    "loading": "Chargement",
+    "empty": "Vide",
+    "error": "Erreur",
+    "offline": "Simuler le mode hors ligne",
+    "offlineDetail": "Affiche l'indication hors ligne sur les listes de courses"
+  },
+  "about": {
+    "title": "À propos",
+    "openSource": "idkjustfood est open source",
+    "version": "Version {{version}}"
+  },
+  "manage": {
+    "title": "Foyer",
+    "loading": "Chargement de votre foyer…",
+    "loadError": "Impossible de charger votre foyer",
+    "manage": "Gérer le foyer",
+    "pickTitle": "Choisissez un foyer",
+    "pickMessage": "Vous êtes dans votre espace personnel. Choisissez un foyer ci-dessus pour voir ses membres et inviter des gens.",
+    "createAnother": "Créer un autre foyer",
+    "noneTitle": "Pas encore de foyer",
+    "noneMessage": "Un foyer partage des recettes et des listes de courses. Créez-en un et invitez les personnes avec qui vous vivez, ou ouvrez un lien d'invitation que l'on vous a envoyé.",
+    "nameLabel": "Nom du foyer",
+    "namePlaceholder": "Par exemple : Appart 3B",
+    "creating": "Création…",
+    "create": "Créer le foyer",
+    "subtitle": "Votre foyer partage des recettes et des listes de courses.",
+    "showFrom": "Afficher les recettes, listes et plannings de",
+    "loadingMembers": "Chargement des membres…",
+    "membersError": "Impossible de charger les membres",
+    "members": "Membres ({{count}})",
+    "you": "{{name}} (vous)",
+    "owner": "propriétaire",
+    "member": "membre",
+    "remove": "Retirer {{name}}",
+    "invitesTitle": "Liens d'invitation ouverts",
+    "loadingInvites": "Chargement…",
+    "invitesError": "Impossible de charger les invitations",
+    "noInvites": "Aucune invitation ouverte",
+    "noInvitesDetail": "Les liens que personne n'a encore utilisés apparaissent ici.",
+    "linkCopied": "Lien copié",
+    "inviteLink": "Lien d'invitation",
+    "inviteDetail": "Créé par {{name}} · expire {{when}}",
+    "copyLink": "Copier le lien d'invitation",
+    "cancelInvite": "Annuler l'invitation",
+    "invite": "Inviter quelqu'un",
+    "leave": "Quitter le foyer",
+    "removeTitle": "Retirer {{name}} ?",
+    "leaveTitle": "Quitter {{name}} ?",
+    "removeText": "{{name}} ne verra plus les recettes ni les listes de courses de ce foyer. Vous pourrez l'inviter à nouveau plus tard.",
+    "leaveText": "Vous ne verrez plus les recettes ni les listes de courses de ce foyer. Il vous faudra une nouvelle invitation pour revenir.",
+    "removeConfirm": "Retirer",
+    "cancel": "Annuler"
+  },
+  "invite": {
+    "title": "Inviter quelqu'un",
+    "cantTitle": "Vous ne pouvez pas inviter ici",
+    "cantOwners": "Seuls les propriétaires de {{name}} peuvent inviter des gens.",
+    "cantPick": "Choisissez d'abord un foyer, puis invitez-y des gens.",
+    "createError": "Impossible de créer un lien d'invitation",
+    "text": "Envoyez ce lien à la personne que vous voulez inviter. Quand elle l'ouvrira et acceptera, elle rejoindra {{name}} et verra ses recettes et listes de courses.",
+    "expires": "Le lien ne fonctionne qu'une fois et expire {{when}}. Vous pouvez l'annuler sur l'écran du foyer.",
+    "share": "Partager le lien",
+    "copy": "Copier le lien",
+    "copied": "Copié",
+    "message": "Rejoignez notre foyer « {{name}} » sur idkjustfood : {{link}}",
+    "shareTitle": "Invitation au foyer"
+  },
+  "billing": {
+    "title": "Offre et facturation",
+    "message": "Gérez ici votre offre idkjustfood Cloud."
+  }
+}

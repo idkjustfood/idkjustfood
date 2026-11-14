@@ -11,6 +11,7 @@ import type { Recipe, RecipeContent } from "@workspace/schemas"
 import { api, ApiError, call } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
 import { useHousehold, useHouseholds } from "@/lib/households"
+import i18n from "@/lib/i18n"
 import {
   household as demoHousehold,
   importedRecipe,
@@ -68,10 +69,7 @@ export function fromSample(sample: SampleRecipe): Recipe {
 }
 
 const demoOnly = () => {
-  throw new ApiError(
-    "This doesn't work with sample data. Log in to save real recipes.",
-    0
-  )
+  throw new ApiError(i18n.t("recipes:errors.demoOnly"), 0)
 }
 
 /**
@@ -166,7 +164,7 @@ export function useRecipe(id: string | undefined) {
     queryFn: async (): Promise<Recipe> => {
       if (demo) {
         const sample = [...demoRecipes, importedRecipe].find((r) => r.id === id)
-        if (!sample) throw new ApiError("Recipe not found", 404)
+        if (!sample) throw new ApiError(i18n.t("recipes:errors.notFound"), 404)
         return fromSample(sample)
       }
       return (

@@ -1,4 +1,5 @@
 import { Minus, Plus } from "lucide-react-native"
+import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
 
 import { Icon } from "@/components/ui/icon"
@@ -21,6 +22,7 @@ export function Stepper({
   label: string
   className?: string
 }) {
+  const { t } = useTranslation("common")
   return (
     <View
       role="group"
@@ -29,7 +31,7 @@ export function Stepper({
     >
       <Pressable
         role="button"
-        accessibilityLabel={`Fewer ${label.toLowerCase()}`}
+        accessibilityLabel={t("stepper.fewer", { label: label.toLowerCase() })}
         disabled={value <= min}
         onPress={() => onChange(Math.max(min, value - 1))}
         className={cn(
@@ -47,7 +49,7 @@ export function Stepper({
       </Text>
       <Pressable
         role="button"
-        accessibilityLabel={`More ${label.toLowerCase()}`}
+        accessibilityLabel={t("stepper.more", { label: label.toLowerCase() })}
         disabled={value >= max}
         onPress={() => onChange(Math.min(max, value + 1))}
         className={cn(

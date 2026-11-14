@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
 
 import { addDays } from "@workspace/schemas"
@@ -33,6 +34,7 @@ export function AddToListSheet({
   mealsInWeek: number
   onClose: () => void
 }) {
+  const { t } = useTranslation()
   const { lists, loaded } = useShoppingState()
   const { sync } = useShoppingActions()
   const kind = useListKind()
@@ -51,54 +53,53 @@ export function AddToListSheet({
       const result = await add.mutateAsync({ listId, ...range })
       // The list on this device is updated from the server.
       await sync()
-      const name = lists.find((l) => l.id === listId)?.name ?? "the list"
+      const name = lists.find((l) => l.id === listId)?.name ?? t("planner:list.theList")
       setDone(
         result.added === 0
-          ? "There are no meals to add."
-          : `Added the ingredients of ${result.added} ${result.added === 1 ? "meal" : "meals"} to ${name}.`
+          ? t("planner:list.nothing")
+          : t("planner:list.added", { count: result.added, name })
       )
     } catch (error) {
       setMessage(
         error instanceof Error
           ? error.message
-          : "Could not add the ingredients."
+          : t("planner:list.error")
       )
     }
   }
 
   return (
-    <Sheet open onClose={onClose} title="Add ingredients to a shopping list">
+    <Sheet open onClose={onClose} title={t("planner:list.title")}>
       {done ? (
         <>
           <Text className="text-foreground">{done}</Text>
-          <Button label="Done" onPress={onClose} />
+          <Button label={t("planner:list.done")} onPress={onClose} />
         </>
       ) : (
         <>
           <Text className="text-muted-foreground">
-            Amounts are scaled to the servings of each meal, and the same
-            ingredients are merged. Nothing is added until you tap the button.
+            {t("planner:list.intro")}
           </Text>
           <Segmented
-            label="Which meals"
+            label={t("planner:list.whichMeals")}
             value={scope}
             onChange={setScope}
             options={[
               { value: "week", label: weekLabel(weekStart) },
-              { value: "all", label: "Whole plan" },
+              { value: "all", label: t("planner:list.wholePlan") },
             ]}
           />
           {scope === "week" && mealsInWeek === 0 && (
             <Text className="text-sm text-muted-foreground">
-              Nothing is planned in this week.
+              {t("planner:list.weekEmpty")}
             </Text>
           )}
           <Text className="text-sm font-medium text-foreground">
-            Which list?
+            {t("planner:list.whichList")}
           </Text>
           {loaded && lists.length === 0 && (
             <Text className="text-muted-foreground">
-              You have no shopping lists yet. Make one in the Shopping tab.
+              {t("planner:list.none")}
             </Text>
           )}
           <View className="gap-2">
@@ -131,12 +132,14 @@ export function AddToListSheet({
           <View className="flex-row gap-3">
             <Button
               variant="outline"
-              label="Cancel"
+              label={t("planner:cancel")}
               className="flex-1"
               onPress={onClose}
             />
             <Button
-              label={add.isPending ? "Adding…" : "Add ingredients"}
+              label={
+                add.isPending ? t("planner:list.adding") : t("planner:list.add")
+              }
               className="flex-1"
               disabled={!listId || add.isPending}
               onPress={() => void submit()}

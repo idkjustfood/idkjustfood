@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from "expo-router"
 import { SearchX, Trash2 } from "lucide-react-native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 
 import { RecipeForm, useRecipeForm } from "@/components/recipe-form"
@@ -17,32 +18,33 @@ import {
 } from "@/lib/recipes"
 
 export default function EditRecipe() {
+  const { t } = useTranslation()
   const { id } = useLocalSearchParams<{ id: string }>()
   const query = useRecipe(id)
 
   if (query.isPending) {
     return (
-      <Screen title="Edit recipe" back="/" narrow>
-        <LoadingState label="Loading recipe" rows={2} />
+      <Screen title={t("recipes:edit.title")} back="/" narrow>
+        <LoadingState label={t("recipes:detail.loading")} rows={2} />
       </Screen>
     )
   }
   if (query.isError) {
     const missing = query.error instanceof ApiError && query.error.status === 404
     return (
-      <Screen title="Edit recipe" back="/" narrow>
+      <Screen title={t("recipes:edit.title")} back="/" narrow>
         {missing ? (
           <EmptyState
             icon={SearchX}
-            title="This recipe does not exist"
-            message="It may have been deleted, or it is not shared with you."
-            action="Back to recipes"
+            title={t("recipes:missing.title")}
+            message={t("recipes:missing.message")}
+            action={t("recipes:missing.action")}
             onAction={() => router.replace("/")}
           />
         ) : (
           <ErrorState
-            title="Could not load this recipe"
-            message="Check your connection and try again."
+            title={t("recipes:errors.loadRecipe")}
+            message={t("recipes:errors.checkConnection")}
             onRetry={() => void query.refetch()}
           />
         )}
@@ -54,6 +56,7 @@ export default function EditRecipe() {
 }
 
 function EditForm({ recipe }: { recipe: Recipe }) {
+  const { t } = useTranslation()
   const form = useRecipeForm(recipe)
   const update = useUpdateRecipe(recipe.id)
   const remove = useDeleteRecipe(recipe.id)
@@ -80,12 +83,12 @@ function EditForm({ recipe }: { recipe: Recipe }) {
 
   const problem =
     Object.keys(form.errors).length > 0
-      ? "Some fields need a fix. They are marked below."
+      ? t("recipes:edit.fixFields")
       : update.error?.message
 
   return (
     <Screen
-      title="Edit recipe"
+      title={t("recipes:edit.title")}
       back={`/recipe/${recipe.id}`}
       narrow
       footer={
@@ -98,12 +101,14 @@ function EditForm({ recipe }: { recipe: Recipe }) {
           <View className="flex-row gap-3">
             <Button
               variant="outline"
-              label="Cancel"
+              label={t("recipes:edit.cancel")}
               className="flex-1"
               onPress={done}
             />
             <Button
-              label={update.isPending ? "Saving…" : "Save"}
+              label={
+                update.isPending ? t("recipes:edit.saving") : t("recipes:edit.save")
+              }
               className="flex-1"
               disabled={update.isPending}
               onPress={save}
@@ -116,7 +121,7 @@ function EditForm({ recipe }: { recipe: Recipe }) {
       <Button
         variant="outline"
         icon={Trash2}
-        label="Delete recipe"
+        label={t("recipes:edit.delete")}
         onPress={() => {
           remove.reset()
           setConfirmDelete(true)
@@ -126,12 +131,15 @@ function EditForm({ recipe }: { recipe: Recipe }) {
       <Sheet
         open={confirmDelete}
         onClose={() => setConfirmDelete(false)}
-        title="Delete this recipe?"
+        title={t("recipes:edit.deleteTitle")}
       >
         <Text className="text-base text-muted-foreground">
-          “{recipe.title}” will be gone for good
-          {recipe.householdId ? ", for everyone in your household" : ""}. This
-          cannot be undone.
+          {t(
+            recipe.householdId
+              ? "recipes:edit.deleteConfirmHousehold"
+              : "recipes:edit.deleteConfirm",
+            { title: recipe.title }
+          )}
         </Text>
         {remove.error && (
           <Text role="alert" className="text-sm text-destructive">
@@ -140,13 +148,17 @@ function EditForm({ recipe }: { recipe: Recipe }) {
         )}
         <Button
           variant="destructive"
-          label={remove.isPending ? "Deleting…" : "Delete recipe"}
+          label={
+            remove.isPending
+              ? t("recipes:edit.deleting")
+              : t("recipes:edit.delete")
+          }
           disabled={remove.isPending}
           onPress={deleteRecipe}
         />
         <Button
           variant="outline"
-          label="Keep it"
+          label={t("recipes:edit.keep")}
           onPress={() => setConfirmDelete(false)}
         />
       </Sheet>

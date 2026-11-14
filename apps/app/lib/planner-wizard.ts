@@ -46,19 +46,18 @@ export function wizardDays(
 
 const whole = (text: string) => (/^\d+$/.test(text.trim()) ? Number(text) : NaN)
 
-/** A message for people when the goals can't be used, or null when they are fine. */
-export function goalsProblem(goals: WizardGoals): string | null {
+/**
+ * Which goal can't be used ("calories" or "minutes"), or null when they are fine.
+ * The screen turns the code into a message (`planner:wizard.problem.<code>`).
+ */
+export function goalsProblem(goals: WizardGoals): "calories" | "minutes" | null {
   if (goals.calories.trim()) {
     const calories = whole(goals.calories)
-    if (!(calories >= 500 && calories <= 10_000)) {
-      return "Calories per day must be a number between 500 and 10,000."
-    }
+    if (!(calories >= 500 && calories <= 10_000)) return "calories"
   }
   if (goals.maxMinutes.trim()) {
     const minutes = whole(goals.maxMinutes)
-    if (!(minutes >= 1 && minutes <= 1000)) {
-      return "Time per meal must be a number of minutes, like 30."
-    }
+    if (!(minutes >= 1 && minutes <= 1000)) return "minutes"
   }
   return null
 }

@@ -1,0 +1,139 @@
+{
+  "methods": {
+    "video": {
+      "title": "Video-Link",
+      "description": "Ein Instagram-Reel, ein TikTok oder ein YouTube Short."
+    },
+    "website": {
+      "title": "Website-Link",
+      "description": "Eine Rezeptseite von einer beliebigen Kochseite."
+    },
+    "photo": {
+      "title": "Foto oder Screenshot",
+      "description": "Eine Kochbuchseite oder ein Screenshot eines Rezepts."
+    },
+    "text": {
+      "title": "Text einfügen",
+      "description": "Ein Rezept, das du aus einer Nachricht oder Notiz kopiert hast."
+    },
+    "write": {
+      "title": "Selbst schreiben",
+      "description": "Tippe ein Rezept von Grund auf ein, oder eines, das du auswendig kennst."
+    },
+    "import": {
+      "title": "Rezept importieren",
+      "description": "Ein als JSON gespeichertes Rezept oder im schema.org-Recipe-Format."
+    }
+  },
+  "steps": {
+    "video": {
+      "download": "Video wird heruntergeladen",
+      "caption": "Beschreibung wird gelesen",
+      "audio": "Gesprochenes wird angehört",
+      "onScreenText": "Text im Video wird gelesen",
+      "write": "Rezept wird geschrieben"
+    },
+    "website": {
+      "open": "Seite wird geöffnet",
+      "find": "Rezept auf der Seite wird gesucht",
+      "write": "Rezept wird geschrieben"
+    },
+    "photo": {
+      "upload": "Foto wird hochgeladen",
+      "read": "Text wird gelesen",
+      "write": "Rezept wird geschrieben"
+    },
+    "text": {
+      "read": "Text wird gelesen",
+      "write": "Rezept wird geschrieben"
+    }
+  },
+  "index": {
+    "title": "Rezept hinzufügen",
+    "subtitle": "Jeder Weg führt zum gleichen übersichtlichen Rezept.",
+    "shareTip": "Tipp: Tippe auf dem Handy bei einem Reel in Instagram auf Teilen und wähle idkjustfood."
+  },
+  "form": {
+    "cameraDenied": "Erlaube den Kamerazugriff in den Einstellungen, um ein Foto aufzunehmen.",
+    "photoFailed": "Das Foto konnte nicht geöffnet werden. Versuche ein anderes.",
+    "invalidLink": "Das sieht nicht nach einem Link aus.",
+    "sending": "Wird gesendet…",
+    "getRecipe": "Rezept holen",
+    "videoLabel": "Link zum Video",
+    "websiteLabel": "Link zur Rezeptseite",
+    "sampleIntro": "Probiere es mit einem Beispiellink:",
+    "sampleGood": "Funktionierender Link",
+    "sampleUnsupported": "Nicht unterstützter Link",
+    "sampleBroken": "Defekter Link",
+    "textLabel": "Rezepttext",
+    "textPlaceholder": "Füge das Rezept hier ein.\n\nZum Beispiel:\n2 Eier, 80 g Haferflocken…",
+    "photoChosen": "Das gewählte Foto",
+    "photoChange": "Anderes Foto wählen",
+    "takePhoto": "Foto aufnehmen",
+    "chooseLibrary": "Aus der Mediathek wählen"
+  },
+  "progress": {
+    "readyTitle": "Rezept fertig",
+    "workingTitle": "Wird bearbeitet…",
+    "readySubtitle": "Prüfe es, bevor du es behältst.",
+    "workingSubtitle": "Das dauert bis zu einer Minute. Du kannst diesen Bildschirm verlassen: Das Rezept erscheint in deinen Rezepten, sobald es fertig ist.",
+    "review": "Rezept prüfen",
+    "lostJob": "Das Rezept konnte nicht abgefragt werden. Prüfe deine Verbindung; es kann trotzdem in deinen Rezepten auftauchen.",
+    "leave": "Bildschirm verlassen"
+  },
+  "error": {
+    "title": "Rezept konnte nicht hinzugefügt werden",
+    "unsupportedTitle": "Dieser Link wird noch nicht unterstützt",
+    "unsupportedMessage": "idkjustfood liest Instagram-Reels, TikTok-Videos, YouTube Shorts und Rezeptseiten. Du kannst stattdessen den Rezepttext einfügen oder einen Screenshot hinzufügen.",
+    "failedTitle": "Wir konnten dieses Rezept nicht lesen",
+    "failedMessage": "Beim Lesen des Rezepts ist etwas schiefgelaufen. Versuche es erneut oder füge stattdessen den Rezepttext ein.",
+    "pasteText": "Stattdessen Text einfügen",
+    "usePhoto": "Foto oder Screenshot verwenden",
+    "backToOptions": "Zurück zu allen Optionen"
+  },
+  "errors": {
+    "generic": "Beim Lesen des Rezepts ist etwas schiefgelaufen. Versuche es erneut oder füge stattdessen den Rezepttext ein.",
+    "network": "Der Server ist nicht erreichbar. Prüfe deine Verbindung.",
+    "unsupported_link": "Dieser Link wird noch nicht unterstützt. Füge stattdessen den Rezepttext ein oder einen Screenshot hinzu.",
+    "private_address": "Dieser Link zeigt auf eine private Adresse und kann nicht geöffnet werden.",
+    "invalid_input": "Es gab nichts zu lesen. Prüfe Link, Text oder Foto und versuche es erneut.",
+    "ai_not_configured": "Auf diesem Server ist noch keine KI eingerichtet. Bitte die Person, die ihn betreibt, eine hinzuzufügen.",
+    "model_cannot_read_images": "Das eingerichtete KI-Modell kann keine Fotos lesen. Versuche stattdessen einen Link oder den Rezepttext.",
+    "ai_failed": "Die KI konnte daraus kein Rezept machen. Versuche es gleich noch einmal.",
+    "video_unavailable": "Das Video konnte nicht heruntergeladen werden. Es ist vielleicht privat oder gelöscht.",
+    "video_too_long": "Dieses Video ist zu lang zum Lesen.",
+    "tools_missing": "Auf diesem Server fehlen die Werkzeuge zum Lesen von Videos.",
+    "page_unreachable": "Die Seite konnte nicht geöffnet werden. Prüfe den Link und versuche es erneut.",
+    "no_recipe_found": "Es wurde kein Rezept gefunden. Füge den Rezepttext ein oder einen Screenshot hinzu.",
+    "invalid_recipe": "Das Gefundene ergab kein vollständiges Rezept. Füge stattdessen den Rezepttext ein."
+  },
+  "review": {
+    "title": "Rezept prüfen",
+    "loading": "Rezept wird geladen",
+    "missingTitle": "Dieses Rezept existiert nicht",
+    "missingMessage": "Vielleicht wurde es gelöscht.",
+    "backToOptions": "Zurück zu allen Optionen",
+    "loadErrorTitle": "Dieses Rezept konnte nicht geladen werden",
+    "loadErrorMessage": "Prüfe deine Verbindung und versuche es erneut.",
+    "from": "Von {{source}}",
+    "discard": "Verwerfen",
+    "discarding": "Wird verworfen…"
+  },
+  "write": {
+    "title": "Rezept schreiben",
+    "subtitle": "Nur der Titel ist nötig. Den Rest kannst du jetzt oder später ergänzen."
+  },
+  "import": {
+    "title": "Rezept importieren",
+    "subtitle": "Füge ein aus idkjustfood exportiertes Rezept (JSON) oder ein schema.org-Recipe ein.",
+    "label": "Rezept-JSON",
+    "placeholder": "{ \"title\": \"…\", \"ingredients\": […] }",
+    "read": "Rezept lesen",
+    "reviewTitle": "Rezept prüfen",
+    "reviewSubtitle": "Prüfe es, bevor du es speicherst. Fehlende Mengen bleiben leer.",
+    "back": "Zurück"
+  },
+  "saving": "Wird gespeichert…",
+  "saveRecipe": "Rezept speichern",
+  "fieldsNeedFix": "Einige Felder müssen korrigiert werden. Sie sind unten markiert."
+}

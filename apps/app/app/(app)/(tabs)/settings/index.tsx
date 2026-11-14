@@ -18,6 +18,7 @@ import {
   User,
 } from "lucide-react-native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Switch, Text, View } from "react-native"
 
 import { ListGroup, ListRow } from "@/components/list-row"
@@ -30,29 +31,42 @@ import { useAppState } from "@/lib/app-state"
 import { API_URL, authClient } from "@/lib/auth-client"
 import { isCloud } from "@/lib/edition"
 import { useHouseholds } from "@/lib/households"
+import i18n, { supportedLanguages } from "@/lib/i18n"
 import { aiProviders } from "@/lib/mock-data"
 
 type Open = "language" | "export" | "import" | null
 
+/** A language's own name, in that language. */
+function languageName(code: string) {
+  return i18n.getFixedT(code, "common")("languageName")
+}
+
 export default function Settings() {
+  const { t } = useTranslation()
   const state = useAppState()
   const { data: session } = authClient.useSession()
   const [open, setOpen] = useState<Open>(null)
   const close = () => setOpen(null)
   const { households, isPending: householdPending } = useHouseholds()
 
-  const name = state.demo ? "Demo" : (session?.user.name ?? "You")
+  const name = state.demo
+    ? t("settings:account.demoName")
+    : (session?.user.name ?? t("settings:account.defaultName"))
   const email = state.demo
-    ? "Browsing sample data, not signed in"
+    ? t("settings:account.demoEmail")
     : session?.user.email
 
   return (
-    <Screen title="Settings" narrow>
-      <ListGroup title="Account">
+    <Screen title={t("settings:title")} narrow>
+      <ListGroup title={t("settings:account.title")}>
         <ListRow icon={User} title={name} detail={email} />
         <ListRow
           icon={LogOut}
-          title={state.demo ? "Leave the demo" : "Log out"}
+          title={
+            state.demo
+              ? t("settings:account.leaveDemo")
+              : t("settings:account.logOut")
+          }
           destructive
           onPress={() =>
             state.demo ? state.setDemo(false) : authClient.signOut()
@@ -60,126 +74,135 @@ export default function Settings() {
         />
       </ListGroup>
 
-      <ListGroup title="Household">
+      <ListGroup title={t("settings:household.title")}>
         <ListRow
           icon={Home}
           title={
             households.length > 1
-              ? `${households.length} households`
+              ? t("settings:household.count", { count: households.length })
               : (households[0]?.name ??
-                (householdPending ? "Household" : "No household yet"))
+                (householdPending
+                  ? t("settings:household.title")
+                  : t("settings:household.none")))
           }
           detail={
             households.length > 0
-              ? "Members, invites and shared recipes and lists"
-              : "Create one, or join with an invite link"
+              ? t("settings:household.detailHas")
+              : t("settings:household.detailNone")
           }
           onPress={() => router.push("/settings/household")}
         />
       </ListGroup>
 
-      <ListGroup title="Preferences">
+      <ListGroup title={t("settings:preferences.title")}>
         <View className="gap-2 px-4 py-3">
-          <Text className="text-base text-foreground">Units</Text>
+          <Text className="text-base text-foreground">
+            {t("settings:preferences.units")}
+          </Text>
           <Segmented
-            label="Units"
+            label={t("settings:preferences.units")}
             value={state.units}
             onChange={state.setUnits}
             options={[
-              { value: "metric", label: "Metric (g, ml)" },
-              { value: "imperial", label: "Imperial (oz, cups)" },
+              { value: "metric", label: t("settings:preferences.metric") },
+              { value: "imperial", label: t("settings:preferences.imperial") },
             ]}
           />
         </View>
         <View className="gap-2 px-4 py-3">
-          <Text className="text-base text-foreground">Appearance</Text>
+          <Text className="text-base text-foreground">
+            {t("settings:preferences.appearance")}
+          </Text>
           <Segmented
-            label="Appearance"
+            label={t("settings:preferences.appearance")}
             value={state.appearance}
             onChange={state.setAppearance}
             options={[
-              { value: "system", label: "System" },
-              { value: "light", label: "Light" },
-              { value: "dark", label: "Dark" },
+              { value: "system", label: t("settings:preferences.system") },
+              { value: "light", label: t("settings:preferences.light") },
+              { value: "dark", label: t("settings:preferences.dark") },
             ]}
           />
         </View>
         <ListRow
           icon={Languages}
-          title="Language"
-          detail="English"
+          title={t("settings:preferences.language")}
+          detail={
+            state.language === "system"
+              ? t("settings:language.system")
+              : languageName(state.language)
+          }
           onPress={() => setOpen("language")}
         />
       </ListGroup>
 
-      <ListGroup title="Your data">
+      <ListGroup title={t("settings:data.title")}>
         <ListRow
           icon={Download}
-          title="Export all recipes"
-          detail="JSON, Markdown or schema.org"
+          title={t("settings:data.exportTitle")}
+          detail={t("settings:data.exportDetail")}
           onPress={() => setOpen("export")}
         />
         <ListRow
           icon={Upload}
-          title="Import recipes"
-          detail="From an idkjustfood or schema.org export"
+          title={t("settings:data.importTitle")}
+          detail={t("settings:data.importDetail")}
           onPress={() => setOpen("import")}
         />
       </ListGroup>
 
       {isCloud ? (
-        <ListGroup title="Plan">
+        <ListGroup title={t("settings:plan.title")}>
           <ListRow
             icon={CreditCard}
-            title="Plan and billing"
+            title={t("settings:plan.billing")}
             onPress={() => router.push("/billing")}
           />
         </ListGroup>
       ) : (
-        <ListGroup title="This server">
-          <ListRow icon={Server} title="Server address" detail={API_URL} />
+        <ListGroup title={t("settings:server.title")}>
+          <ListRow icon={Server} title={t("settings:server.address")} detail={API_URL} />
           <ListRow
             icon={AudioLines}
-            title="Transcription"
+            title={t("settings:server.transcription")}
             detail={`${aiProviders.transcription.provider} · ${aiProviders.transcription.model}`}
           />
           <ListRow
             icon={Sparkles}
-            title="Recipe parsing"
+            title={t("settings:server.parsing")}
             detail={`${aiProviders.parsing.provider} · ${aiProviders.parsing.model}`}
           />
           <View className="px-4 py-3">
             <Text className="text-sm text-muted-foreground">
-              The AI providers are chosen by whoever runs this server, in its
-              settings. Any provider works, including models you host yourself.
+              {t("settings:server.note")}
             </Text>
           </View>
         </ListGroup>
       )}
 
-      <ListGroup title="Prototype">
+      <ListGroup title={t("settings:prototype.title")}>
         <View className="gap-2 px-4 py-3">
           <Text className="text-base text-foreground">
-            Show recipe and shopping lists as
+            {t("settings:prototype.listStateLabel")}
           </Text>
           <Segmented
-            label="List state"
+            label={t("settings:prototype.listState")}
             value={state.listState}
             onChange={state.setListState}
             options={[
-              { value: "ready", label: "Normal" },
-              { value: "loading", label: "Loading" },
-              { value: "empty", label: "Empty" },
-              { value: "error", label: "Error" },
+              { value: "ready", label: t("settings:prototype.normal") },
+              { value: "loading", label: t("settings:prototype.loading") },
+              { value: "empty", label: t("settings:prototype.empty") },
+              { value: "error", label: t("settings:prototype.error") },
             ]}
           />
         </View>
         <ListRow
-          title="Pretend to be offline"
-          detail="Shows the offline hint on shopping lists"
+          title={t("settings:prototype.offline")}
+          detail={t("settings:prototype.offlineDetail")}
           right={
             <Switch
-              accessibilityLabel="Pretend to be offline"
+              accessibilityLabel={t("settings:prototype.offline")}
               value={state.offline}
               onValueChange={state.setOffline}
             />
@@ -187,64 +210,86 @@ export default function Settings() {
         />
       </ListGroup>
 
-      <ListGroup title="About">
+      <ListGroup title={t("settings:about.title")}>
         <ListRow
           icon={Code}
-          title="idkjustfood is open source"
-          detail="Version 0.0.1"
+          title={t("settings:about.openSource")}
+          detail={t("settings:about.version", { version: "0.0.1" })}
         />
       </ListGroup>
 
-      <Sheet open={open === "language"} onClose={close} title="Language">
+      <Sheet
+        open={open === "language"}
+        onClose={close}
+        title={t("settings:language.title")}
+      >
         <ListGroup>
-          <ListRow
-            icon={Globe}
-            title="English"
-            right={<Icon as={Check} className="text-primary" />}
-            onPress={close}
-          />
+          {["system", ...supportedLanguages].map((code) => (
+            <ListRow
+              key={code}
+              icon={Globe}
+              title={
+                code === "system"
+                  ? t("settings:language.system")
+                  : languageName(code)
+              }
+              right={
+                state.language === code ? (
+                  <Icon as={Check} className="text-primary" />
+                ) : undefined
+              }
+              onPress={() => {
+                state.setLanguage(code)
+                close()
+              }}
+            />
+          ))}
         </ListGroup>
-        <Text className="text-muted-foreground">
-          More languages come later.
-        </Text>
-        <Button variant="outline" label="Close" onPress={close} />
+        <Button
+          variant="outline"
+          label={t("settings:language.close")}
+          onPress={close}
+        />
       </Sheet>
 
       <Sheet
         open={open === "export"}
         onClose={close}
-        title="Export all recipes"
+        title={t("settings:data.exportTitle")}
       >
         <ListGroup>
           <ListRow
             icon={FileJson}
-            title="JSON"
-            detail="Full backup, can be imported again"
+            title={t("settings:data.json")}
+            detail={t("settings:data.jsonDetail")}
             onPress={close}
           />
           <ListRow
             icon={FileText}
-            title="Markdown"
-            detail="One file per recipe"
+            title={t("settings:data.markdown")}
+            detail={t("settings:data.markdownDetail")}
             onPress={close}
           />
           <ListRow
             icon={FileCode}
-            title="schema.org Recipe"
-            detail="For other recipe apps"
+            title={t("settings:data.schema")}
+            detail={t("settings:data.schemaDetail")}
             onPress={close}
           />
         </ListGroup>
-        <Button variant="outline" label="Cancel" onPress={close} />
+        <Button variant="outline" label={t("settings:data.cancel")} onPress={close} />
       </Sheet>
 
-      <Sheet open={open === "import"} onClose={close} title="Import recipes">
+      <Sheet
+        open={open === "import"}
+        onClose={close}
+        title={t("settings:data.importTitle")}
+      >
         <Text className="text-muted-foreground">
-          Choose a JSON or schema.org file. Recipes you already have are
-          skipped.
+          {t("settings:data.importHelp")}
         </Text>
-        <Button icon={Upload} label="Choose file" onPress={close} />
-        <Button variant="outline" label="Cancel" onPress={close} />
+        <Button icon={Upload} label={t("settings:data.chooseFile")} onPress={close} />
+        <Button variant="outline" label={t("settings:data.cancel")} onPress={close} />
       </Sheet>
     </Screen>
   )

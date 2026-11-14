@@ -1,4 +1,5 @@
 import { router } from "expo-router"
+import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 
 import { manualSource } from "@workspace/schemas"
@@ -10,6 +11,7 @@ import { useCreateRecipe } from "@/lib/recipes"
 
 /** An empty recipe form. No AI is involved and there is no progress screen. */
 export default function WriteRecipe() {
+  const { t } = useTranslation()
   const form = useRecipeForm()
   const create = useCreateRecipe()
 
@@ -29,13 +31,13 @@ export default function WriteRecipe() {
 
   const problem =
     Object.keys(form.errors).length > 0
-      ? "Some fields need a fix. They are marked below."
+      ? t("add:fieldsNeedFix")
       : create.error?.message
 
   return (
     <Screen
-      title="Write a recipe"
-      subtitle="Only the title is needed. Add the rest now or later."
+      title={t("add:write.title")}
+      subtitle={t("add:write.subtitle")}
       back="/add"
       narrow
       footer={
@@ -46,7 +48,7 @@ export default function WriteRecipe() {
             </Text>
           )}
           <Button
-            label={create.isPending ? "Saving…" : "Save recipe"}
+            label={create.isPending ? t("add:saving") : t("add:saveRecipe")}
             disabled={create.isPending}
             onPress={save}
           />

@@ -1,5 +1,6 @@
 import { BellRing, Minus, Plus, Timer } from "lucide-react-native"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Pressable, Text, Vibration, View } from "react-native"
 
 import {
@@ -14,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
 import { formatAmount, formatMinutes, type Units } from "@/lib/format"
+import i18n from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
 export function ServingsScaler({
@@ -23,13 +25,14 @@ export function ServingsScaler({
   servings: number
   onChange: (servings: number) => void
 }) {
+  const { t } = useTranslation()
   return (
     <View className="flex-row items-center gap-2">
       <Button
         variant="outline"
         size="icon"
         icon={Minus}
-        label="Fewer servings"
+        label={t("recipes:parts.fewerServings")}
         disabled={servings <= 1}
         onPress={() => onChange(servings - 1)}
       />
@@ -37,13 +40,13 @@ export function ServingsScaler({
         aria-live="polite"
         className="min-w-24 text-center text-base font-medium text-foreground"
       >
-        {servings} {servings === 1 ? "serving" : "servings"}
+        {t("recipes:parts.servings", { count: servings })}
       </Text>
       <Button
         variant="outline"
         size="icon"
         icon={Plus}
-        label="More servings"
+        label={t("recipes:parts.moreServings")}
         disabled={servings >= 1000}
         onPress={() => onChange(servings + 1)}
       />
@@ -60,6 +63,7 @@ export function IngredientList({
   factor: number
   units: Units
 }) {
+  const { t } = useTranslation()
   return (
     <View>
       {ingredients.map((ingredient, i) => {
@@ -80,7 +84,7 @@ export function IngredientList({
                   : "italic text-muted-foreground"
               )}
             >
-              {amount ?? "no amount"}
+              {amount ?? t("recipes:parts.noAmount")}
             </Text>
             <View className="flex-1">
               <Text className="text-base text-foreground">
@@ -106,10 +110,12 @@ export function IngredientList({
 const endTimes = new Map<string, number>()
 
 function durationText(seconds: number) {
-  if (seconds < 60) return `${seconds} sec`
+  if (seconds < 60) return i18n.t("recipes:timer.seconds", { count: seconds })
   const minutes = Math.floor(seconds / 60)
   const rest = seconds % 60
-  return rest ? `${formatMinutes(minutes)} ${rest} sec` : formatMinutes(minutes)
+  return rest
+    ? `${formatMinutes(minutes)} ${i18n.t("recipes:timer.seconds", { count: rest })}`
+    : formatMinutes(minutes)
 }
 
 /** A tap-to-start countdown found in a step. Tap again to stop it. */
@@ -123,6 +129,7 @@ export function TimerButton({
   seconds: number
   large?: boolean
 }) {
+  const { t } = useTranslation()
   const [endsAt, setEndsAt] = useState<number | null>(endTimes.get(id) ?? null)
   const [now, setNow] = useState(Date.now())
 
@@ -153,10 +160,10 @@ export function TimerButton({
   }
 
   const label = finished
-    ? "Time is up. Tap to reset the timer"
+    ? t("recipes:timer.timeUpLabel")
     : running
-      ? `${formatCountdown(remaining)} left. Tap to stop the timer`
-      : `Start ${durationText(seconds)} timer`
+      ? t("recipes:timer.runningLabel", { time: formatCountdown(remaining) })
+      : t("recipes:timer.startLabel", { duration: durationText(seconds) })
 
   return (
     <Pressable
@@ -189,10 +196,10 @@ export function TimerButton({
         )}
       >
         {finished
-          ? "Time is up"
+          ? t("recipes:timer.timeUp")
           : running
-            ? `${formatCountdown(remaining)} · tap to stop`
-            : `${durationText(seconds)} timer`}
+            ? t("recipes:timer.running", { time: formatCountdown(remaining) })
+            : t("recipes:timer.idle", { duration: durationText(seconds) })}
       </Text>
     </Pressable>
   )
@@ -260,6 +267,7 @@ export const hasNutrition = (nutrition: Nutrition) =>
 
 /** Per-serving values the person entered. Empty values are left out, not shown as zero. */
 export function NutritionEstimate({ nutrition }: { nutrition: Nutrition }) {
+  const { t } = useTranslation()
   const facts = nutritionFacts(nutrition)
   if (facts.length === 0) return null
   return (
@@ -279,13 +287,17 @@ export function NutritionEstimate({ nutrition }: { nutrition: Nutrition }) {
                   {unit}
                 </Text>
               </Text>
-              <Text className="text-sm text-muted-foreground">{label}</Text>
+              <Text className="text-sm text-muted-foreground">
+                {t(`recipes:parts.nutrients.${label}`, {
+                  defaultValue: label,
+                })}
+              </Text>
             </View>
           )
         })}
       </View>
       <Text className="text-sm text-muted-foreground">
-        Per serving. An estimate, not exact.
+        {t("recipes:parts.perServing")}
       </Text>
     </View>
   )

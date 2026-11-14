@@ -1,0 +1,141 @@
+{
+  "title": "Meal planner",
+  "newPlan": "New plan",
+  "shoppingList": "Shopping list",
+  "autoPlan": "Auto-plan",
+  "demo": "Meal plans need an account. Log in to plan your meals.",
+  "demoOnly": "This doesn't work with sample data. Log in to plan your meals.",
+  "loadingPlans": "Loading your plans",
+  "plansError": "Could not load your plans",
+  "checkConnection": "Check your connection and try again.",
+  "empty": {
+    "title": "No meal plan yet",
+    "titleHousehold": "No plan for {{name}} yet",
+    "message": "Plan your meals by hand, or let the app fill a week from your saved recipes. Then add the ingredients to a shopping list.",
+    "action": "Make a plan"
+  },
+  "weekError": "Could not load this week",
+  "loadingWeek": "Loading the week",
+  "weekEmpty": "Nothing is planned in this week. Tap a slot to pick a recipe, or use Auto-plan.",
+  "caloriesNote": "Calories are estimates from the recipes, for one person.",
+  "deletePlan": "Delete this plan",
+  "cancel": "Cancel",
+  "servings": "Servings",
+  "slots": {
+    "breakfast": "Breakfast",
+    "midday": "Midday",
+    "afternoon": "Afternoon"
+  },
+  "week": {
+    "previous": "Previous week",
+    "next": "Next week",
+    "goToThis": "Go to this week",
+    "thisWeek": "This week"
+  },
+  "day": {
+    "today": "Today",
+    "kcal": "≈ {{value}} kcal{{plus}}",
+    "missing_one": "{{count}} meal has no calorie estimate.",
+    "missing_other": "{{count}} meals have no calorie estimate.",
+    "changeLabel_one": "{{slot}}, {{title}}, {{count}} serving. Change",
+    "changeLabel_other": "{{slot}}, {{title}}, {{count}} servings. Change",
+    "addLabel": "{{slot}}, empty. Add a meal",
+    "add": "Add"
+  },
+  "new": {
+    "title": "New meal plan",
+    "name": "Name",
+    "placeholder": "Our meals",
+    "shared": "Everyone in {{name}} can see and change this plan. It uses the household's recipes.",
+    "theHousehold": "the household",
+    "personal": "Only you can see this plan.",
+    "create": "Create",
+    "error": "Could not make the plan."
+  },
+  "delete": {
+    "title": "Delete this plan?",
+    "message": "{{name}} and all its meals are deleted for everyone who can see it. Your recipes and shopping lists stay.",
+    "confirm": "Delete",
+    "error": "Could not delete the plan."
+  },
+  "wizard": {
+    "step": "Step {{current}} of 3 · {{name}}",
+    "steps": {
+      "goals": "Goals",
+      "days": "Days",
+      "result": "Result"
+    },
+    "next": "Next: choose days",
+    "back": "Back",
+    "fill": "Fill my plan",
+    "planning": "Planning…",
+    "open": "Open my plan",
+    "noPlan": "Open the planner and choose a plan first.",
+    "fillError": "Could not fill the plan. Try again.",
+    "problem": {
+      "calories": "Calories per day must be a number between 500 and 10,000.",
+      "minutes": "Time per meal must be a number of minutes, like 30."
+    },
+    "intro": "Tell the planner what you want. It picks from your saved recipes, and never invents a meal. Leave a goal empty to ignore it.",
+    "calories": "Calories per day (per person)",
+    "caloriesPlaceholder": "For example 2000",
+    "caloriesHelp": "Uses the nutrition estimates of your recipes. Recipes without an estimate are left out when you set this.",
+    "diet": "Diet (a tag on the recipe)",
+    "dietPlaceholder": "For example vegetarian",
+    "diets": {
+      "vegetarian": "Vegetarian",
+      "vegan": "Vegan"
+    },
+    "maxTime": "Longest time per meal",
+    "minutes": "{{count}} min",
+    "any": "Any",
+    "weeksLabel": "How many weeks",
+    "weeks": "Weeks",
+    "servingsPerMeal": "Servings per meal",
+    "existing": "Meals you already planned",
+    "keep": "Keep them",
+    "replace": "Replace them",
+    "daysIntro": "Skip days or single meals, and change the servings for a day. Skipped meals stay empty.",
+    "planned": "Planned",
+    "skipped": "Skipped",
+    "result": {
+      "filled": "Your plan is filled",
+      "partly": "Your plan is partly filled",
+      "filledMessage": "Every meal you asked for has a recipe. You can change any of them by hand in the plan.",
+      "partlyMessage_one": "{{count}} meal stayed empty because no saved recipe matches. Save more recipes, or loosen your goals and try again.",
+      "partlyMessage_other": "{{count}} meals stayed empty because no saved recipe matches. Save more recipes, or loosen your goals and try again."
+    }
+  },
+  "slot": {
+    "remove": "Remove",
+    "save": "Save servings",
+    "swap": "Swap for another recipe",
+    "pick": "Pick a recipe",
+    "search": "Search recipes",
+    "loading": "Loading recipes",
+    "loadError": "Could not load recipes",
+    "noRecipes": "You have no saved recipes yet.",
+    "noHouseholdRecipes": "A household plan uses the household's recipes. None are shared yet.",
+    "noMatch": "No recipe matches.",
+    "planLabel": "Plan {{title}}",
+    "kcalPerServing": "≈ {{value}} kcal per serving",
+    "error": "Something went wrong."
+  },
+  "list": {
+    "title": "Add ingredients to a shopping list",
+    "done": "Done",
+    "intro": "Amounts are scaled to the servings of each meal, and the same ingredients are merged. Nothing is added until you tap the button.",
+    "whichMeals": "Which meals",
+    "wholePlan": "Whole plan",
+    "weekEmpty": "Nothing is planned in this week.",
+    "whichList": "Which list?",
+    "none": "You have no shopping lists yet. Make one in the Shopping tab.",
+    "theList": "the list",
+    "nothing": "There are no meals to add.",
+    "added_one": "Added the ingredients of {{count}} meal to {{name}}.",
+    "added_other": "Added the ingredients of {{count}} meals to {{name}}.",
+    "adding": "Adding…",
+    "add": "Add ingredients",
+    "error": "Could not add the ingredients."
+  }
+}

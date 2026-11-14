@@ -8,6 +8,7 @@ import {
   X,
 } from "lucide-react-native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Pressable, ScrollView, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
@@ -22,13 +23,14 @@ import { cn } from "@/lib/utils"
 
 /** One step at a time, big text, easy to use with messy hands. */
 export default function CookingMode() {
+  const { t } = useTranslation()
   const { id } = useLocalSearchParams<{ id: string }>()
   const query = useRecipe(id)
 
   if (query.isPending) {
     return (
       <SafeAreaView className="flex-1 bg-background p-4">
-        <LoadingState label="Loading recipe" rows={1} />
+        <LoadingState label={t("recipes:detail.loading")} rows={1} />
       </SafeAreaView>
     )
   }
@@ -36,13 +38,13 @@ export default function CookingMode() {
     return (
       <SafeAreaView className="flex-1 justify-center bg-background p-4">
         <ErrorState
-          title="Could not load this recipe"
-          message="Check your connection and try again."
+          title={t("recipes:errors.loadRecipe")}
+          message={t("recipes:errors.checkConnection")}
           onRetry={() => void query.refetch()}
         />
         <Button
           variant="ghost"
-          label="Close"
+          label={t("recipes:cook.close")}
           onPress={() => router.replace("/")}
         />
       </SafeAreaView>
@@ -53,6 +55,7 @@ export default function CookingMode() {
 }
 
 function Cooking({ recipe }: { recipe: Recipe }) {
+  const { t } = useTranslation()
   const { units } = useAppState()
   const [index, setIndex] = useState(0)
   const [listening, setListening] = useState(false)
@@ -71,7 +74,7 @@ function Cooking({ recipe }: { recipe: Recipe }) {
             variant="ghost"
             size="icon"
             icon={X}
-            label="Close cooking mode"
+            label={t("recipes:cook.closeCooking")}
             className="-ml-3"
             onPress={close}
           />
@@ -83,14 +86,17 @@ function Cooking({ recipe }: { recipe: Recipe }) {
               {recipe.title}
             </Text>
             <Text className="text-sm text-muted-foreground">
-              Step {index + 1} of {recipe.steps.length}
+              {t("recipes:cook.step", {
+                current: index + 1,
+                total: recipe.steps.length,
+              })}
             </Text>
           </View>
           <Button
             variant="ghost"
             size="icon"
             icon={ListChecks}
-            label="Show ingredients"
+            label={t("recipes:cook.showIngredients")}
             onPress={() => setIngredientsOpen(true)}
           />
         </View>
@@ -151,8 +157,8 @@ function Cooking({ recipe }: { recipe: Recipe }) {
             )}
           >
             {listening
-              ? "Listening: say “next” or “back”"
-              : "Voice control off"}
+              ? t("recipes:cook.listening")
+              : t("recipes:cook.voiceOff")}
           </Text>
         </Pressable>
 
@@ -161,7 +167,7 @@ function Cooking({ recipe }: { recipe: Recipe }) {
             variant="outline"
             size="lg"
             icon={ChevronLeft}
-            label="Back"
+            label={t("recipes:cook.back")}
             className="h-16 flex-1"
             disabled={index === 0}
             onPress={() => setIndex((i) => i - 1)}
@@ -169,7 +175,7 @@ function Cooking({ recipe }: { recipe: Recipe }) {
           <Button
             size="lg"
             icon={last ? undefined : ChevronRight}
-            label={last ? "Done" : "Next"}
+            label={last ? t("recipes:cook.done") : t("recipes:cook.next")}
             className="h-16 flex-[2]"
             onPress={() => (last ? close() : setIndex((i) => i + 1))}
           />
@@ -179,7 +185,7 @@ function Cooking({ recipe }: { recipe: Recipe }) {
       <Sheet
         open={ingredientsOpen}
         onClose={() => setIngredientsOpen(false)}
-        title="Ingredients"
+        title={t("recipes:cook.ingredients")}
       >
         <ScrollView className="max-h-96">
           <IngredientList
@@ -190,7 +196,7 @@ function Cooking({ recipe }: { recipe: Recipe }) {
         </ScrollView>
         <Button
           variant="outline"
-          label="Close"
+          label={t("recipes:cook.close")}
           onPress={() => setIngredientsOpen(false)}
         />
       </Sheet>

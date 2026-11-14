@@ -1,5 +1,6 @@
 import { router, useLocalSearchParams } from "expo-router"
 import { SearchX } from "lucide-react-native"
+import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 
 import { RecipeForm, useRecipeForm } from "@/components/recipe-form"
@@ -21,13 +22,14 @@ import {
  * never guessed, and are highlighted.
  */
 export default function Review() {
+  const { t } = useTranslation()
   const { id } = useLocalSearchParams<{ id: string }>()
   const query = useRecipe(id)
 
   if (query.isPending) {
     return (
-      <Screen title="Review recipe" back="/add" narrow>
-        <LoadingState label="Loading recipe" rows={2} />
+      <Screen title={t("add:review.title")} back="/add" narrow>
+        <LoadingState label={t("add:review.loading")} rows={2} />
       </Screen>
     )
   }
@@ -35,19 +37,19 @@ export default function Review() {
     const missing =
       query.error instanceof ApiError && query.error.status === 404
     return (
-      <Screen title="Review recipe" back="/add" narrow>
+      <Screen title={t("add:review.title")} back="/add" narrow>
         {missing ? (
           <EmptyState
             icon={SearchX}
-            title="This recipe does not exist"
-            message="It may have been deleted."
-            action="Back to all options"
+            title={t("add:review.missingTitle")}
+            message={t("add:review.missingMessage")}
+            action={t("add:review.backToOptions")}
             onAction={() => router.replace("/add")}
           />
         ) : (
           <ErrorState
-            title="Could not load this recipe"
-            message="Check your connection and try again."
+            title={t("add:review.loadErrorTitle")}
+            message={t("add:review.loadErrorMessage")}
             onRetry={() => void query.refetch()}
           />
         )}
@@ -58,6 +60,7 @@ export default function Review() {
 }
 
 function ReviewForm({ recipe }: { recipe: Recipe }) {
+  const { t } = useTranslation()
   const form = useRecipeForm(recipe)
   const update = useUpdateRecipe(recipe.id)
   const remove = useDeleteRecipe(recipe.id)
@@ -84,13 +87,17 @@ function ReviewForm({ recipe }: { recipe: Recipe }) {
   const busy = update.isPending || remove.isPending
   const problem =
     Object.keys(form.errors).length > 0
-      ? "Some fields need a fix. They are marked below."
+      ? t("add:fieldsNeedFix")
       : (update.error ?? remove.error)?.message
 
   return (
     <Screen
-      title="Review recipe"
-      subtitle={recipe.source.label ? `From ${recipe.source.label}` : undefined}
+      title={t("add:review.title")}
+      subtitle={
+        recipe.source.label
+          ? t("add:review.from", { source: recipe.source.label })
+          : undefined
+      }
       back="/add"
       narrow
       footer={
@@ -103,13 +110,13 @@ function ReviewForm({ recipe }: { recipe: Recipe }) {
           <View className="flex-row gap-3">
             <Button
               variant="outline"
-              label={remove.isPending ? "Discarding…" : "Discard"}
+              label={remove.isPending ? t("add:review.discarding") : t("add:review.discard")}
               className="flex-1"
               disabled={busy}
               onPress={discard}
             />
             <Button
-              label={update.isPending ? "Saving…" : "Save recipe"}
+              label={update.isPending ? t("add:saving") : t("add:saveRecipe")}
               className="flex-1"
               disabled={busy}
               onPress={save}

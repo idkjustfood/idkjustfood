@@ -1,36 +1,36 @@
 import { router, useLocalSearchParams } from "expo-router"
 import { CircleAlert } from "lucide-react-native"
+import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 
 import { Screen } from "@/components/screen"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
-
-const messages = {
-  unsupported: {
-    title: "This link is not supported yet",
-    message:
-      "idkjustfood reads Instagram reels, TikTok videos, YouTube Shorts and recipe websites. You can still paste the recipe text or add a screenshot.",
-  },
-  failed: {
-    title: "We could not read this recipe",
-    message:
-      "Something went wrong while reading the recipe. Try again, or paste the recipe text instead.",
-  },
-}
+import { extractionErrorMessage } from "@/lib/extractions"
 
 export default function AddError() {
-  const { reason, link, message } = useLocalSearchParams<{
+  const { t } = useTranslation()
+  const { reason, link, code } = useLocalSearchParams<{
     reason?: string
     link?: string
-    message?: string
+    code?: string
   }>()
-  const base = reason === "unsupported" ? messages.unsupported : messages.failed
-  // The server says what went wrong (private video, no AI key, ...): show that.
-  const content = { ...base, message: message || base.message }
+  const unsupported = reason === "unsupported"
+  // The server sends a code for what went wrong (private video, no AI key, ...): show
+  // the matching translated text.
+  const content = {
+    title: unsupported
+      ? t("add:error.unsupportedTitle")
+      : t("add:error.failedTitle"),
+    message: code
+      ? extractionErrorMessage(code)
+      : unsupported
+        ? t("add:error.unsupportedMessage")
+        : t("add:error.failedMessage"),
+  }
 
   return (
-    <Screen title="Could not add recipe" back="/add" narrow>
+    <Screen title={t("add:error.title")} back="/add" narrow>
       <View role="alert" className="items-center gap-4 py-8">
         <View className="h-20 w-20 items-center justify-center rounded-full bg-destructive/10">
           <Icon as={CircleAlert} size={40} className="text-destructive" />
@@ -52,17 +52,17 @@ export default function AddError() {
       </View>
       <View className="gap-3">
         <Button
-          label="Paste the text instead"
+          label={t("add:error.pasteText")}
           onPress={() => router.replace("/add/text")}
         />
         <Button
           variant="outline"
-          label="Use a photo or screenshot"
+          label={t("add:error.usePhoto")}
           onPress={() => router.replace("/add/photo")}
         />
         <Button
           variant="ghost"
-          label="Back to all options"
+          label={t("add:error.backToOptions")}
           onPress={() => router.replace("/add")}
         />
       </View>

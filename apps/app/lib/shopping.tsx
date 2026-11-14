@@ -7,6 +7,7 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react"
+import { useTranslation } from "react-i18next"
 import { AppState, Platform } from "react-native"
 
 import {
@@ -20,6 +21,7 @@ import {
 import { api, call } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
 import { deviceStorage } from "@/lib/device-storage"
+import i18n from "@/lib/i18n"
 import { useHouseholds, useMyUserId } from "@/lib/households"
 import {
   household as demoHousehold,
@@ -265,12 +267,15 @@ export function useShoppingList(listId: string | undefined) {
 /** A short label for the kind of list: "Personal" or the name of its household. */
 export function useListKind() {
   const { households } = useHouseholds()
+  // Reading the language makes the labels follow a language switch.
+  const { i18n: instance } = useTranslation()
   return useCallback(
     (list: ShoppingList) =>
       list.householdId
         ? (households.find((h) => h.id === list.householdId)?.name ??
-          "Household")
-        : "Personal",
-    [households]
+          i18n.t("shopping:kind.household"))
+        : i18n.t("shopping:kind.personal"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [households, instance.language]
   )
 }

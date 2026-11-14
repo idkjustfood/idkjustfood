@@ -1,5 +1,6 @@
 import { CircleAlert, Plus, Trash2 } from "lucide-react-native"
 import { useCallback, useMemo, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Text, TextInput, View } from "react-native"
 
 import {
@@ -9,6 +10,8 @@ import {
   type DraftContent,
   type RecipeDraft,
 } from "@workspace/schemas"
+
+import type { TFunction } from "i18next"
 
 import { Button } from "@/components/ui/button"
 import { Card, SectionTitle } from "@/components/ui/card"
@@ -69,6 +72,18 @@ function Field({
   )
 }
 
+/** The text for a problem the draft reports, found by the field it belongs to. */
+function errorText(t: TFunction, field: string) {
+  if (field === "title") return t("recipes:form.errors.title")
+  if (field === "servings") return t("recipes:form.errors.servings")
+  if (field === "prepMinutes" || field === "cookMinutes") {
+    return t("recipes:form.errors.minutes")
+  }
+  if (field.endsWith(".quantity")) return t("recipes:form.errors.quantity")
+  if (field.endsWith(".name")) return t("recipes:form.errors.ingredientName")
+  return t("recipes:form.errors.number")
+}
+
 function FieldError({ message }: { message?: string }) {
   if (!message) return null
   return (
@@ -90,7 +105,12 @@ export function RecipeForm({
   form: RecipeFormState
   highlightMissing?: boolean
 }) {
-  const { draft, setDraft, newKey, errors } = form
+  const { t } = useTranslation()
+  const { draft, setDraft, newKey } = form
+  // The draft reports problems in English; show them in the current language.
+  const errors: Record<string, string> = Object.fromEntries(
+    Object.keys(form.errors).map((field) => [field, errorText(t, field)])
+  )
 
   const set = (patch: Partial<RecipeDraft>) =>
     setDraft((d) => ({ ...d, ...patch }))
@@ -123,7 +143,7 @@ export function RecipeForm({
       <Card className="gap-4 p-4">
         <View className="gap-1.5">
           <Input
-            label="Title"
+            label={t("recipes:form.title")}
             value={draft.title}
             onChangeText={(title) => set({ title })}
             autoFocus={!draft.title}
@@ -131,7 +151,7 @@ export function RecipeForm({
           <FieldError message={errors.title} />
         </View>
         <Input
-          label="Short description"
+          label={t("recipes:form.description")}
           value={draft.description}
           multiline
           className="h-24 py-3"
@@ -141,7 +161,7 @@ export function RecipeForm({
         <View className="flex-row gap-3">
           <View className="flex-1 gap-1.5">
             <Input
-              label="Servings"
+              label={t("recipes:form.servings")}
               value={draft.servings}
               keyboardType="number-pad"
               onChangeText={(servings) => set({ servings })}
@@ -150,7 +170,7 @@ export function RecipeForm({
           </View>
           <View className="flex-1 gap-1.5">
             <Input
-              label="Prep (min)"
+              label={t("recipes:form.prep")}
               value={draft.prepMinutes}
               keyboardType="number-pad"
               onChangeText={(prepMinutes) => set({ prepMinutes })}
@@ -159,7 +179,7 @@ export function RecipeForm({
           </View>
           <View className="flex-1 gap-1.5">
             <Input
-              label="Cooking (min)"
+              label={t("recipes:form.cooking")}
               value={draft.cookMinutes}
               keyboardType="number-pad"
               onChangeText={(cookMinutes) => set({ cookMinutes })}
@@ -168,18 +188,18 @@ export function RecipeForm({
           </View>
         </View>
         <Input
-          label="Tags"
+          label={t("recipes:form.tags")}
           value={draft.tags}
-          placeholder="Italian, Vegetarian, Under 30 min"
+          placeholder={t("recipes:form.tagsPlaceholder")}
           autoCapitalize="sentences"
           onChangeText={(tags) => set({ tags })}
         />
       </Card>
 
       <Card className="gap-4 p-4">
-        <SectionTitle>Ingredients</SectionTitle>
+        <SectionTitle>{t("recipes:form.ingredients")}</SectionTitle>
         <Text className="text-sm text-muted-foreground">
-          Leave the amount empty if you don&apos;t know it.
+          {t("recipes:form.amountHint")}
         </Text>
         {highlightMissing && missing > 0 && (
           <View className="flex-row gap-3 rounded-md bg-amber-100 p-3 dark:bg-amber-950">
@@ -188,9 +208,7 @@ export function RecipeForm({
               className="text-amber-700 dark:text-amber-300"
             />
             <Text className="flex-1 text-amber-900 dark:text-amber-200">
-              {missing} {missing === 1 ? "amount was" : "amounts were"} not in
-              the source. We left {missing === 1 ? "it" : "them"} empty instead
-              of guessing. Fill in what you know.
+              {t("recipes:form.missingAmounts", { count: missing })}
             </Text>
           </View>
         )}
@@ -198,7 +216,7 @@ export function RecipeForm({
           const empty = !ingredient.quantity.trim()
           const quantityError = errors[`ingredient.${ingredient.key}.quantity`]
           const nameError = errors[`ingredient.${ingredient.key}.name`]
-          const name = ingredient.name.trim() || `ingredient ${index + 1}`
+          const name = ingredient.name.trim() || t("recipes:form.ingredientFallback", { n: index + 1 })
           return (
             <View
               key={ingredient.key}
@@ -206,7 +224,7 @@ export function RecipeForm({
             >
               <View className="flex-row gap-2">
                 <Field
-                  label="Amount"
+                  label={t("recipes:form.amount")}
                   value={ingredient.quantity}
                   keyboardType="numbers-and-punctuation"
                   className="w-24"
@@ -216,14 +234,14 @@ export function RecipeForm({
                   }
                 />
                 <Field
-                  label="Unit"
+                  label={t("recipes:form.unit")}
                   value={ingredient.unit}
                   className="w-20"
                   autoCapitalize="none"
                   onChangeText={(unit) => setIngredient(ingredient.key, { unit })}
                 />
                 <Field
-                  label="Ingredient"
+                  label={t("recipes:form.ingredient")}
                   value={ingredient.name}
                   className="flex-1"
                   warn={!!nameError}
@@ -234,7 +252,7 @@ export function RecipeForm({
               </View>
               <View className="flex-row gap-2">
                 <Field
-                  label="Note, for example “chopped”"
+                  label={t("recipes:form.note")}
                   value={ingredient.note}
                   className="flex-1"
                   onChangeText={(note) => setIngredient(ingredient.key, { note })}
@@ -243,7 +261,7 @@ export function RecipeForm({
                   variant="ghost"
                   size="icon"
                   icon={Trash2}
-                  label={`Remove ${name}`}
+                  label={t("recipes:form.remove", { name })}
                   onPress={() =>
                     setDraft((d) => ({
                       ...d,
@@ -257,7 +275,7 @@ export function RecipeForm({
               <FieldError message={quantityError ?? nameError} />
               {highlightMissing && empty && !quantityError && (
                 <Text className="text-sm text-amber-700 dark:text-amber-300">
-                  Amount not given in the source
+                  {t("recipes:form.amountMissing")}
                 </Text>
               )}
             </View>
@@ -266,7 +284,7 @@ export function RecipeForm({
         <Button
           variant="outline"
           icon={Plus}
-          label="Add ingredient"
+          label={t("recipes:form.addIngredient")}
           onPress={() =>
             setDraft((d) => ({
               ...d,
@@ -280,9 +298,9 @@ export function RecipeForm({
       </Card>
 
       <Card className="gap-4 p-4">
-        <SectionTitle>Steps</SectionTitle>
+        <SectionTitle>{t("recipes:form.steps")}</SectionTitle>
         <Text className="text-sm text-muted-foreground">
-          A time in a step, like “bake 30 minutes”, becomes a timer.
+          {t("recipes:form.stepsHint")}
         </Text>
         {draft.steps.map((step, i) => (
           <View key={step.key} className="flex-row items-start gap-2">
@@ -290,7 +308,7 @@ export function RecipeForm({
               {i + 1}
             </Text>
             <Field
-              label={`Step ${i + 1}`}
+              label={t("recipes:form.stepN", { n: i + 1 })}
               value={step.text}
               multiline
               textAlignVertical="top"
@@ -301,7 +319,7 @@ export function RecipeForm({
               variant="ghost"
               size="icon"
               icon={Trash2}
-              label={`Remove step ${i + 1}`}
+              label={t("recipes:form.removeStep", { n: i + 1 })}
               onPress={() =>
                 setDraft((d) => ({
                   ...d,
@@ -314,7 +332,7 @@ export function RecipeForm({
         <Button
           variant="outline"
           icon={Plus}
-          label="Add step"
+          label={t("recipes:form.addStep")}
           onPress={() =>
             setDraft((d) => ({
               ...d,
@@ -325,22 +343,22 @@ export function RecipeForm({
       </Card>
 
       <Card className="gap-4 p-4">
-        <SectionTitle>Nutrition per serving</SectionTitle>
+        <SectionTitle>{t("recipes:form.nutrition")}</SectionTitle>
         <Text className="text-sm text-muted-foreground">
-          Optional. Whatever you leave empty is not shown.
+          {t("recipes:form.nutritionHint")}
         </Text>
         <View className="flex-row flex-wrap gap-3">
           {(
             [
-              ["calories", "Calories (kcal)"],
-              ["protein", "Protein (g)"],
-              ["carbs", "Carbs (g)"],
-              ["fat", "Fat (g)"],
+              "calories",
+              "protein",
+              "carbs",
+              "fat",
             ] as const
-          ).map(([field, label]) => (
+          ).map((field) => (
             <View key={field} className="min-w-36 flex-1 gap-1.5">
               <Input
-                label={label}
+                label={t(`recipes:form.${field}`)}
                 value={draft[field]}
                 keyboardType="decimal-pad"
                 onChangeText={(value) => set({ [field]: value })}

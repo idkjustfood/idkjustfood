@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next"
+
 import { ComingSoon } from "@/components/coming-soon"
 import { Screen } from "@/components/screen"
 
@@ -6,9 +8,10 @@ import { Screen } from "@/components/screen"
  * build never shows it. The real billing screens are a separate ticket.
  */
 export default function Billing() {
+  const { t } = useTranslation()
   return (
-    <Screen title="Plan and billing" back="/settings" narrow>
-      <ComingSoon message="Manage your idkjustfood Cloud plan here." />
+    <Screen title={t("settings:billing.title")} back="/settings" narrow>
+      <ComingSoon message={t("settings:billing.message")} />
     </Screen>
   )
 }

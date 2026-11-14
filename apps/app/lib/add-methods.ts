@@ -12,53 +12,70 @@ import {
 export type AddMethod =
   "video" | "website" | "photo" | "text" | "write" | "import"
 
+/**
+ * `titleKey`, `descriptionKey` and the step keys are translation keys in the `add`
+ * namespace. Call `t()` with them when rendering, so a language switch updates the text.
+ */
+/**
+ * `titleKey`, `descriptionKey` and the step keys are translation keys in the `add`
+ * namespace. Call `t()` with them when rendering, so a language switch updates the text.
+ */
 export const addMethods: Record<
   AddMethod,
-  { title: string; description: string; icon: LucideIcon; steps: string[] }
+  {
+    titleKey: string
+    descriptionKey: string
+    icon: LucideIcon
+    steps: string[]
+  }
 > = {
   video: {
-    title: "Video link",
-    description: "An Instagram reel, a TikTok or a YouTube Short.",
+    titleKey: "add:methods.video.title",
+    descriptionKey: "add:methods.video.description",
     icon: Video,
     steps: [
-      "Downloading the video",
-      "Reading the caption",
-      "Listening to what is said",
-      "Reading text shown in the video",
-      "Writing the recipe",
+      "add:steps.video.download",
+      "add:steps.video.caption",
+      "add:steps.video.audio",
+      "add:steps.video.onScreenText",
+      "add:steps.video.write",
     ],
   },
   website: {
-    title: "Website link",
-    description: "A recipe page from any cooking website.",
+    titleKey: "add:methods.website.title",
+    descriptionKey: "add:methods.website.description",
     icon: Globe,
     steps: [
-      "Opening the page",
-      "Finding the recipe on the page",
-      "Writing the recipe",
+      "add:steps.website.open",
+      "add:steps.website.find",
+      "add:steps.website.write",
     ],
   },
   photo: {
-    title: "Photo or screenshot",
-    description: "A cookbook page or a screenshot of a recipe.",
+    titleKey: "add:methods.photo.title",
+    descriptionKey: "add:methods.photo.description",
     icon: Camera,
-    steps: ["Uploading the photo", "Reading the text", "Writing the recipe"],
+    steps: [
+      "add:steps.photo.upload",
+      "add:steps.photo.read",
+      "add:steps.photo.write",
+    ],
   },
   text: {
-    title: "Paste text",
-    description: "A recipe you copied from a message or a note.",
+    titleKey: "add:methods.text.title",
+    descriptionKey: "add:methods.text.description",
     icon: FileText,
-    steps: ["Reading the text", "Writing the recipe"],
+    steps: ["add:steps.text.read", "add:steps.text.write"],
   },
   write: {
-    title: "Write it yourself",
-    description: "Type in a recipe from scratch, or one you know by heart.",
+    titleKey: "add:methods.write.title",
+    descriptionKey: "add:methods.write.description",
     icon: PenLine,
     steps: [],
   },
   import: {
-    title: "Import a recipe",
-    description: "A recipe saved as JSON, or in the schema.org Recipe format.",
+    titleKey: "add:methods.import.title",
+    descriptionKey: "add:methods.import.description",
     icon: Upload,
     steps: [],
   },

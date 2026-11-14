@@ -1,5 +1,6 @@
 import { Check, ChevronDown, User, Users } from "lucide-react-native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
 
 import { Icon } from "@/components/ui/icon"
@@ -15,6 +16,7 @@ import { cn } from "@/lib/utils"
  * is nothing to pick, so it is not shown.
  */
 export function SpaceSwitcher() {
+  const { t } = useTranslation("common")
   const { householdId, setHouseholdId } = useAppState()
   const { households } = useHouseholds()
   // Also falls back to the personal space when the selected household is gone.
@@ -23,13 +25,13 @@ export function SpaceSwitcher() {
 
   if (households.length === 0) return null
 
-  const current = household?.name ?? "Personal"
+  const current = household?.name ?? t("space.personal")
   const options = [
-    { id: null, name: "Personal", detail: "Only you", icon: User },
+    { id: null, name: t("space.personal"), detail: t("space.onlyYou"), icon: User },
     ...households.map((h) => ({
       id: h.id,
       name: h.name,
-      detail: "Shared household",
+      detail: t("space.shared"),
       icon: Users,
     })),
   ]
@@ -43,7 +45,7 @@ export function SpaceSwitcher() {
     <>
       <Pressable
         role="button"
-        accessibilityLabel={`Space: ${current}. Change`}
+        accessibilityLabel={t("space.change", { name: current })}
         onPress={() => setOpen(true)}
         className={cn(
           "h-11 w-full flex-row items-center gap-2 self-stretch rounded-md border border-border bg-card px-3 active:bg-accent web:hover:bg-accent"
@@ -63,8 +65,8 @@ export function SpaceSwitcher() {
         <Icon as={ChevronDown} size={18} className="text-muted-foreground" />
       </Pressable>
 
-      <Sheet open={open} onClose={() => setOpen(false)} title="Choose a space">
-        <View role="radiogroup" aria-label="Space" className="gap-2">
+      <Sheet open={open} onClose={() => setOpen(false)} title={t("space.choose")}>
+        <View role="radiogroup" aria-label={t("space.label")} className="gap-2">
           {options.map((option) => {
             const selected = option.id === householdId
             return (

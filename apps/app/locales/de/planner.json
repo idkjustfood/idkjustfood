@@ -1,0 +1,141 @@
+{
+  "title": "Essensplaner",
+  "newPlan": "Neuer Plan",
+  "shoppingList": "Einkaufsliste",
+  "autoPlan": "Automatisch planen",
+  "demo": "Für Essenspläne brauchst du ein Konto. Melde dich an, um deine Mahlzeiten zu planen.",
+  "demoOnly": "Mit Beispieldaten funktioniert das nicht. Melde dich an, um deine Mahlzeiten zu planen.",
+  "loadingPlans": "Pläne werden geladen",
+  "plansError": "Pläne konnten nicht geladen werden",
+  "checkConnection": "Prüfe deine Verbindung und versuche es noch einmal.",
+  "empty": {
+    "title": "Noch kein Essensplan",
+    "titleHousehold": "Noch kein Plan für {{name}}",
+    "message": "Plane deine Mahlzeiten von Hand oder lass die App eine Woche aus deinen gespeicherten Rezepten füllen. Danach kannst du die Zutaten auf eine Einkaufsliste setzen.",
+    "action": "Plan erstellen"
+  },
+  "weekError": "Diese Woche konnte nicht geladen werden",
+  "loadingWeek": "Woche wird geladen",
+  "weekEmpty": "In dieser Woche ist nichts geplant. Tippe auf einen Platz, um ein Rezept zu wählen, oder nutze die automatische Planung.",
+  "caloriesNote": "Die Kalorien sind Schätzwerte aus den Rezepten, für eine Person.",
+  "deletePlan": "Diesen Plan löschen",
+  "cancel": "Abbrechen",
+  "servings": "Portionen",
+  "slots": {
+    "breakfast": "Frühstück",
+    "midday": "Mittag",
+    "afternoon": "Nachmittag"
+  },
+  "week": {
+    "previous": "Vorherige Woche",
+    "next": "Nächste Woche",
+    "goToThis": "Zur aktuellen Woche",
+    "thisWeek": "Diese Woche"
+  },
+  "day": {
+    "today": "Heute",
+    "kcal": "≈ {{value}} kcal{{plus}}",
+    "missing_one": "{{count}} Mahlzeit hat keine Kalorienschätzung.",
+    "missing_other": "{{count}} Mahlzeiten haben keine Kalorienschätzung.",
+    "changeLabel_one": "{{slot}}, {{title}}, {{count}} Portion. Ändern",
+    "changeLabel_other": "{{slot}}, {{title}}, {{count}} Portionen. Ändern",
+    "addLabel": "{{slot}}, leer. Mahlzeit hinzufügen",
+    "add": "Hinzufügen"
+  },
+  "new": {
+    "title": "Neuer Essensplan",
+    "name": "Name",
+    "placeholder": "Unsere Mahlzeiten",
+    "shared": "Alle in {{name}} können diesen Plan sehen und ändern. Er nutzt die Rezepte des Haushalts.",
+    "theHousehold": "dem Haushalt",
+    "personal": "Nur du kannst diesen Plan sehen.",
+    "create": "Erstellen",
+    "error": "Der Plan konnte nicht erstellt werden."
+  },
+  "delete": {
+    "title": "Diesen Plan löschen?",
+    "message": "{{name}} und alle Mahlzeiten darin werden für alle gelöscht, die den Plan sehen können. Deine Rezepte und Einkaufslisten bleiben erhalten.",
+    "confirm": "Löschen",
+    "error": "Der Plan konnte nicht gelöscht werden."
+  },
+  "wizard": {
+    "step": "Schritt {{current}} von 3 · {{name}}",
+    "steps": {
+      "goals": "Ziele",
+      "days": "Tage",
+      "result": "Ergebnis"
+    },
+    "next": "Weiter: Tage wählen",
+    "back": "Zurück",
+    "fill": "Plan füllen",
+    "planning": "Plane…",
+    "open": "Meinen Plan öffnen",
+    "noPlan": "Öffne den Planer und wähle zuerst einen Plan.",
+    "fillError": "Der Plan konnte nicht gefüllt werden. Versuche es noch einmal.",
+    "problem": {
+      "calories": "Die Kalorien pro Tag müssen eine Zahl zwischen 500 und 10.000 sein.",
+      "minutes": "Die Zeit pro Mahlzeit muss eine Minutenzahl sein, zum Beispiel 30."
+    },
+    "intro": "Sag dem Planer, was du möchtest. Er wählt aus deinen gespeicherten Rezepten und erfindet nie eine Mahlzeit. Lass ein Ziel leer, um es zu ignorieren.",
+    "calories": "Kalorien pro Tag (pro Person)",
+    "caloriesPlaceholder": "Zum Beispiel 2000",
+    "caloriesHelp": "Nutzt die Nährwertschätzungen deiner Rezepte. Rezepte ohne Schätzung bleiben außen vor, wenn du das einstellst.",
+    "diet": "Ernährungsform (ein Tag am Rezept)",
+    "dietPlaceholder": "Zum Beispiel vegetarisch",
+    "diets": {
+      "vegetarian": "Vegetarisch",
+      "vegan": "Vegan"
+    },
+    "maxTime": "Maximale Zeit pro Mahlzeit",
+    "minutes": "{{count}} Min.",
+    "any": "Egal",
+    "weeksLabel": "Wie viele Wochen",
+    "weeks": "Wochen",
+    "servingsPerMeal": "Portionen pro Mahlzeit",
+    "existing": "Bereits geplante Mahlzeiten",
+    "keep": "Behalten",
+    "replace": "Ersetzen",
+    "daysIntro": "Überspringe Tage oder einzelne Mahlzeiten und ändere die Portionen für einen Tag. Übersprungene Mahlzeiten bleiben leer.",
+    "planned": "Geplant",
+    "skipped": "Übersprungen",
+    "result": {
+      "filled": "Dein Plan ist gefüllt",
+      "partly": "Dein Plan ist teilweise gefüllt",
+      "filledMessage": "Für jede gewünschte Mahlzeit gibt es ein Rezept. Du kannst jede davon im Plan von Hand ändern.",
+      "partlyMessage_one": "{{count}} Mahlzeit blieb leer, weil kein gespeichertes Rezept passt. Speichere mehr Rezepte oder lockere deine Ziele und versuche es noch einmal.",
+      "partlyMessage_other": "{{count}} Mahlzeiten blieben leer, weil kein gespeichertes Rezept passt. Speichere mehr Rezepte oder lockere deine Ziele und versuche es noch einmal."
+    }
+  },
+  "slot": {
+    "remove": "Entfernen",
+    "save": "Portionen speichern",
+    "swap": "Gegen ein anderes Rezept tauschen",
+    "pick": "Rezept wählen",
+    "search": "Rezepte suchen",
+    "loading": "Rezepte werden geladen",
+    "loadError": "Rezepte konnten nicht geladen werden",
+    "noRecipes": "Du hast noch keine gespeicherten Rezepte.",
+    "noHouseholdRecipes": "Ein Haushaltsplan nutzt die Rezepte des Haushalts. Es sind noch keine geteilt.",
+    "noMatch": "Kein Rezept passt.",
+    "planLabel": "{{title}} einplanen",
+    "kcalPerServing": "≈ {{value}} kcal pro Portion",
+    "error": "Etwas ist schiefgelaufen."
+  },
+  "list": {
+    "title": "Zutaten auf eine Einkaufsliste setzen",
+    "done": "Fertig",
+    "intro": "Die Mengen werden an die Portionen jeder Mahlzeit angepasst und gleiche Zutaten zusammengefasst. Es wird nichts hinzugefügt, bis du auf den Button tippst.",
+    "whichMeals": "Welche Mahlzeiten",
+    "wholePlan": "Ganzer Plan",
+    "weekEmpty": "In dieser Woche ist nichts geplant.",
+    "whichList": "Welche Liste?",
+    "none": "Du hast noch keine Einkaufslisten. Erstelle eine im Tab Einkauf.",
+    "theList": "die Liste",
+    "nothing": "Es gibt keine Mahlzeiten zum Hinzufügen.",
+    "added_one": "Die Zutaten von {{count}} Mahlzeit wurden zu {{name}} hinzugefügt.",
+    "added_other": "Die Zutaten von {{count}} Mahlzeiten wurden zu {{name}} hinzugefügt.",
+    "adding": "Wird hinzugefügt…",
+    "add": "Zutaten hinzufügen",
+    "error": "Die Zutaten konnten nicht hinzugefügt werden."
+  }
+}

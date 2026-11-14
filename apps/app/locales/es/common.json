@@ -1,0 +1,59 @@
+{
+  "languageName": "Español",
+  "minutes_one": "{{count}} min",
+  "minutes_other": "{{count}} min",
+  "hours_one": "{{count}} h",
+  "hours_other": "{{count}} h",
+  "hoursMinutes": "{{hours}} h {{minutes}} min",
+  "units": {
+    "g": "g",
+    "kg": "kg",
+    "oz": "oz",
+    "lb": "lb",
+    "ml": "ml",
+    "l": "l",
+    "tsp": "cdta.",
+    "tbsp": "cda.",
+    "cup_one": "taza",
+    "cup_other": "tazas"
+  },
+  "back": "Atrás",
+  "close": "Cerrar",
+  "clearSearch": "Borrar búsqueda",
+  "tryAgain": "Intentar de nuevo",
+  "comingSoon": "Próximamente",
+  "offline": {
+    "title": "Sin conexión",
+    "message": "Puedes seguir marcando cosas. Los cambios se sincronizan cuando vuelvas a tener conexión.",
+    "pending_one": "Hay {{count}} cambio pendiente.",
+    "pending_other": "Hay {{count}} cambios pendientes."
+  },
+  "tabs": {
+    "recipes": "Recetas",
+    "shopping": "Compras",
+    "add": "Añadir",
+    "planner": "Planificador",
+    "settings": "Ajustes",
+    "addRecipe": "Añadir una receta",
+    "addRecipeButton": "Añadir receta"
+  },
+  "space": {
+    "personal": "Personal",
+    "onlyYou": "Solo tú",
+    "shared": "Hogar compartido",
+    "change": "Espacio: {{name}}. Cambiar",
+    "choose": "Elegir un espacio",
+    "label": "Espacio"
+  },
+  "demoOnly": "Esto no funciona con datos de ejemplo. Inicia sesión para gestionar un hogar real.",
+  "stepper": {
+    "fewer": "Menos {{label}}",
+    "more": "Más {{label}}"
+  },
+  "relativeDays": {
+    "today": "hoy",
+    "tomorrow": "mañana",
+    "inDays_one": "en {{count}} día",
+    "inDays_other": "en {{count}} días"
+  }
+}

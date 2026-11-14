@@ -1,0 +1,141 @@
+{
+  "title": "Planificateur de repas",
+  "newPlan": "Nouveau plan",
+  "shoppingList": "Liste de courses",
+  "autoPlan": "Planification auto",
+  "demo": "Les plans de repas nécessitent un compte. Connecte-toi pour planifier tes repas.",
+  "demoOnly": "Cela ne fonctionne pas avec les données d'exemple. Connecte-toi pour planifier tes repas.",
+  "loadingPlans": "Chargement de tes plans",
+  "plansError": "Impossible de charger tes plans",
+  "checkConnection": "Vérifie ta connexion et réessaie.",
+  "empty": {
+    "title": "Pas encore de plan de repas",
+    "titleHousehold": "Pas encore de plan pour {{name}}",
+    "message": "Planifie tes repas à la main, ou laisse l'app remplir une semaine avec tes recettes enregistrées. Ajoute ensuite les ingrédients à une liste de courses.",
+    "action": "Créer un plan"
+  },
+  "weekError": "Impossible de charger cette semaine",
+  "loadingWeek": "Chargement de la semaine",
+  "weekEmpty": "Rien n'est prévu cette semaine. Touche un créneau pour choisir une recette, ou utilise la planification auto.",
+  "caloriesNote": "Les calories sont des estimations issues des recettes, pour une personne.",
+  "deletePlan": "Supprimer ce plan",
+  "cancel": "Annuler",
+  "servings": "Portions",
+  "slots": {
+    "breakfast": "Petit-déjeuner",
+    "midday": "Midi",
+    "afternoon": "Après-midi"
+  },
+  "week": {
+    "previous": "Semaine précédente",
+    "next": "Semaine suivante",
+    "goToThis": "Aller à cette semaine",
+    "thisWeek": "Cette semaine"
+  },
+  "day": {
+    "today": "Aujourd'hui",
+    "kcal": "≈ {{value}} kcal{{plus}}",
+    "missing_one": "{{count}} repas n'a pas d'estimation de calories.",
+    "missing_other": "{{count}} repas n'ont pas d'estimation de calories.",
+    "changeLabel_one": "{{slot}}, {{title}}, {{count}} portion. Modifier",
+    "changeLabel_other": "{{slot}}, {{title}}, {{count}} portions. Modifier",
+    "addLabel": "{{slot}}, vide. Ajouter un repas",
+    "add": "Ajouter"
+  },
+  "new": {
+    "title": "Nouveau plan de repas",
+    "name": "Nom",
+    "placeholder": "Nos repas",
+    "shared": "Tout le monde dans {{name}} peut voir et modifier ce plan. Il utilise les recettes du foyer.",
+    "theHousehold": "le foyer",
+    "personal": "Toi seul peux voir ce plan.",
+    "create": "Créer",
+    "error": "Impossible de créer le plan."
+  },
+  "delete": {
+    "title": "Supprimer ce plan ?",
+    "message": "{{name}} et tous ses repas sont supprimés pour tous ceux qui peuvent le voir. Tes recettes et listes de courses restent.",
+    "confirm": "Supprimer",
+    "error": "Impossible de supprimer le plan."
+  },
+  "wizard": {
+    "step": "Étape {{current}} sur 3 · {{name}}",
+    "steps": {
+      "goals": "Objectifs",
+      "days": "Jours",
+      "result": "Résultat"
+    },
+    "next": "Suivant : choisir les jours",
+    "back": "Retour",
+    "fill": "Remplir mon plan",
+    "planning": "Planification…",
+    "open": "Ouvrir mon plan",
+    "noPlan": "Ouvre le planificateur et choisis d'abord un plan.",
+    "fillError": "Impossible de remplir le plan. Réessaie.",
+    "problem": {
+      "calories": "Les calories par jour doivent être un nombre entre 500 et 10 000.",
+      "minutes": "Le temps par repas doit être un nombre de minutes, par exemple 30."
+    },
+    "intro": "Dis au planificateur ce que tu veux. Il choisit parmi tes recettes enregistrées et n'invente jamais un repas. Laisse un objectif vide pour l'ignorer.",
+    "calories": "Calories par jour (par personne)",
+    "caloriesPlaceholder": "Par exemple 2000",
+    "caloriesHelp": "Utilise les estimations nutritionnelles de tes recettes. Les recettes sans estimation sont exclues si tu renseignes ce champ.",
+    "diet": "Régime (une étiquette de la recette)",
+    "dietPlaceholder": "Par exemple végétarien",
+    "diets": {
+      "vegetarian": "Végétarien",
+      "vegan": "Végétalien"
+    },
+    "maxTime": "Durée maximale par repas",
+    "minutes": "{{count}} min",
+    "any": "Peu importe",
+    "weeksLabel": "Combien de semaines",
+    "weeks": "Semaines",
+    "servingsPerMeal": "Portions par repas",
+    "existing": "Repas déjà planifiés",
+    "keep": "Les garder",
+    "replace": "Les remplacer",
+    "daysIntro": "Ignore des jours ou des repas isolés et change les portions d'un jour. Les repas ignorés restent vides.",
+    "planned": "Planifié",
+    "skipped": "Ignoré",
+    "result": {
+      "filled": "Ton plan est rempli",
+      "partly": "Ton plan est en partie rempli",
+      "filledMessage": "Chaque repas demandé a une recette. Tu peux modifier chacun d'eux à la main dans le plan.",
+      "partlyMessage_one": "{{count}} repas est resté vide car aucune recette enregistrée ne correspond. Enregistre plus de recettes, ou assouplis tes objectifs et réessaie.",
+      "partlyMessage_other": "{{count}} repas sont restés vides car aucune recette enregistrée ne correspond. Enregistre plus de recettes, ou assouplis tes objectifs et réessaie."
+    }
+  },
+  "slot": {
+    "remove": "Retirer",
+    "save": "Enregistrer les portions",
+    "swap": "Remplacer par une autre recette",
+    "pick": "Choisir une recette",
+    "search": "Rechercher des recettes",
+    "loading": "Chargement des recettes",
+    "loadError": "Impossible de charger les recettes",
+    "noRecipes": "Tu n'as pas encore de recettes enregistrées.",
+    "noHouseholdRecipes": "Un plan de foyer utilise les recettes du foyer. Aucune n'est encore partagée.",
+    "noMatch": "Aucune recette ne correspond.",
+    "planLabel": "Planifier {{title}}",
+    "kcalPerServing": "≈ {{value}} kcal par portion",
+    "error": "Une erreur s'est produite."
+  },
+  "list": {
+    "title": "Ajouter les ingrédients à une liste de courses",
+    "done": "Terminé",
+    "intro": "Les quantités sont adaptées aux portions de chaque repas, et les mêmes ingrédients sont regroupés. Rien n'est ajouté tant que tu n'as pas touché le bouton.",
+    "whichMeals": "Quels repas",
+    "wholePlan": "Tout le plan",
+    "weekEmpty": "Rien n'est prévu cette semaine.",
+    "whichList": "Quelle liste ?",
+    "none": "Tu n'as pas encore de liste de courses. Crées-en une dans l'onglet Courses.",
+    "theList": "la liste",
+    "nothing": "Il n'y a aucun repas à ajouter.",
+    "added_one": "Les ingrédients de {{count}} repas ont été ajoutés à {{name}}.",
+    "added_other": "Les ingrédients de {{count}} repas ont été ajoutés à {{name}}.",
+    "adding": "Ajout en cours…",
+    "add": "Ajouter les ingrédients",
+    "error": "Impossible d'ajouter les ingrédients."
+  }
+}

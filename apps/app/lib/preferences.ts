@@ -61,3 +61,33 @@ export async function saveSpace(householdId: string | null) {
     // Not saved this time.
   }
 }
+
+const LANGUAGE_KEY = "idkjustfood.language"
+
+/** The language picked in settings, or null to follow the device. */
+export async function loadLanguage(): Promise<string | null> {
+  try {
+    const value =
+      Platform.OS === "web"
+        ? globalThis.localStorage?.getItem(LANGUAGE_KEY)
+        : await SecureStore.getItemAsync(LANGUAGE_KEY)
+    return value || null
+  } catch {
+    return null
+  }
+}
+
+export async function saveLanguage(language: string | null) {
+  try {
+    if (Platform.OS === "web") {
+      if (language) globalThis.localStorage?.setItem(LANGUAGE_KEY, language)
+      else globalThis.localStorage?.removeItem(LANGUAGE_KEY)
+    } else if (language) {
+      await SecureStore.setItemAsync(LANGUAGE_KEY, language)
+    } else {
+      await SecureStore.deleteItemAsync(LANGUAGE_KEY)
+    }
+  } catch {
+    // Not saved this time.
+  }
+}
