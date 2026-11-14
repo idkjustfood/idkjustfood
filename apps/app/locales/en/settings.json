@@ -6,7 +6,8 @@
     "demoName": "Demo",
     "demoEmail": "Browsing sample data, not signed in",
     "leaveDemo": "Leave the demo",
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "changePassword": "Change password"
   },
   "household": {
     "title": "Household",
@@ -159,5 +160,22 @@
     "cancel": "Cancel",
     "rowDetail": "Salt, oil and more are left out of shopping lists",
     "rowDetailHousehold": "Items the household always has at home"
+  },
+  "password": {
+    "title": "Change password",
+    "current": "Current password",
+    "new": "New password",
+    "repeat": "Repeat new password",
+    "submit": "Change password",
+    "busy": "Changing…",
+    "success": "Your password was changed.",
+    "failed": "Could not change the password.",
+    "problem": {
+      "currentMissing": "Enter your current password.",
+      "tooShort": "The new password needs at least 8 characters.",
+      "mismatch": "The new passwords don't match.",
+      "sameAsCurrent": "The new password must be different from the current one.",
+      "wrongCurrent": "The current password is wrong. Nothing was changed."
+    }
   }
 }
