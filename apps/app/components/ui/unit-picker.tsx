@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, ScrollView, Text } from "react-native"
 
-import { unitsForSystem, type UnitKey } from "@workspace/schemas"
+import { unitKeys, unitsForSystem, type UnitKey } from "@workspace/schemas"
 
 import { Icon } from "@/components/ui/icon"
 import { Sheet } from "@/components/ui/sheet"
@@ -34,7 +34,8 @@ export function UnitPicker({
   // Only the chosen system's units. A saved unit from the other system stays
   // visible so editing a recipe never hides what it uses.
   const options = unitsForSystem(system)
-  if (value && !options.includes(value)) options.push(value)
+  const shown = value && !options.includes(value) ? [...options, value] : options
+  const sorted = unitKeys.filter((unit) => shown.includes(unit))
 
   function choose(unit: UnitKey | null) {
     onChange(unit)
@@ -71,7 +72,7 @@ export function UnitPicker({
             selected={value === null}
             onPress={() => choose(null)}
           />
-          {options.map((unit) => (
+          {sorted.map((unit) => (
             <Option
               key={unit}
               label={unitName(unit, 1)}
@@ -93,11 +94,14 @@ function Option({
   onPress,
 }: {
   label: string
-  /** The written-out name ("Gram" for "g"), when it differs from the label. */
+  /** The written-out name ("Gram" for "g"). */
   fullName?: string
   selected: boolean
   onPress: () => void
 }) {
+  // "can" and "Can" are the same word: show it once, written properly.
+  const sameWord =
+    !!fullName && fullName.toLowerCase() === label.toLowerCase()
   return (
     <Pressable
       role="option"
@@ -111,8 +115,8 @@ function Option({
           selected && "font-semibold"
         )}
       >
-        {label}
-        {fullName && fullName !== label ? (
+        {sameWord ? fullName : label}
+        {fullName && !sameWord ? (
           <Text className="font-normal text-muted-foreground">
             {`  ${fullName}`}
           </Text>
