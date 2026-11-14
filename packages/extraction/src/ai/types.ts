@@ -31,6 +31,11 @@ export type ParseOptions = {
    * give the model the instruction from `parseRecipeSystem(language)`.
    */
   language?: RecipeLanguage
+  /**
+   * Also ask for an estimate of the nutrition per serving. Every provider must give the
+   * model the instruction from `parseRecipeSystem(language, estimateNutrition)`.
+   */
+  estimateNutrition?: boolean
 }
 
 /** Turns messy text into a recipe. */

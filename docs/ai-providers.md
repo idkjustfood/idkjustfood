@@ -40,6 +40,15 @@ units, tags, servings and times from the page and only takes the words). Without
 recipe stays in the language of the material. Nothing to set up on a self-hosted install: it works
 with any provider and model that the parsing job uses.
 
+## Nutrition estimate
+
+Videos almost never state nutrition. For recipes from a video link the pipeline passes
+`estimateNutrition: true`, and `parseRecipeSystem` then also asks for `nutrition` (calories,
+protein, carbs, fat per serving). Values the AI cannot estimate are `null`; a missing or broken
+`nutrition` never fails the recipe. The values are saved with `estimated: true`, and the app says
+they were estimated by AI. Photos, websites and pasted text, and recipes entered by hand, get no
+estimate. It works with any provider, because it is part of the shared prompt.
+
 ## Sections
 
 When a recipe clearly has parts ("For the dough", "For the sauce"), the parsing prompt asks for a
@@ -64,8 +73,8 @@ When a recipe clearly has parts ("For the dough", "For the sauce"), the parsing 
    `options` has `apiKey`, `baseUrl` and `model`. Use the shared prompts from `ai/prompts.ts` so every
    provider is asked the same thing, and `parseJsonReply` to read the model's answer.
    `parseRecipe` gets the language the recipe must be written in: give the model
-   `parseRecipeSystem(language)` as its system prompt, so every provider receives the same
-   instruction (see "Language" below).
+   `parseRecipeSystem(language, estimateNutrition)` as its system prompt, so every provider receives
+   the same instruction (see "Language" and "Nutrition estimate" below).
 
 2. Add it to `providers` in `ai/index.ts`.
 

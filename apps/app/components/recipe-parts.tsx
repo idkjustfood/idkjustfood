@@ -381,7 +381,7 @@ export function StepList({
 export const hasNutrition = (nutrition: Nutrition) =>
   nutritionFacts(nutrition).length > 0
 
-/** Per-serving values the person entered. Empty values are left out, not shown as zero. */
+/** Per-serving values the person entered or the AI estimated (`estimated`). Empty values are left out, not shown as zero. */
 export function NutritionEstimate({ nutrition }: { nutrition: Nutrition }) {
   const { t } = useTranslation()
   const facts = nutritionFacts(nutrition)
@@ -413,7 +413,11 @@ export function NutritionEstimate({ nutrition }: { nutrition: Nutrition }) {
         })}
       </View>
       <Text className="text-sm text-muted-foreground">
-        {t("recipes:parts.perServing")}
+        {t(
+          nutrition.estimated
+            ? "recipes:parts.perServingAi"
+            : "recipes:parts.perServing"
+        )}
       </Text>
     </View>
   )

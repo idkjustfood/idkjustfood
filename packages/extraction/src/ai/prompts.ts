@@ -59,8 +59,15 @@ export function languageRule(language?: RecipeLanguage) {
   )
 }
 
+/** Asked only for videos, which almost never state nutrition. */
+const nutritionRule =
+  '- "nutrition": your best estimate per serving, worked out from the ingredients and the number of servings, as numbers: "calories" (kcal), "protein", "carbs" and "fat" (grams). The material rarely states these, so estimate them yourself. Set a value to null when you cannot estimate it (for example when amounts are missing); never make one up. If the material itself states the values, use those.'
+
 /** The system prompt of the recipe parser, for the language the recipe must be written in. */
-export const parseRecipeSystem = (language?: RecipeLanguage) => `You turn the material of a recipe into one JSON object. Reply with the JSON only.
+export const parseRecipeSystem = (
+  language?: RecipeLanguage,
+  estimateNutrition = false
+) => `You turn the material of a recipe into one JSON object. Reply with the JSON only.
 
 Rules:
 - Use only what the material says. Never invent a detail. If an amount is not given, set "quantity" to null (and "unit" to null if there is no unit too).
@@ -73,7 +80,7 @@ Rules:
 - "section": most recipes have no parts, and then "section" is null everywhere. Only when the material clearly splits the recipe into named parts (for example "For the dough" and "For the sauce"), write the short name of the part ("Dough", "Sauce") in "section" of every ingredient and step that belongs to it, always spelled the same way for the same part. Never invent parts, and do not use a section for a recipe with only one part. An ingredient or step that belongs to no part has "section": null.
 - "tags": choose ONLY from the list of tag keys below, using the key exactly as written. Never write any other tag. Pick a tag only when the material makes it clear, and leave the list empty when nothing fits. At most one or two cuisines, and at most one time tag (the smallest "under" value the recipe fits in, preparing and cooking together).
 ${tagListForPrompt()}
-- If the material contains no recipe at all, reply {"error": "no recipe found"}.
+${estimateNutrition ? nutritionRule + "\n" : ""}- If the material contains no recipe at all, reply {"error": "no recipe found"}.
 
 JSON shape:
 {
@@ -84,7 +91,7 @@ JSON shape:
   "cookMinutes": number | null,
   "tags": the chosen tag keys (string[]),
   "ingredients": [{ "name": string, "quantity": number | null, "unit": "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null, "note": string | null, "section": string | null }],
-  "steps": [{ "text": string, "section": string | null }]
+  "steps": [{ "text": string, "section": string | null }]${estimateNutrition ? ',\n  "nutrition": { "calories": number | null, "protein": number | null, "carbs": number | null, "fat": number | null }' : ""}
 }`
 
 /** Finds the JSON object in a model's reply, also when it is wrapped in a code fence. */

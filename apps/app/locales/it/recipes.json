@@ -169,6 +169,7 @@
     "servings_other": "{{count}} porzioni",
     "noAmount": "nessuna quantità",
     "perServing": "Per porzione. Una stima, non esatta.",
+    "perServingAi": "Per porzione. Stimato dall'IA in base agli ingredienti, non esatto.",
     "nutrients": {
       "Calories": "Calorie",
       "Protein": "Proteine",

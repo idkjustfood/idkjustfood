@@ -214,6 +214,8 @@ export async function extractRecipe(
       })
       throw error
     }
+    // Videos almost never state nutrition, so the AI estimates it there (and only there).
+    const estimateNutrition = gathered.source.kind === "video"
     return await step(
       log,
       "parsing",
@@ -221,8 +223,13 @@ export async function extractRecipe(
       async () => {
         const raw = await options.ai.parseRecipe(material, {
           language: options.language,
+          estimateNutrition,
         })
-        return toRecipeContent(readExtractedRecipe(raw), gathered.source)
+        return toRecipeContent(
+          readExtractedRecipe(raw),
+          gathered.source,
+          estimateNutrition
+        )
       }
     )
   } finally {

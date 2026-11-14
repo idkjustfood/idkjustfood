@@ -17,9 +17,20 @@ import { ExtractionError } from "./errors.js"
 
 const minutes = z.number().int().min(0).max(100_000).nullable()
 
+const nutrient = (max: number) =>
+  z.number().min(0).max(max).nullable().catch(null).default(null)
+
+/** The AI's estimate of the nutrition per serving. A value it cannot give stays empty. */
+export const ExtractedNutritionSchema = z.object({
+  calories: nutrient(100_000),
+  protein: nutrient(10_000),
+  carbs: nutrient(10_000),
+  fat: nutrient(10_000),
+})
+
 /**
  * What the AI (or a web page's recipe data) gives us. It has no id, source or
- * nutrition: those are added by `toRecipeContent`. Servings may be empty.
+ * nutrition (unless estimated): those are added by `toRecipeContent`. Servings may be empty.
  */
 export const ExtractedRecipeSchema = z.object({
   title: z.string().trim().min(1).max(200),
@@ -31,6 +42,11 @@ export const ExtractedRecipeSchema = z.object({
   tags: TagsSchema.default([]),
   ingredients: z.array(IngredientSchema).max(200),
   steps: z.array(StepSchema).max(200),
+  /**
+   * Per serving, only asked for from videos. Each value may be empty. Unusable values
+   * never fail the recipe: they become empty.
+   */
+  nutrition: ExtractedNutritionSchema.optional(),
 })
 export type ExtractedRecipe = z.infer<typeof ExtractedRecipeSchema>
 
@@ -90,7 +106,18 @@ export function readExtractedRecipe(raw: unknown): ExtractedRecipe {
             : {}),
         }
       : raw
-  const result = ExtractedRecipeSchema.safeParse(prepared)
+  const result = ExtractedRecipeSchema.safeParse(
+    prepared && typeof prepared === "object" && "nutrition" in prepared
+      ? {
+          ...prepared,
+          // An estimate that is not an object is dropped: it must never fail the recipe.
+          nutrition:
+            prepared.nutrition && typeof prepared.nutrition === "object"
+              ? prepared.nutrition
+              : undefined,
+        }
+      : prepared
+  )
   if (!result.success) {
     throw new ExtractionError(
       "invalid_recipe",
@@ -154,17 +181,22 @@ export function keepStructure(
 }
 
 /**
- * Adds the source and empty nutrition. When the source does not say how many
- * servings the recipe makes, it is 1: we do not guess a number.
+ * Adds the source and nutrition. Nutrition is empty unless `estimate` is set (videos): then
+ * the AI's values are kept and marked as an estimate, or stay empty when it gave none.
+ * When the source does not say how many servings the recipe makes, it is 1: we do not guess.
  */
 export function toRecipeContent(
   recipe: ExtractedRecipe,
-  source: Source
+  source: Source,
+  estimate = false
 ): RecipeContent {
+  const { nutrition: estimated, ...rest } = recipe
+  const values = estimate && estimated ? estimated : null
+  const hasValue = !!values && Object.values(values).some((v) => v !== null)
   return RecipeContentSchema.parse({
-    ...recipe,
+    ...rest,
     servings: recipe.servings ?? 1,
-    nutrition: emptyNutrition,
+    nutrition: hasValue ? { ...values, estimated: true } : emptyNutrition,
     source,
   })
 }

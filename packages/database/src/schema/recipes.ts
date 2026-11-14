@@ -52,6 +52,7 @@ export const recipe = pgTable(
         protein: number | null
         carbs: number | null
         fat: number | null
+        estimated?: boolean
       }>()
       .notNull(),
     source: jsonb("source")

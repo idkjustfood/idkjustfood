@@ -2811,6 +2811,7 @@ export interface components {
                 protein: number | null;
                 carbs: number | null;
                 fat: number | null;
+                estimated?: boolean;
             };
             source: {
                 /** @enum {string} */
@@ -2848,6 +2849,7 @@ export interface components {
                 protein: number | null;
                 carbs: number | null;
                 fat: number | null;
+                estimated?: boolean;
             };
             source?: {
                 /** @enum {string} */
@@ -3066,6 +3068,7 @@ export interface components {
                     protein: number | null;
                     carbs: number | null;
                     fat: number | null;
+                    estimated?: boolean;
                 };
                 source: {
                     /** @enum {string} */
