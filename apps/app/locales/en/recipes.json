@@ -186,5 +186,31 @@
     "startLabel": "Start {{duration}} timer",
     "running": "{{time}} · tap to stop",
     "idle": "{{duration}} timer"
+  },
+  "complete": {
+    "title": "Complete with AI",
+    "action": "Complete with AI",
+    "intro": "Tell the AI what is missing from this recipe. It writes only the missing part and adds it. You check it before anything is saved.",
+    "messageLabel": "What is missing?",
+    "placeholder": "For example: add a pizza dough",
+    "send": "Write the missing part",
+    "sending": "Writing…",
+    "loading": "The AI is writing the missing part. This can take a moment.",
+    "retry": "Try again",
+    "cancel": "Cancel",
+    "aiWritten": "Written by AI",
+    "unchanged": "The rest of the recipe stays as it is.",
+    "new": "New",
+    "save": "Save",
+    "saving": "Saving…",
+    "discard": "Discard",
+    "errors": {
+      "network": "Could not reach the server. Check your connection and try again.",
+      "ai_not_configured": "No AI is set up on this server. Ask the admin to set an AI key.",
+      "ai_failed": "The AI could not answer. Try again in a moment.",
+      "nothing_to_add": "The AI had nothing to add. Describe what is missing, for example \"add a pizza dough\".",
+      "invalid_recipe": "The AI's answer could not be used. Try again.",
+      "generic": "Something went wrong. Try again."
+    }
   }
 }

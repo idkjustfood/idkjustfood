@@ -9,6 +9,7 @@ import {
   Pencil,
   SearchX,
   ShoppingCart,
+  Sparkles,
 } from "lucide-react-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -16,6 +17,7 @@ import { Text, View } from "react-native"
 
 import { toJson, toMarkdown, toSchemaOrg } from "@workspace/schemas"
 
+import { CompleteRecipeSheet } from "@/components/complete-recipe-sheet"
 import { ListGroup, ListRow } from "@/components/list-row"
 import { RecipeCover, sourceIcons, sourceName } from "@/components/recipe-card"
 import {
@@ -94,6 +96,7 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
   const [exportOpen, setExportOpen] = useState(false)
   const [exportNote, setExportNote] = useState<string | null>(null)
   const [listOpen, setListOpen] = useState(false)
+  const [completeOpen, setCompleteOpen] = useState(false)
   const [added, setAdded] = useState<{
     id: string
     name: string
@@ -282,6 +285,19 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
           {nutrition}
         </>
       )}
+
+      <Button
+        variant="outline"
+        icon={Sparkles}
+        label={t("recipes:complete.action")}
+        className="md:self-start"
+        onPress={() => setCompleteOpen(true)}
+      />
+      <CompleteRecipeSheet
+        recipe={recipe}
+        open={completeOpen}
+        onClose={() => setCompleteOpen(false)}
+      />
 
       <Sheet
         open={exportOpen}

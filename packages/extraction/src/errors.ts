@@ -12,6 +12,7 @@ export type ExtractionErrorCode =
   | "page_unreachable"
   | "no_recipe_found"
   | "invalid_recipe"
+  | "nothing_to_add"
 
 /** A failure with a message that is safe and useful to show to the user. */
 export class ExtractionError extends Error {

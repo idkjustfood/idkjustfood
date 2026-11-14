@@ -2,10 +2,16 @@ import { OpenAPIHono } from "@hono/zod-openapi"
 import { cors } from "hono/cors"
 
 import type { Database } from "@workspace/database"
-import type { InputModule, JobQueue } from "@workspace/extraction"
+import {
+  createAi,
+  type Ai,
+  type InputModule,
+  type JobQueue,
+} from "@workspace/extraction"
 import { silentLogger, type Logger } from "@workspace/logger"
 
 import { createAuth, socialProvidersFromEnv, type AuthEnv } from "./auth.js"
+import { completeRoutes } from "./recipes/complete.js"
 import { extractionRoutes } from "./extractions/routes.js"
 import { householdRoutes } from "./households/routes.js"
 import {
@@ -37,6 +43,8 @@ export type AppDeps = {
   queue?: JobQueue
   /** Input modules to use instead of the built-in ones (tests). */
   modules?: InputModule[]
+  /** The AI used to complete recipes. Defaults to the one the settings describe; tests pass a fake. */
+  ai?: Ai
   /** Where requests and errors are logged. Defaults to a logger that writes nothing. */
   logger?: Logger
 }
@@ -97,6 +105,12 @@ export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
 
   // Meal plans: personal or household, three meals a day for any number of weeks.
   app.route("/api", plannerRoutes(db, auth))
+
+  // Complete a partial recipe with AI (merges the AI's additions, saves nothing).
+  app.route(
+    "/api",
+    completeRoutes(db, auth, env, deps.ai ?? createAi(env), !deps.ai)
+  )
 
   // Recipe extraction: add a recipe from a link, a photo or text (runs in the worker).
   app.route(

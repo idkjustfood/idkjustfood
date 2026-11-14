@@ -7,7 +7,7 @@ The pipeline asks the AI for three jobs. It only knows the interfaces in
 | --- | --- | --- |
 | Transcription | `Transcriber` | Speech of a video to text. Needs a model that accepts audio. |
 | Vision | `ImageReader` | Photos and video frames to text. Needs a model that accepts images. |
-| Parsing | `RecipeParser` | All the collected text to one recipe (JSON). |
+| Parsing | `RecipeParser` | All the collected text to one recipe (JSON). Also completes a partial recipe, see below. |
 
 Only OpenRouter is built in (`ai/openrouter.ts`, on top of the Vercel AI SDK). It is the only file
 that knows OpenRouter.
@@ -63,6 +63,29 @@ When a recipe clearly has parts ("For the dough", "For the sauce"), the parsing 
 `section` on each ingredient and step. Without clear parts it stays `null`. See
 `docs/recipe-sections.md`.
 
+## Complete a recipe
+
+A saved recipe that only covers part of a dish (a pizza sauce without dough) can be completed with
+a free-form message. In the app: open the recipe, tap "Complete with AI", write what is missing
+("add a pizza dough"), and check the preview. Nothing is saved until the person taps "Save";
+"Discard" leaves the recipe unchanged. One message gives one result, there is no chat.
+
+`POST /api/recipes/{recipeId}/complete` takes `{ message, language }` and returns the recipe's
+`ingredients` and `steps` with the additions merged in, plus `addedIngredients` and `addedSteps`
+(the places of the new items). It saves nothing; the app saves the result with `PUT /recipes/{id}`.
+
+- It uses the parsing job (`parseRecipe`), with `ParseOptions.instruction` set to
+  `completeRecipeSystem(language)`. A provider must use `instruction` as the system prompt when it is
+  set (the built-in OpenRouter provider does), so every provider works without further code.
+- The AI answers with the new ingredients and steps only. `mergeCompletion` (in `packages/schemas`)
+  adds them after the existing ones: existing items are never changed, moved or removed, an ingredient
+  that is already in the same part is dropped, and a new part joins an existing part with the same
+  name. Servings are not touched.
+- The AI leaves an amount empty when it is not sure. The app labels everything it added as
+  "Written by AI" in the preview.
+- Errors: `400 nothing_to_add` (the AI had nothing to add), `400 invalid_recipe`, `502 ai_failed`,
+  `503 ai_not_configured`. The app shows a translated text for each and keeps the typed message.
+
 ## Add a provider
 
 1. Create `packages/extraction/src/ai/<name>.ts` that exports an `AiProvider`:
@@ -80,7 +103,7 @@ When a recipe clearly has parts ("For the dough", "For the sauce"), the parsing 
 
    `options` has `apiKey`, `baseUrl` and `model`. Use the shared prompts from `ai/prompts.ts` so every
    provider is asked the same thing, and `parseJsonReply` to read the model's answer.
-   `parseRecipe` gets the language the recipe must be written in: give the model
+   `parseRecipe` gets the language the recipe must be written in: give the model `options.instruction` when it is set, otherwise
    `parseRecipeSystem(language, estimateNutrition)` as its system prompt, so every provider receives
    the same instruction (see "Language" and "Nutrition estimate" below).
 

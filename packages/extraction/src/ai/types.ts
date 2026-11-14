@@ -36,6 +36,12 @@ export type ParseOptions = {
    * model the instruction from `parseRecipeSystem(language, estimateNutrition)`.
    */
   estimateNutrition?: boolean
+  /**
+   * Replaces the standard instruction (`parseRecipeSystem`) with another one, for a job that
+   * also answers in JSON, such as completing a recipe. Every provider must use it as the
+   * system instruction when it is set.
+   */
+  instruction?: string
 }
 
 /** Turns messy text into a recipe. */
