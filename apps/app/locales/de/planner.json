@@ -122,7 +122,6 @@
     "intro": "Die Mengen werden an die Portionen jeder Mahlzeit angepasst und gleiche Zutaten zusammengefasst. Es wird nichts hinzugefügt, bis du auf den Button tippst.",
     "whichMeals": "Welche Mahlzeiten",
     "wholePlan": "Ganzer Plan",
-    "weekEmpty": "In dieser Woche ist nichts geplant.",
     "whichList": "Welche Liste?",
     "none": "Du hast noch keine Einkaufslisten. Erstelle eine im Tab Einkauf.",
     "theList": "die Liste",
@@ -131,6 +130,20 @@
     "added_other": "Die Zutaten von {{count}} Mahlzeiten wurden zu {{name}} hinzugefügt.",
     "adding": "Wird hinzugefügt…",
     "add": "Zutaten hinzufügen",
-    "error": "Die Zutaten konnten nicht hinzugefügt werden."
+    "error": "Die Zutaten konnten nicht hinzugefügt werden.",
+    "thisWeek": "Diese Woche",
+    "choice": {
+      "next2": "Nächste 2 Tage",
+      "next3": "Nächste 3 Tage",
+      "all": "Ganzer Plan",
+      "custom": "Tage wählen"
+    },
+    "from": "Von",
+    "to": "Bis",
+    "rangeEmpty": "Keine Mahlzeiten geplant",
+    "mealCount_one": "{{count}} Mahlzeit",
+    "mealCount_other": "{{count}} Mahlzeiten",
+    "earlier": "{{label}}: einen Tag früher",
+    "later": "{{label}}: einen Tag später"
   }
 }

@@ -122,7 +122,6 @@
     "intro": "Le quantità sono adattate alle porzioni di ogni pasto e gli ingredienti uguali vengono uniti. Non viene aggiunto nulla finché non tocchi il pulsante.",
     "whichMeals": "Quali pasti",
     "wholePlan": "Tutto il piano",
-    "weekEmpty": "Questa settimana non è pianificato nulla.",
     "whichList": "Quale lista?",
     "none": "Non hai ancora liste della spesa. Creane una nella scheda Spesa.",
     "theList": "la lista",
@@ -131,6 +130,20 @@
     "added_other": "Gli ingredienti di {{count}} pasti sono stati aggiunti a {{name}}.",
     "adding": "Aggiunta in corso…",
     "add": "Aggiungi ingredienti",
-    "error": "Impossibile aggiungere gli ingredienti."
+    "error": "Impossibile aggiungere gli ingredienti.",
+    "thisWeek": "Questa settimana",
+    "choice": {
+      "next2": "Prossimi 2 giorni",
+      "next3": "Prossimi 3 giorni",
+      "all": "Tutto il piano",
+      "custom": "Scegli i giorni"
+    },
+    "from": "Da",
+    "to": "A",
+    "rangeEmpty": "Nessun pasto pianificato",
+    "mealCount_one": "{{count}} pasto",
+    "mealCount_other": "{{count}} pasti",
+    "earlier": "{{label}}: un giorno prima",
+    "later": "{{label}}: un giorno dopo"
   }
 }

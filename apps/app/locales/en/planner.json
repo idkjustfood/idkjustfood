@@ -122,7 +122,6 @@
     "intro": "Amounts are scaled to the servings of each meal, and the same ingredients are merged. Nothing is added until you tap the button.",
     "whichMeals": "Which meals",
     "wholePlan": "Whole plan",
-    "weekEmpty": "Nothing is planned in this week.",
     "whichList": "Which list?",
     "none": "You have no shopping lists yet. Make one in the Shopping tab.",
     "theList": "the list",
@@ -131,6 +130,20 @@
     "added_other": "Added the ingredients of {{count}} meals to {{name}}.",
     "adding": "Adding…",
     "add": "Add ingredients",
-    "error": "Could not add the ingredients."
+    "error": "Could not add the ingredients.",
+    "thisWeek": "This week",
+    "choice": {
+      "next2": "Next 2 days",
+      "next3": "Next 3 days",
+      "all": "Whole plan",
+      "custom": "Choose days"
+    },
+    "from": "From",
+    "to": "To",
+    "rangeEmpty": "No meals planned",
+    "mealCount_one": "{{count}} meal",
+    "mealCount_other": "{{count}} meals",
+    "earlier": "Earlier {{label}} day",
+    "later": "Later {{label}} day"
   }
 }

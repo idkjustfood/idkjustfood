@@ -1,14 +1,21 @@
+import { ChevronLeft, ChevronRight } from "lucide-react-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
 
-import { addDays } from "@workspace/schemas"
+import { todayString } from "@workspace/schemas"
 
 import { Button } from "@/components/ui/button"
-import { Segmented } from "@/components/ui/segmented"
+import { Icon } from "@/components/ui/icon"
 import { Sheet } from "@/components/ui/sheet"
-import { useAddPlanToList } from "@/lib/planner"
-import { weekLabel } from "@/lib/planner-format"
+import { useAddPlanToList, useMealsInRange } from "@/lib/planner"
+import { dayLabel } from "@/lib/planner-format"
+import {
+  moveEnd,
+  rangeFor,
+  type DayRange,
+  type RangeChoice,
+} from "@/lib/planner-range"
 import {
   useListKind,
   useShoppingActions,
@@ -16,7 +23,7 @@ import {
 } from "@/lib/shopping"
 import { cn } from "@/lib/utils"
 
-type Scope = "week" | "all"
+const choices: RangeChoice[] = ["next2", "next3", "week", "all", "custom"]
 
 /**
  * Puts the ingredients of the plan on a shopping list. Nothing is added until the
@@ -25,13 +32,10 @@ type Scope = "week" | "all"
 export function AddToListSheet({
   planId,
   weekStart,
-  mealsInWeek,
   onClose,
 }: {
   planId: string
   weekStart: string
-  /** How many meals are planned in the week being shown. */
-  mealsInWeek: number
   onClose: () => void
 }) {
   const { t } = useTranslation()
@@ -39,18 +43,24 @@ export function AddToListSheet({
   const { sync } = useShoppingActions()
   const kind = useListKind()
   const add = useAddPlanToList(planId)
-  const [scope, setScope] = useState<Scope>("week")
+  const today = todayString()
+  const [choice, setChoice] = useState<RangeChoice>("week")
+  const [custom, setCustom] = useState({ from: today, to: today })
+  const range: DayRange =
+    choice === "custom" ? custom : rangeFor(choice, today, weekStart)
+  const meals = useMealsInRange(planId, range)
+  const count = meals.data
+  const empty = count === 0
   const [listId, setListId] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
   const [done, setDone] = useState<string | null>(null)
 
   async function submit() {
-    if (!listId) return
+    // A range without meals never makes a request.
+    if (!listId || empty || count === undefined) return
     setMessage(null)
     try {
-      const range =
-        scope === "week" ? { from: weekStart, to: addDays(weekStart, 6) } : {}
-      const result = await add.mutateAsync({ listId, ...range })
+      const result = await add.mutateAsync({ listId, ...(range ?? {}) })
       // The list on this device is updated from the server.
       await sync()
       const name = lists.find((l) => l.id === listId)?.name ?? t("planner:list.theList")
@@ -68,6 +78,17 @@ export function AddToListSheet({
     }
   }
 
+  function summary() {
+    const days = range
+      ? range.from === range.to
+        ? dayLabel(range.from)
+        : `${dayLabel(range.from)} – ${dayLabel(range.to)}`
+      : t("planner:list.wholePlan")
+    if (count === undefined) return days
+    if (empty) return `${days} · ${t("planner:list.rangeEmpty")}`
+    return `${days} · ${t("planner:list.mealCount", { count })}`
+  }
+
   return (
     <Sheet open onClose={onClose} title={t("planner:list.title")}>
       {done ? (
@@ -80,20 +101,58 @@ export function AddToListSheet({
           <Text className="text-muted-foreground">
             {t("planner:list.intro")}
           </Text>
-          <Segmented
-            label={t("planner:list.whichMeals")}
-            value={scope}
-            onChange={setScope}
-            options={[
-              { value: "week", label: weekLabel(weekStart) },
-              { value: "all", label: t("planner:list.wholePlan") },
-            ]}
-          />
-          {scope === "week" && mealsInWeek === 0 && (
-            <Text className="text-sm text-muted-foreground">
-              {t("planner:list.weekEmpty")}
-            </Text>
+          <Text className="text-sm font-medium text-foreground">
+            {t("planner:list.whichMeals")}
+          </Text>
+          <View
+            role="radiogroup"
+            accessibilityLabel={t("planner:list.whichMeals")}
+            className="flex-row flex-wrap gap-2"
+          >
+            {choices.map((value) => (
+              <Pressable
+                key={value}
+                role="radio"
+                aria-checked={choice === value}
+                onPress={() => setChoice(value)}
+                className={cn(
+                  "min-h-12 justify-center rounded-md border px-4 active:bg-accent",
+                  choice === value
+                    ? "border-primary bg-primary/10"
+                    : "border-border"
+                )}
+              >
+                <Text className="text-base text-foreground">
+                  {value === "week"
+                    ? t("planner:list.thisWeek")
+                    : t(`planner:list.choice.${value}`)}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+          {choice === "custom" && (
+            <View className="gap-2">
+              <DayStepper
+                label={t("planner:list.from")}
+                value={custom.from}
+                onMove={(days) => setCustom(moveEnd(custom, "from", days))}
+              />
+              <DayStepper
+                label={t("planner:list.to")}
+                value={custom.to}
+                onMove={(days) => setCustom(moveEnd(custom, "to", days))}
+              />
+            </View>
           )}
+          <Text
+            role="status"
+            className={cn(
+              "text-sm",
+              empty ? "text-destructive" : "text-muted-foreground"
+            )}
+          >
+            {summary()}
+          </Text>
           <Text className="text-sm font-medium text-foreground">
             {t("planner:list.whichList")}
           </Text>
@@ -141,12 +200,49 @@ export function AddToListSheet({
                 add.isPending ? t("planner:list.adding") : t("planner:list.add")
               }
               className="flex-1"
-              disabled={!listId || add.isPending}
+              disabled={!listId || add.isPending || empty || count === undefined}
               onPress={() => void submit()}
             />
           </View>
         </>
       )}
     </Sheet>
+  )
+}
+
+/** A day with big previous and next buttons, for choosing the ends of a custom range. */
+function DayStepper({
+  label,
+  value,
+  onMove,
+}: {
+  label: string
+  value: string
+  onMove: (days: number) => void
+}) {
+  const { t } = useTranslation()
+  return (
+    <View role="group" accessibilityLabel={label} className="flex-row items-center gap-3">
+      <Text className="w-14 text-sm text-muted-foreground">{label}</Text>
+      <Pressable
+        role="button"
+        accessibilityLabel={t("planner:list.earlier", { label: label.toLowerCase() })}
+        onPress={() => onMove(-1)}
+        className="h-12 w-12 items-center justify-center rounded-md border border-input active:bg-accent"
+      >
+        <Icon as={ChevronLeft} size={20} />
+      </Pressable>
+      <Text className="flex-1 text-center text-base font-medium text-foreground">
+        {dayLabel(value)}
+      </Text>
+      <Pressable
+        role="button"
+        accessibilityLabel={t("planner:list.later", { label: label.toLowerCase() })}
+        onPress={() => onMove(1)}
+        className="h-12 w-12 items-center justify-center rounded-md border border-input active:bg-accent"
+      >
+        <Icon as={ChevronRight} size={20} />
+      </Pressable>
+    </View>
   )
 }

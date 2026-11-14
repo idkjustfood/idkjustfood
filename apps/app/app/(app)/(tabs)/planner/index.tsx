@@ -228,7 +228,6 @@ export default function Planner() {
         <AddToListSheet
           planId={plan.id}
           weekStart={start}
-          mealsInWeek={mealsInWeek}
           onClose={() => setListOpen(false)}
         />
       )}
