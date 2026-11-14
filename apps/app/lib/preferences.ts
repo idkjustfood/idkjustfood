@@ -24,8 +24,39 @@ export async function loadUnits(): Promise<Units | null> {
 
 export async function saveUnits(units: Units) {
   try {
-    if (Platform.OS === "web") globalThis.localStorage?.setItem(UNITS_KEY, units)
+    if (Platform.OS === "web")
+      globalThis.localStorage?.setItem(UNITS_KEY, units)
     else await SecureStore.setItemAsync(UNITS_KEY, units)
+  } catch {
+    // Not saved this time.
+  }
+}
+
+const SPACE_KEY = "idkjustfood.space"
+
+/** The household that was selected last, or null for the personal space. */
+export async function loadSpace(): Promise<string | null> {
+  try {
+    const value =
+      Platform.OS === "web"
+        ? globalThis.localStorage?.getItem(SPACE_KEY)
+        : await SecureStore.getItemAsync(SPACE_KEY)
+    return value || null
+  } catch {
+    return null
+  }
+}
+
+export async function saveSpace(householdId: string | null) {
+  try {
+    if (Platform.OS === "web") {
+      if (householdId) globalThis.localStorage?.setItem(SPACE_KEY, householdId)
+      else globalThis.localStorage?.removeItem(SPACE_KEY)
+    } else if (householdId) {
+      await SecureStore.setItemAsync(SPACE_KEY, householdId)
+    } else {
+      await SecureStore.deleteItemAsync(SPACE_KEY)
+    }
   } catch {
     // Not saved this time.
   }

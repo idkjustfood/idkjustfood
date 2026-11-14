@@ -6,7 +6,6 @@ import { addDays } from "@workspace/schemas"
 import { Button } from "@/components/ui/button"
 import { Segmented } from "@/components/ui/segmented"
 import { Sheet } from "@/components/ui/sheet"
-import { useHousehold } from "@/lib/households"
 import { useAddPlanToList } from "@/lib/planner"
 import { weekLabel } from "@/lib/planner-format"
 import {
@@ -36,7 +35,6 @@ export function AddToListSheet({
 }) {
   const { lists, loaded } = useShoppingState()
   const { sync } = useShoppingActions()
-  const { household } = useHousehold()
   const kind = useListKind()
   const add = useAddPlanToList(planId)
   const [scope, setScope] = useState<Scope>("week")
@@ -119,7 +117,7 @@ export function AddToListSheet({
                 >
                   <Text className="text-base text-foreground">{list.name}</Text>
                   <Text className="text-sm text-muted-foreground">
-                    {kind(list, household?.name)}
+                    {kind(list)}
                   </Text>
                 </Pressable>
               )

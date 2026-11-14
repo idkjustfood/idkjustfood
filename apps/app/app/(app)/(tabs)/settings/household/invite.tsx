@@ -25,7 +25,11 @@ export default function Invite() {
       ) : !household || !isOwner(household.role) ? (
         <ErrorState
           title="You can't invite people here"
-          message="Only owners of a household can invite people."
+          message={
+            household
+              ? `Only owners of ${household.name} can invite people.`
+              : "Pick a household first, then invite people to it."
+          }
         />
       ) : (
         <InviteLink household={household} />

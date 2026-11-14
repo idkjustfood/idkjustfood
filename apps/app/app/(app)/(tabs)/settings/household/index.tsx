@@ -26,6 +26,7 @@ import {
   useCancelInvite,
   useCreateHousehold,
   useHousehold,
+  useHouseholds,
   useInvites,
   useLeaveHousehold,
   useMembers,
@@ -37,7 +38,8 @@ import {
 import { copyText, inDays } from "@/lib/share"
 
 export default function HouseholdScreen() {
-  const { household, isPending, isError, error, refetch } = useHousehold()
+  const { household } = useHousehold()
+  const { households, isPending, isError, error, refetch } = useHouseholds()
 
   if (isPending) {
     return (
@@ -57,7 +59,25 @@ export default function HouseholdScreen() {
       </Screen>
     )
   }
-  if (!household) return <CreateHousehold />
+  if (households.length === 0) return <CreateHousehold />
+  // In the personal space there is no household to manage: pick one first.
+  if (!household) {
+    return (
+      <Screen title="Household" back="/settings" narrow>
+        <View className="gap-2">
+          <Text className="px-1 text-sm font-medium uppercase tracking-wide text-muted-foreground">
+            Manage household
+          </Text>
+          <SpaceSwitcher />
+        </View>
+        <EmptyState
+          icon={House}
+          title="Pick a household"
+          message="You are in your personal space. Choose a household above to see its members and invite people."
+        />
+      </Screen>
+    )
+  }
   return <HouseholdDetails household={household} />
 }
 
@@ -133,7 +153,7 @@ function HouseholdDetails({ household }: { household: Household }) {
     >
       <View className="gap-2">
         <Text className="px-1 text-sm font-medium uppercase tracking-wide text-muted-foreground">
-          Show recipes and lists from
+          Show recipes, lists and plans from
         </Text>
         <SpaceSwitcher />
       </View>

@@ -20,7 +20,7 @@ import {
 import { api, call } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
 import { deviceStorage } from "@/lib/device-storage"
-import { useMyUserId } from "@/lib/households"
+import { useHouseholds, useMyUserId } from "@/lib/households"
 import {
   household as demoHousehold,
   recipes as demoRecipes,
@@ -262,14 +262,15 @@ export function useShoppingList(listId: string | undefined) {
   return { list: lists.find((l) => l.id === listId), loaded }
 }
 
-/** A short label for the kind of list: "Personal" or the household's name. */
+/** A short label for the kind of list: "Personal" or the name of its household. */
 export function useListKind() {
-  const { demo } = useAppState()
+  const { households } = useHouseholds()
   return useCallback(
-    (list: ShoppingList, householdName: string | undefined) =>
+    (list: ShoppingList) =>
       list.householdId
-        ? (householdName ?? (demo ? demoHousehold.name : "Household"))
+        ? (households.find((h) => h.id === list.householdId)?.name ??
+          "Household")
         : "Personal",
-    [demo]
+    [households]
   )
 }

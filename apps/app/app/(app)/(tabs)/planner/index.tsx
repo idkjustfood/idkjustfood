@@ -36,6 +36,7 @@ import { Input } from "@/components/ui/input"
 import { Sheet } from "@/components/ui/sheet"
 import { useAppState } from "@/lib/app-state"
 import { useHousehold } from "@/lib/households"
+import { useIsWide } from "@/lib/layout"
 import {
   useCreatePlan,
   useDeletePlan,
@@ -44,14 +45,16 @@ import {
   type MealPlan,
 } from "@/lib/planner"
 import { dayLabel, weekLabel } from "@/lib/planner-format"
+import { inSpace } from "@/lib/space"
 import { cn } from "@/lib/utils"
 
 type Editing = { date: string; slot: MealSlot }
 
 /** The meal planner: a week at a time, three meals a day. */
 export default function Planner() {
-  const { space, demo } = useAppState()
-  const { household } = useHousehold()
+  const wide = useIsWide()
+  const { demo } = useAppState()
+  const { household, ready } = useHousehold()
   const plans = usePlans()
   const [chosenId, setChosenId] = useState<string | null>(null)
   const [start, setStart] = useState(() => weekStart(todayString()))
@@ -61,9 +64,7 @@ export default function Planner() {
   const [deleteOpen, setDeleteOpen] = useState(false)
 
   // The plans of the space being shown: personal ones, or the household's.
-  const shown = (plans.data ?? []).filter((p) =>
-    space === "household" ? p.householdId !== null : p.householdId === null
-  )
+  const shown = inSpace(plans.data ?? [], household?.id ?? null)
   const plan = shown.find((p) => p.id === chosenId) ?? shown[0]
 
   const week = useWeek(plan?.id, start)
@@ -79,7 +80,7 @@ export default function Planner() {
       title="Meal planner"
       toolbar={
         <View className="gap-3">
-          <SpaceSwitcher />
+          {!wide && <SpaceSwitcher />}
           {shown.length > 0 && (
             <ScrollView
               horizontal
@@ -154,7 +155,7 @@ export default function Planner() {
         <EmptyState
           icon={CalendarDays}
           title={
-            space === "household" ? "No household plan yet" : "No meal plan yet"
+            household ? `No plan for ${household.name} yet` : "No meal plan yet"
           }
           message="Plan your meals by hand, or let the app fill a week from your saved recipes. Then add the ingredients to a shopping list."
           action="Make a plan"
@@ -232,7 +233,7 @@ export default function Planner() {
         open={newOpen}
         householdName={household?.name}
         householdId={household?.id ?? null}
-        defaultHousehold={space === "household"}
+        ready={ready}
         onClose={() => setNewOpen(false)}
         onCreated={(created) => {
           setChosenId(created.id)
@@ -390,37 +391,34 @@ function NewPlanSheet({
   open,
   householdName,
   householdId,
-  defaultHousehold,
+  ready,
   onClose,
   onCreated,
 }: {
   open: boolean
   householdName: string | undefined
   householdId: string | null
-  defaultHousehold: boolean
+  /** False while the selected household is still loading. */
+  ready: boolean
   onClose: () => void
   onCreated: (plan: MealPlan) => void
 }) {
   const create = useCreatePlan()
   const [name, setName] = useState("")
-  const [shared, setShared] = useState(defaultHousehold)
   const [message, setMessage] = useState<string | null>(null)
 
   useEffect(() => {
-    if (open) {
-      setShared(defaultHousehold && !!householdId)
-      setMessage(null)
-    }
-  }, [open, defaultHousehold, householdId])
+    if (open) setMessage(null)
+  }, [open])
 
   async function submit() {
     const trimmed = name.trim()
-    if (!trimmed) return
+    if (!trimmed || !ready) return
     setMessage(null)
     try {
       const plan = await create.mutateAsync({
         name: trimmed,
-        householdId: shared ? householdId : null,
+        householdId,
       })
       setName("")
       onCreated(plan)
@@ -442,30 +440,11 @@ function NewPlanSheet({
         autoFocus
         onSubmitEditing={() => void submit()}
       />
-      {householdId && (
-        <View className="gap-2">
-          <Text className="text-sm font-medium text-foreground">
-            Who is it for?
-          </Text>
-          <View className="flex-row gap-2">
-            <Chip
-              label="Only me"
-              selected={!shared}
-              onPress={() => setShared(false)}
-            />
-            <Chip
-              label={householdName ?? "Household"}
-              selected={shared}
-              onPress={() => setShared(true)}
-            />
-          </View>
-          <Text className="text-sm text-muted-foreground">
-            {shared
-              ? `Everyone in ${householdName ?? "the household"} can see and change this plan. It uses the household's recipes.`
-              : "Only you can see this plan."}
-          </Text>
-        </View>
-      )}
+      <Text className="text-sm text-muted-foreground">
+        {householdId
+          ? `Everyone in ${householdName ?? "the household"} can see and change this plan. It uses the household's recipes.`
+          : "Only you can see this plan."}
+      </Text>
       {message && (
         <Text role="alert" className="text-sm text-destructive">
           {message}
@@ -481,7 +460,7 @@ function NewPlanSheet({
         <Button
           label="Create"
           className="flex-1"
-          disabled={!name.trim() || create.isPending}
+          disabled={!name.trim() || !ready || create.isPending}
           onPress={() => void submit()}
         />
       </View>

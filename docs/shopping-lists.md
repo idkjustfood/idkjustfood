@@ -6,8 +6,10 @@ edition, so self-hosted installs have it too.
 
 ## In the app
 
-- **Shopping tab:** all your lists, each marked "Personal" or with the household's name. Choose
-  which kind when you make a list.
+- **Shopping tab:** the lists of the space you picked with the dropdown at the top: your personal
+  space, or one of your households. Lists of other spaces never show. A new list is made in the
+  selected space. The choice is remembered on the device; if you leave the household, the app goes
+  back to your personal space. Without a household there is no dropdown.
 - **Add items by hand** with a name and an optional amount and unit. An item that matches a line
   already on the list (same name and unit) is merged into it, like a recipe's ingredients. The same
   item without an amount is not added twice. Tick them off (they move to "In the basket"), remove them, or clear all
