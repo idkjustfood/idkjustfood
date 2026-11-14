@@ -35,7 +35,17 @@
         }
       ],
       "expo-web-browser",
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "idkjustfood listens for cooking commands like “next” while you cook.",
+          "speechRecognitionPermission": "idkjustfood uses speech recognition to understand cooking commands like “next”.",
+          "androidSpeechServicePackages": [
+            "com.google.android.googlequicksearchbox"
+          ]
+        }
+      ]
     ]
   }
 }

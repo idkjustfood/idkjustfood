@@ -1,5 +1,5 @@
 import { BellRing, Minus, Plus, Timer } from "lucide-react-native"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, Text, Vibration, View } from "react-native"
 
@@ -13,6 +13,7 @@ import {
   type Step,
 } from "@workspace/schemas"
 
+import { startTimer, stopTimer, subscribeTimers, timerEnd } from "@/lib/cook-timers"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
 import { formatAmount, formatMinutes, type Units } from "@/lib/format"
@@ -148,12 +149,6 @@ function IngredientRows({
   )
 }
 
-/**
- * When running timers end, by timer id. Kept outside the component so a timer
- * keeps running when the screen changes, for example to the next step.
- */
-const endTimes = new Map<string, number>()
-
 function durationText(seconds: number) {
   if (seconds < 60) return i18n.t("recipes:timer.seconds", { count: seconds })
   const minutes = Math.floor(seconds / 60)
@@ -175,7 +170,7 @@ export function TimerButton({
   large?: boolean
 }) {
   const { t } = useTranslation()
-  const [endsAt, setEndsAt] = useState<number | null>(endTimes.get(id) ?? null)
+  const endsAt = useSyncExternalStore(subscribeTimers, () => timerEnd(id))
   const [now, setNow] = useState(Date.now())
 
   useEffect(() => {
@@ -194,14 +189,8 @@ export function TimerButton({
   }, [finished])
 
   function toggle() {
-    if (endsAt === null) {
-      const end = Date.now() + seconds * 1000
-      endTimes.set(id, end)
-      setEndsAt(end)
-    } else {
-      endTimes.delete(id)
-      setEndsAt(null)
-    }
+    if (endsAt === null) startTimer(id, seconds)
+    else stopTimer(id)
   }
 
   const label = finished
