@@ -1,6 +1,7 @@
 import {
   addDays,
   mealSlots,
+  tagsByGroup,
   weekStart,
   type GeneratePlan,
   type MealSlot,
@@ -9,7 +10,8 @@ import {
 /** What the user typed on the goals step. Everything is optional. */
 export type WizardGoals = {
   calories: string
-  diet: string
+  /** A diet tag, or "" for no wish. */
+  diet: "" | (typeof tagsByGroup.diet)[number]
   maxMinutes: string
 }
 
@@ -79,11 +81,10 @@ export function toGenerateRequest(
   servings: number,
   overwrite: boolean
 ): GeneratePlan & { servings: number; overwrite: boolean } {
-  const diet = goals.diet.trim()
   return {
     goals: {
       caloriesPerDay: goals.calories.trim() ? whole(goals.calories) : null,
-      diet: diet || null,
+      diet: goals.diet || null,
       maxMinutes: goals.maxMinutes.trim() ? whole(goals.maxMinutes) : null,
     },
     days: days.map((day) => {

@@ -94,9 +94,9 @@ describe("autoPlan", () => {
   test("only uses recipes with the wanted diet tag", () => {
     const result = autoPlan({
       recipes: [
-        recipe("meat", { tags: ["Dinner"] }),
-        recipe("veg1", { tags: ["Vegetarian"] }),
-        recipe("veg2", { tags: ["vegetarian"] }),
+        recipe("meat", { tags: ["afternoon"] }),
+        recipe("veg1", { tags: ["vegetarian"] }),
+        recipe("veg2", { tags: ["vegetarian", "italian"] }),
       ],
       goals: { diet: "vegetarian" },
       days: [monday],
@@ -194,9 +194,9 @@ describe("autoPlan", () => {
   test("keeps meal-time tags in their slots", () => {
     const result = autoPlan({
       recipes: [
-        recipe("porridge", { tags: ["Breakfast"] }),
-        recipe("stew", { tags: ["Dinner"] }),
-        recipe("salad", { tags: ["Lunch"] }),
+        recipe("porridge", { tags: ["breakfast"] }),
+        recipe("stew", { tags: ["afternoon"] }),
+        recipe("salad", { tags: ["midday"] }),
       ],
       goals: {},
       days: [monday],

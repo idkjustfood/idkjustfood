@@ -27,7 +27,7 @@ import {
 } from "@/components/recipe-parts"
 import { Screen } from "@/components/screen"
 import { EmptyState, ErrorState, LoadingState } from "@/components/states"
-import { Badge } from "@/components/ui/badge"
+import { TagBadge } from "@/components/tag-badge"
 import { Button } from "@/components/ui/button"
 import { Card, SectionTitle } from "@/components/ui/card"
 import { Icon } from "@/components/ui/icon"
@@ -243,7 +243,7 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
           {recipe.tags.length > 0 && (
             <View className="flex-row flex-wrap gap-2">
               {recipe.tags.map((tag) => (
-                <Badge key={tag} label={tag} />
+                <TagBadge key={tag} tag={tag} />
               ))}
             </View>
           )}

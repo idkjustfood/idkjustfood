@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+import { TagsSchema } from "./tags.js"
 import { fitUnit, UnitSchema } from "./units.js"
 
 /** Where a recipe came from. Recipes typed in by hand are "manual". */
@@ -79,16 +80,8 @@ export const RecipeContentSchema = z.object({
   servings: z.number().int().min(1).max(1000),
   prepMinutes: minutes,
   cookMinutes: minutes,
-  tags: z
-    .array(
-      z
-        .string()
-        .trim()
-        .min(1)
-        .max(40)
-        .regex(/^[^,]+$/, "A tag can't contain a comma")
-    )
-    .max(30),
+  /** Only tags from the fixed list (see `tagKeys`), in its order. */
+  tags: TagsSchema,
   ingredients: z.array(IngredientSchema).max(200),
   steps: z.array(StepSchema).max(200),
   nutrition: NutritionSchema,

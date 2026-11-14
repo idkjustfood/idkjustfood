@@ -1,4 +1,26 @@
+import { tagGroupKeys, tagsByGroup } from "@workspace/schemas"
+
 /** Prompts shared by all providers, so every provider is asked the same thing. */
+
+/** What each group of tags is for, so the AI picks the right ones. */
+const tagGroupHelp = {
+  cuisine: "the cuisine or country the dish comes from",
+  dish: "what kind of dish it is",
+  diet: "only when the recipe clearly fits the diet",
+  nutrition: "only when the recipe clearly fits",
+  time: "preparing and cooking together, pick at most one",
+  meal: "when it is eaten: breakfast, midday (lunch) or afternoon (dinner)",
+} as const
+
+/** The list of tags the AI may choose from, one line per group. */
+export function tagListForPrompt() {
+  return tagGroupKeys
+    .map(
+      (group) =>
+        `  - ${group} (${tagGroupHelp[group]}): ${tagsByGroup[group].join(", ")}`
+    )
+    .join("\n")
+}
 
 export const transcribePrompt =
   "Transcribe the speech in this audio word for word, in the language that is spoken. " +
@@ -27,7 +49,8 @@ Rules:
 - "servings" is a whole number, or null if the material does not say.
 - "prepMinutes" and "cookMinutes" are whole minutes, or null if not said.
 - "steps": one object per step, in order, in short clear sentences. Keep times in the text ("bake for 30 minutes").
-- "tags": up to 8 short tags: the cuisine (for example "Italian"), the diet when clear (for example "Vegetarian", "Vegan", "Gluten-free"), and one cooking-time tag: "Under 15 min", "Under 30 min", "Under 1 hour" or "Over 1 hour" (only if the material allows you to tell).
+- "tags": choose ONLY from the list of tag keys below, using the key exactly as written. Never write any other tag. Pick a tag only when the material makes it clear, and leave the list empty when nothing fits. At most one or two cuisines, and at most one time tag (the smallest "under" value the recipe fits in, preparing and cooking together).
+${tagListForPrompt()}
 - If the material contains no recipe at all, reply {"error": "no recipe found"}.
 
 JSON shape:
@@ -37,7 +60,7 @@ JSON shape:
   "servings": number | null,
   "prepMinutes": number | null,
   "cookMinutes": number | null,
-  "tags": string[],
+  "tags": the chosen tag keys (string[]),
   "ingredients": [{ "name": string, "quantity": number | null, "unit": "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null, "note": string | null }],
   "steps": [{ "text": string }]
 }`

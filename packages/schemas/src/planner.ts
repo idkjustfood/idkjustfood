@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { tagsByGroup } from "./tags.js"
 
 /** The three meals of a day, in order. */
 export const mealSlots = ["breakfast", "midday", "afternoon"] as const
@@ -159,8 +160,8 @@ export function dayCalories(meals: (Meal | null)[]) {
 export const PlanGoalsSchema = z.object({
   /** Calories one person should eat per day. Uses the recipes' estimates. */
   caloriesPerDay: z.number().int().min(500).max(10_000).nullable().optional(),
-  /** A tag every recipe must have, for example "vegetarian". */
-  diet: z.string().trim().min(1).max(40).nullable().optional(),
+  /** A diet tag every recipe must have, for example "vegetarian" (see `tagsByGroup.diet`). */
+  diet: z.enum(tagsByGroup.diet).nullable().optional(),
   /** The longest a meal may take (preparing and cooking together). */
   maxMinutes: z.number().int().min(1).max(1000).nullable().optional(),
 })

@@ -3,6 +3,7 @@ import type { Context } from "hono"
 
 import type { Database } from "@workspace/database"
 import {
+  isTagKey,
   manualSource,
   RecipeInputSchema,
   RecipeSchema,
@@ -39,8 +40,9 @@ const ListQuery = z.object({
     example: "lentil",
   }),
   tags: z.string().max(1500).optional().openapi({
-    description: "Only recipes with all of these tags. Separate tags with commas.",
-    example: "Italian,Vegetarian",
+    description:
+      "Only recipes with all of these tags. Separate tags with commas. Use the tag keys, for example `italian,vegetarian`; see `tagKeys` in the docs.",
+    example: "italian,vegetarian",
   }),
 })
 
@@ -70,6 +72,7 @@ const listRecipes = createRoute({
   request: { query: ListQuery },
   responses: {
     200: json(z.object({ recipes: z.array(RecipeBody) }), "Recipes"),
+    400: error("A tag in the filter is not on the list of tags"),
     404: error("Household not found, or you are not a member"),
     ...signedIn,
   },
@@ -210,13 +213,17 @@ export function recipeRoutes(db: Database, auth: Auth) {
     if (householdId && !(await inHousehold(user.id, householdId))) {
       return c.json({ error: "Household not found" }, 404)
     }
-    const tagList = tagText
-      ?.split(",")
+    const tagList = (tagText ?? "")
+      .split(",")
       .map((tag) => tag.trim())
       .filter(Boolean)
+    const tagFilter = tagList.filter(isTagKey)
+    if (tagFilter.length !== tagList.length) {
+      return c.json({ error: "Unknown tag. Use tags from the list." }, 400)
+    }
     const rows = await store.list(user.id, householdId ?? null, {
       q,
-      tags: tagList,
+      tags: tagFilter,
     })
     return c.json({ recipes: rows.map(toRecipe) }, 200)
   })

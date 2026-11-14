@@ -22,7 +22,7 @@ const pasta: RecipeContent = {
   servings: 4,
   prepMinutes: 10,
   cookMinutes: 90,
-  tags: ["Italian", "Pasta"],
+  tags: ["italian", "pasta"],
   ingredients: [
     { name: "Penne", quantity: 400, unit: "g", note: null },
     { name: "Chicken breast", quantity: 500, unit: "g", note: "cut in strips" },
@@ -261,7 +261,7 @@ describe("export and import", () => {
       servings: 4,
       prepMinutes: 15,
       cookMinutes: 60,
-      tags: ["Indian", "Vegan"],
+      tags: ["indian", "vegan"],
       steps: [{ text: "Rinse." }, { text: "Simmer 20 minutes." }],
       nutrition: { calories: 310, protein: null, carbs: null, fat: 6.5 },
     })

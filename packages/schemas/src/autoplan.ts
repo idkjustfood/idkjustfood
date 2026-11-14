@@ -5,12 +5,13 @@ import {
   type PlanGoals,
   type Unfilled,
 } from "./planner.js"
+import { isMealTag, type MealTag, type TagKey } from "./tags.js"
 
 /** What the planner needs to know about a saved recipe. */
 export type PlannableRecipe = {
   id: string
   title: string
-  tags: string[]
+  tags: TagKey[]
   /** Per serving, an estimate. Null when the recipe has none. */
   calories: number | null
   prepMinutes: number | null
@@ -55,15 +56,15 @@ const slotShare: Record<MealSlot, number> = {
 }
 
 /**
- * Tags that say when a recipe is eaten. A recipe with one of these is only
- * planned for a matching slot; a recipe without any fits every slot.
+ * The meal tags (`breakfast`, `midday`, `afternoon`) have the names of the
+ * slots. A recipe with one of them is only planned for a matching slot; a
+ * recipe without any fits every slot.
  */
-const slotTags: Record<MealSlot, string[]> = {
-  breakfast: ["breakfast"],
-  midday: ["lunch", "midday"],
-  afternoon: ["dinner", "supper", "afternoon"],
+const slotTags: Record<MealSlot, MealTag> = {
+  breakfast: "breakfast",
+  midday: "midday",
+  afternoon: "afternoon",
 }
-const mealTags = new Set(Object.values(slotTags).flat())
 
 /** A recipe may be this far from a meal's calorie budget (35 %) and still count as matching. */
 const CALORIE_TOLERANCE = 0.35
@@ -73,8 +74,6 @@ const REPEAT_PENALTY = 0.5
 
 /** A recipe with a matching meal-time tag is preferred for that slot. */
 const TAG_BONUS = 1
-
-const lower = (text: string) => text.trim().toLowerCase()
 
 /** Preparing and cooking together, or null when the recipe says neither. */
 function totalMinutes(recipe: PlannableRecipe) {
@@ -104,9 +103,9 @@ export function autoPlan(input: AutoPlanInput): AutoPlanResult {
   const notes: string[] = []
 
   let eligible = input.recipes
-  const diet = goals.diet ? lower(goals.diet) : null
+  const diet = goals.diet ?? null
   if (diet) {
-    eligible = eligible.filter((r) => r.tags.some((tag) => lower(tag) === diet))
+    eligible = eligible.filter((r) => r.tags.includes(diet))
   }
   if (goals.maxMinutes) {
     const known = eligible.filter((r) => totalMinutes(r) !== null)
@@ -169,8 +168,8 @@ export function autoPlan(input: AutoPlanInput): AutoPlanResult {
       let best: { recipe: PlannableRecipe; score: number } | undefined
       for (const recipe of eligible) {
         if (usedToday.has(recipe.id)) continue
-        const own = recipe.tags.map(lower).filter((tag) => mealTags.has(tag))
-        const matchesSlot = own.some((tag) => slotTags[slot].includes(tag))
+        const own = recipe.tags.filter(isMealTag)
+        const matchesSlot = own.includes(slotTags[slot])
         if (own.length > 0 && !matchesSlot) continue
 
         let score = (used.get(recipe.id) ?? 0) * REPEAT_PENALTY

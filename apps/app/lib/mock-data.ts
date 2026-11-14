@@ -3,7 +3,7 @@
  * Replace with real queries once the API endpoints exist.
  */
 
-import type { UnitKey } from "@workspace/schemas"
+import type { TagKey, UnitKey } from "@workspace/schemas"
 
 export type SourceKind = "video" | "website" | "photo" | "text"
 
@@ -40,7 +40,7 @@ export type Recipe = {
   servings: number
   prepMinutes: number
   cookMinutes: number
-  tags: string[]
+  tags: TagKey[]
   ingredients: Ingredient[]
   steps: Step[]
   /** Per serving, an estimate from a food database. */
@@ -64,7 +64,7 @@ export const recipes: Recipe[] = [
     servings: 4,
     prepMinutes: 10,
     cookMinutes: 25,
-    tags: ["Italian", "Pasta", "Under 45 min"],
+    tags: ["italian", "pasta", "under_60_min"],
     ingredients: [
       { id: "i1", name: "Penne", quantity: 400, unit: "g" },
       {
@@ -122,7 +122,7 @@ export const recipes: Recipe[] = [
     servings: 2,
     prepMinutes: 5,
     cookMinutes: 50,
-    tags: ["Side dish", "Vegetarian", "Gluten-free"],
+    tags: ["vegetarian", "gluten_free"],
     ingredients: [
       { id: "i1", name: "Baby potatoes", quantity: 600, unit: "g" },
       {
@@ -160,7 +160,7 @@ export const recipes: Recipe[] = [
     servings: 4,
     prepMinutes: 10,
     cookMinutes: 25,
-    tags: ["Indian", "Vegan", "Under 45 min"],
+    tags: ["indian", "vegan", "under_45_min"],
     ingredients: [
       {
         id: "i1",
@@ -199,7 +199,7 @@ export const recipes: Recipe[] = [
     servings: 2,
     prepMinutes: 5,
     cookMinutes: 10,
-    tags: ["Breakfast", "Vegetarian", "Under 15 min"],
+    tags: ["vegetarian", "under_15_min", "breakfast"],
     ingredients: [
       { id: "i1", name: "Ripe bananas", quantity: 2, unit: null },
       { id: "i2", name: "Eggs", quantity: 2, unit: null },
@@ -237,7 +237,7 @@ export const recipes: Recipe[] = [
     servings: 1,
     prepMinutes: 5,
     cookMinutes: 5,
-    tags: ["Asian", "Vegan", "Under 15 min"],
+    tags: ["thai", "noodles", "vegan", "under_15_min"],
     ingredients: [
       { id: "i1", name: "Wheat noodles", quantity: 100, unit: "g" },
       { id: "i2", name: "Garlic", quantity: 2, unit: "clove", note: "grated" },
@@ -272,7 +272,7 @@ export const recipes: Recipe[] = [
     servings: 2,
     prepMinutes: 10,
     cookMinutes: 0,
-    tags: ["Greek", "Vegetarian", "Gluten-free", "Under 15 min"],
+    tags: ["greek", "salad", "vegetarian", "gluten_free", "under_15_min"],
     ingredients: [
       { id: "i1", name: "Tomatoes", quantity: 4, unit: null },
       { id: "i2", name: "Cucumber", quantity: 0.5, unit: null },
@@ -314,7 +314,7 @@ export const importedRecipe: Recipe = {
   servings: 2,
   prepMinutes: 10,
   cookMinutes: 15,
-  tags: ["Fish", "Gluten-free", "Under 45 min"],
+  tags: ["gluten_free", "under_45_min"],
   ingredients: [
     { id: "i1", name: "Salmon fillets", quantity: 2, unit: null },
     { id: "i2", name: "Green beans", quantity: 200, unit: "g" },

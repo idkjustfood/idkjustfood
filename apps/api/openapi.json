@@ -187,11 +187,59 @@
             "type": "array",
             "items": {
               "type": "string",
-              "minLength": 1,
-              "maxLength": 40,
-              "pattern": "^[^,]+$"
+              "enum": [
+                "italian",
+                "french",
+                "spanish",
+                "greek",
+                "mediterranean",
+                "german",
+                "american",
+                "mexican",
+                "turkish",
+                "middle_eastern",
+                "indian",
+                "thai",
+                "vietnamese",
+                "chinese",
+                "japanese",
+                "korean",
+                "pasta",
+                "pizza",
+                "salad",
+                "soup",
+                "stew",
+                "curry",
+                "rice",
+                "noodles",
+                "burger",
+                "sandwich",
+                "bread",
+                "bake",
+                "sauce",
+                "snack",
+                "dessert",
+                "cake",
+                "drink",
+                "vegetarian",
+                "vegan",
+                "gluten_free",
+                "dairy_free",
+                "high_protein",
+                "low_carb",
+                "low_calorie",
+                "low_fat",
+                "under_15_min",
+                "under_30_min",
+                "under_45_min",
+                "under_60_min",
+                "under_90_min",
+                "breakfast",
+                "midday",
+                "afternoon"
+              ]
             },
-            "maxItems": 30
+            "maxItems": 49
           },
           "ingredients": {
             "type": "array",
@@ -424,11 +472,59 @@
             "type": "array",
             "items": {
               "type": "string",
-              "minLength": 1,
-              "maxLength": 40,
-              "pattern": "^[^,]+$"
+              "enum": [
+                "italian",
+                "french",
+                "spanish",
+                "greek",
+                "mediterranean",
+                "german",
+                "american",
+                "mexican",
+                "turkish",
+                "middle_eastern",
+                "indian",
+                "thai",
+                "vietnamese",
+                "chinese",
+                "japanese",
+                "korean",
+                "pasta",
+                "pizza",
+                "salad",
+                "soup",
+                "stew",
+                "curry",
+                "rice",
+                "noodles",
+                "burger",
+                "sandwich",
+                "bread",
+                "bake",
+                "sauce",
+                "snack",
+                "dessert",
+                "cake",
+                "drink",
+                "vegetarian",
+                "vegan",
+                "gluten_free",
+                "dairy_free",
+                "high_protein",
+                "low_carb",
+                "low_calorie",
+                "low_fat",
+                "under_15_min",
+                "under_30_min",
+                "under_45_min",
+                "under_60_min",
+                "under_90_min",
+                "breakfast",
+                "midday",
+                "afternoon"
+              ]
             },
-            "maxItems": 30
+            "maxItems": 49
           },
           "ingredients": {
             "type": "array",
@@ -1310,8 +1406,13 @@
                   "string",
                   "null"
                 ],
-                "minLength": 1,
-                "maxLength": 40
+                "enum": [
+                  "vegetarian",
+                  "vegan",
+                  "gluten_free",
+                  "dairy_free",
+                  null
+                ]
               },
               "maxMinutes": {
                 "type": [
@@ -1479,11 +1580,59 @@
                 "type": "array",
                 "items": {
                   "type": "string",
-                  "minLength": 1,
-                  "maxLength": 40,
-                  "pattern": "^[^,]+$"
+                  "enum": [
+                    "italian",
+                    "french",
+                    "spanish",
+                    "greek",
+                    "mediterranean",
+                    "german",
+                    "american",
+                    "mexican",
+                    "turkish",
+                    "middle_eastern",
+                    "indian",
+                    "thai",
+                    "vietnamese",
+                    "chinese",
+                    "japanese",
+                    "korean",
+                    "pasta",
+                    "pizza",
+                    "salad",
+                    "soup",
+                    "stew",
+                    "curry",
+                    "rice",
+                    "noodles",
+                    "burger",
+                    "sandwich",
+                    "bread",
+                    "bake",
+                    "sauce",
+                    "snack",
+                    "dessert",
+                    "cake",
+                    "drink",
+                    "vegetarian",
+                    "vegan",
+                    "gluten_free",
+                    "dairy_free",
+                    "high_protein",
+                    "low_carb",
+                    "low_calorie",
+                    "low_fat",
+                    "under_15_min",
+                    "under_30_min",
+                    "under_45_min",
+                    "under_60_min",
+                    "under_90_min",
+                    "breakfast",
+                    "midday",
+                    "afternoon"
+                  ]
                 },
-                "maxItems": 30
+                "maxItems": 49
               },
               "ingredients": {
                 "type": "array",
@@ -2518,11 +2667,11 @@
             "schema": {
               "type": "string",
               "maxLength": 1500,
-              "description": "Only recipes with all of these tags. Separate tags with commas.",
-              "example": "Italian,Vegetarian"
+              "description": "Only recipes with all of these tags. Separate tags with commas. Use the tag keys, for example `italian,vegetarian`; see `tagKeys` in the docs.",
+              "example": "italian,vegetarian"
             },
             "required": false,
-            "description": "Only recipes with all of these tags. Separate tags with commas.",
+            "description": "Only recipes with all of these tags. Separate tags with commas. Use the tag keys, for example `italian,vegetarian`; see `tagKeys` in the docs.",
             "name": "tags",
             "in": "query"
           }
@@ -2545,6 +2694,16 @@
                   "required": [
                     "recipes"
                   ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A tag in the filter is not on the list of tags",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }

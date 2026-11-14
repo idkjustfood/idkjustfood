@@ -113,7 +113,6 @@
     "prep": "Prep (min)",
     "cooking": "Cooking (min)",
     "tags": "Tags",
-    "tagsPlaceholder": "Italian, Vegetarian, Under 30 min",
     "ingredients": "Ingredients",
     "amountHint": "Leave the amount empty if you don't know it.",
     "missingAmounts_one": "{{count}} amount was not in the source. We left it empty instead of guessing. Fill in what you know.",
@@ -144,7 +143,10 @@
       "number": "Enter a number, like 12.5.",
       "quantity": "Enter a number like 2, 1.5 or 1/2, or leave it empty.",
       "ingredientName": "Add the ingredient's name."
-    }
+    },
+    "tagsHelp": "Tap to choose tags from the list.",
+    "tagsCount_one": "{{count}} tag chosen",
+    "tagsCount_other": "{{count}} tags chosen"
   },
   "parts": {
     "fewerServings": "Fewer servings",

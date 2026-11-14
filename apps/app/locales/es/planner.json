@@ -80,12 +80,7 @@
     "calories": "Calorías por día (por persona)",
     "caloriesPlaceholder": "Por ejemplo 2000",
     "caloriesHelp": "Usa las estimaciones nutricionales de tus recetas. Las recetas sin estimación se dejan fuera si lo indicas.",
-    "diet": "Dieta (una etiqueta de la receta)",
-    "dietPlaceholder": "Por ejemplo vegetariana",
-    "diets": {
-      "vegetarian": "Vegetariana",
-      "vegan": "Vegana"
-    },
+    "diet": "Dieta",
     "maxTime": "Tiempo máximo por comida",
     "minutes": "{{count}} min",
     "any": "Cualquiera",

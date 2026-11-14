@@ -13,6 +13,7 @@ import { Pressable, Text, View } from "react-native"
 
 import type { Recipe } from "@workspace/schemas"
 
+import { TagBadge } from "@/components/tag-badge"
 import { Icon } from "@/components/ui/icon"
 import { formatMinutes } from "@/lib/format"
 import i18n from "@/lib/i18n"
@@ -117,9 +118,11 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
           </View>
         </View>
         {recipe.tags.length > 0 && (
-          <Text numberOfLines={1} className="text-sm text-muted-foreground">
-            {recipe.tags.join(" · ")}
-          </Text>
+          <View className="flex-row flex-wrap gap-1.5">
+            {recipe.tags.map((tag) => (
+              <TagBadge key={tag} tag={tag} />
+            ))}
+          </View>
         )}
       </View>
     </Pressable>

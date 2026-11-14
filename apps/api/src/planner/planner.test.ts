@@ -471,7 +471,7 @@ describe("automatic planning", () => {
 
   test("follows goals for diet, cooking time and calories", async () => {
     const plan = await makePlan()
-    await makeRecipe("Veg quick", { tags: ["Vegetarian"], nutrition: n(450) })
+    await makeRecipe("Veg quick", { tags: ["vegetarian"], nutrition: n(450) })
     await makeRecipe("Veg slow", {
       tags: ["vegetarian"],
       prepMinutes: 60,

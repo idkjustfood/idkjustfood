@@ -33,7 +33,7 @@ describe("pages with schema.org Recipe data", () => {
     expect(recipe.servings).toBe(6)
     expect(recipe.prepMinutes).toBe(15)
     expect(recipe.cookMinutes).toBe(60)
-    expect(recipe.tags).toEqual(["Mediterranean", "Vegan", "Soup"])
+    expect(recipe.tags).toEqual(["mediterranean", "soup", "vegan"])
     expect(recipe.steps.map((s) => s.text)).toEqual([
       "Heat the oil and cook the onion.",
       "Add lentils and 1 litre of water. Simmer for 30 minutes.",

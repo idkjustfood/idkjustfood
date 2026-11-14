@@ -1,4 +1,5 @@
 import {
+  fitTags,
   fitUnit,
   knownUnitWords,
   quantityPattern,
@@ -6,7 +7,6 @@ import {
 } from "@workspace/schemas"
 
 import {
-  cleanTags,
   ExtractedRecipeSchema,
   type ExtractedRecipe,
 } from "../recipe-output.js"
@@ -286,7 +286,7 @@ export function recipeFromSchemaOrg(
     servings: yieldServings(node.recipeYield),
     prepMinutes,
     cookMinutes,
-    tags: cleanTags(tagSources).slice(0, 8),
+    tags: fitTags(tagSources),
     ingredients: lines(node.recipeIngredient ?? node.ingredients)
       .map(parseIngredientLine)
       .filter((i) => i.name),

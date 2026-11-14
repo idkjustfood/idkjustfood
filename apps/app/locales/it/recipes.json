@@ -113,7 +113,6 @@
     "prep": "Preparazione (min)",
     "cooking": "Cottura (min)",
     "tags": "Tag",
-    "tagsPlaceholder": "Italiana, Vegetariana, Meno di 30 min",
     "ingredients": "Ingredienti",
     "amountHint": "Lascia vuota la quantità se non la conosci.",
     "missingAmounts_one": "{{count}} quantità non era nella fonte. L'abbiamo lasciata vuota invece di indovinare. Compila quello che sai.",
@@ -144,7 +143,10 @@
       "number": "Inserisci un numero, per esempio 12,5.",
       "quantity": "Inserisci un numero come 2, 1,5 o 1/2, oppure lascia vuoto.",
       "ingredientName": "Aggiungi il nome dell'ingrediente."
-    }
+    },
+    "tagsHelp": "Tocca per scegliere i tag dall'elenco.",
+    "tagsCount_one": "{{count}} tag scelto",
+    "tagsCount_other": "{{count}} tag scelti"
   },
   "parts": {
     "fewerServings": "Meno porzioni",
