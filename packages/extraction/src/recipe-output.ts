@@ -109,6 +109,13 @@ function withoutSingleSection(recipe: ExtractedRecipe): ExtractedRecipe {
 }
 
 /**
+ * Phrases of a description that talks about the video or the recipe itself. The prompt forbids
+ * them, and this drops them when a model writes one anyway.
+ */
+const aboutTheVideo =
+  /\b(?:(?:in|on) (?:this|the) (?:video|reel|clip|short)|this (?:video|reel|clip) (?:shows?|explains?|is about)|this recipe (?:shows?|explains?|teaches|is about)|(?:im|in diesem) (?:video|reel)|(?:en|dans|in) (?:este|ce|questo) (?:v[ií]deo|reel)|cette recette (?:montre|explique)|esta receta (?:muestra|explica)|questa ricetta (?:mostra|spiega)|dieses rezept (?:zeigt|erklärt))\b/i
+
+/**
  * Checks what the AI answered. Fails with a readable message when it does not
  * fit the recipe schema, or when the AI says there is no recipe.
  */
@@ -148,7 +155,12 @@ export function readExtractedRecipe(raw: unknown): ExtractedRecipe {
       `The AI's answer is not a valid recipe (${describe(result.error)}). Try again, or use a different parsing model.`
     )
   }
-  const recipe = withoutSingleSection(result.data)
+  const recipe = withoutSingleSection({
+    ...result.data,
+    description: aboutTheVideo.test(result.data.description)
+      ? ""
+      : result.data.description,
+  })
   if (recipe.ingredients.length === 0 && recipe.steps.length === 0) {
     throw new ExtractionError(
       "no_recipe_found",

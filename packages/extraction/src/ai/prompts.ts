@@ -74,6 +74,7 @@ Rules:
 - If the material conflicts with itself (for example caption and on-screen text), prefer on-screen text and written lists over spoken words for amounts.
 - ${languageRule(language)}
 - "quantity" is a number: write 1/2 as 0.5 and 1 1/2 as 1.5. "unit" is one of these keys, or null when there is no unit: g, kg, mg, ml, l, tsp, tbsp, cup, oz, lb, fl_oz, piece, pinch, clove, bunch, slice, can, pack (tsp = teaspoon, TL; tbsp = tablespoon, EL; piece = Stück). If the material uses a unit that is not in this list (for example "handful"), set "unit" to null and write that word in "note". Put extras like "finely chopped" in "note" too.
+- "description" is almost always an empty string, and an empty string is the normal case. Never describe the dish ("a creamy, comforting pasta") and never describe the video ("in this video she shows how to..."): the reader sees the title and the ingredients already. Only write a sentence when the material itself gives something useful that is not in the ingredients or steps, such as a tip, how to store it ("keeps 3 days in the fridge") or a serving suggestion. Take such a sentence from the material, do not make one up. Praise and filler from the caption ("best pasta ever") is not a description.
 - "servings" is a whole number, or null if the material does not say.
 - "prepMinutes" and "cookMinutes" are whole minutes, or null if not said.
 - "steps": one object per step, in order, in short clear sentences. Keep times in the text ("bake for 30 minutes").
@@ -85,7 +86,7 @@ ${estimateNutrition ? nutritionRule + "\n" : ""}- If the material contains no re
 JSON shape:
 {
   "title": string,
-  "description": string (one or two sentences, may be empty),
+  "description": string (usually "", see the rule above),
   "servings": number | null,
   "prepMinutes": number | null,
   "cookMinutes": number | null,

@@ -40,6 +40,14 @@ units, tags, servings and times from the page and only takes the words). Without
 recipe stays in the language of the material. Nothing to set up on a self-hosted install: it works
 with any provider and model that the parsing job uses.
 
+## Description
+
+The AI's `description` is empty in the normal case. `parseRecipeSystem` forbids describing the dish
+or the video, and only allows a tip, storage advice or a serving suggestion that the source really
+gives. `readExtractedRecipe` also drops a description that talks about the video or the recipe
+itself ("In this video…", "This recipe shows…", in all app languages). Descriptions that a website
+already contains, and recipes entered by hand, do not go through this and stay as they are.
+
 ## Nutrition estimate
 
 Sources rarely state nutrition. For every recipe the AI parses (video, photo, pasted text, or a page
