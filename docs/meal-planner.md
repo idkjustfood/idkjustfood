@@ -13,8 +13,10 @@ self-hosted installs have it too.
 - **Planner tab:** one week at a time. Use the arrows to move between weeks (also weeks far in the
   future) and "This week" to jump back. Each day shows its three slots; tap a slot to pick a recipe,
   swap it, change the servings or remove it.
-- **Several plans:** the chips under the title switch between your plans. The Personal / household
-  switch at the top decides which plans you see and where "New plan" puts the new one.
+- **Several plans:** the chips under the title switch between the plans of the selected space. The
+  space dropdown at the top (your personal space or one of your households) decides which plans you
+  see and where "New plan" puts the new one. Plans of other spaces never show. The choice is
+  remembered on the device and is the same one the recipes and shopping lists use.
 - **Calories:** every day shows the estimated calories for one person, added up from the recipes'
   nutrition values. They are always estimates. A meal whose recipe has no estimate is not counted, and
   the day says so (a `+` after the number).

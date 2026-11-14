@@ -29,7 +29,7 @@ import { Input } from "@/components/ui/input"
 import { Sheet } from "@/components/ui/sheet"
 import { useAppState } from "@/lib/app-state"
 import { formatAmount } from "@/lib/format"
-import { isOwner, useHousehold, useMyUserId } from "@/lib/households"
+import { isOwner, useHouseholdById, useMyUserId } from "@/lib/households"
 import { useAllRecipes } from "@/lib/recipes"
 import {
   useListKind,
@@ -54,9 +54,9 @@ export default function ShoppingListScreen() {
 
 function ListView({ list }: { list: ShoppingList }) {
   const { units } = useAppState()
-  const { household } = useHousehold()
+  const household = useHouseholdById(list.householdId)
   const myUserId = useMyUserId()
-  const kindLabel = useListKind()(list, household?.name)
+  const kindLabel = useListKind()(list)
   const actions = useShoppingActions()
   const [draft, setDraft] = useState("")
   const [amount, setAmount] = useState("")
@@ -282,9 +282,7 @@ function RecipeSheet({
         />
       )}
       {recipes.data && recipes.data.length === 0 && (
-        <Text className="text-foreground">
-          You have no recipes yet.
-        </Text>
+        <Text className="text-foreground">You have no recipes yet.</Text>
       )}
       <View className="gap-2">
         {(recipes.data ?? []).map((recipe) => (
@@ -300,11 +298,16 @@ function RecipeSheet({
             )}
           >
             <RecipeCover recipe={recipe} className="h-full w-14" />
-            <Text numberOfLines={1} className="flex-1 text-base text-foreground">
+            <Text
+              numberOfLines={1}
+              className="flex-1 text-base text-foreground"
+            >
               {recipe.title}
             </Text>
             {busy === recipe.id && (
-              <Text className="pr-3 text-sm text-muted-foreground">Adding…</Text>
+              <Text className="pr-3 text-sm text-muted-foreground">
+                Adding…
+              </Text>
             )}
           </Pressable>
         ))}

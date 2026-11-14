@@ -4,13 +4,14 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react"
 
 import type { Units } from "@/lib/format"
 import type { Space } from "@/lib/mock-data"
-import { loadUnits, saveUnits } from "@/lib/preferences"
+import { loadSpace, loadUnits, saveSpace, saveUnits } from "@/lib/preferences"
 
 export type Appearance = "system" | "light" | "dark"
 /** Lets the prototype show the loading, empty and error states of the main lists. */
@@ -24,8 +25,14 @@ type AppState = {
   setUnits: (value: Units) => void
   appearance: Appearance
   setAppearance: (value: Appearance) => void
+  /** The selected household, or null for the personal space. Remembered on this device. */
+  householdId: string | null
+  /** `space` is "household" whenever a household is selected. */
   space: Space
-  setSpace: (value: Space) => void
+  /** Selects a household (or null for personal) and remembers it. */
+  setHouseholdId: (value: string | null) => void
+  /** Falls back to the personal space for now, without forgetting the saved choice. */
+  fallBackToPersonal: () => void
   listState: ListState
   setListState: (value: ListState) => void
   offline: boolean
@@ -41,9 +48,10 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [demo, setDemo] = useState(false)
   const [units, setUnitsState] = useState<Units>("metric")
   const [appearance, setAppearance] = useState<Appearance>("system")
-  const [space, setSpace] = useState<Space>("personal")
+  const [householdId, setHouseholdIdState] = useState<string | null>(null)
   const [listState, setListState] = useState<ListState>("ready")
   const [offline, setOffline] = useState(false)
+  const space: Space = householdId ? "household" : "personal"
 
   // The chosen units stay on this device.
   useEffect(() => {
@@ -60,6 +68,23 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     void saveUnits(value)
   }, [])
 
+  // So does the selected space. A choice made before it has loaded wins.
+  const touched = useRef(false)
+  useEffect(() => {
+    loadSpace().then((saved) => {
+      if (saved && !touched.current) setHouseholdIdState(saved)
+    })
+  }, [])
+  const setHouseholdId = useCallback((value: string | null) => {
+    touched.current = true
+    setHouseholdIdState(value)
+    void saveSpace(value)
+  }, [])
+  const fallBackToPersonal = useCallback(() => {
+    touched.current = true
+    setHouseholdIdState(null)
+  }, [])
+
   const value = useMemo(
     () => ({
       demo,
@@ -68,14 +93,27 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       setUnits,
       appearance,
       setAppearance,
+      householdId,
       space,
-      setSpace,
+      setHouseholdId,
+      fallBackToPersonal,
       listState,
       setListState,
       offline,
       setOffline,
     }),
-    [demo, units, setUnits, appearance, space, listState, offline]
+    [
+      demo,
+      units,
+      setUnits,
+      appearance,
+      householdId,
+      space,
+      setHouseholdId,
+      fallBackToPersonal,
+      listState,
+      offline,
+    ]
   )
 
   return <AppStateContext value={value}>{children}</AppStateContext>

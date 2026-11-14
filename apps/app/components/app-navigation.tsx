@@ -123,7 +123,7 @@ function SideBar(props: BottomTabBarProps) {
       <Text className="px-3 text-xl font-bold text-foreground">
         idkjustfood
       </Text>
-      <SpaceSwitcher compact />
+      <SpaceSwitcher />
       {add && (
         <Pressable
           role="button"

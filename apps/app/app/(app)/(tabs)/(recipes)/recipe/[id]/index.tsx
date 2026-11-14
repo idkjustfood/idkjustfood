@@ -42,7 +42,6 @@ import {
   useShoppingActions,
   useShoppingState,
 } from "@/lib/shopping"
-import { useHousehold } from "@/lib/households"
 
 export default function RecipeDetail() {
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -57,7 +56,8 @@ export default function RecipeDetail() {
   }
 
   if (query.isError) {
-    const missing = query.error instanceof ApiError && query.error.status === 404
+    const missing =
+      query.error instanceof ApiError && query.error.status === 404
     return (
       <Screen title={missing ? "Recipe not found" : "Recipe"} back="/">
         {missing ? (
@@ -94,7 +94,6 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
   const [listError, setListError] = useState<string | null>(null)
   const { lists } = useShoppingState()
   const { addRecipe } = useShoppingActions()
-  const { household } = useHousehold()
   const kindOf = useListKind()
 
   /** Puts the ingredients on a list, for the servings chosen above. */
@@ -340,7 +339,7 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
                     key={list.id}
                     icon={ShoppingCart}
                     title={list.name}
-                    detail={`${kindOf(list, household?.name)} · ${list.items.length} items`}
+                    detail={`${kindOf(list)} · ${list.items.length} items`}
                     right={
                       adding === list.id ? (
                         <Text className="text-sm text-muted-foreground">
@@ -349,7 +348,9 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
                       ) : undefined
                     }
                     onPress={
-                      adding ? undefined : () => void addToList(list.id, list.name)
+                      adding
+                        ? undefined
+                        : () => void addToList(list.id, list.name)
                     }
                   />
                 ))}

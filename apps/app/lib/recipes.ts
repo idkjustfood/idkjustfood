@@ -10,7 +10,7 @@ import type { Recipe, RecipeContent } from "@workspace/schemas"
 
 import { api, ApiError, call } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
-import { useHousehold } from "@/lib/households"
+import { useHousehold, useHouseholds } from "@/lib/households"
 import {
   household as demoHousehold,
   importedRecipe,
@@ -80,9 +80,9 @@ const demoOnly = () => {
  */
 export function useRecipeSpace() {
   const { space } = useAppState()
-  const { household } = useHousehold()
+  const { household, ready } = useHousehold()
   if (space === "household") {
-    return { householdId: household?.id ?? null, ready: !!household }
+    return { householdId: household?.id ?? null, ready }
   }
   return { householdId: null, ready: true }
 }
@@ -134,10 +134,10 @@ export function useRecipes(filters: RecipeFilters) {
 /** Every recipe you can see: your own and your household's. For picking one, for example for a shopping list. */
 export function useAllRecipes() {
   const { demo } = useAppState()
-  const { household, isPending } = useHousehold()
-  const householdId = household?.id ?? null
+  const { households, isPending } = useHouseholds()
+  const householdIds = households.map((h) => h.id)
   return useQuery({
-    queryKey: keys.list({ demo, householdId, all: true }),
+    queryKey: keys.list({ demo, householdIds, all: true }),
     enabled: !isPending,
     queryFn: async (): Promise<Recipe[]> => {
       if (demo) return demoRecipes.map(fromSample)
@@ -147,11 +147,10 @@ export function useAllRecipes() {
             api.GET("/api/recipes", { params: { query: { householdId: id } } })
           )
         ).recipes
-      const [own, shared] = await Promise.all([
-        fetchFor(undefined),
-        householdId ? fetchFor(householdId) : Promise.resolve([]),
-      ])
-      return [...own, ...shared]
+      const groups = await Promise.all(
+        [undefined, ...householdIds].map(fetchFor)
+      )
+      return groups.flat()
     },
   })
 }

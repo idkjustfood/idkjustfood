@@ -15,7 +15,7 @@ import {
 
 import { api, ApiError, call, type Schemas } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
-import { useHousehold } from "@/lib/households"
+import { useHouseholds } from "@/lib/households"
 
 export type { GenerateResult, MealPlan }
 
@@ -36,7 +36,7 @@ const demoOnly = () => {
 /** Your personal plans and the plans of your household. Meals are not included. */
 export function usePlans() {
   const { demo } = useAppState()
-  const { isPending } = useHousehold()
+  const { isPending } = useHouseholds()
   return useQuery({
     queryKey: keys.list(demo),
     enabled: !isPending,

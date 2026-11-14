@@ -5,11 +5,13 @@ import {
   type QueryClient,
 } from "@tanstack/react-query"
 import * as Linking from "expo-linking"
+import { useEffect } from "react"
 
 import { api, ApiError, call, type Schemas } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
 import { authClient } from "@/lib/auth-client"
 import { household as demoHousehold } from "@/lib/mock-data"
+import { resolveSpace } from "@/lib/space"
 
 export type Household = Schemas["Household"]
 export type Member = Schemas["Member"]
@@ -40,20 +42,46 @@ const demoOnly = () => {
   )
 }
 
-/**
- * The household shown in the app. People normally have one; with several,
- * the oldest one is used for now.
- */
-export function useHousehold() {
+/** Every household the user is in. */
+export function useHouseholds() {
   const { demo } = useAppState()
   const query = useQuery({
     queryKey: [...keys.households, { demo }],
-    queryFn: async () =>
+    queryFn: async (): Promise<Household[]> =>
       demo
         ? [{ id: demoHousehold.id, name: demoHousehold.name, role: "owner" }]
         : (await call(api.GET("/api/households"))).households,
   })
-  return { ...query, household: query.data?.[0] }
+  return { ...query, households: query.data ?? [] }
+}
+
+/** One of the user's households by id, or undefined (not loaded, or not a member). */
+export function useHouseholdById(id: string | null | undefined) {
+  const { households } = useHouseholds()
+  return id ? households.find((h) => h.id === id) : undefined
+}
+
+/**
+ * The household selected in the app, or `household: undefined` in the personal
+ * space. `ready` is false while a selected household is still loading. When the
+ * selected household is gone (left, or removed), the app falls back to the
+ * personal space.
+ */
+export function useHousehold() {
+  const { householdId, fallBackToPersonal } = useAppState()
+  const query = useHouseholds()
+  const { data, households } = query
+  const household = householdId
+    ? households.find((h) => h.id === householdId)
+    : undefined
+
+  useEffect(() => {
+    if (data && resolveSpace(householdId, data) !== householdId) {
+      fallBackToPersonal()
+    }
+  }, [data, householdId, fallBackToPersonal])
+
+  return { ...query, household, ready: !householdId || !!household }
 }
 
 export function useMembers(householdId: string | undefined) {

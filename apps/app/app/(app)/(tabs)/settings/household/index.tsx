@@ -20,12 +20,14 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Sheet } from "@/components/ui/sheet"
+import { useAppState } from "@/lib/app-state"
 import {
   inviteLink,
   isOwner,
   useCancelInvite,
   useCreateHousehold,
   useHousehold,
+  useHouseholds,
   useInvites,
   useLeaveHousehold,
   useMembers,
@@ -37,7 +39,8 @@ import {
 import { copyText, inDays } from "@/lib/share"
 
 export default function HouseholdScreen() {
-  const { household, isPending, isError, error, refetch } = useHousehold()
+  const { household } = useHousehold()
+  const { households, isPending, isError, error, refetch } = useHouseholds()
 
   if (isPending) {
     return (
@@ -57,17 +60,30 @@ export default function HouseholdScreen() {
       </Screen>
     )
   }
-  if (!household) return <CreateHousehold />
+  if (households.length === 0) return <CreateHousehold />
+  // In the personal space there is no household to manage: pick one first.
+  if (!household) {
+    return (
+      <Screen title="Household" back="/settings" narrow>
+        <View className="gap-2">
+          <Text className="px-1 text-sm font-medium uppercase tracking-wide text-muted-foreground">
+            Manage household
+          </Text>
+          <SpaceSwitcher />
+        </View>
+        <EmptyState
+          icon={House}
+          title="Pick a household"
+          message="You are in your personal space. Choose a household above to see its members and invite people."
+        />
+        <CreateHouseholdCard title="Create another household" />
+      </Screen>
+    )
+  }
   return <HouseholdDetails household={household} />
 }
 
 function CreateHousehold() {
-  const [name, setName] = useState("")
-  const create = useCreateHousehold()
-  const submit = () => {
-    if (name.trim()) create.mutate(name.trim())
-  }
-
   return (
     <Screen title="Household" back="/settings" narrow>
       <EmptyState
@@ -75,27 +91,52 @@ function CreateHousehold() {
         title="No household yet"
         message="A household shares recipes and shopping lists. Create one and invite the people you live with, or open an invite link someone sent you."
       />
-      <Card className="gap-4 p-4">
-        <Input
-          label="Household name"
-          value={name}
-          onChangeText={setName}
-          placeholder="For example: Flat 3B"
-          onSubmitEditing={submit}
-          maxLength={80}
-        />
-        {create.error && (
-          <Text role="alert" className="text-sm text-destructive">
-            {create.error.message}
-          </Text>
-        )}
-        <Button
-          label={create.isPending ? "Creating…" : "Create household"}
-          disabled={!name.trim() || create.isPending}
-          onPress={submit}
-        />
-      </Card>
+      <CreateHouseholdCard />
     </Screen>
+  )
+}
+
+/** Makes a household and switches to it. Also used to make a further one. */
+function CreateHouseholdCard({ title }: { title?: string }) {
+  const [name, setName] = useState("")
+  const create = useCreateHousehold()
+  const { setHouseholdId } = useAppState()
+  const submit = () => {
+    if (!name.trim()) return
+    create.mutate(name.trim(), {
+      onSuccess: (created) => {
+        setName("")
+        if (created) setHouseholdId(created.id)
+      },
+    })
+  }
+
+  return (
+    <Card className="gap-4 p-4">
+      {title && (
+        <Text role="heading" className="text-lg font-semibold text-foreground">
+          {title}
+        </Text>
+      )}
+      <Input
+        label="Household name"
+        value={name}
+        onChangeText={setName}
+        placeholder="For example: Flat 3B"
+        onSubmitEditing={submit}
+        maxLength={80}
+      />
+      {create.error && (
+        <Text role="alert" className="text-sm text-destructive">
+          {create.error.message}
+        </Text>
+      )}
+      <Button
+        label={create.isPending ? "Creating…" : "Create household"}
+        disabled={!name.trim() || create.isPending}
+        onPress={submit}
+      />
+    </Card>
   )
 }
 
@@ -133,7 +174,7 @@ function HouseholdDetails({ household }: { household: Household }) {
     >
       <View className="gap-2">
         <Text className="px-1 text-sm font-medium uppercase tracking-wide text-muted-foreground">
-          Show recipes and lists from
+          Show recipes, lists and plans from
         </Text>
         <SpaceSwitcher />
       </View>
@@ -248,6 +289,8 @@ function HouseholdDetails({ household }: { household: Household }) {
           onPress={() => setConfirm({ kind: "leave" })}
         />
       )}
+
+      <CreateHouseholdCard title="Create another household" />
 
       <Sheet
         open={!!confirm}
