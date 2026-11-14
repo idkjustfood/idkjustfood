@@ -87,5 +87,27 @@
     "fromRecipesNoAmount_other": "Für {{count}} Rezepte, keine Menge angegeben",
     "noAmount": "keine Menge angegeben",
     "remove": "{{name}} entfernen"
+  },
+  "store": {
+    "title": "Supermarkt wählen",
+    "hint": "Deine Liste wird in der Reihenfolge sortiert, in der du durch den Laden gehst.",
+    "change": "Supermarkt ändern",
+    "sortedFor": "Sortiert für {{name}}",
+    "standard": "Standard-Supermarkt"
+  },
+  "section": {
+    "produce": "Obst und Gemüse",
+    "bakery": "Brot und Backwaren",
+    "dryGoods": "Nudeln, Reis und Backzutaten",
+    "canned": "Konserven und Gläser",
+    "spices": "Gewürze und Öle",
+    "sweets": "Süßes und Snacks",
+    "dairy": "Milchprodukte und Eier",
+    "meat": "Fleisch und Wurst",
+    "fish": "Fisch",
+    "frozen": "Tiefkühlkost",
+    "drinks": "Getränke",
+    "household": "Haushalt",
+    "other": "Sonstiges"
   }
 }

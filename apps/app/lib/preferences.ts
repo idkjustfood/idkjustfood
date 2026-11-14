@@ -91,3 +91,28 @@ export async function saveLanguage(language: string | null) {
     // Not saved this time.
   }
 }
+
+const SUPERMARKET_KEY = "idkjustfood.supermarket"
+
+/** The supermarket picked for the shopping lists, or null for the standard one. */
+export async function loadSupermarket(): Promise<string | null> {
+  try {
+    const value =
+      Platform.OS === "web"
+        ? globalThis.localStorage?.getItem(SUPERMARKET_KEY)
+        : await SecureStore.getItemAsync(SUPERMARKET_KEY)
+    return value || null
+  } catch {
+    return null
+  }
+}
+
+export async function saveSupermarket(id: string) {
+  try {
+    if (Platform.OS === "web")
+      globalThis.localStorage?.setItem(SUPERMARKET_KEY, id)
+    else await SecureStore.setItemAsync(SUPERMARKET_KEY, id)
+  } catch {
+    // Not saved this time.
+  }
+}

@@ -16,6 +16,9 @@ edition, so self-hosted installs have it too.
   ticked items.
 - **Add a recipe:** from a list ("Add a recipe" in the header) or from the recipe screen
   ("Add to shopping list", for the servings you chose there).
+- **Supermarket:** the list is shown in the order you walk through the shop. Pick the supermarket
+  at the top of a list. The choice is saved on the device. See
+  [adding-a-supermarket.md](adding-a-supermarket.md).
 - Same ingredients are merged. See [How merging works](#how-merging-works).
 - **Pantry staples** (Settings, "Pantry staples") are left out when a recipe is added, and the
   app tells you which ones were skipped. See [Pantry staples](#pantry-staples).
