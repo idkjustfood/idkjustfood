@@ -38,7 +38,7 @@ const bread: RecipeInput = {
   title: "Bread",
   servings: 2,
   ingredients: [
-    { name: "flour", quantity: 100, unit: "grams", note: null },
+    { name: "flour", quantity: 100, unit: "g", note: null },
     { name: "Pinch of salt", quantity: null, unit: null, note: null },
     { name: "Water", quantity: 1, unit: "cup", note: null },
   ],
@@ -234,6 +234,16 @@ describe("items", () => {
       "B",
       "C",
     ])
+  })
+
+  test("an item only takes a unit from the list", async () => {
+    const list = await makeList("Shop")
+    const res = await api.post(`/api/shopping-lists/${list.id}/items`, olivia, {
+      name: "Rice",
+      quantity: 1,
+      unit: "kilos",
+    })
+    expect(res.status).toBe(400)
   })
 
   test("a quantity can be cleared again", async () => {

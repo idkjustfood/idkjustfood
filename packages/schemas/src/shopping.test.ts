@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test"
 
+import type { UnitKey } from "./units.js"
 import {
   addIngredients,
   canMerge,
@@ -9,7 +10,7 @@ import {
 const item = (
   name: string,
   quantity: number | null,
-  unit: string | null,
+  unit: UnitKey | null,
   extra: Partial<ShoppingItemContent> = {}
 ): ShoppingItemContent => ({
   name,
@@ -24,7 +25,7 @@ const item = (
 const ingredient = (
   name: string,
   quantity: number | null,
-  unit: string | null
+  unit: UnitKey | null
 ) => ({
   name,
   quantity,
@@ -60,8 +61,8 @@ describe("addIngredients", () => {
     ])
   })
 
-  test("matches names and unit spellings loosely", () => {
-    const first = addIngredients([], [ingredient("flour", 200, "grams")], "A")
+  test("matches names loosely, and old unit spellings", () => {
+    const first = addIngredients([], [ingredient("flour", 200, "grams" as UnitKey)], "A")
     const second = addIngredients(first, [ingredient(" Flour ", 100, "g")], "B")
     expect(second).toHaveLength(1)
     expect(second[0]).toMatchObject({

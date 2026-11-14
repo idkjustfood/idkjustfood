@@ -39,7 +39,6 @@
     "amount": "Cantidad",
     "amountPlaceholder": "Cantidad (opcional)",
     "unit": "Unidad",
-    "unitPlaceholder": "Unidad (g, ml, cda…)",
     "amountError": "La cantidad debe ser un número, como 2, 1,5 o 1/2.",
     "empty": "Esta lista aún está vacía. Escribe un artículo arriba o añade los ingredientes de una receta.",
     "inBasket": "En la cesta",

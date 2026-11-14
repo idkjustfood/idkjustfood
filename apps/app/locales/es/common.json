@@ -8,14 +8,50 @@
   "units": {
     "g": "g",
     "kg": "kg",
-    "oz": "oz",
-    "lb": "lb",
+    "mg": "mg",
     "ml": "ml",
     "l": "l",
     "tsp": "cdta.",
     "tbsp": "cda.",
     "cup_one": "taza",
-    "cup_other": "tazas"
+    "cup_other": "tazas",
+    "oz": "oz",
+    "lb": "lb",
+    "fl_oz": "fl oz",
+    "piece_one": "pieza",
+    "piece_other": "piezas",
+    "pinch_one": "pizca",
+    "pinch_other": "pizcas",
+    "clove_one": "diente",
+    "clove_other": "dientes",
+    "bunch_one": "manojo",
+    "bunch_other": "manojos",
+    "slice_one": "rebanada",
+    "slice_other": "rebanadas",
+    "can_one": "lata",
+    "can_other": "latas",
+    "pack_one": "paquete",
+    "pack_other": "paquetes"
+  },
+  "unitNames": {
+    "mg": "Miligramo",
+    "g": "Gramo",
+    "kg": "Kilogramo",
+    "ml": "Mililitro",
+    "l": "Litro",
+    "tsp": "Cucharadita",
+    "tbsp": "Cucharada",
+    "cup": "Taza",
+    "oz": "Onza",
+    "lb": "Libra",
+    "fl_oz": "Onza líquida",
+    "piece": "Pieza",
+    "pinch": "Pizca",
+    "clove": "Diente",
+    "bunch": "Manojo",
+    "slice": "Rebanada",
+    "can": "Lata",
+    "pack": "Paquete"
   },
   "back": "Atrás",
   "close": "Cerrar",
@@ -55,5 +91,8 @@
     "tomorrow": "mañana",
     "inDays_one": "en {{count}} día",
     "inDays_other": "en {{count}} días"
+  },
+  "unitPicker": {
+    "none": "Sin unidad"
   }
 }

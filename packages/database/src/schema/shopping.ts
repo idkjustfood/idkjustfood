@@ -1,3 +1,4 @@
+import type { UnitKey } from "@workspace/schemas"
 import { sql } from "drizzle-orm"
 import {
   boolean,
@@ -48,7 +49,7 @@ export const shoppingItem = pgTable(
       .references(() => shoppingList.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     quantity: doublePrecision("quantity"),
-    unit: text("unit"),
+    unit: text("unit").$type<UnitKey>(),
     note: text("note"),
     checked: boolean("checked").notNull().default(false),
     /** Titles of the recipes this item came from. */

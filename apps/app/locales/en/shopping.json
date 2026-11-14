@@ -39,7 +39,6 @@
     "amount": "Amount",
     "amountPlaceholder": "Amount (optional)",
     "unit": "Unit",
-    "unitPlaceholder": "Unit (g, ml, tbsp…)",
     "amountError": "The amount must be a number, like 2, 1.5 or 1/2.",
     "empty": "Nothing on this list yet. Type an item above, or add the ingredients of a recipe.",
     "inBasket": "In the basket",

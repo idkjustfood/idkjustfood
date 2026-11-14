@@ -215,8 +215,27 @@
                     "string",
                     "null"
                   ],
-                  "minLength": 1,
-                  "maxLength": 40
+                  "enum": [
+                    "g",
+                    "kg",
+                    "mg",
+                    "ml",
+                    "l",
+                    "tsp",
+                    "tbsp",
+                    "cup",
+                    "oz",
+                    "lb",
+                    "fl_oz",
+                    "piece",
+                    "pinch",
+                    "clove",
+                    "bunch",
+                    "slice",
+                    "can",
+                    "pack",
+                    null
+                  ]
                 },
                 "note": {
                   "type": [
@@ -433,8 +452,27 @@
                     "string",
                     "null"
                   ],
-                  "minLength": 1,
-                  "maxLength": 40
+                  "enum": [
+                    "g",
+                    "kg",
+                    "mg",
+                    "ml",
+                    "l",
+                    "tsp",
+                    "tbsp",
+                    "cup",
+                    "oz",
+                    "lb",
+                    "fl_oz",
+                    "piece",
+                    "pinch",
+                    "clove",
+                    "bunch",
+                    "slice",
+                    "can",
+                    "pack",
+                    null
+                  ]
                 },
                 "note": {
                   "type": [
@@ -609,8 +647,27 @@
                     "string",
                     "null"
                   ],
-                  "minLength": 1,
-                  "maxLength": 40
+                  "enum": [
+                    "g",
+                    "kg",
+                    "mg",
+                    "ml",
+                    "l",
+                    "tsp",
+                    "tbsp",
+                    "cup",
+                    "oz",
+                    "lb",
+                    "fl_oz",
+                    "piece",
+                    "pinch",
+                    "clove",
+                    "bunch",
+                    "slice",
+                    "can",
+                    "pack",
+                    null
+                  ]
                 },
                 "note": {
                   "type": [
@@ -721,8 +778,27 @@
               "string",
               "null"
             ],
-            "minLength": 1,
-            "maxLength": 40
+            "enum": [
+              "g",
+              "kg",
+              "mg",
+              "ml",
+              "l",
+              "tsp",
+              "tbsp",
+              "cup",
+              "oz",
+              "lb",
+              "fl_oz",
+              "piece",
+              "pinch",
+              "clove",
+              "bunch",
+              "slice",
+              "can",
+              "pack",
+              null
+            ]
           },
           "note": {
             "type": [
@@ -783,8 +859,27 @@
               "string",
               "null"
             ],
-            "minLength": 1,
-            "maxLength": 40
+            "enum": [
+              "g",
+              "kg",
+              "mg",
+              "ml",
+              "l",
+              "tsp",
+              "tbsp",
+              "cup",
+              "oz",
+              "lb",
+              "fl_oz",
+              "piece",
+              "pinch",
+              "clove",
+              "bunch",
+              "slice",
+              "can",
+              "pack",
+              null
+            ]
           },
           "note": {
             "type": [
@@ -820,8 +915,27 @@
               "string",
               "null"
             ],
-            "minLength": 1,
-            "maxLength": 40
+            "enum": [
+              "g",
+              "kg",
+              "mg",
+              "ml",
+              "l",
+              "tsp",
+              "tbsp",
+              "cup",
+              "oz",
+              "lb",
+              "fl_oz",
+              "piece",
+              "pinch",
+              "clove",
+              "bunch",
+              "slice",
+              "can",
+              "pack",
+              null
+            ]
           },
           "note": {
             "type": [
@@ -1393,8 +1507,27 @@
                         "string",
                         "null"
                       ],
-                      "minLength": 1,
-                      "maxLength": 40
+                      "enum": [
+                        "g",
+                        "kg",
+                        "mg",
+                        "ml",
+                        "l",
+                        "tsp",
+                        "tbsp",
+                        "cup",
+                        "oz",
+                        "lb",
+                        "fl_oz",
+                        "piece",
+                        "pinch",
+                        "clove",
+                        "bunch",
+                        "slice",
+                        "can",
+                        "pack",
+                        null
+                      ]
                     },
                     "note": {
                       "type": [

@@ -100,6 +100,10 @@ describe("recipes", () => {
       { servings: 0 },
       { ingredients: [{ name: "Flour", quantity: 0, unit: "g", note: null }] },
       { ingredients: [{ name: "", quantity: 1, unit: null, note: null }] },
+      // Units come from a fixed list: free text and old spellings are refused.
+      { ingredients: [{ name: "Flour", quantity: 1, unit: "grams", note: null }] },
+      { ingredients: [{ name: "Flour", quantity: 1, unit: "EL", note: null }] },
+      { ingredients: [{ name: "Flour", quantity: 1, unit: "", note: null }] },
       { tags: ["a,b"] },
       { nutrition: { calories: -1, protein: null, carbs: null, fat: null } },
     ]) {

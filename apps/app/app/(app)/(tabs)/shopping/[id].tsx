@@ -15,6 +15,7 @@ import {
   parseQuantity,
   type ShoppingItem,
   type ShoppingList,
+  type UnitKey,
 } from "@workspace/schemas"
 
 import { ListGroup, ListRow } from "@/components/list-row"
@@ -28,6 +29,7 @@ import { CheckboxBox } from "@/components/ui/checkbox"
 import { Icon } from "@/components/ui/icon"
 import { Input } from "@/components/ui/input"
 import { Sheet } from "@/components/ui/sheet"
+import { UnitPicker } from "@/components/ui/unit-picker"
 import { useAppState } from "@/lib/app-state"
 import { formatAmount } from "@/lib/format"
 import { isOwner, useHouseholdById, useMyUserId } from "@/lib/households"
@@ -64,7 +66,7 @@ function ListView({ list }: { list: ShoppingList }) {
   const actions = useShoppingActions()
   const [draft, setDraft] = useState("")
   const [amount, setAmount] = useState("")
-  const [unit, setUnit] = useState("")
+  const [unit, setUnit] = useState<UnitKey | null>(null)
   const [amountError, setAmountError] = useState(false)
   const [recipeOpen, setRecipeOpen] = useState(false)
   const [optionsOpen, setOptionsOpen] = useState(false)
@@ -86,11 +88,11 @@ function ListView({ list }: { list: ShoppingList }) {
     actions.addItem(list.id, {
       name,
       quantity,
-      unit: quantity !== null && unit.trim() ? unit.trim() : null,
+      unit: quantity !== null ? unit : null,
     })
     setDraft("")
     setAmount("")
-    setUnit("")
+    setUnit(null)
     setAmountError(false)
   }
 
@@ -159,16 +161,11 @@ function ListView({ list }: { list: ShoppingList }) {
               amountError ? "border-destructive" : "border-input"
             )}
           />
-          <TextInput
-            accessibilityLabel={t("shopping:list.unit")}
-            placeholder={t("shopping:list.unitPlaceholder")}
-            placeholderTextColor="#737373"
+          <UnitPicker
+            label={t("shopping:list.unit")}
             value={unit}
-            onChangeText={setUnit}
-            onSubmitEditing={addItem}
-            autoCapitalize="none"
-            maxLength={40}
-            className="h-11 min-w-0 flex-1 rounded-md border border-input bg-background px-3 text-base text-foreground"
+            onChange={setUnit}
+            className="h-11 min-w-0 flex-1"
           />
         </View>
         {amountError && (

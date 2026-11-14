@@ -1,4 +1,8 @@
-import { formatAmount as formatAmountEn, type UnitSystem } from "@workspace/schemas"
+import {
+  amountParts,
+  type UnitKey,
+  type UnitSystem,
+} from "@workspace/schemas"
 
 import i18n from "@/lib/i18n"
 
@@ -20,7 +24,10 @@ export function formatNumber(value: number, options?: Intl.NumberFormatOptions) 
   return new Intl.NumberFormat(i18n.language, options).format(value)
 }
 
-const UNIT_WORD = /^(.*\S) (g|kg|oz|lb|ml|l|tsp|tbsp|cups?)$/
+/** The name of a unit in the current language: "EL" in German, "tbsp" in English. */
+export function unitName(unit: UnitKey, count = 2) {
+  return i18n.t(`common:units.${unit}`, { count })
+}
 
 /**
  * An amount as text ("200 g", "1,5 Tassen"), scaled by `factor`, in the chosen
@@ -28,19 +35,13 @@ const UNIT_WORD = /^(.*\S) (g|kg|oz|lb|ml|l|tsp|tbsp|cups?)$/
  * language. Returns null when the source gave no amount.
  */
 export function formatAmount(
-  amount: { quantity: number | null; unit: string | null },
+  amount: { quantity: number | null; unit: UnitKey | null },
   factor = 1,
   system: Units = "metric"
 ) {
-  const text = formatAmountEn(amount, factor, system)
-  if (!text) return text
+  const parts = amountParts(amount, factor, system)
+  if (!parts) return null
   const decimal = formatNumber(1.5).charAt(1)
-  const localized = text.replace(/(\d)\.(\d)/g, `$1${decimal}$2`)
-  const match = UNIT_WORD.exec(localized)
-  if (!match) return localized
-  const [, number, unit] = match
-  const key = unit === "cup" || unit === "cups" ? "cup" : unit
-  // "1 cup", "1½ cups": the number decides the word, as in the English text.
-  const count = unit === "cups" ? 2 : 1
-  return `${number} ${i18n.t(`common:units.${key}`, { count })}`
+  const number = parts.number.replace(".", decimal)
+  return parts.unit ? `${number} ${unitName(parts.unit, parts.count)}` : number
 }

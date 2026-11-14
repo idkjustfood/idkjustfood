@@ -3,6 +3,8 @@
  * Replace with real queries once the API endpoints exist.
  */
 
+import type { UnitKey } from "@workspace/schemas"
+
 export type SourceKind = "video" | "website" | "photo" | "text"
 
 export type Ingredient = {
@@ -10,7 +12,7 @@ export type Ingredient = {
   name: string
   /** Empty when the source does not say. Never guessed. */
   quantity: number | null
-  unit: string | null
+  unit: UnitKey | null
   note?: string
 }
 
@@ -72,10 +74,10 @@ export const recipes: Recipe[] = [
         unit: "g",
         note: "cut into strips",
       },
-      { id: "i3", name: "Garlic", quantity: 3, unit: "cloves", note: "minced" },
+      { id: "i3", name: "Garlic", quantity: 3, unit: "clove", note: "minced" },
       { id: "i4", name: "Sun-dried tomatoes", quantity: 100, unit: "g" },
       { id: "i5", name: "Cream", quantity: 250, unit: "ml" },
-      { id: "i6", name: "Baby spinach", quantity: 2, unit: "handfuls" },
+      { id: "i6", name: "Baby spinach", quantity: 2, unit: null, note: "handfuls" },
       { id: "i7", name: "Parmesan", quantity: 50, unit: "g", note: "grated" },
       { id: "i8", name: "Salt and pepper", quantity: null, unit: null },
     ],
@@ -131,7 +133,7 @@ export const recipes: Recipe[] = [
         note: "a good drizzle",
       },
       { id: "i3", name: "Flaky salt", quantity: null, unit: null },
-      { id: "i4", name: "Rosemary", quantity: 2, unit: "sprigs" },
+      { id: "i4", name: "Rosemary", quantity: 2, unit: null, note: "sprigs" },
     ],
     steps: [
       { id: "s1", text: "Boil the potatoes until soft.", timerMinutes: 20 },
@@ -238,7 +240,7 @@ export const recipes: Recipe[] = [
     tags: ["Asian", "Vegan", "Under 15 min"],
     ingredients: [
       { id: "i1", name: "Wheat noodles", quantity: 100, unit: "g" },
-      { id: "i2", name: "Garlic", quantity: 2, unit: "cloves", note: "grated" },
+      { id: "i2", name: "Garlic", quantity: 2, unit: "clove", note: "grated" },
       { id: "i3", name: "Chili flakes", quantity: 1, unit: "tbsp" },
       { id: "i4", name: "Soy sauce", quantity: 2, unit: "tbsp" },
       {
@@ -335,7 +337,7 @@ export type ShoppingItem = {
   id: string
   name: string
   quantity: number | null
-  unit: string | null
+  unit: UnitKey | null
   category: string
   checked: boolean
   /** Recipes this item came from. More than one means amounts were merged. */
@@ -365,7 +367,7 @@ export const shoppingLists: ShoppingList[] = [
         id: "a",
         name: "Garlic",
         quantity: 5,
-        unit: "cloves",
+        unit: "clove",
         category: "Produce",
         checked: false,
         fromRecipes: [
@@ -378,7 +380,7 @@ export const shoppingLists: ShoppingList[] = [
         id: "b",
         name: "Baby spinach",
         quantity: 2,
-        unit: "handfuls",
+        unit: "bunch",
         category: "Produce",
         checked: true,
         fromRecipes: ["Creamy Tuscan chicken pasta"],
@@ -514,7 +516,7 @@ export const shoppingLists: ShoppingList[] = [
         id: "b",
         name: "Rosemary",
         quantity: 4,
-        unit: "sprigs",
+        unit: null,
         category: "Produce",
         checked: true,
         fromRecipes: ["Crispy smashed potatoes"],

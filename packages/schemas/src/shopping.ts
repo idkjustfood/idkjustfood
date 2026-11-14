@@ -1,11 +1,11 @@
 import { z } from "zod"
 
 import type { Ingredient } from "./recipe.js"
-import { unitKey } from "./units.js"
+import { UnitSchema, unitKey } from "./units.js"
 
 const name = z.string().trim().min(1).max(200)
 const quantity = z.number().positive().max(1_000_000).nullable()
-const unit = z.string().trim().min(1).max(40).nullable()
+const unit = UnitSchema.nullable()
 const note = z.string().trim().min(1).max(300).nullable()
 
 /** What an item on a shopping list is. The quantity is empty when nobody said how much. */

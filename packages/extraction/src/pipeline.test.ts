@@ -231,6 +231,26 @@ describe("the recipe", () => {
     expect(failure.message).toContain("ingredients.0.quantity")
   })
 
+  test("units the AI wrote in its own words are mapped to the list", async () => {
+    const recipe = await extractRecipe(text, {
+      ai: withAnswer({
+        ...pancakeJson,
+        ingredients: [
+          { name: "Mehl", quantity: 2, unit: "Esslöffel", note: null },
+          { name: "Milch", quantity: 250, unit: "Gramm", note: null },
+          { name: "basil", quantity: 1, unit: "handful", note: "torn" },
+        ],
+      }),
+      tempRoot,
+    })
+    expect(recipe.ingredients).toEqual([
+      { name: "Mehl", quantity: 2, unit: "tbsp", note: null },
+      { name: "Milch", quantity: 250, unit: "g", note: null },
+      // Not in the list: the amount stays, the original word goes into the note.
+      { name: "basil", quantity: 1, unit: null, note: "handful, torn" },
+    ])
+  })
+
   test("a negative or zero amount is not accepted", async () => {
     const bad = {
       ...pancakeJson,

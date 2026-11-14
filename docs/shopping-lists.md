@@ -56,7 +56,7 @@ connection never creates duplicates. An id used by someone else's list gives `40
 list. An ingredient is merged into an existing line when:
 
 - the name is the same (ignoring upper and lower case and spaces), and
-- the unit is the same (`g`, `gram` and `grams` count as the same), and
+- the unit is the same (units come from a fixed list, see `docs/units.md`), and
 - the line is not ticked off yet, and
 - both have an amount, or both have none.
 
