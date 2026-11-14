@@ -1,0 +1,141 @@
+{
+  "title": "Pianificatore dei pasti",
+  "newPlan": "Nuovo piano",
+  "shoppingList": "Lista della spesa",
+  "autoPlan": "Pianifica in automatico",
+  "demo": "I piani dei pasti richiedono un account. Accedi per pianificare i tuoi pasti.",
+  "demoOnly": "Non funziona con i dati di esempio. Accedi per pianificare i tuoi pasti.",
+  "loadingPlans": "Caricamento dei tuoi piani",
+  "plansError": "Impossibile caricare i tuoi piani",
+  "checkConnection": "Controlla la connessione e riprova.",
+  "empty": {
+    "title": "Ancora nessun piano dei pasti",
+    "titleHousehold": "Ancora nessun piano per {{name}}",
+    "message": "Pianifica i tuoi pasti a mano, o lascia che l'app riempia una settimana con le tue ricette salvate. Poi aggiungi gli ingredienti a una lista della spesa.",
+    "action": "Crea un piano"
+  },
+  "weekError": "Impossibile caricare questa settimana",
+  "loadingWeek": "Caricamento della settimana",
+  "weekEmpty": "Questa settimana non è pianificato nulla. Tocca uno slot per scegliere una ricetta, oppure usa la pianificazione automatica.",
+  "caloriesNote": "Le calorie sono stime ricavate dalle ricette, per una persona.",
+  "deletePlan": "Elimina questo piano",
+  "cancel": "Annulla",
+  "servings": "Porzioni",
+  "slots": {
+    "breakfast": "Colazione",
+    "midday": "Mezzogiorno",
+    "afternoon": "Pomeriggio"
+  },
+  "week": {
+    "previous": "Settimana precedente",
+    "next": "Settimana successiva",
+    "goToThis": "Vai a questa settimana",
+    "thisWeek": "Questa settimana"
+  },
+  "day": {
+    "today": "Oggi",
+    "kcal": "≈ {{value}} kcal{{plus}}",
+    "missing_one": "{{count}} pasto non ha una stima delle calorie.",
+    "missing_other": "{{count}} pasti non hanno una stima delle calorie.",
+    "changeLabel_one": "{{slot}}, {{title}}, {{count}} porzione. Modifica",
+    "changeLabel_other": "{{slot}}, {{title}}, {{count}} porzioni. Modifica",
+    "addLabel": "{{slot}}, vuoto. Aggiungi un pasto",
+    "add": "Aggiungi"
+  },
+  "new": {
+    "title": "Nuovo piano dei pasti",
+    "name": "Nome",
+    "placeholder": "I nostri pasti",
+    "shared": "Tutti in {{name}} possono vedere e modificare questo piano. Usa le ricette della famiglia.",
+    "theHousehold": "la famiglia",
+    "personal": "Solo tu puoi vedere questo piano.",
+    "create": "Crea",
+    "error": "Impossibile creare il piano."
+  },
+  "delete": {
+    "title": "Eliminare questo piano?",
+    "message": "{{name}} e tutti i suoi pasti vengono eliminati per tutti quelli che possono vederlo. Le tue ricette e liste della spesa restano.",
+    "confirm": "Elimina",
+    "error": "Impossibile eliminare il piano."
+  },
+  "wizard": {
+    "step": "Passo {{current}} di 3 · {{name}}",
+    "steps": {
+      "goals": "Obiettivi",
+      "days": "Giorni",
+      "result": "Risultato"
+    },
+    "next": "Avanti: scegli i giorni",
+    "back": "Indietro",
+    "fill": "Riempi il mio piano",
+    "planning": "Pianificazione…",
+    "open": "Apri il mio piano",
+    "noPlan": "Apri il pianificatore e scegli prima un piano.",
+    "fillError": "Impossibile riempire il piano. Riprova.",
+    "problem": {
+      "calories": "Le calorie al giorno devono essere un numero tra 500 e 10.000.",
+      "minutes": "Il tempo per pasto deve essere un numero di minuti, ad esempio 30."
+    },
+    "intro": "Dì al pianificatore cosa vuoi. Sceglie tra le tue ricette salvate e non inventa mai un pasto. Lascia vuoto un obiettivo per ignorarlo.",
+    "calories": "Calorie al giorno (per persona)",
+    "caloriesPlaceholder": "Ad esempio 2000",
+    "caloriesHelp": "Usa le stime nutrizionali delle tue ricette. Le ricette senza stima vengono escluse quando lo imposti.",
+    "diet": "Dieta (un tag della ricetta)",
+    "dietPlaceholder": "Ad esempio vegetariana",
+    "diets": {
+      "vegetarian": "Vegetariana",
+      "vegan": "Vegana"
+    },
+    "maxTime": "Tempo massimo per pasto",
+    "minutes": "{{count}} min",
+    "any": "Qualsiasi",
+    "weeksLabel": "Quante settimane",
+    "weeks": "Settimane",
+    "servingsPerMeal": "Porzioni per pasto",
+    "existing": "Pasti già pianificati",
+    "keep": "Mantienili",
+    "replace": "Sostituiscili",
+    "daysIntro": "Salta giorni o singoli pasti e cambia le porzioni di un giorno. I pasti saltati restano vuoti.",
+    "planned": "Pianificato",
+    "skipped": "Saltato",
+    "result": {
+      "filled": "Il tuo piano è pieno",
+      "partly": "Il tuo piano è pieno in parte",
+      "filledMessage": "Ogni pasto richiesto ha una ricetta. Puoi cambiarne uno qualsiasi a mano nel piano.",
+      "partlyMessage_one": "{{count}} pasto è rimasto vuoto perché nessuna ricetta salvata corrisponde. Salva più ricette, o allenta i tuoi obiettivi e riprova.",
+      "partlyMessage_other": "{{count}} pasti sono rimasti vuoti perché nessuna ricetta salvata corrisponde. Salva più ricette, o allenta i tuoi obiettivi e riprova."
+    }
+  },
+  "slot": {
+    "remove": "Rimuovi",
+    "save": "Salva le porzioni",
+    "swap": "Sostituisci con un'altra ricetta",
+    "pick": "Scegli una ricetta",
+    "search": "Cerca ricette",
+    "loading": "Caricamento delle ricette",
+    "loadError": "Impossibile caricare le ricette",
+    "noRecipes": "Non hai ancora ricette salvate.",
+    "noHouseholdRecipes": "Un piano della famiglia usa le ricette della famiglia. Non ne è ancora condivisa nessuna.",
+    "noMatch": "Nessuna ricetta corrisponde.",
+    "planLabel": "Pianifica {{title}}",
+    "kcalPerServing": "≈ {{value}} kcal a porzione",
+    "error": "Qualcosa è andato storto."
+  },
+  "list": {
+    "title": "Aggiungi gli ingredienti a una lista della spesa",
+    "done": "Fatto",
+    "intro": "Le quantità sono adattate alle porzioni di ogni pasto e gli ingredienti uguali vengono uniti. Non viene aggiunto nulla finché non tocchi il pulsante.",
+    "whichMeals": "Quali pasti",
+    "wholePlan": "Tutto il piano",
+    "weekEmpty": "Questa settimana non è pianificato nulla.",
+    "whichList": "Quale lista?",
+    "none": "Non hai ancora liste della spesa. Creane una nella scheda Spesa.",
+    "theList": "la lista",
+    "nothing": "Non ci sono pasti da aggiungere.",
+    "added_one": "Gli ingredienti di {{count}} pasto sono stati aggiunti a {{name}}.",
+    "added_other": "Gli ingredienti di {{count}} pasti sono stati aggiunti a {{name}}.",
+    "adding": "Aggiunta in corso…",
+    "add": "Aggiungi ingredienti",
+    "error": "Impossibile aggiungere gli ingredienti."
+  }
+}

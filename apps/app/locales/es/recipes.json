@@ -1,0 +1,173 @@
+{
+  "list": {
+    "title": "Recetas",
+    "subtitleHousehold": "Compartidas con {{name}}",
+    "householdFallback": "tu hogar",
+    "subtitlePersonal": "Tus propias recetas",
+    "searchPlaceholder": "Buscar recetas o ingredientes",
+    "loading": "Cargando recetas",
+    "loadError": "No se pudieron cargar tus recetas",
+    "searchError": "No se pudo buscar en tus recetas",
+    "empty": {
+      "title": "Aún no hay recetas",
+      "message": "Escribe una receta tú mismo o comparte un reel de Instagram y aparecerá aquí.",
+      "action": "Añade tu primera receta"
+    },
+    "nothing": {
+      "title": "No se encontró nada",
+      "message": "Ninguna receta coincide con tu búsqueda y los filtros.",
+      "action": "Borrar filtros"
+    }
+  },
+  "errors": {
+    "checkConnection": "Comprueba tu conexión e inténtalo de nuevo.",
+    "loadRecipe": "No se pudo cargar esta receta",
+    "demoOnly": "Esto no funciona con datos de ejemplo. Inicia sesión para guardar recetas de verdad.",
+    "notFound": "Receta no encontrada",
+    "addToList": "No se pudo añadir la receta."
+  },
+  "missing": {
+    "title": "Esta receta no existe",
+    "message": "Puede que se haya eliminado o que no esté compartida contigo.",
+    "action": "Volver a las recetas"
+  },
+  "detail": {
+    "title": "Receta",
+    "loading": "Cargando receta",
+    "ingredients": "Ingredientes",
+    "noIngredients": "Aún no hay ingredientes.",
+    "steps": "Pasos",
+    "noSteps": "Aún no hay pasos.",
+    "nutrition": "Nutrición",
+    "addToList": "Añadir a la lista de la compra",
+    "edit": "Editar receta",
+    "export": "Exportar receta",
+    "prep": "{{time}} de preparación",
+    "cooking": "{{time}} de cocción",
+    "startCooking": "Empezar a cocinar"
+  },
+  "export": {
+    "title": "Exportar receta",
+    "json": "JSON",
+    "jsonDetail": "Para copias de seguridad y otras apps",
+    "markdown": "Markdown",
+    "markdownDetail": "Texto plano para leer o imprimir",
+    "schemaOrg": "schema.org Recipe",
+    "schemaOrgDetail": "Formato estándar de recetas para la web",
+    "copied": "{{name}} copiado al portapapeles.",
+    "done": "Listo",
+    "cancel": "Cancelar"
+  },
+  "addToList": {
+    "titleAdded": "Añadido a tu lista",
+    "titleChoose": "¿A qué lista añadir?",
+    "added_one": "Los ingredientes para {{count}} ración de {{title}} están en {{list}}. Los ingredientes iguales se han unido.",
+    "added_other": "Los ingredientes para {{count}} raciones de {{title}} están en {{list}}. Los ingredientes iguales se han unido.",
+    "open": "Abrir la lista",
+    "done": "Listo",
+    "noLists": "Aún no tienes listas de la compra. Crea una primero.",
+    "listDetail_one": "{{kind}} · {{count}} artículo",
+    "listDetail_other": "{{kind}} · {{count}} artículos",
+    "adding": "Añadiendo…",
+    "newList": "Nueva lista",
+    "cancel": "Cancelar"
+  },
+  "edit": {
+    "title": "Editar receta",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "delete": "Eliminar receta",
+    "deleting": "Eliminando…",
+    "keep": "Conservarla",
+    "deleteTitle": "¿Eliminar esta receta?",
+    "deleteConfirm": "«{{title}}» se perderá para siempre. Esto no se puede deshacer.",
+    "deleteConfirmHousehold": "«{{title}}» se perderá para siempre, para todos en tu hogar. Esto no se puede deshacer.",
+    "fixFields": "Algunos campos necesitan corrección. Están marcados abajo."
+  },
+  "cook": {
+    "close": "Cerrar",
+    "closeCooking": "Cerrar el modo cocina",
+    "step": "Paso {{current}} de {{total}}",
+    "showIngredients": "Mostrar ingredientes",
+    "ingredients": "Ingredientes",
+    "listening": "Escuchando: di «siguiente» o «atrás»",
+    "voiceOff": "Control por voz desactivado",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "done": "Listo"
+  },
+  "sources": {
+    "manual": "Escrita a mano",
+    "import": "Importada",
+    "video": "Vídeo",
+    "website": "Sitio web",
+    "photo": "Foto",
+    "text": "Texto pegado",
+    "other": "Receta"
+  },
+  "form": {
+    "title": "Título",
+    "description": "Descripción breve",
+    "servings": "Raciones",
+    "prep": "Preparación (min)",
+    "cooking": "Cocción (min)",
+    "tags": "Etiquetas",
+    "tagsPlaceholder": "Italiana, Vegetariana, Menos de 30 min",
+    "ingredients": "Ingredientes",
+    "amountHint": "Deja la cantidad vacía si no la sabes.",
+    "missingAmounts_one": "{{count}} cantidad no estaba en la fuente. La dejamos vacía en lugar de adivinar. Rellena lo que sepas.",
+    "missingAmounts_other": "{{count}} cantidades no estaban en la fuente. Las dejamos vacías en lugar de adivinar. Rellena lo que sepas.",
+    "ingredientFallback": "ingrediente {{n}}",
+    "amount": "Cantidad",
+    "unit": "Unidad",
+    "ingredient": "Ingrediente",
+    "note": "Nota, por ejemplo «picado»",
+    "remove": "Quitar {{name}}",
+    "amountMissing": "Cantidad no indicada en la fuente",
+    "addIngredient": "Añadir ingrediente",
+    "steps": "Pasos",
+    "stepsHint": "Un tiempo en un paso, como «hornear 30 minutos», se convierte en un temporizador.",
+    "stepN": "Paso {{n}}",
+    "removeStep": "Quitar el paso {{n}}",
+    "addStep": "Añadir paso",
+    "nutrition": "Nutrición por ración",
+    "nutritionHint": "Opcional. Lo que dejes vacío no se muestra.",
+    "calories": "Calorías (kcal)",
+    "protein": "Proteínas (g)",
+    "carbs": "Hidratos de carbono (g)",
+    "fat": "Grasas (g)",
+    "errors": {
+      "title": "Ponle un título a la receta.",
+      "servings": "Introduce un número entero de raciones, 1 o más.",
+      "minutes": "Introduce minutos enteros, por ejemplo 30.",
+      "number": "Introduce un número, por ejemplo 12,5.",
+      "quantity": "Introduce un número como 2, 1,5 o 1/2, o déjalo vacío.",
+      "ingredientName": "Añade el nombre del ingrediente."
+    }
+  },
+  "parts": {
+    "fewerServings": "Menos raciones",
+    "moreServings": "Más raciones",
+    "servings_one": "{{count}} ración",
+    "servings_other": "{{count}} raciones",
+    "noAmount": "sin cantidad",
+    "perServing": "Por ración. Es una estimación, no exacta.",
+    "nutrients": {
+      "Calories": "Calorías",
+      "Protein": "Proteínas",
+      "Carbs": "Hidratos",
+      "Fat": "Grasas"
+    }
+  },
+  "timer": {
+    "seconds_one": "{{count}} s",
+    "seconds_other": "{{count}} s",
+    "timeUp": "Se acabó el tiempo",
+    "timeUpLabel": "Se acabó el tiempo. Toca para reiniciar el temporizador",
+    "runningLabel": "Quedan {{time}}. Toca para detener el temporizador",
+    "startLabel": "Iniciar temporizador de {{duration}}",
+    "running": "{{time}} · toca para detener",
+    "idle": "Temporizador de {{duration}}"
+  }
+}

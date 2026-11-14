@@ -1,4 +1,5 @@
 import { CircleAlert, type LucideIcon } from "lucide-react-native"
+import { useTranslation } from "react-i18next"
 import { ActivityIndicator, Text, View } from "react-native"
 
 import { Button } from "@/components/ui/button"
@@ -76,6 +77,7 @@ export function ErrorState({
   message: string
   onRetry?: () => void
 }) {
+  const { t } = useTranslation("common")
   return (
     <View
       role="alert"
@@ -91,7 +93,7 @@ export function ErrorState({
       {onRetry && (
         <Button
           variant="outline"
-          label="Try again"
+          label={t("tryAgain")}
           onPress={onRetry}
           className="mt-2"
         />

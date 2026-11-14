@@ -1,6 +1,7 @@
 import { router } from "expo-router"
 import { BookOpen, SearchX } from "lucide-react-native"
 import { useEffect, useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { ScrollView, View } from "react-native"
 
 import { Grid } from "@/components/grid"
@@ -26,6 +27,7 @@ function useDebounced<T>(value: T, ms = 250) {
 }
 
 export default function RecipeList() {
+  const { t, i18n } = useTranslation()
   const wide = useIsWide()
   const { space } = useAppState()
   const { household } = useHousehold()
@@ -42,8 +44,8 @@ export default function RecipeList() {
     for (const recipe of all.data ?? []) {
       for (const tag of recipe.tags) names.add(tag)
     }
-    return [...names].sort((a, b) => a.localeCompare(b))
-  }, [all.data, tags])
+    return [...names].sort((a, b) => a.localeCompare(b, i18n.language))
+  }, [all.data, tags, i18n.language])
 
   function toggleTag(tag: string) {
     setTags((current) =>
@@ -67,11 +69,13 @@ export default function RecipeList() {
 
   return (
     <Screen
-      title="Recipes"
+      title={t("recipes:list.title")}
       subtitle={
         space === "household"
-          ? `Shared with ${household?.name ?? "your household"}`
-          : "Your own recipes"
+          ? t("recipes:list.subtitleHousehold", {
+              name: household?.name ?? t("recipes:list.householdFallback"),
+            })
+          : t("recipes:list.subtitlePersonal")
       }
       toolbar={
         <View className="gap-3">
@@ -81,7 +85,7 @@ export default function RecipeList() {
               <SearchField
                 value={query}
                 onChangeText={setQuery}
-                placeholder="Search recipes or ingredients"
+                placeholder={t("recipes:list.searchPlaceholder")}
               />
               {allTags.length > 0 &&
                 (wide ? (
@@ -103,37 +107,37 @@ export default function RecipeList() {
       }
     >
       {all.isPending && all.fetchStatus !== "idle" && (
-        <LoadingState label="Loading recipes" />
+        <LoadingState label={t("recipes:list.loading")} />
       )}
       {all.isError && (
         <ErrorState
-          title="Could not load your recipes"
-          message="Check your connection and try again."
+          title={t("recipes:list.loadError")}
+          message={t("recipes:errors.checkConnection")}
           onRetry={() => void all.refetch()}
         />
       )}
       {all.isSuccess && !hasRecipes && (
         <EmptyState
           icon={BookOpen}
-          title="No recipes yet"
-          message="Write a recipe yourself, or share a reel from Instagram, and it shows up here."
-          action="Add your first recipe"
+          title={t("recipes:list.empty.title")}
+          message={t("recipes:list.empty.message")}
+          action={t("recipes:list.empty.action")}
           onAction={() => router.push("/add")}
         />
       )}
       {hasRecipes && found.isError && (
         <ErrorState
-          title="Could not search your recipes"
-          message="Check your connection and try again."
+          title={t("recipes:list.searchError")}
+          message={t("recipes:errors.checkConnection")}
           onRetry={() => void found.refetch()}
         />
       )}
       {hasRecipes && found.isSuccess && shown.length === 0 && (
         <EmptyState
           icon={SearchX}
-          title="Nothing found"
-          message="No recipe matches your search and filters."
-          action="Clear filters"
+          title={t("recipes:list.nothing.title")}
+          message={t("recipes:list.nothing.message")}
+          action={t("recipes:list.nothing.action")}
           onAction={() => {
             setQuery("")
             setTags([])

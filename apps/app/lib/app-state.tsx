@@ -11,7 +11,15 @@ import {
 
 import type { Units } from "@/lib/format"
 import type { Space } from "@/lib/mock-data"
-import { loadSpace, loadUnits, saveSpace, saveUnits } from "@/lib/preferences"
+import i18n, { deviceLanguage, supportedLanguages } from "@/lib/i18n"
+import {
+  loadLanguage,
+  loadSpace,
+  loadUnits,
+  saveLanguage,
+  saveSpace,
+  saveUnits,
+} from "@/lib/preferences"
 
 export type Appearance = "system" | "light" | "dark"
 /** Lets the prototype show the loading, empty and error states of the main lists. */
@@ -25,6 +33,9 @@ type AppState = {
   setUnits: (value: Units) => void
   appearance: Appearance
   setAppearance: (value: Appearance) => void
+  /** The chosen language, or "system" to follow the device. Remembered on this device. */
+  language: string
+  setLanguage: (value: string) => void
   /** The selected household, or null for the personal space. Remembered on this device. */
   householdId: string | null
   /** `space` is "household" whenever a household is selected. */
@@ -48,6 +59,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [demo, setDemo] = useState(false)
   const [units, setUnitsState] = useState<Units>("metric")
   const [appearance, setAppearance] = useState<Appearance>("system")
+  const [language, setLanguageState] = useState("system")
   const [householdId, setHouseholdIdState] = useState<string | null>(null)
   const [listState, setListState] = useState<ListState>("ready")
   const [offline, setOffline] = useState(false)
@@ -66,6 +78,22 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const setUnits = useCallback((value: Units) => {
     setUnitsState(value)
     void saveUnits(value)
+  }, [])
+
+  // So does the language. "system" follows the device, and English is the fallback.
+  useEffect(() => {
+    loadLanguage().then((saved) => {
+      if (saved && supportedLanguages.includes(saved)) setLanguageState(saved)
+    })
+  }, [])
+  useEffect(() => {
+    void i18n.changeLanguage(
+      language === "system" ? deviceLanguage() : language
+    )
+  }, [language])
+  const setLanguage = useCallback((value: string) => {
+    setLanguageState(value)
+    void saveLanguage(value === "system" ? null : value)
   }, [])
 
   // So does the selected space. A choice made before it has loaded wins.
@@ -93,6 +121,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       setUnits,
       appearance,
       setAppearance,
+      language,
+      setLanguage,
       householdId,
       space,
       setHouseholdId,
@@ -107,6 +137,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       units,
       setUnits,
       appearance,
+      language,
+      setLanguage,
       householdId,
       space,
       setHouseholdId,

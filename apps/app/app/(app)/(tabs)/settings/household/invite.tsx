@@ -1,5 +1,6 @@
 import { Copy, Share2 } from "lucide-react-native"
 import { useEffect, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { ActivityIndicator, Text, View } from "react-native"
 
 import { Screen } from "@/components/screen"
@@ -16,19 +17,20 @@ import {
 import { canShare, copyText, inDays, shareText } from "@/lib/share"
 
 export default function Invite() {
+  const { t } = useTranslation()
   const { household, isPending } = useHousehold()
 
   return (
-    <Screen title="Invite someone" back="/settings/household" narrow>
+    <Screen title={t("settings:invite.title")} back="/settings/household" narrow>
       {isPending ? (
         <ActivityIndicator />
       ) : !household || !isOwner(household.role) ? (
         <ErrorState
-          title="You can't invite people here"
+          title={t("settings:invite.cantTitle")}
           message={
             household
-              ? `Only owners of ${household.name} can invite people.`
-              : "Pick a household first, then invite people to it."
+              ? t("settings:invite.cantOwners", { name: household.name })
+              : t("settings:invite.cantPick")
           }
         />
       ) : (
@@ -40,6 +42,7 @@ export default function Invite() {
 
 /** Creates a fresh invite link when the screen opens and offers to copy or share it. */
 function InviteLink({ household }: { household: Household }) {
+  const { t } = useTranslation()
   const create = useCreateInvite(household.id)
   const [copied, setCopied] = useState(false)
   const { mutate } = create
@@ -55,7 +58,7 @@ function InviteLink({ household }: { household: Household }) {
   if (create.isError) {
     return (
       <ErrorState
-        title="Could not create an invite link"
+        title={t("settings:invite.createError")}
         message={create.error.message}
         onRetry={() => mutate()}
       />
@@ -64,14 +67,15 @@ function InviteLink({ household }: { household: Household }) {
 
   const invite = create.data
   const link = invite ? inviteLink(invite) : ""
-  const message = `Join our household "${household.name}" on idkjustfood: ${link}`
+  const message = t("settings:invite.message", {
+    name: household.name,
+    link,
+  })
 
   return (
     <Card className="gap-4 p-4">
       <Text className="text-base text-foreground">
-        Send this link to the person you want to invite. When they open it and
-        accept, they join {household.name} and see its recipes and shopping
-        lists.
+        {t("settings:invite.text", { name: household.name })}
       </Text>
       <View className="min-h-12 justify-center rounded-md bg-muted px-3 py-3">
         {invite ? (
@@ -84,22 +88,23 @@ function InviteLink({ household }: { household: Household }) {
       </View>
       {invite && (
         <Text className="text-sm text-muted-foreground">
-          The link works once and expires {inDays(invite.expiresAt)}. You can
-          cancel it on the household screen.
+          {t("settings:invite.expires", { when: inDays(invite.expiresAt) })}
         </Text>
       )}
       {canShare && (
         <Button
           icon={Share2}
-          label="Share link"
+          label={t("settings:invite.share")}
           disabled={!invite}
-          onPress={() => shareText(message, "Household invite")}
+          onPress={() => shareText(message, t("settings:invite.shareTitle"))}
         />
       )}
       <Button
         variant={canShare ? "outline" : "default"}
         icon={Copy}
-        label={copied ? "Copied" : "Copy link"}
+        label={
+          copied ? t("settings:invite.copied") : t("settings:invite.copy")
+        }
         disabled={!invite}
         onPress={async () => {
           await copyText(link)

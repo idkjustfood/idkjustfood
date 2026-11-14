@@ -1,10 +1,10 @@
 import { router, useLocalSearchParams } from "expo-router"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 
 import {
   mealSlots,
-  slotLabels,
   todayString,
   weekStart,
   type GenerateResult,
@@ -28,7 +28,7 @@ import {
   type WizardGoals,
 } from "@/lib/planner-wizard"
 
-const steps = ["Goals", "Days", "Result"] as const
+const steps = ["goals", "days", "result"] as const
 const timeChoices = ["", "15", "30", "45", "60"]
 
 /**
@@ -37,6 +37,7 @@ const timeChoices = ["", "15", "30", "45", "60"]
  * so it works the same with any AI provider or none.
  */
 export default function PlanWizard() {
+  const { t } = useTranslation()
   const params = useLocalSearchParams<{ planId?: string; start?: string }>()
   const planId = params.planId ?? ""
   const generate = useGeneratePlan(planId)
@@ -55,7 +56,7 @@ export default function PlanWizard() {
 
   function toDays() {
     if (problem) {
-      setMessage(problem)
+      setMessage(t(`planner:wizard.problem.${problem}`))
       return
     }
     setMessage(null)
@@ -76,7 +77,7 @@ export default function PlanWizard() {
       setMessage(
         error instanceof Error
           ? error.message
-          : "Could not fill the plan. Try again."
+          : t("planner:wizard.fillError")
       )
     }
   }
@@ -89,8 +90,11 @@ export default function PlanWizard() {
 
   return (
     <Screen
-      title="Auto-plan"
-      subtitle={`Step ${step + 1} of 3 · ${steps[step]}`}
+      title={t("planner:autoPlan")}
+      subtitle={t("planner:wizard.step", {
+        current: step + 1,
+        name: t(`planner:wizard.steps.${steps[step]}`),
+      })}
       back="/planner"
       narrow
       footer={
@@ -100,17 +104,21 @@ export default function PlanWizard() {
               {message}
             </Text>
           )}
-          {step === 0 && <Button label="Next: choose days" onPress={toDays} />}
+          {step === 0 && <Button label={t("planner:wizard.next")} onPress={toDays} />}
           {step === 1 && (
             <View className="flex-row gap-3">
               <Button
                 variant="outline"
-                label="Back"
+                label={t("planner:wizard.back")}
                 className="flex-1"
                 onPress={() => setStep(0)}
               />
               <Button
-                label={generate.isPending ? "Planning…" : "Fill my plan"}
+                label={
+                  generate.isPending
+                    ? t("planner:wizard.planning")
+                    : t("planner:wizard.fill")
+                }
                 className="flex-1"
                 disabled={meals === 0 || generate.isPending || !planId}
                 onPress={() => void run()}
@@ -119,7 +127,7 @@ export default function PlanWizard() {
           )}
           {step === 2 && (
             <Button
-              label="Open my plan"
+              label={t("planner:wizard.open")}
               onPress={() => router.replace("/planner")}
             />
           )}
@@ -128,7 +136,7 @@ export default function PlanWizard() {
     >
       {!planId && (
         <Text role="alert" className="text-destructive">
-          Open the planner and choose a plan first.
+          {t("planner:wizard.noPlan")}
         </Text>
       )}
 
@@ -147,8 +155,7 @@ export default function PlanWizard() {
       {step === 1 && (
         <View className="gap-3">
           <Text className="text-muted-foreground">
-            Skip days or single meals, and change the servings for a day.
-            Skipped meals stay empty.
+            {t("planner:wizard.daysIntro")}
           </Text>
           {days.map((day) => (
             <DayRow key={day.date} day={day} onChange={change} />
@@ -179,33 +186,32 @@ function GoalsStep({
   replace: boolean
   onReplace: (replace: boolean) => void
 }) {
+  const { t } = useTranslation()
   const set = (patch: Partial<WizardGoals>) => onGoals({ ...goals, ...patch })
   return (
     <View className="gap-5">
       <Text className="text-muted-foreground">
-        Tell the planner what you want. It picks from your saved recipes, and
-        never invents a meal. Leave a goal empty to ignore it.
+        {t("planner:wizard.intro")}
       </Text>
       <View className="gap-1.5">
         <Input
-          label="Calories per day (per person)"
+          label={t("planner:wizard.calories")}
           value={goals.calories}
           onChangeText={(calories) => set({ calories })}
           keyboardType="number-pad"
-          placeholder="For example 2000"
+          placeholder={t("planner:wizard.caloriesPlaceholder")}
           maxLength={5}
         />
         <Text className="text-sm text-muted-foreground">
-          Uses the nutrition estimates of your recipes. Recipes without an
-          estimate are left out when you set this.
+          {t("planner:wizard.caloriesHelp")}
         </Text>
       </View>
       <View className="gap-2">
         <Input
-          label="Diet (a tag on the recipe)"
+          label={t("planner:wizard.diet")}
           value={goals.diet}
           onChangeText={(diet) => set({ diet })}
-          placeholder="For example vegetarian"
+          placeholder={t("planner:wizard.dietPlaceholder")}
           autoCapitalize="none"
           maxLength={40}
         />
@@ -213,7 +219,7 @@ function GoalsStep({
           {["vegetarian", "vegan"].map((diet) => (
             <Chip
               key={diet}
-              label={diet[0]!.toUpperCase() + diet.slice(1)}
+              label={t(`planner:wizard.diets.${diet}`)}
               selected={goals.diet.trim().toLowerCase() === diet}
               onPress={() =>
                 set({
@@ -226,13 +232,17 @@ function GoalsStep({
       </View>
       <View className="gap-2">
         <Text className="text-sm font-medium text-foreground">
-          Longest time per meal
+          {t("planner:wizard.maxTime")}
         </Text>
         <View className="flex-row flex-wrap gap-2">
           {timeChoices.map((minutes) => (
             <Chip
               key={minutes || "any"}
-              label={minutes ? `${minutes} min` : "Any"}
+              label={
+                minutes
+                  ? t("planner:wizard.minutes", { count: Number(minutes) })
+                  : t("planner:wizard.any")
+              }
               selected={goals.maxMinutes === minutes}
               onPress={() => set({ maxMinutes: minutes })}
             />
@@ -240,15 +250,15 @@ function GoalsStep({
         </View>
       </View>
       <View className="flex-row items-center justify-between gap-3">
-        <Text className="flex-1 text-base text-foreground">How many weeks</Text>
-        <Stepper label="Weeks" value={weeks} max={4} onChange={onWeeks} />
+        <Text className="flex-1 text-base text-foreground">{t("planner:wizard.weeksLabel")}</Text>
+        <Stepper label={t("planner:wizard.weeks")} value={weeks} max={4} onChange={onWeeks} />
       </View>
       <View className="flex-row items-center justify-between gap-3">
         <Text className="flex-1 text-base text-foreground">
-          Servings per meal
+          {t("planner:wizard.servingsPerMeal")}
         </Text>
         <Stepper
-          label="Servings"
+          label={t("planner:servings")}
           value={servings}
           max={100}
           onChange={onServings}
@@ -256,16 +266,16 @@ function GoalsStep({
       </View>
       <View className="gap-2">
         <Text className="text-sm font-medium text-foreground">
-          Meals you already planned
+          {t("planner:wizard.existing")}
         </Text>
         <View className="flex-row flex-wrap gap-2">
           <Chip
-            label="Keep them"
+            label={t("planner:wizard.keep")}
             selected={!replace}
             onPress={() => onReplace(false)}
           />
           <Chip
-            label="Replace them"
+            label={t("planner:wizard.replace")}
             selected={replace}
             onPress={() => onReplace(true)}
           />
@@ -282,6 +292,7 @@ function DayRow({
   day: WizardDay
   onChange: (date: string, update: (day: WizardDay) => WizardDay) => void
 }) {
+  const { t } = useTranslation()
   const toggleSlot = (slot: MealSlot) =>
     onChange(day.date, (d) => ({
       ...d,
@@ -294,7 +305,9 @@ function DayRow({
           {dayLabel(day.date)}
         </Text>
         <Chip
-          label={day.plan ? "Planned" : "Skipped"}
+          label={
+            day.plan ? t("planner:wizard.planned") : t("planner:wizard.skipped")
+          }
           selected={day.plan}
           onPress={() => onChange(day.date, (d) => ({ ...d, plan: !d.plan }))}
         />
@@ -305,16 +318,16 @@ function DayRow({
             {mealSlots.map((slot) => (
               <Chip
                 key={slot}
-                label={slotLabels[slot]}
+                label={t(`planner:slots.${slot}`)}
                 selected={day.slots[slot]}
                 onPress={() => toggleSlot(slot)}
               />
             ))}
           </View>
           <View className="flex-row items-center justify-between gap-3">
-            <Text className="text-foreground">Servings</Text>
+            <Text className="text-foreground">{t("planner:servings")}</Text>
             <Stepper
-              label="Servings"
+              label={t("planner:servings")}
               value={day.servings}
               max={100}
               onChange={(servings) =>
@@ -329,18 +342,21 @@ function DayRow({
 }
 
 function ResultStep({ result }: { result: GenerateResult }) {
+  const { t } = useTranslation()
   const { unfilled, notes } = result
   return (
     <View className="gap-4">
       <Text role="heading" className="text-xl font-semibold text-foreground">
         {unfilled.length === 0
-          ? "Your plan is filled"
-          : "Your plan is partly filled"}
+          ? t("planner:wizard.result.filled")
+          : t("planner:wizard.result.partly")}
       </Text>
       <Text className="text-foreground">
         {unfilled.length === 0
-          ? "Every meal you asked for has a recipe. You can change any of them by hand in the plan."
-          : `${unfilled.length} ${unfilled.length === 1 ? "meal stayed" : "meals stayed"} empty because no saved recipe matches. Save more recipes, or loosen your goals and try again.`}
+          ? t("planner:wizard.result.filledMessage")
+          : t("planner:wizard.result.partlyMessage", {
+              count: unfilled.length,
+            })}
       </Text>
       {notes.length > 0 && (
         <View className="gap-1 rounded-lg border border-border bg-muted p-3">
@@ -359,7 +375,7 @@ function ResultStep({ result }: { result: GenerateResult }) {
               className={`gap-0.5 px-4 py-3 ${i > 0 ? "border-t border-border" : ""}`}
             >
               <Text className="text-base text-foreground">
-                {dayLabel(item.date)} · {slotLabels[item.slot]}
+                {dayLabel(item.date)} · {t(`planner:slots.${item.slot}`)}
               </Text>
               <Text className="text-sm text-muted-foreground">
                 {item.reason}

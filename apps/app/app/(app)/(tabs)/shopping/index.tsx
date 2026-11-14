@@ -1,6 +1,7 @@
 import { router } from "expo-router"
 import { Plus, ShoppingCart, Users } from "lucide-react-native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
 
 import type { ShoppingList } from "@workspace/schemas"
@@ -25,6 +26,7 @@ import {
 } from "@/lib/shopping"
 
 export default function ShoppingLists() {
+  const { t } = useTranslation()
   const wide = useIsWide()
   const { household, ready } = useHousehold()
   const { lists: allLists, loaded, error } = useShoppingState()
@@ -46,33 +48,37 @@ export default function ShoppingLists() {
 
   return (
     <Screen
-      title="Shopping"
-      subtitle={household ? `Shared with ${household.name}` : "Your own lists"}
+      title={t("shopping:title")}
+      subtitle={
+        household
+          ? t("shopping:sharedWith", { name: household.name })
+          : t("shopping:ownLists")
+      }
       toolbar={!wide && <SpaceSwitcher />}
       actions={
         <Button
           size="sm"
           icon={Plus}
-          label="New list"
+          label={t("shopping:newList")}
           onPress={() => setNewOpen(true)}
         />
       }
     >
       <OfflineBanner />
-      {!loaded && !error && <LoadingState label="Loading lists" rows={2} />}
+      {!loaded && !error && <LoadingState label={t("shopping:loading")} rows={2} />}
       {!loaded && error && (
         <ErrorState
-          title="Could not load your lists"
-          message="Your lists are saved on this phone once they have loaded. Try again when you are online."
+          title={t("shopping:loadError.title")}
+          message={t("shopping:loadError.message")}
           onRetry={() => void sync()}
         />
       )}
       {loaded && lists.length === 0 && (
         <EmptyState
           icon={ShoppingCart}
-          title="No shopping lists yet"
-          message="Make a list, then add the ingredients of a recipe with one tap."
-          action="New list"
+          title={t("shopping:empty.title")}
+          message={t("shopping:empty.message")}
+          action={t("shopping:newList")}
           onAction={() => setNewOpen(true)}
         />
       )}
@@ -87,31 +93,31 @@ export default function ShoppingLists() {
       <Sheet
         open={newOpen}
         onClose={() => setNewOpen(false)}
-        title="New shopping list"
+        title={t("shopping:new.title")}
       >
         <Input
-          label="Name"
+          label={t("shopping:new.name")}
           value={name}
           onChangeText={setName}
-          placeholder="Weekly shop"
+          placeholder={t("shopping:new.placeholder")}
           maxLength={100}
           autoFocus
           onSubmitEditing={create}
         />
         <Text className="text-sm text-muted-foreground">
           {household
-            ? `Everyone in ${household.name} can see and change this list.`
-            : "Only you can see this list."}
+            ? t("shopping:new.visibleHousehold", { name: household.name })
+            : t("shopping:new.visiblePersonal")}
         </Text>
         <View className="flex-row gap-3">
           <Button
             variant="outline"
-            label="Cancel"
+            label={t("shopping:cancel")}
             className="flex-1"
             onPress={() => setNewOpen(false)}
           />
           <Button
-            label="Create"
+            label={t("shopping:new.create")}
             className="flex-1"
             disabled={!name.trim() || !ready}
             onPress={create}
@@ -123,13 +129,17 @@ export default function ShoppingLists() {
 }
 
 function ListCard({ list }: { list: ShoppingList }) {
+  const { t } = useTranslation()
   const kindLabel = useListKind()(list)
   const done = list.items.filter((i) => i.checked).length
   const total = list.items.length
   return (
     <Pressable
       role="link"
-      accessibilityLabel={`${list.name}, ${kindLabel} list`}
+      accessibilityLabel={t("shopping:card.label", {
+        name: list.name,
+        kind: kindLabel,
+      })}
       onPress={() => router.push(`/shopping/${list.id}`)}
       className="flex-1 gap-3 rounded-lg border border-border bg-card p-4 active:opacity-80 web:hover:border-ring"
     >
@@ -138,7 +148,7 @@ function ListCard({ list }: { list: ShoppingList }) {
           {list.name}
         </Text>
         <Text className="text-sm text-muted-foreground">
-          {done} of {total}
+          {t("shopping:card.progress", { done, total })}
         </Text>
       </View>
       <View className="h-2 overflow-hidden rounded-full bg-muted">

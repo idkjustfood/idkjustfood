@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from "expo-router"
 import { Check } from "lucide-react-native"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { ActivityIndicator, Text, View } from "react-native"
 
 import { Screen } from "@/components/screen"
@@ -18,6 +19,7 @@ import { cn } from "@/lib/utils"
  * In demo mode nothing is sent and the steps run on a timer.
  */
 export default function Progress() {
+  const { t } = useTranslation()
   const params = useLocalSearchParams<{ method: string; job?: string }>()
   const method = isAddMethod(params.method) ? params.method : "video"
   const steps = addMethods[method].steps
@@ -41,28 +43,30 @@ export default function Progress() {
     if (job?.status === "failed") {
       router.replace({
         pathname: "/add/error",
-        params: { reason: "failed", message: job.error ?? undefined },
+        params: { reason: "failed", code: job.errorCode ?? undefined },
       })
     }
-  }, [job?.status, job?.error])
+  }, [job?.status, job?.errorCode])
 
   const done = succeeded ? steps.length : ticks
   const lostJob = query.isError
 
   return (
     <Screen
-      title={succeeded ? "Recipe ready" : "Working on it…"}
+      title={
+        succeeded ? t("add:progress.readyTitle") : t("add:progress.workingTitle")
+      }
       subtitle={
         succeeded
-          ? "Check it before you keep it."
-          : "This takes up to a minute. You can leave this screen: the recipe will be in your recipes when it is ready."
+          ? t("add:progress.readySubtitle")
+          : t("add:progress.workingSubtitle")
       }
       back="/add"
       narrow
       footer={
         succeeded ? (
           <Button
-            label="Review recipe"
+            label={t("add:progress.review")}
             onPress={() =>
               router.replace({
                 pathname: "/add/review",
@@ -74,13 +78,12 @@ export default function Progress() {
           <View className="gap-3">
             {lostJob && (
               <Text role="alert" className="text-sm text-destructive">
-                Could not check on the recipe. Check your connection; it may
-                still show up in your recipes.
+                {t("add:progress.lostJob")}
               </Text>
             )}
             <Button
               variant="outline"
-              label="Leave this screen"
+              label={t("add:progress.leave")}
               onPress={() => router.replace("/add")}
             />
           </View>
@@ -117,7 +120,7 @@ export default function Progress() {
                   state === "active" && "font-semibold"
                 )}
               >
-                {step}
+                {t(step)}
               </Text>
             </View>
           )

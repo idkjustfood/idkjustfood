@@ -9,6 +9,7 @@ import {
   Trash2,
 } from "lucide-react-native"
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Pressable, ScrollView, Text, View } from "react-native"
 
 import {
@@ -16,7 +17,6 @@ import {
   buildWeek,
   dayCalories,
   mealSlots,
-  slotLabels,
   todayString,
   weekStart,
   type Meal,
@@ -36,6 +36,7 @@ import { Input } from "@/components/ui/input"
 import { Sheet } from "@/components/ui/sheet"
 import { useAppState } from "@/lib/app-state"
 import { useHousehold } from "@/lib/households"
+import { formatNumber } from "@/lib/format"
 import { useIsWide } from "@/lib/layout"
 import {
   useCreatePlan,
@@ -52,6 +53,7 @@ type Editing = { date: string; slot: MealSlot }
 
 /** The meal planner: a week at a time, three meals a day. */
 export default function Planner() {
+  const { t } = useTranslation()
   const wide = useIsWide()
   const { demo } = useAppState()
   const { household, ready } = useHousehold()
@@ -77,7 +79,7 @@ export default function Planner() {
 
   return (
     <Screen
-      title="Meal planner"
+      title={t("planner:title")}
       toolbar={
         <View className="gap-3">
           {!wide && <SpaceSwitcher />}
@@ -97,13 +99,13 @@ export default function Planner() {
               ))}
               <Pressable
                 role="button"
-                accessibilityLabel="New plan"
+                accessibilityLabel={t("planner:newPlan")}
                 onPress={() => setNewOpen(true)}
                 className="h-10 flex-row items-center gap-1 rounded-full border border-dashed border-border px-4 active:bg-accent"
               >
                 <Icon as={Plus} size={16} />
                 <Text className="text-sm font-medium text-foreground">
-                  New plan
+                  {t("planner:newPlan")}
                 </Text>
               </Pressable>
             </ScrollView>
@@ -117,13 +119,13 @@ export default function Planner() {
             <Button
               variant="outline"
               icon={ShoppingCart}
-              label="Shopping list"
+              label={t("planner:shoppingList")}
               className="flex-1"
               onPress={() => setListOpen(true)}
             />
             <Button
               icon={Sparkles}
-              label="Auto-plan"
+              label={t("planner:autoPlan")}
               className="flex-1"
               onPress={() =>
                 router.push({
@@ -138,16 +140,16 @@ export default function Planner() {
     >
       {demo && (
         <Text className="rounded-lg border border-border bg-muted p-4 text-foreground">
-          Meal plans need an account. Log in to plan your meals.
+          {t("planner:demo")}
         </Text>
       )}
       {!demo && plans.isPending && (
-        <LoadingState label="Loading your plans" rows={2} />
+        <LoadingState label={t("planner:loadingPlans")} rows={2} />
       )}
       {!demo && plans.isError && (
         <ErrorState
-          title="Could not load your plans"
-          message="Check your connection and try again."
+          title={t("planner:plansError")}
+          message={t("planner:checkConnection")}
           onRetry={() => void plans.refetch()}
         />
       )}
@@ -155,30 +157,31 @@ export default function Planner() {
         <EmptyState
           icon={CalendarDays}
           title={
-            household ? `No plan for ${household.name} yet` : "No meal plan yet"
+            household
+              ? t("planner:empty.titleHousehold", { name: household.name })
+              : t("planner:empty.title")
           }
-          message="Plan your meals by hand, or let the app fill a week from your saved recipes. Then add the ingredients to a shopping list."
-          action="Make a plan"
+          message={t("planner:empty.message")}
+          action={t("planner:empty.action")}
           onAction={() => setNewOpen(true)}
         />
       )}
 
       {plan && week.isError && !week.data && (
         <ErrorState
-          title="Could not load this week"
-          message="Check your connection and try again."
+          title={t("planner:weekError")}
+          message={t("planner:checkConnection")}
           onRetry={() => void week.refetch()}
         />
       )}
       {plan && week.isPending && (
-        <LoadingState label="Loading the week" rows={2} />
+        <LoadingState label={t("planner:loadingWeek")} rows={2} />
       )}
       {plan && week.data && (
         <>
           {mealsInWeek === 0 && (
             <Text className="text-muted-foreground">
-              Nothing is planned in this week. Tap a slot to pick a recipe, or
-              use Auto-plan.
+              {t("planner:weekEmpty")}
             </Text>
           )}
           <Grid
@@ -194,12 +197,12 @@ export default function Planner() {
             )}
           />
           <Text className="text-sm text-muted-foreground">
-            Calories are estimates from the recipes, for one person.
+            {t("planner:caloriesNote")}
           </Text>
           <Button
             variant="ghost"
             icon={Trash2}
-            label="Delete this plan"
+            label={t("planner:deletePlan")}
             className="self-start"
             onPress={() => setDeleteOpen(true)}
           />
@@ -265,6 +268,7 @@ function WeekBar({
   onChange: (start: string) => void
   today: string
 }) {
+  const { t } = useTranslation()
   const thisWeek = weekStart(today)
   return (
     <View className="flex-row items-center gap-1">
@@ -272,7 +276,7 @@ function WeekBar({
         variant="outline"
         size="icon"
         icon={ChevronLeft}
-        label="Previous week"
+        label={t("planner:week.previous")}
         onPress={() => onChange(addDays(start, -7))}
       />
       <View className="flex-1 items-center">
@@ -282,11 +286,13 @@ function WeekBar({
         {start !== thisWeek && (
           <Pressable
             role="button"
-            accessibilityLabel="Go to this week"
+            accessibilityLabel={t("planner:week.goToThis")}
             onPress={() => onChange(thisWeek)}
             className="min-h-8 justify-center px-2"
           >
-            <Text className="text-sm text-primary">This week</Text>
+            <Text className="text-sm text-primary">
+              {t("planner:week.thisWeek")}
+            </Text>
           </Pressable>
         )}
       </View>
@@ -294,7 +300,7 @@ function WeekBar({
         variant="outline"
         size="icon"
         icon={ChevronRight}
-        label="Next week"
+        label={t("planner:week.next")}
         onPress={() => onChange(addDays(start, 7))}
       />
     </View>
@@ -313,6 +319,7 @@ function DayCard({
   isToday: boolean
   onEdit: (slot: MealSlot) => void
 }) {
+  const { t } = useTranslation()
   const total = dayCalories(mealSlots.map((slot) => slots[slot]))
   return (
     <View
@@ -327,39 +334,44 @@ function DayCard({
           className="text-base font-semibold text-foreground"
         >
           {dayLabel(date)}
-          {isToday ? " · Today" : ""}
+          {isToday ? ` · ${t("planner:day.today")}` : ""}
         </Text>
         {total.planned > 0 && total.calories > 0 && (
           <Text className="text-xs text-muted-foreground">
-            ≈ {total.calories.toLocaleString("en-GB")} kcal
-            {total.missing > 0 ? "+" : ""}
+            {t("planner:day.kcal", {
+              value: formatNumber(total.calories),
+              plus: total.missing > 0 ? "+" : "",
+            })}
           </Text>
         )}
       </View>
       {total.missing > 0 && (
         <Text className="px-4 text-xs text-muted-foreground">
-          {total.missing === 1
-            ? "1 meal has no calorie estimate."
-            : `${total.missing} meals have no calorie estimate.`}
+          {t("planner:day.missing", { count: total.missing })}
         </Text>
       )}
       <View className="pt-1">
         {mealSlots.map((slot) => {
           const meal = slots[slot]
+          const slotName = t(`planner:slots.${slot}`)
           return (
             <Pressable
               key={slot}
               role="button"
               accessibilityLabel={
                 meal
-                  ? `${slotLabels[slot]}, ${meal.recipe.title}, ${meal.servings} servings. Change`
-                  : `${slotLabels[slot]}, empty. Add a meal`
+                  ? t("planner:day.changeLabel", {
+                      slot: slotName,
+                      title: meal.recipe.title,
+                      count: meal.servings,
+                    })
+                  : t("planner:day.addLabel", { slot: slotName })
               }
               onPress={() => onEdit(slot)}
               className="min-h-14 flex-row items-center gap-3 border-t border-border px-4 py-2 active:bg-accent web:hover:bg-accent"
             >
               <Text className="w-24 text-sm text-muted-foreground">
-                {slotLabels[slot]}
+                {slotName}
               </Text>
               {meal ? (
                 <>
@@ -376,7 +388,9 @@ function DayCard({
               ) : (
                 <View className="flex-1 flex-row items-center gap-1">
                   <Icon as={Plus} size={16} className="text-muted-foreground" />
-                  <Text className="text-base text-muted-foreground">Add</Text>
+                  <Text className="text-base text-muted-foreground">
+                    {t("planner:day.add")}
+                  </Text>
                 </View>
               )}
             </Pressable>
@@ -403,6 +417,7 @@ function NewPlanSheet({
   onClose: () => void
   onCreated: (plan: MealPlan) => void
 }) {
+  const { t } = useTranslation()
   const create = useCreatePlan()
   const [name, setName] = useState("")
   const [message, setMessage] = useState<string | null>(null)
@@ -424,26 +439,28 @@ function NewPlanSheet({
       onCreated(plan)
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : "Could not make the plan."
+        error instanceof Error ? error.message : t("planner:new.error")
       )
     }
   }
 
   return (
-    <Sheet open={open} onClose={onClose} title="New meal plan">
+    <Sheet open={open} onClose={onClose} title={t("planner:new.title")}>
       <Input
-        label="Name"
+        label={t("planner:new.name")}
         value={name}
         onChangeText={setName}
-        placeholder="Our meals"
+        placeholder={t("planner:new.placeholder")}
         maxLength={100}
         autoFocus
         onSubmitEditing={() => void submit()}
       />
       <Text className="text-sm text-muted-foreground">
         {householdId
-          ? `Everyone in ${householdName ?? "the household"} can see and change this plan. It uses the household's recipes.`
-          : "Only you can see this plan."}
+          ? t("planner:new.shared", {
+              name: householdName ?? t("planner:new.theHousehold"),
+            })
+          : t("planner:new.personal")}
       </Text>
       {message && (
         <Text role="alert" className="text-sm text-destructive">
@@ -453,12 +470,12 @@ function NewPlanSheet({
       <View className="flex-row gap-3">
         <Button
           variant="outline"
-          label="Cancel"
+          label={t("planner:cancel")}
           className="flex-1"
           onPress={onClose}
         />
         <Button
-          label="Create"
+          label={t("planner:new.create")}
           className="flex-1"
           disabled={!name.trim() || !ready || create.isPending}
           onPress={() => void submit()}
@@ -479,6 +496,7 @@ function DeleteSheet({
   onClose: () => void
   onDeleted: () => void
 }) {
+  const { t } = useTranslation()
   const remove = useDeletePlan(plan.id)
   const [message, setMessage] = useState<string | null>(null)
 
@@ -489,16 +507,15 @@ function DeleteSheet({
       onDeleted()
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : "Could not delete the plan."
+        error instanceof Error ? error.message : t("planner:delete.error")
       )
     }
   }
 
   return (
-    <Sheet open={open} onClose={onClose} title="Delete this plan?">
+    <Sheet open={open} onClose={onClose} title={t("planner:delete.title")}>
       <Text className="text-foreground">
-        {plan.name} and all its meals are deleted for everyone who can see it.
-        Your recipes and shopping lists stay.
+        {t("planner:delete.message", { name: plan.name })}
       </Text>
       {message && (
         <Text role="alert" className="text-sm text-destructive">
@@ -508,13 +525,13 @@ function DeleteSheet({
       <View className="flex-row gap-3">
         <Button
           variant="outline"
-          label="Cancel"
+          label={t("planner:cancel")}
           className="flex-1"
           onPress={onClose}
         />
         <Button
           variant="destructive"
-          label="Delete"
+          label={t("planner:delete.confirm")}
           className="flex-1"
           disabled={remove.isPending}
           onPress={() => void submit()}

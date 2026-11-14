@@ -1,0 +1,173 @@
+{
+  "list": {
+    "title": "Recipes",
+    "subtitleHousehold": "Shared with {{name}}",
+    "householdFallback": "your household",
+    "subtitlePersonal": "Your own recipes",
+    "searchPlaceholder": "Search recipes or ingredients",
+    "loading": "Loading recipes",
+    "loadError": "Could not load your recipes",
+    "searchError": "Could not search your recipes",
+    "empty": {
+      "title": "No recipes yet",
+      "message": "Write a recipe yourself, or share a reel from Instagram, and it shows up here.",
+      "action": "Add your first recipe"
+    },
+    "nothing": {
+      "title": "Nothing found",
+      "message": "No recipe matches your search and filters.",
+      "action": "Clear filters"
+    }
+  },
+  "errors": {
+    "checkConnection": "Check your connection and try again.",
+    "loadRecipe": "Could not load this recipe",
+    "demoOnly": "This doesn't work with sample data. Log in to save real recipes.",
+    "notFound": "Recipe not found",
+    "addToList": "Could not add the recipe."
+  },
+  "missing": {
+    "title": "This recipe does not exist",
+    "message": "It may have been deleted, or it is not shared with you.",
+    "action": "Back to recipes"
+  },
+  "detail": {
+    "title": "Recipe",
+    "loading": "Loading recipe",
+    "ingredients": "Ingredients",
+    "noIngredients": "No ingredients yet.",
+    "steps": "Steps",
+    "noSteps": "No steps yet.",
+    "nutrition": "Nutrition",
+    "addToList": "Add to shopping list",
+    "edit": "Edit recipe",
+    "export": "Export recipe",
+    "prep": "{{time}} prep",
+    "cooking": "{{time}} cooking",
+    "startCooking": "Start cooking"
+  },
+  "export": {
+    "title": "Export recipe",
+    "json": "JSON",
+    "jsonDetail": "For backups and other apps",
+    "markdown": "Markdown",
+    "markdownDetail": "Plain text to read or print",
+    "schemaOrg": "schema.org Recipe",
+    "schemaOrgDetail": "Standard recipe format for the web",
+    "copied": "Copied {{name}} to the clipboard.",
+    "done": "Done",
+    "cancel": "Cancel"
+  },
+  "addToList": {
+    "titleAdded": "Added to your list",
+    "titleChoose": "Add to which list?",
+    "added_one": "The ingredients for {{count}} serving of {{title}} are on {{list}}. Same ingredients were merged.",
+    "added_other": "The ingredients for {{count}} servings of {{title}} are on {{list}}. Same ingredients were merged.",
+    "open": "Open the list",
+    "done": "Done",
+    "noLists": "You have no shopping lists yet. Make one first.",
+    "listDetail_one": "{{kind}} · {{count}} item",
+    "listDetail_other": "{{kind}} · {{count}} items",
+    "adding": "Adding…",
+    "newList": "New list",
+    "cancel": "Cancel"
+  },
+  "edit": {
+    "title": "Edit recipe",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving…",
+    "delete": "Delete recipe",
+    "deleting": "Deleting…",
+    "keep": "Keep it",
+    "deleteTitle": "Delete this recipe?",
+    "deleteConfirm": "“{{title}}” will be gone for good. This cannot be undone.",
+    "deleteConfirmHousehold": "“{{title}}” will be gone for good, for everyone in your household. This cannot be undone.",
+    "fixFields": "Some fields need a fix. They are marked below."
+  },
+  "cook": {
+    "close": "Close",
+    "closeCooking": "Close cooking mode",
+    "step": "Step {{current}} of {{total}}",
+    "showIngredients": "Show ingredients",
+    "ingredients": "Ingredients",
+    "listening": "Listening: say “next” or “back”",
+    "voiceOff": "Voice control off",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done"
+  },
+  "sources": {
+    "manual": "Written by hand",
+    "import": "Imported",
+    "video": "Video",
+    "website": "Website",
+    "photo": "Photo",
+    "text": "Pasted text",
+    "other": "Recipe"
+  },
+  "form": {
+    "title": "Title",
+    "description": "Short description",
+    "servings": "Servings",
+    "prep": "Prep (min)",
+    "cooking": "Cooking (min)",
+    "tags": "Tags",
+    "tagsPlaceholder": "Italian, Vegetarian, Under 30 min",
+    "ingredients": "Ingredients",
+    "amountHint": "Leave the amount empty if you don't know it.",
+    "missingAmounts_one": "{{count}} amount was not in the source. We left it empty instead of guessing. Fill in what you know.",
+    "missingAmounts_other": "{{count}} amounts were not in the source. We left them empty instead of guessing. Fill in what you know.",
+    "ingredientFallback": "ingredient {{n}}",
+    "amount": "Amount",
+    "unit": "Unit",
+    "ingredient": "Ingredient",
+    "note": "Note, for example “chopped”",
+    "remove": "Remove {{name}}",
+    "amountMissing": "Amount not given in the source",
+    "addIngredient": "Add ingredient",
+    "steps": "Steps",
+    "stepsHint": "A time in a step, like “bake 30 minutes”, becomes a timer.",
+    "stepN": "Step {{n}}",
+    "removeStep": "Remove step {{n}}",
+    "addStep": "Add step",
+    "nutrition": "Nutrition per serving",
+    "nutritionHint": "Optional. Whatever you leave empty is not shown.",
+    "calories": "Calories (kcal)",
+    "protein": "Protein (g)",
+    "carbs": "Carbs (g)",
+    "fat": "Fat (g)",
+    "errors": {
+      "title": "Give the recipe a title.",
+      "servings": "Enter a whole number of servings, 1 or more.",
+      "minutes": "Enter whole minutes, like 30.",
+      "number": "Enter a number, like 12.5.",
+      "quantity": "Enter a number like 2, 1.5 or 1/2, or leave it empty.",
+      "ingredientName": "Add the ingredient's name."
+    }
+  },
+  "parts": {
+    "fewerServings": "Fewer servings",
+    "moreServings": "More servings",
+    "servings_one": "{{count}} serving",
+    "servings_other": "{{count}} servings",
+    "noAmount": "no amount",
+    "perServing": "Per serving. An estimate, not exact.",
+    "nutrients": {
+      "Calories": "Calories",
+      "Protein": "Protein",
+      "Carbs": "Carbs",
+      "Fat": "Fat"
+    }
+  },
+  "timer": {
+    "seconds_one": "{{count}} sec",
+    "seconds_other": "{{count}} sec",
+    "timeUp": "Time is up",
+    "timeUpLabel": "Time is up. Tap to reset the timer",
+    "runningLabel": "{{time}} left. Tap to stop the timer",
+    "startLabel": "Start {{duration}} timer",
+    "running": "{{time}} · tap to stop",
+    "idle": "{{duration}} timer"
+  }
+}

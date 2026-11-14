@@ -1,6 +1,7 @@
 import { router, useLocalSearchParams } from "expo-router"
 import { Check, House, LinkIcon, X } from "lucide-react-native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { ActivityIndicator, Text, View } from "react-native"
 
 import { Screen } from "@/components/screen"
@@ -20,21 +21,22 @@ import { setPendingInvite } from "@/lib/pending-invite"
  * household, and lets you accept or decline.
  */
 export default function InviteScreen() {
+  const { t } = useTranslation("auth")
   const { id = "" } = useLocalSearchParams<{ id: string }>()
   const { data: session } = authClient.useSession()
   const { demo, setDemo } = useAppState()
   const signedIn = !!session && !demo
 
   return (
-    <Screen title="Household invite" narrow>
+    <Screen title={t("invite.screenTitle")} narrow>
       {signedIn ? (
         <Answer inviteId={id} />
       ) : (
         <EmptyState
           icon={House}
-          title="You're invited to a household"
-          message="Log in or create an account to see the invite and join. You'll come back here afterwards."
-          action="Log in or register"
+          title={t("invite.invitedTitle")}
+          message={t("invite.invitedMessage")}
+          action={t("invite.loginOrRegister")}
           onAction={() => {
             setPendingInvite(id)
             setDemo(false)
@@ -47,6 +49,7 @@ export default function InviteScreen() {
 }
 
 function Answer({ inviteId }: { inviteId: string }) {
+  const { t } = useTranslation("auth")
   const preview = useInvitePreview(inviteId, true)
   const { accept, decline } = useAnswerInvite(inviteId)
   const [declined, setDeclined] = useState(false)
@@ -56,9 +59,9 @@ function Answer({ inviteId }: { inviteId: string }) {
     return (
       <EmptyState
         icon={X}
-        title="Invite declined"
-        message="The link no longer works. Nothing else changed."
-        action="Go to my recipes"
+        title={t("invite.declinedTitle")}
+        message={t("invite.declinedMessage")}
+        action={t("invite.goToRecipes")}
         onAction={goHome}
       />
     )
@@ -68,7 +71,7 @@ function Answer({ inviteId }: { inviteId: string }) {
     return (
       <View className="flex-row items-center gap-2" aria-busy>
         <ActivityIndicator />
-        <Text className="text-muted-foreground">Loading the invite…</Text>
+        <Text className="text-muted-foreground">{t("invite.loading")}</Text>
       </View>
     )
   }
@@ -77,13 +80,13 @@ function Answer({ inviteId }: { inviteId: string }) {
     return (
       <EmptyState
         icon={LinkIcon}
-        title="This invite link doesn't work"
+        title={t("invite.brokenTitle")}
         message={
           preview.error instanceof ApiError && preview.error.status === 404
-            ? "It may have been used, cancelled or expired. Ask the person who invited you for a new link."
+            ? t("invite.brokenNotFound")
             : preview.error.message
         }
-        action="Go to my recipes"
+        action={t("invite.goToRecipes")}
         onAction={goHome}
       />
     )
@@ -94,9 +97,9 @@ function Answer({ inviteId }: { inviteId: string }) {
     return (
       <EmptyState
         icon={House}
-        title={`You're already in ${invite.householdName}`}
-        message="This invite is for a household you are a member of."
-        action="Open household"
+        title={t("invite.alreadyTitle", { household: invite.householdName })}
+        message={t("invite.alreadyMessage")}
+        action={t("invite.openHousehold")}
         onAction={() => router.replace("/settings/household")}
       />
     )
@@ -111,11 +114,13 @@ function Answer({ inviteId }: { inviteId: string }) {
         <Icon as={House} size={26} className="text-foreground" />
       </View>
       <Text role="heading" className="text-xl font-semibold text-foreground">
-        {invite.inviterName} invited you to join {invite.householdName}
+        {t("invite.joinTitle", {
+          inviter: invite.inviterName,
+          household: invite.householdName,
+        })}
       </Text>
       <Text className="text-base text-muted-foreground">
-        Everyone in a household shares recipes and shopping lists. You can leave
-        at any time.
+        {t("invite.joinMessage")}
       </Text>
       {error && (
         <Text role="alert" className="text-sm text-destructive">
@@ -124,7 +129,7 @@ function Answer({ inviteId }: { inviteId: string }) {
       )}
       <Button
         icon={Check}
-        label={accept.isPending ? "Joining…" : "Join household"}
+        label={accept.isPending ? t("invite.joining") : t("invite.join")}
         disabled={busy}
         onPress={() =>
           accept.mutate(undefined, {
@@ -134,7 +139,7 @@ function Answer({ inviteId }: { inviteId: string }) {
       />
       <Button
         variant="ghost"
-        label={decline.isPending ? "Declining…" : "Decline"}
+        label={decline.isPending ? t("invite.declining") : t("invite.decline")}
         disabled={busy}
         onPress={() =>
           decline.mutate(undefined, { onSuccess: () => setDeclined(true) })

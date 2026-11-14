@@ -1,0 +1,138 @@
+{
+  "title": "Impostazioni",
+  "account": {
+    "title": "Account",
+    "defaultName": "Tu",
+    "demoName": "Demo",
+    "demoEmail": "Stai vedendo dati di esempio, non hai effettuato l'accesso",
+    "leaveDemo": "Esci dalla demo",
+    "logOut": "Esci"
+  },
+  "household": {
+    "title": "Famiglia",
+    "count_one": "{{count}} famiglia",
+    "count_other": "{{count}} famiglie",
+    "none": "Ancora nessuna famiglia",
+    "detailHas": "Membri, inviti e ricette e liste condivise",
+    "detailNone": "Creane una o unisciti con un link d'invito"
+  },
+  "preferences": {
+    "title": "Preferenze",
+    "units": "Unità",
+    "metric": "Metrico (g, ml)",
+    "imperial": "Imperiale (oz, tazze)",
+    "appearance": "Aspetto",
+    "system": "Sistema",
+    "light": "Chiaro",
+    "dark": "Scuro",
+    "language": "Lingua"
+  },
+  "language": {
+    "title": "Lingua",
+    "system": "Segui la lingua del dispositivo",
+    "close": "Chiudi"
+  },
+  "data": {
+    "title": "I tuoi dati",
+    "exportTitle": "Esporta tutte le ricette",
+    "exportDetail": "JSON, Markdown o schema.org",
+    "importTitle": "Importa ricette",
+    "importDetail": "Da un'esportazione di idkjustfood o schema.org",
+    "json": "JSON",
+    "jsonDetail": "Backup completo, si può reimportare",
+    "markdown": "Markdown",
+    "markdownDetail": "Un file per ricetta",
+    "schema": "Ricetta schema.org",
+    "schemaDetail": "Per altre app di ricette",
+    "importHelp": "Scegli un file JSON o schema.org. Le ricette che hai già vengono saltate.",
+    "chooseFile": "Scegli file",
+    "cancel": "Annulla"
+  },
+  "plan": {
+    "title": "Piano",
+    "billing": "Piano e fatturazione"
+  },
+  "server": {
+    "title": "Questo server",
+    "address": "Indirizzo del server",
+    "transcription": "Trascrizione",
+    "parsing": "Analisi delle ricette",
+    "note": "I provider di IA sono scelti da chi gestisce questo server, nelle sue impostazioni. Va bene qualsiasi provider, anche modelli che ospiti tu."
+  },
+  "prototype": {
+    "title": "Prototipo",
+    "listStateLabel": "Mostra ricette e liste della spesa come",
+    "listState": "Stato della lista",
+    "normal": "Normale",
+    "loading": "Caricamento",
+    "empty": "Vuoto",
+    "error": "Errore",
+    "offline": "Simula modalità offline",
+    "offlineDetail": "Mostra l'avviso offline nelle liste della spesa"
+  },
+  "about": {
+    "title": "Informazioni",
+    "openSource": "idkjustfood è open source",
+    "version": "Versione {{version}}"
+  },
+  "manage": {
+    "title": "Famiglia",
+    "loading": "Caricamento della tua famiglia…",
+    "loadError": "Impossibile caricare la tua famiglia",
+    "manage": "Gestisci famiglia",
+    "pickTitle": "Scegli una famiglia",
+    "pickMessage": "Sei nel tuo spazio personale. Scegli una famiglia qui sopra per vederne i membri e invitare persone.",
+    "createAnother": "Crea un'altra famiglia",
+    "noneTitle": "Ancora nessuna famiglia",
+    "noneMessage": "Una famiglia condivide ricette e liste della spesa. Creane una e invita le persone con cui vivi, oppure apri un link d'invito che ti hanno mandato.",
+    "nameLabel": "Nome della famiglia",
+    "namePlaceholder": "Per esempio: Appartamento 3B",
+    "creating": "Creazione…",
+    "create": "Crea famiglia",
+    "subtitle": "La tua famiglia condivide ricette e liste della spesa.",
+    "showFrom": "Mostra ricette, liste e piani di",
+    "loadingMembers": "Caricamento dei membri…",
+    "membersError": "Impossibile caricare i membri",
+    "members": "Membri ({{count}})",
+    "you": "{{name}} (tu)",
+    "owner": "proprietario",
+    "member": "membro",
+    "remove": "Rimuovi {{name}}",
+    "invitesTitle": "Link d'invito aperti",
+    "loadingInvites": "Caricamento…",
+    "invitesError": "Impossibile caricare gli inviti",
+    "noInvites": "Nessun invito aperto",
+    "noInvitesDetail": "I link che nessuno ha ancora usato compaiono qui.",
+    "linkCopied": "Link copiato",
+    "inviteLink": "Link d'invito",
+    "inviteDetail": "Creato da {{name}} · scade {{when}}",
+    "copyLink": "Copia link d'invito",
+    "cancelInvite": "Annulla invito",
+    "invite": "Invita qualcuno",
+    "leave": "Lascia la famiglia",
+    "removeTitle": "Rimuovere {{name}}?",
+    "leaveTitle": "Lasciare {{name}}?",
+    "removeText": "{{name}} non vedrà più le ricette e le liste della spesa di questa famiglia. Potrai invitarlo di nuovo più tardi.",
+    "leaveText": "Non vedrai più le ricette e le liste della spesa di questa famiglia. Ti servirà un nuovo invito per tornare.",
+    "removeConfirm": "Rimuovi",
+    "cancel": "Annulla"
+  },
+  "invite": {
+    "title": "Invita qualcuno",
+    "cantTitle": "Qui non puoi invitare persone",
+    "cantOwners": "Solo i proprietari di {{name}} possono invitare persone.",
+    "cantPick": "Scegli prima una famiglia, poi invita persone.",
+    "createError": "Impossibile creare un link d'invito",
+    "text": "Invia questo link alla persona che vuoi invitare. Quando lo aprirà e accetterà, entrerà in {{name}} e vedrà le sue ricette e liste della spesa.",
+    "expires": "Il link funziona una sola volta e scade {{when}}. Puoi annullarlo nella schermata della famiglia.",
+    "share": "Condividi link",
+    "copy": "Copia link",
+    "copied": "Copiato",
+    "message": "Unisciti alla nostra famiglia \"{{name}}\" su idkjustfood: {{link}}",
+    "shareTitle": "Invito alla famiglia"
+  },
+  "billing": {
+    "title": "Piano e fatturazione",
+    "message": "Gestisci qui il tuo piano idkjustfood Cloud."
+  }
+}

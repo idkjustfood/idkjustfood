@@ -1,4 +1,5 @@
 import { Search, X } from "lucide-react-native"
+import { useTranslation } from "react-i18next"
 import { Pressable, TextInput, View } from "react-native"
 
 import { Icon } from "@/components/ui/icon"
@@ -12,6 +13,7 @@ export function SearchField({
   onChangeText: (text: string) => void
   placeholder: string
 }) {
+  const { t } = useTranslation("common")
   return (
     <View className="h-12 flex-row items-center gap-2 rounded-md border border-input bg-background pl-3">
       <Icon as={Search} className="text-muted-foreground" />
@@ -28,7 +30,7 @@ export function SearchField({
       {value.length > 0 && (
         <Pressable
           role="button"
-          accessibilityLabel="Clear search"
+          accessibilityLabel={t("clearSearch")}
           onPress={() => onChangeText("")}
           className="h-12 w-12 items-center justify-center"
         >

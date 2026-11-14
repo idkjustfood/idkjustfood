@@ -1,0 +1,59 @@
+{
+  "languageName": "Français",
+  "minutes_one": "{{count}} min",
+  "minutes_other": "{{count}} min",
+  "hours_one": "{{count}} h",
+  "hours_other": "{{count}} h",
+  "hoursMinutes": "{{hours}} h {{minutes}} min",
+  "units": {
+    "g": "g",
+    "kg": "kg",
+    "oz": "oz",
+    "lb": "lb",
+    "ml": "ml",
+    "l": "l",
+    "tsp": "c. à c.",
+    "tbsp": "c. à s.",
+    "cup_one": "tasse",
+    "cup_other": "tasses"
+  },
+  "back": "Retour",
+  "close": "Fermer",
+  "clearSearch": "Effacer la recherche",
+  "tryAgain": "Réessayer",
+  "comingSoon": "Bientôt disponible",
+  "offline": {
+    "title": "Vous êtes hors ligne",
+    "message": "Vous pouvez continuer à cocher des éléments. Les modifications seront synchronisées au retour de la connexion.",
+    "pending_one": "{{count}} modification en attente.",
+    "pending_other": "{{count}} modifications en attente."
+  },
+  "tabs": {
+    "recipes": "Recettes",
+    "shopping": "Courses",
+    "add": "Ajouter",
+    "planner": "Planning",
+    "settings": "Réglages",
+    "addRecipe": "Ajouter une recette",
+    "addRecipeButton": "Ajouter une recette"
+  },
+  "space": {
+    "personal": "Personnel",
+    "onlyYou": "Vous seul",
+    "shared": "Foyer partagé",
+    "change": "Espace : {{name}}. Changer",
+    "choose": "Choisir un espace",
+    "label": "Espace"
+  },
+  "demoOnly": "Cela ne fonctionne pas avec les données d'exemple. Connectez-vous pour gérer un vrai foyer.",
+  "stepper": {
+    "fewer": "Moins de {{label}}",
+    "more": "Plus de {{label}}"
+  },
+  "relativeDays": {
+    "today": "aujourd'hui",
+    "tomorrow": "demain",
+    "inDays_one": "dans {{count}} jour",
+    "inDays_other": "dans {{count}} jours"
+  }
+}

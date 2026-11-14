@@ -10,6 +10,7 @@ import { useEffect } from "react"
 import { api, ApiError, call, type Schemas } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
 import { authClient } from "@/lib/auth-client"
+import i18n from "@/lib/i18n"
 import { household as demoHousehold } from "@/lib/mock-data"
 import { resolveSpace } from "@/lib/space"
 
@@ -36,10 +37,7 @@ export const isOwner = (role: string | undefined) =>
   !!role?.split(",").includes("owner")
 
 const demoOnly = () => {
-  throw new ApiError(
-    "This doesn't work with sample data. Log in to manage a real household.",
-    0
-  )
+  throw new ApiError(i18n.t("common:demoOnly"), 0)
 }
 
 /** Every household the user is in. */

@@ -1,0 +1,89 @@
+{
+  "title": "Spesa",
+  "sharedWith": "Condivisa con {{name}}",
+  "ownLists": "Le tue liste",
+  "newList": "Nuova lista",
+  "loading": "Caricamento delle liste",
+  "cancel": "Annulla",
+  "kind": {
+    "personal": "Personale",
+    "household": "Famiglia"
+  },
+  "loadError": {
+    "title": "Impossibile caricare le tue liste",
+    "message": "Le tue liste vengono salvate su questo telefono dopo il caricamento. Riprova quando sei online."
+  },
+  "empty": {
+    "title": "Ancora nessuna lista della spesa",
+    "message": "Crea una lista, poi aggiungi gli ingredienti di una ricetta con un tocco."
+  },
+  "new": {
+    "title": "Nuova lista della spesa",
+    "name": "Nome",
+    "placeholder": "Spesa settimanale",
+    "visibleHousehold": "Tutti in {{name}} possono vedere e modificare questa lista.",
+    "visiblePersonal": "Solo tu puoi vedere questa lista.",
+    "create": "Crea"
+  },
+  "card": {
+    "label": "{{name}}, lista {{kind}}",
+    "progress": "{{done}} di {{total}}"
+  },
+  "list": {
+    "title": "Lista della spesa",
+    "loading": "Caricamento della lista",
+    "subtitle": "{{kind}} · {{open}} da prendere · {{done}} fatti",
+    "addRecipe": "Aggiungi una ricetta",
+    "addItem": "Aggiungi un articolo",
+    "addItemButton": "Aggiungi articolo",
+    "amount": "Quantità",
+    "amountPlaceholder": "Quantità (facoltativa)",
+    "unit": "Unità",
+    "unitPlaceholder": "Unità (g, ml, cucchiai…)",
+    "amountError": "La quantità deve essere un numero, come 2, 1,5 o 1/2.",
+    "empty": "Questa lista è ancora vuota. Scrivi un articolo qui sopra o aggiungi gli ingredienti di una ricetta.",
+    "inBasket": "Nel carrello",
+    "clear": "Svuota"
+  },
+  "recipe": {
+    "title": "Aggiungi gli ingredienti di una ricetta",
+    "hint": "Gli ingredienti uguali vengono uniti: per esempio 200 g + 100 g di farina diventano 300 g. Le quantità sono per le porzioni originali della ricetta.",
+    "loading": "Caricamento delle ricette",
+    "loadError": {
+      "title": "Impossibile caricare le ricette",
+      "message": "Controlla la connessione e riprova."
+    },
+    "none": "Non hai ancora ricette.",
+    "add": "Aggiungi {{title}}",
+    "adding": "Aggiunta in corso…",
+    "addError": "Impossibile aggiungere {{title}}. Riprova.",
+    "offline": "Serve una connessione per aggiungere una ricetta. Le altre modifiche sono salvate e verranno inviate prima."
+  },
+  "options": {
+    "title": "Opzioni della lista",
+    "rename": "Rinomina",
+    "delete": "Elimina lista",
+    "close": "Chiudi"
+  },
+  "rename": {
+    "title": "Rinomina lista",
+    "save": "Salva"
+  },
+  "delete": {
+    "title": "Eliminare questa lista?",
+    "message_one": "«{{name}}» e il suo {{count}} articolo verranno eliminati. Questa azione non si può annullare.",
+    "message_other": "«{{name}}» e i suoi {{count}} articoli verranno eliminati. Questa azione non si può annullare.",
+    "messageHousehold_one": "«{{name}}» e il suo {{count}} articolo verranno eliminati per tutti in famiglia. Questa azione non si può annullare.",
+    "messageHousehold_other": "«{{name}}» e i suoi {{count}} articoli verranno eliminati per tutti in famiglia. Questa azione non si può annullare.",
+    "keep": "Tienila",
+    "confirm": "Elimina"
+  },
+  "item": {
+    "fromRecipes_one": "Per {{count}} ricetta",
+    "fromRecipes_other": "Per {{count}} ricette",
+    "fromRecipesNoAmount_one": "Per {{count}} ricetta, quantità non indicata",
+    "fromRecipesNoAmount_other": "Per {{count}} ricette, quantità non indicata",
+    "noAmount": "quantità non indicata",
+    "remove": "Rimuovi {{name}}"
+  }
+}

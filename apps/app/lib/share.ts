@@ -1,6 +1,8 @@
 import * as Clipboard from "expo-clipboard"
 import { Platform, Share } from "react-native"
 
+import i18n from "@/lib/i18n"
+
 export async function copyText(text: string) {
   await Clipboard.setStringAsync(text)
 }
@@ -24,7 +26,7 @@ export async function shareText(message: string, title?: string) {
 /** "today", "tomorrow", "in 5 days". */
 export function inDays(iso: string) {
   const days = Math.round((new Date(iso).getTime() - Date.now()) / 86_400_000)
-  if (days <= 0) return "today"
-  if (days === 1) return "tomorrow"
-  return `in ${days} days`
+  if (days <= 0) return i18n.t("common:relativeDays.today")
+  if (days === 1) return i18n.t("common:relativeDays.tomorrow")
+  return i18n.t("common:relativeDays.inDays", { count: days })
 }

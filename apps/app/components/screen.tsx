@@ -1,6 +1,7 @@
 import { router, type Href } from "expo-router"
 import { ChevronLeft } from "lucide-react-native"
 import type { ReactNode } from "react"
+import { useTranslation } from "react-i18next"
 import { ScrollView, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
@@ -42,6 +43,7 @@ export function Screen({
   narrow,
   contentClassName,
 }: ScreenProps) {
+  const { t } = useTranslation("common")
   const wide = useIsWide()
   const width = cn("w-full self-center", narrow ? "max-w-2xl" : "max-w-6xl")
 
@@ -64,7 +66,7 @@ export function Screen({
               variant="ghost"
               size="icon"
               icon={ChevronLeft}
-              label="Back"
+              label={t("back")}
               className="-ml-3"
               onPress={() =>
                 router.canGoBack() ? router.back() : router.replace(back)

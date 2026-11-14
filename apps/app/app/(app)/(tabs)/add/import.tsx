@@ -1,5 +1,6 @@
 import { router } from "expo-router"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 
 import { parseImport, type RecipeContent } from "@workspace/schemas"
@@ -12,6 +13,7 @@ import { useCreateRecipe } from "@/lib/recipes"
 
 /** Paste JSON from idkjustfood or a schema.org Recipe, check it, then save it. */
 export default function ImportRecipe() {
+  const { t } = useTranslation()
   const [text, setText] = useState("")
   const [recipe, setRecipe] = useState<RecipeContent | null>(null)
   const [problem, setProblem] = useState<string | null>(null)
@@ -30,20 +32,20 @@ export default function ImportRecipe() {
 
   return (
     <Screen
-      title="Import a recipe"
-      subtitle="Paste a recipe exported from idkjustfood (JSON), or a schema.org Recipe."
+      title={t("add:import.title")}
+      subtitle={t("add:import.subtitle")}
       back="/add"
       narrow
       footer={
         <Button
-          label="Read recipe"
+          label={t("add:import.read")}
           disabled={text.trim() === ""}
           onPress={read}
         />
       }
     >
       <Input
-        label="Recipe JSON"
+        label={t("add:import.label")}
         value={text}
         onChangeText={(value) => {
           setText(value)
@@ -54,7 +56,7 @@ export default function ImportRecipe() {
         autoCorrect={false}
         textAlignVertical="top"
         className="h-64 py-3 font-mono text-sm"
-        placeholder={'{ "title": "…", "ingredients": […] }'}
+        placeholder={t("add:import.placeholder")}
       />
       {problem && (
         <Text role="alert" className="text-sm text-destructive">
@@ -72,6 +74,7 @@ function ReviewImport({
   recipe: RecipeContent
   onBack: () => void
 }) {
+  const { t } = useTranslation()
   const form = useRecipeForm(recipe)
   const create = useCreateRecipe()
 
@@ -91,13 +94,13 @@ function ReviewImport({
 
   const problem =
     Object.keys(form.errors).length > 0
-      ? "Some fields need a fix. They are marked below."
+      ? t("add:fieldsNeedFix")
       : create.error?.message
 
   return (
     <Screen
-      title="Review recipe"
-      subtitle="Check it before you save it. Missing amounts stay empty."
+      title={t("add:import.reviewTitle")}
+      subtitle={t("add:import.reviewSubtitle")}
       narrow
       footer={
         <View className="gap-3">
@@ -109,12 +112,12 @@ function ReviewImport({
           <View className="flex-row gap-3">
             <Button
               variant="outline"
-              label="Back"
+              label={t("add:import.back")}
               className="flex-1"
               onPress={onBack}
             />
             <Button
-              label={create.isPending ? "Saving…" : "Save recipe"}
+              label={create.isPending ? t("add:saving") : t("add:saveRecipe")}
               className="flex-1"
               disabled={create.isPending}
               onPress={save}

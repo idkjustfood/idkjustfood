@@ -1,0 +1,138 @@
+{
+  "title": "Settings",
+  "account": {
+    "title": "Account",
+    "defaultName": "You",
+    "demoName": "Demo",
+    "demoEmail": "Browsing sample data, not signed in",
+    "leaveDemo": "Leave the demo",
+    "logOut": "Log out"
+  },
+  "household": {
+    "title": "Household",
+    "count_one": "{{count}} household",
+    "count_other": "{{count}} households",
+    "none": "No household yet",
+    "detailHas": "Members, invites and shared recipes and lists",
+    "detailNone": "Create one, or join with an invite link"
+  },
+  "preferences": {
+    "title": "Preferences",
+    "units": "Units",
+    "metric": "Metric (g, ml)",
+    "imperial": "Imperial (oz, cups)",
+    "appearance": "Appearance",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark",
+    "language": "Language"
+  },
+  "language": {
+    "title": "Language",
+    "system": "Follow device language",
+    "close": "Close"
+  },
+  "data": {
+    "title": "Your data",
+    "exportTitle": "Export all recipes",
+    "exportDetail": "JSON, Markdown or schema.org",
+    "importTitle": "Import recipes",
+    "importDetail": "From an idkjustfood or schema.org export",
+    "json": "JSON",
+    "jsonDetail": "Full backup, can be imported again",
+    "markdown": "Markdown",
+    "markdownDetail": "One file per recipe",
+    "schema": "schema.org Recipe",
+    "schemaDetail": "For other recipe apps",
+    "importHelp": "Choose a JSON or schema.org file. Recipes you already have are skipped.",
+    "chooseFile": "Choose file",
+    "cancel": "Cancel"
+  },
+  "plan": {
+    "title": "Plan",
+    "billing": "Plan and billing"
+  },
+  "server": {
+    "title": "This server",
+    "address": "Server address",
+    "transcription": "Transcription",
+    "parsing": "Recipe parsing",
+    "note": "The AI providers are chosen by whoever runs this server, in its settings. Any provider works, including models you host yourself."
+  },
+  "prototype": {
+    "title": "Prototype",
+    "listStateLabel": "Show recipe and shopping lists as",
+    "listState": "List state",
+    "normal": "Normal",
+    "loading": "Loading",
+    "empty": "Empty",
+    "error": "Error",
+    "offline": "Pretend to be offline",
+    "offlineDetail": "Shows the offline hint on shopping lists"
+  },
+  "about": {
+    "title": "About",
+    "openSource": "idkjustfood is open source",
+    "version": "Version {{version}}"
+  },
+  "manage": {
+    "title": "Household",
+    "loading": "Loading your household…",
+    "loadError": "Could not load your household",
+    "manage": "Manage household",
+    "pickTitle": "Pick a household",
+    "pickMessage": "You are in your personal space. Choose a household above to see its members and invite people.",
+    "createAnother": "Create another household",
+    "noneTitle": "No household yet",
+    "noneMessage": "A household shares recipes and shopping lists. Create one and invite the people you live with, or open an invite link someone sent you.",
+    "nameLabel": "Household name",
+    "namePlaceholder": "For example: Flat 3B",
+    "creating": "Creating…",
+    "create": "Create household",
+    "subtitle": "Your household shares recipes and shopping lists.",
+    "showFrom": "Show recipes, lists and plans from",
+    "loadingMembers": "Loading members…",
+    "membersError": "Could not load the members",
+    "members": "Members ({{count}})",
+    "you": "{{name}} (you)",
+    "owner": "owner",
+    "member": "member",
+    "remove": "Remove {{name}}",
+    "invitesTitle": "Open invite links",
+    "loadingInvites": "Loading…",
+    "invitesError": "Could not load invites",
+    "noInvites": "No open invites",
+    "noInvitesDetail": "Links that nobody has used yet show up here.",
+    "linkCopied": "Link copied",
+    "inviteLink": "Invite link",
+    "inviteDetail": "Created by {{name}} · expires {{when}}",
+    "copyLink": "Copy invite link",
+    "cancelInvite": "Cancel invite",
+    "invite": "Invite someone",
+    "leave": "Leave household",
+    "removeTitle": "Remove {{name}}?",
+    "leaveTitle": "Leave {{name}}?",
+    "removeText": "{{name}} will no longer see this household's recipes and shopping lists. You can invite them again later.",
+    "leaveText": "You will no longer see this household's recipes and shopping lists. You need a new invite to come back.",
+    "removeConfirm": "Remove",
+    "cancel": "Cancel"
+  },
+  "invite": {
+    "title": "Invite someone",
+    "cantTitle": "You can't invite people here",
+    "cantOwners": "Only owners of {{name}} can invite people.",
+    "cantPick": "Pick a household first, then invite people to it.",
+    "createError": "Could not create an invite link",
+    "text": "Send this link to the person you want to invite. When they open it and accept, they join {{name}} and see its recipes and shopping lists.",
+    "expires": "The link works once and expires {{when}}. You can cancel it on the household screen.",
+    "share": "Share link",
+    "copy": "Copy link",
+    "copied": "Copied",
+    "message": "Join our household \"{{name}}\" on idkjustfood: {{link}}",
+    "shareTitle": "Household invite"
+  },
+  "billing": {
+    "title": "Plan and billing",
+    "message": "Manage your idkjustfood Cloud plan here."
+  }
+}

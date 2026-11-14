@@ -7,6 +7,7 @@ import {
   ShoppingCart,
   type LucideIcon,
 } from "lucide-react-native"
+import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
 
 import { SpaceSwitcher } from "@/components/space-switcher"
@@ -14,11 +15,11 @@ import { Icon } from "@/components/ui/icon"
 import { cn } from "@/lib/utils"
 
 const tabs: Record<string, { label: string; icon: LucideIcon }> = {
-  "(recipes)": { label: "Recipes", icon: BookOpen },
-  shopping: { label: "Shopping", icon: ShoppingCart },
-  add: { label: "Add", icon: Plus },
-  planner: { label: "Planner", icon: CalendarDays },
-  settings: { label: "Settings", icon: Settings },
+  "(recipes)": { label: "tabs.recipes", icon: BookOpen },
+  shopping: { label: "tabs.shopping", icon: ShoppingCart },
+  add: { label: "tabs.add", icon: Plus },
+  planner: { label: "tabs.planner", icon: CalendarDays },
+  settings: { label: "tabs.settings", icon: Settings },
 }
 
 type Props = BottomTabBarProps & { wide: boolean }
@@ -41,6 +42,7 @@ function usePress({ state, emitter, navigateToTab }: BottomTabBarProps) {
 }
 
 function BottomBar(props: BottomTabBarProps) {
+  const { t } = useTranslation("common")
   const { state, insets } = props
   const press = usePress(props)
 
@@ -61,7 +63,7 @@ function BottomBar(props: BottomTabBarProps) {
               key={route.key}
               role="tab"
               aria-selected={focused}
-              accessibilityLabel="Add a recipe"
+              accessibilityLabel={t("tabs.addRecipe")}
               onPress={() => press(route.key)}
               className="flex-1 items-center justify-center"
             >
@@ -95,7 +97,7 @@ function BottomBar(props: BottomTabBarProps) {
                 focused ? "text-primary" : "text-muted-foreground"
               )}
             >
-              {tab.label}
+              {t(tab.label)}
             </Text>
           </Pressable>
         )
@@ -105,6 +107,7 @@ function BottomBar(props: BottomTabBarProps) {
 }
 
 function SideBar(props: BottomTabBarProps) {
+  const { t } = useTranslation("common")
   const { state, insets } = props
   const press = usePress(props)
   const add = state.routes.find((r) => r.name === "add")
@@ -132,7 +135,7 @@ function SideBar(props: BottomTabBarProps) {
         >
           <Icon as={Plus} className="text-primary-foreground" />
           <Text className="text-base font-medium text-primary-foreground">
-            Add recipe
+            {t("tabs.addRecipeButton")}
           </Text>
         </Pressable>
       )}
@@ -164,7 +167,7 @@ function SideBar(props: BottomTabBarProps) {
                     : "text-muted-foreground"
                 )}
               >
-                {tab.label}
+                {t(tab.label)}
               </Text>
             </Pressable>
           )

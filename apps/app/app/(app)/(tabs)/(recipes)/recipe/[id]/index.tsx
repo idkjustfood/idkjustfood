@@ -11,6 +11,7 @@ import {
   ShoppingCart,
 } from "lucide-react-native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 
 import { toJson, toMarkdown, toSchemaOrg } from "@workspace/schemas"
@@ -44,13 +45,14 @@ import {
 } from "@/lib/shopping"
 
 export default function RecipeDetail() {
+  const { t } = useTranslation()
   const { id } = useLocalSearchParams<{ id: string }>()
   const query = useRecipe(id)
 
   if (query.isPending) {
     return (
-      <Screen title="Recipe" back="/">
-        <LoadingState label="Loading recipe" rows={2} />
+      <Screen title={t("recipes:detail.title")} back="/">
+        <LoadingState label={t("recipes:detail.loading")} rows={2} />
       </Screen>
     )
   }
@@ -59,19 +61,21 @@ export default function RecipeDetail() {
     const missing =
       query.error instanceof ApiError && query.error.status === 404
     return (
-      <Screen title={missing ? "Recipe not found" : "Recipe"} back="/">
+      <Screen title={
+          missing ? t("recipes:errors.notFound") : t("recipes:detail.title")
+        } back="/">
         {missing ? (
           <EmptyState
             icon={SearchX}
-            title="This recipe does not exist"
-            message="It may have been deleted, or it is not shared with you."
-            action="Back to recipes"
+            title={t("recipes:missing.title")}
+            message={t("recipes:missing.message")}
+            action={t("recipes:missing.action")}
             onAction={() => router.replace("/")}
           />
         ) : (
           <ErrorState
-            title="Could not load this recipe"
-            message="Check your connection and try again."
+            title={t("recipes:errors.loadRecipe")}
+            message={t("recipes:errors.checkConnection")}
             onRetry={() => void query.refetch()}
           />
         )}
@@ -83,6 +87,7 @@ export default function RecipeDetail() {
 }
 
 function RecipeView({ recipe }: { recipe: Recipe }) {
+  const { t } = useTranslation()
   const wide = useIsWide()
   const { units } = useAppState()
   const [servings, setServings] = useState(recipe.servings)
@@ -105,7 +110,9 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
       setAdded({ id: listId, name })
     } catch (error) {
       setListError(
-        error instanceof Error ? error.message : "Could not add the recipe."
+        error instanceof Error
+          ? error.message
+          : t("recipes:errors.addToList")
       )
     } finally {
       setAdding(null)
@@ -126,14 +133,14 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
       await shareText(text, recipe.title)
     } else {
       await copyText(text)
-      setExportNote(`Copied ${name} to the clipboard.`)
+      setExportNote(t("recipes:export.copied", { name }))
     }
   }
 
   const ingredients = (
     <Card className="gap-4 p-4">
       <View className="flex-row flex-wrap items-center justify-between gap-3">
-        <SectionTitle>Ingredients</SectionTitle>
+        <SectionTitle>{t("recipes:detail.ingredients")}</SectionTitle>
         <ServingsScaler servings={servings} onChange={setServings} />
       </View>
       {recipe.ingredients.length > 0 ? (
@@ -143,13 +150,13 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
           units={units}
         />
       ) : (
-        <Text className="text-muted-foreground">No ingredients yet.</Text>
+        <Text className="text-muted-foreground">{t("recipes:detail.noIngredients")}</Text>
       )}
       {recipe.ingredients.length > 0 && (
         <Button
           variant="outline"
           icon={ShoppingCart}
-          label="Add to shopping list"
+          label={t("recipes:detail.addToList")}
           onPress={() => setListOpen(true)}
         />
       )}
@@ -158,18 +165,18 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
 
   const steps = (
     <Card className="gap-4 p-4">
-      <SectionTitle>Steps</SectionTitle>
+      <SectionTitle>{t("recipes:detail.steps")}</SectionTitle>
       {recipe.steps.length > 0 ? (
         <StepList recipeId={recipe.id} steps={recipe.steps} />
       ) : (
-        <Text className="text-muted-foreground">No steps yet.</Text>
+        <Text className="text-muted-foreground">{t("recipes:detail.noSteps")}</Text>
       )}
     </Card>
   )
 
   const nutrition = hasNutrition(recipe.nutrition) && (
     <Card className="gap-4 p-4">
-      <SectionTitle>Nutrition</SectionTitle>
+      <SectionTitle>{t("recipes:detail.nutrition")}</SectionTitle>
       <NutritionEstimate nutrition={recipe.nutrition} />
     </Card>
   )
@@ -184,14 +191,14 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
             variant="ghost"
             size="icon"
             icon={Pencil}
-            label="Edit recipe"
+            label={t("recipes:detail.edit")}
             onPress={() => router.push(`/recipe/${recipe.id}/edit`)}
           />
           <Button
             variant="ghost"
             size="icon"
             icon={Download}
-            label="Export recipe"
+            label={t("recipes:detail.export")}
             onPress={() => {
               setExportNote(null)
               setExportOpen(true)
@@ -215,13 +222,17 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
             {recipe.prepMinutes !== null && (
               <Meta
                 icon={Clock}
-                text={`${formatMinutes(recipe.prepMinutes)} prep`}
+                text={t("recipes:detail.prep", {
+                  time: formatMinutes(recipe.prepMinutes),
+                })}
               />
             )}
             {recipe.cookMinutes !== null && (
               <Meta
                 icon={ChefHat}
-                text={`${formatMinutes(recipe.cookMinutes)} cooking`}
+                text={t("recipes:detail.cooking", {
+                  time: formatMinutes(recipe.cookMinutes),
+                })}
               />
             )}
             <Meta
@@ -240,7 +251,7 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
             <Button
               size="lg"
               icon={ChefHat}
-              label="Start cooking"
+              label={t("recipes:detail.startCooking")}
               className="mt-1 md:self-start"
               onPress={() => router.push(`/cook/${recipe.id}`)}
             />
@@ -267,25 +278,25 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
       <Sheet
         open={exportOpen}
         onClose={() => setExportOpen(false)}
-        title="Export recipe"
+        title={t("recipes:export.title")}
       >
         <ListGroup>
           <ListRow
             icon={FileJson}
-            title="JSON"
-            detail="For backups and other apps"
+            title={t("recipes:export.json")}
+            detail={t("recipes:export.jsonDetail")}
             onPress={() => void exportAs("JSON", toJson(recipe))}
           />
           <ListRow
             icon={FileText}
-            title="Markdown"
-            detail="Plain text to read or print"
+            title={t("recipes:export.markdown")}
+            detail={t("recipes:export.markdownDetail")}
             onPress={() => void exportAs("Markdown", toMarkdown(recipe))}
           />
           <ListRow
             icon={FileCode}
-            title="schema.org Recipe"
-            detail="Standard recipe format for the web"
+            title={t("recipes:export.schemaOrg")}
+            detail={t("recipes:export.schemaOrgDetail")}
             onPress={() =>
               void exportAs(
                 "schema.org Recipe",
@@ -301,7 +312,9 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
         )}
         <Button
           variant="outline"
-          label={exportNote ? "Done" : "Cancel"}
+          label={
+            exportNote ? t("recipes:export.done") : t("recipes:export.cancel")
+          }
           onPress={() => setExportOpen(false)}
         />
       </Sheet>
@@ -309,28 +322,39 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
       <Sheet
         open={listOpen}
         onClose={closeListSheet}
-        title={added ? "Added to your list" : "Add to which list?"}
+        title={
+          added
+            ? t("recipes:addToList.titleAdded")
+            : t("recipes:addToList.titleChoose")
+        }
       >
         {added ? (
           <>
             <Text role="status" className="text-foreground">
-              The ingredients for {servings} servings of {recipe.title} are on{" "}
-              {added.name}. Same ingredients were merged.
+              {t("recipes:addToList.added", {
+                count: servings,
+                title: recipe.title,
+                list: added.name,
+              })}
             </Text>
             <Button
-              label="Open the list"
+              label={t("recipes:addToList.open")}
               onPress={() => {
                 closeListSheet()
                 router.push(`/shopping/${added.id}`)
               }}
             />
-            <Button variant="outline" label="Done" onPress={closeListSheet} />
+            <Button
+              variant="outline"
+              label={t("recipes:addToList.done")}
+              onPress={closeListSheet}
+            />
           </>
         ) : (
           <>
             {lists.length === 0 ? (
               <Text className="text-muted-foreground">
-                You have no shopping lists yet. Make one first.
+                {t("recipes:addToList.noLists")}
               </Text>
             ) : (
               <ListGroup>
@@ -339,11 +363,14 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
                     key={list.id}
                     icon={ShoppingCart}
                     title={list.name}
-                    detail={`${kindOf(list)} · ${list.items.length} items`}
+                    detail={t("recipes:addToList.listDetail", {
+                      kind: kindOf(list),
+                      count: list.items.length,
+                    })}
                     right={
                       adding === list.id ? (
                         <Text className="text-sm text-muted-foreground">
-                          Adding…
+                          {t("recipes:addToList.adding")}
                         </Text>
                       ) : undefined
                     }
@@ -363,13 +390,17 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
             )}
             <Button
               variant="outline"
-              label="New list"
+              label={t("recipes:addToList.newList")}
               onPress={() => {
                 closeListSheet()
                 router.push("/shopping")
               }}
             />
-            <Button variant="outline" label="Cancel" onPress={closeListSheet} />
+            <Button
+              variant="outline"
+              label={t("recipes:addToList.cancel")}
+              onPress={closeListSheet}
+            />
           </>
         )}
       </Sheet>

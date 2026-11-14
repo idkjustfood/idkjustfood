@@ -16,6 +16,7 @@ import {
 import { api, ApiError, call, type Schemas } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
 import { useHouseholds } from "@/lib/households"
+import i18n from "@/lib/i18n"
 
 export type { GenerateResult, MealPlan }
 
@@ -27,10 +28,7 @@ const keys = {
 }
 
 const demoOnly = () => {
-  throw new ApiError(
-    "This doesn't work with sample data. Log in to plan your meals.",
-    0
-  )
+  throw new ApiError(i18n.t("planner:demoOnly"), 0)
 }
 
 /** Your personal plans and the plans of your household. Meals are not included. */

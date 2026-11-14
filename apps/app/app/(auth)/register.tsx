@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from "react-native"
+import { useTranslation } from "react-i18next"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 import { SocialButtons } from "@/components/social-buttons"
@@ -18,6 +19,7 @@ import { peekPendingInvite } from "@/lib/pending-invite"
 import { useAuthConfig, type SocialProvider } from "@/lib/use-auth-config"
 
 export default function Register() {
+  const { t } = useTranslation("auth")
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -41,9 +43,9 @@ export default function Register() {
         invite ? { headers: { "x-invite-id": invite } } : undefined
       )
       if (error)
-        setError(readableAuthError(error, "Could not create the account."))
+        setError(readableAuthError(error, t("register.failed")))
     } catch (e) {
-      setError(readableAuthError(e as Error, "Could not create the account."))
+      setError(readableAuthError(e as Error, t("register.failed")))
     } finally {
       setBusy(false)
     }
@@ -56,9 +58,9 @@ export default function Register() {
         provider,
         callbackURL: "/",
       })
-      if (error) setError(readableAuthError(error, "Could not sign up."))
+      if (error) setError(readableAuthError(error, t("register.socialFailed")))
     } catch (e) {
-      setError(readableAuthError(e as Error, "Could not sign up."))
+      setError(readableAuthError(e as Error, t("register.socialFailed")))
     }
   }
 
@@ -73,26 +75,26 @@ export default function Register() {
           keyboardShouldPersistTaps="handled"
         >
           <Text className="text-3xl font-semibold text-foreground">
-            {closed ? "Registration is closed" : "Create account"}
+            {closed ? t("register.closedTitle") : t("register.title")}
           </Text>
           {closed && (
             <Text className="text-base text-muted-foreground">
               {config.signupMode === "invite"
-                ? "New accounts need an invite link. Ask a member of the household to send you one, then open it."
-                : "This server isn't taking new accounts. Ask the person who runs it for access."}
+                ? t("register.closedInvite")
+                : t("register.closedServer")}
             </Text>
           )}
           {!closed && (
             <>
               <Input
-                label="Name"
+                label={t("fields.name")}
                 value={name}
                 onChangeText={setName}
                 autoComplete="name"
                 textContentType="name"
               />
               <Input
-                label="Email"
+                label={t("fields.email")}
                 value={email}
                 onChangeText={setEmail}
                 autoCapitalize="none"
@@ -101,7 +103,7 @@ export default function Register() {
                 textContentType="emailAddress"
               />
               <Input
-                label="Password"
+                label={t("fields.password")}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry
@@ -115,7 +117,7 @@ export default function Register() {
                 </Text>
               )}
               <Button
-                label={busy ? "Creating account…" : "Create account"}
+                label={busy ? t("register.busy") : t("register.submit")}
                 disabled={busy}
                 className="h-12"
                 onPress={submit}
@@ -126,9 +128,9 @@ export default function Register() {
             </>
           )}
           <View className="flex-row justify-center gap-1">
-            <Text className="text-muted-foreground">Have an account?</Text>
+            <Text className="text-muted-foreground">{t("register.haveAccount")}</Text>
             <Link href="/" className="font-medium text-primary">
-              Log in
+              {t("register.login")}
             </Link>
           </View>
         </ScrollView>

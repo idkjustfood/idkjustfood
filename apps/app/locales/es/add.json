@@ -1,0 +1,139 @@
+{
+  "methods": {
+    "video": {
+      "title": "Enlace de vídeo",
+      "description": "Un reel de Instagram, un TikTok o un YouTube Short."
+    },
+    "website": {
+      "title": "Enlace de web",
+      "description": "Una página de receta de cualquier web de cocina."
+    },
+    "photo": {
+      "title": "Foto o captura",
+      "description": "Una página de un libro de cocina o una captura de una receta."
+    },
+    "text": {
+      "title": "Pegar texto",
+      "description": "Una receta que copiaste de un mensaje o una nota."
+    },
+    "write": {
+      "title": "Escribirla tú",
+      "description": "Escribe una receta desde cero, o una que te sepas de memoria."
+    },
+    "import": {
+      "title": "Importar una receta",
+      "description": "Una receta guardada como JSON o en formato schema.org Recipe."
+    }
+  },
+  "steps": {
+    "video": {
+      "download": "Descargando el vídeo",
+      "caption": "Leyendo la descripción",
+      "audio": "Escuchando lo que se dice",
+      "onScreenText": "Leyendo el texto que sale en el vídeo",
+      "write": "Escribiendo la receta"
+    },
+    "website": {
+      "open": "Abriendo la página",
+      "find": "Buscando la receta en la página",
+      "write": "Escribiendo la receta"
+    },
+    "photo": {
+      "upload": "Subiendo la foto",
+      "read": "Leyendo el texto",
+      "write": "Escribiendo la receta"
+    },
+    "text": {
+      "read": "Leyendo el texto",
+      "write": "Escribiendo la receta"
+    }
+  },
+  "index": {
+    "title": "Añadir una receta",
+    "subtitle": "Todas las formas acaban en la misma receta clara.",
+    "shareTip": "Consejo: en el móvil, toca Compartir en un reel de Instagram y elige idkjustfood."
+  },
+  "form": {
+    "cameraDenied": "Permite el acceso a la cámara en los ajustes para hacer una foto.",
+    "photoFailed": "No se pudo abrir la foto. Prueba con otra.",
+    "invalidLink": "Eso no parece un enlace.",
+    "sending": "Enviando…",
+    "getRecipe": "Obtener receta",
+    "videoLabel": "Enlace al vídeo",
+    "websiteLabel": "Enlace a la página de la receta",
+    "sampleIntro": "Pruébalo con un enlace de ejemplo:",
+    "sampleGood": "Enlace válido",
+    "sampleUnsupported": "Enlace no compatible",
+    "sampleBroken": "Enlace roto",
+    "textLabel": "Texto de la receta",
+    "textPlaceholder": "Pega aquí la receta.\n\nPor ejemplo:\n2 huevos, 80 g de avena…",
+    "photoChosen": "La foto que elegiste",
+    "photoChange": "Elegir otra foto",
+    "takePhoto": "Hacer una foto",
+    "chooseLibrary": "Elegir de la galería"
+  },
+  "progress": {
+    "readyTitle": "Receta lista",
+    "workingTitle": "Trabajando en ello…",
+    "readySubtitle": "Revísala antes de guardarla.",
+    "workingSubtitle": "Tarda hasta un minuto. Puedes salir de esta pantalla: la receta estará en tus recetas cuando esté lista.",
+    "review": "Revisar receta",
+    "lostJob": "No se pudo comprobar la receta. Revisa tu conexión; puede que aparezca igualmente en tus recetas.",
+    "leave": "Salir de esta pantalla"
+  },
+  "error": {
+    "title": "No se pudo añadir la receta",
+    "unsupportedTitle": "Este enlace aún no es compatible",
+    "unsupportedMessage": "idkjustfood lee reels de Instagram, vídeos de TikTok, YouTube Shorts y webs de recetas. Aún puedes pegar el texto de la receta o añadir una captura.",
+    "failedTitle": "No pudimos leer esta receta",
+    "failedMessage": "Algo salió mal al leer la receta. Inténtalo de nuevo o pega el texto de la receta.",
+    "pasteText": "Pegar el texto en su lugar",
+    "usePhoto": "Usar una foto o captura",
+    "backToOptions": "Volver a todas las opciones"
+  },
+  "errors": {
+    "generic": "Algo salió mal al leer la receta. Inténtalo de nuevo o pega el texto de la receta.",
+    "network": "No se pudo conectar con el servidor. Revisa tu conexión.",
+    "unsupported_link": "Este enlace aún no es compatible. Pega el texto de la receta o añade una captura.",
+    "private_address": "Este enlace apunta a una dirección privada y no se puede abrir.",
+    "invalid_input": "No había nada que leer. Revisa el enlace, el texto o la foto e inténtalo de nuevo.",
+    "ai_not_configured": "Este servidor aún no tiene una IA configurada. Pide a quien lo gestiona que añada una.",
+    "model_cannot_read_images": "El modelo de IA configurado no puede leer fotos. Prueba con un enlace o con el texto de la receta.",
+    "ai_failed": "La IA no pudo convertir esto en una receta. Inténtalo de nuevo en un momento.",
+    "video_unavailable": "No se pudo descargar el vídeo. Puede ser privado o haber sido eliminado.",
+    "video_too_long": "Este vídeo es demasiado largo para leerlo.",
+    "tools_missing": "Faltan en este servidor las herramientas necesarias para leer vídeos.",
+    "page_unreachable": "No se pudo abrir la página. Revisa el enlace e inténtalo de nuevo.",
+    "no_recipe_found": "No se encontró ninguna receta. Prueba a pegar el texto de la receta o a añadir una captura.",
+    "invalid_recipe": "Lo que se encontró no formaba una receta completa. Prueba a pegar el texto de la receta."
+  },
+  "review": {
+    "title": "Revisar receta",
+    "loading": "Cargando receta",
+    "missingTitle": "Esta receta no existe",
+    "missingMessage": "Puede que se haya eliminado.",
+    "backToOptions": "Volver a todas las opciones",
+    "loadErrorTitle": "No se pudo cargar esta receta",
+    "loadErrorMessage": "Revisa tu conexión e inténtalo de nuevo.",
+    "from": "De {{source}}",
+    "discard": "Descartar",
+    "discarding": "Descartando…"
+  },
+  "write": {
+    "title": "Escribir una receta",
+    "subtitle": "Solo hace falta el título. Añade el resto ahora o más tarde."
+  },
+  "import": {
+    "title": "Importar una receta",
+    "subtitle": "Pega una receta exportada de idkjustfood (JSON) o una schema.org Recipe.",
+    "label": "JSON de la receta",
+    "placeholder": "{ \"title\": \"…\", \"ingredients\": […] }",
+    "read": "Leer receta",
+    "reviewTitle": "Revisar receta",
+    "reviewSubtitle": "Revísala antes de guardarla. Las cantidades que faltan quedan vacías.",
+    "back": "Atrás"
+  },
+  "saving": "Guardando…",
+  "saveRecipe": "Guardar receta",
+  "fieldsNeedFix": "Algunos campos necesitan corrección. Están marcados abajo."
+}

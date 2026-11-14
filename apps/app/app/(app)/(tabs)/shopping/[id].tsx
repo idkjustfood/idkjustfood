@@ -8,6 +8,7 @@ import {
   X,
 } from "lucide-react-native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Pressable, Text, TextInput, View } from "react-native"
 
 import {
@@ -31,6 +32,7 @@ import { useAppState } from "@/lib/app-state"
 import { formatAmount } from "@/lib/format"
 import { isOwner, useHouseholdById, useMyUserId } from "@/lib/households"
 import { useAllRecipes } from "@/lib/recipes"
+import { OfflineError } from "@/lib/shopping-store"
 import {
   useListKind,
   useShoppingActions,
@@ -39,12 +41,13 @@ import {
 import { cn } from "@/lib/utils"
 
 export default function ShoppingListScreen() {
+  const { t } = useTranslation()
   const { id } = useLocalSearchParams<{ id: string }>()
   const { list, loaded } = useShoppingList(id)
   if (!loaded) {
     return (
-      <Screen title="Shopping list" back="/shopping" narrow>
-        <LoadingState label="Loading list" rows={2} />
+      <Screen title={t("shopping:list.title")} back="/shopping" narrow>
+        <LoadingState label={t("shopping:list.loading")} rows={2} />
       </Screen>
     )
   }
@@ -53,6 +56,7 @@ export default function ShoppingListScreen() {
 }
 
 function ListView({ list }: { list: ShoppingList }) {
+  const { t } = useTranslation()
   const { units } = useAppState()
   const household = useHouseholdById(list.householdId)
   const myUserId = useMyUserId()
@@ -93,7 +97,11 @@ function ListView({ list }: { list: ShoppingList }) {
   return (
     <Screen
       title={list.name}
-      subtitle={`${kindLabel} · ${open.length} to get · ${checked.length} done`}
+      subtitle={t("shopping:list.subtitle", {
+        kind: kindLabel,
+        open: open.length,
+        done: checked.length,
+      })}
       back="/shopping"
       narrow
       actions={
@@ -102,14 +110,14 @@ function ListView({ list }: { list: ShoppingList }) {
             variant="ghost"
             size="icon"
             icon={BookPlus}
-            label="Add a recipe"
+            label={t("shopping:list.addRecipe")}
             onPress={() => setRecipeOpen(true)}
           />
           <Button
             variant="ghost"
             size="icon"
             icon={EllipsisVertical}
-            label="List options"
+            label={t("shopping:options.title")}
             onPress={() => setOptionsOpen(true)}
           />
         </>
@@ -120,8 +128,8 @@ function ListView({ list }: { list: ShoppingList }) {
       <View className="gap-2">
         <View className="flex-row gap-2">
           <TextInput
-            accessibilityLabel="Add an item"
-            placeholder="Add an item"
+            accessibilityLabel={t("shopping:list.addItem")}
+            placeholder={t("shopping:list.addItem")}
             placeholderTextColor="#737373"
             value={draft}
             onChangeText={setDraft}
@@ -130,12 +138,12 @@ function ListView({ list }: { list: ShoppingList }) {
             maxLength={200}
             className="h-12 min-w-0 flex-1 rounded-md border border-input bg-background px-3 text-base text-foreground"
           />
-          <Button size="icon" icon={Plus} label="Add item" onPress={addItem} />
+          <Button size="icon" icon={Plus} label={t("shopping:list.addItemButton")} onPress={addItem} />
         </View>
         <View className="flex-row gap-2">
           <TextInput
-            accessibilityLabel="Amount"
-            placeholder="Amount (optional)"
+            accessibilityLabel={t("shopping:list.amount")}
+            placeholder={t("shopping:list.amountPlaceholder")}
             placeholderTextColor="#737373"
             value={amount}
             onChangeText={(text) => {
@@ -152,8 +160,8 @@ function ListView({ list }: { list: ShoppingList }) {
             )}
           />
           <TextInput
-            accessibilityLabel="Unit"
-            placeholder="Unit (g, ml, EL…)"
+            accessibilityLabel={t("shopping:list.unit")}
+            placeholder={t("shopping:list.unitPlaceholder")}
             placeholderTextColor="#737373"
             value={unit}
             onChangeText={setUnit}
@@ -165,15 +173,14 @@ function ListView({ list }: { list: ShoppingList }) {
         </View>
         {amountError && (
           <Text role="alert" className="text-sm text-destructive">
-            The amount must be a number, like 2, 1.5 or 1/2.
+            {t("shopping:list.amountError")}
           </Text>
         )}
       </View>
 
       {list.items.length === 0 && (
         <Text className="text-muted-foreground">
-          Nothing on this list yet. Type an item above, or add the ingredients
-          of a recipe.
+          {t("shopping:list.empty")}
         </Text>
       )}
 
@@ -197,12 +204,12 @@ function ListView({ list }: { list: ShoppingList }) {
         <View className="gap-1">
           <View className="flex-row items-center justify-between">
             <SectionTitle className="text-base text-muted-foreground">
-              In the basket
+              {t("shopping:list.inBasket")}
             </SectionTitle>
             <Button
               variant="ghost"
               size="sm"
-              label="Clear"
+              label={t("shopping:list.clear")}
               onPress={() => actions.clearChecked(list.id)}
             />
           </View>
@@ -245,6 +252,7 @@ function RecipeSheet({
   open: boolean
   onClose: () => void
 }) {
+  const { t } = useTranslation()
   const actions = useShoppingActions()
   const recipes = useAllRecipes()
   const [busy, setBusy] = useState<string | null>(null)
@@ -258,9 +266,11 @@ function RecipeSheet({
       onClose()
     } catch (error) {
       setMessage(
-        error instanceof Error
-          ? error.message
-          : `Could not add ${title}. Try again.`
+        error instanceof OfflineError
+          ? t("shopping:recipe.offline")
+          : error instanceof Error && error.message
+            ? error.message
+            : t("shopping:recipe.addError", { title })
       )
     } finally {
       setBusy(null)
@@ -268,21 +278,20 @@ function RecipeSheet({
   }
 
   return (
-    <Sheet open={open} onClose={onClose} title="Add a recipe's ingredients">
+    <Sheet open={open} onClose={onClose} title={t("shopping:recipe.title")}>
       <Text className="text-muted-foreground">
-        Same ingredients are merged, for example 200 g + 100 g flour becomes 300
-        g. Amounts are for the recipe&apos;s own servings.
+        {t("shopping:recipe.hint")}
       </Text>
-      {recipes.isPending && <LoadingState label="Loading recipes" rows={1} />}
+      {recipes.isPending && <LoadingState label={t("shopping:recipe.loading")} rows={1} />}
       {recipes.isError && (
         <ErrorState
-          title="Could not load recipes"
-          message="Check your connection and try again."
+          title={t("shopping:recipe.loadError.title")}
+          message={t("shopping:recipe.loadError.message")}
           onRetry={() => void recipes.refetch()}
         />
       )}
       {recipes.data && recipes.data.length === 0 && (
-        <Text className="text-foreground">You have no recipes yet.</Text>
+        <Text className="text-foreground">{t("shopping:recipe.none")}</Text>
       )}
       <View className="gap-2">
         {(recipes.data ?? []).map((recipe) => (
@@ -290,7 +299,7 @@ function RecipeSheet({
             key={recipe.id}
             role="button"
             disabled={busy !== null}
-            accessibilityLabel={`Add ${recipe.title}`}
+            accessibilityLabel={t("shopping:recipe.add", { title: recipe.title })}
             onPress={() => void add(recipe.id, recipe.title)}
             className={cn(
               "h-14 flex-row items-center gap-3 overflow-hidden rounded-md border border-border active:bg-accent web:hover:bg-accent",
@@ -306,7 +315,7 @@ function RecipeSheet({
             </Text>
             {busy === recipe.id && (
               <Text className="pr-3 text-sm text-muted-foreground">
-                Adding…
+                {t("shopping:recipe.adding")}
               </Text>
             )}
           </Pressable>
@@ -317,7 +326,11 @@ function RecipeSheet({
           {message}
         </Text>
       )}
-      <Button variant="outline" label="Cancel" onPress={onClose} />
+      <Button
+        variant="outline"
+        label={t("shopping:cancel")}
+        onPress={onClose}
+      />
     </Sheet>
   )
 }
@@ -333,6 +346,7 @@ function OptionsSheet({
   canDelete: boolean
   onClose: () => void
 }) {
+  const { t } = useTranslation()
   const actions = useShoppingActions()
   const [mode, setMode] = useState<"menu" | "rename" | "delete">("menu")
   const [name, setName] = useState(list.name)
@@ -348,10 +362,10 @@ function OptionsSheet({
       onClose={close}
       title={
         mode === "rename"
-          ? "Rename list"
+          ? t("shopping:rename.title")
           : mode === "delete"
-            ? "Delete this list?"
-            : "List options"
+            ? t("shopping:delete.title")
+            : t("shopping:options.title")
       }
     >
       {mode === "menu" && (
@@ -359,7 +373,7 @@ function OptionsSheet({
           <ListGroup>
             <ListRow
               icon={Pencil}
-              title="Rename"
+              title={t("shopping:options.rename")}
               onPress={() => {
                 setName(list.name)
                 setMode("rename")
@@ -368,19 +382,19 @@ function OptionsSheet({
             {canDelete && (
               <ListRow
                 icon={Trash2}
-                title="Delete list"
+                title={t("shopping:options.delete")}
                 destructive
                 onPress={() => setMode("delete")}
               />
             )}
           </ListGroup>
-          <Button variant="outline" label="Close" onPress={close} />
+          <Button variant="outline" label={t("shopping:options.close")} onPress={close} />
         </>
       )}
       {mode === "rename" && (
         <>
           <Input
-            label="Name"
+            label={t("shopping:new.name")}
             value={name}
             onChangeText={setName}
             maxLength={100}
@@ -389,12 +403,12 @@ function OptionsSheet({
           <View className="flex-row gap-3">
             <Button
               variant="outline"
-              label="Cancel"
+              label={t("shopping:cancel")}
               className="flex-1"
               onPress={() => setMode("menu")}
             />
             <Button
-              label="Save"
+              label={t("shopping:rename.save")}
               className="flex-1"
               disabled={!name.trim()}
               onPress={() => {
@@ -408,21 +422,26 @@ function OptionsSheet({
       {mode === "delete" && (
         <>
           <Text className="text-foreground">
-            &quot;{list.name}&quot; and its {list.items.length} items will be
-            deleted
-            {list.householdId ? " for everyone in the household" : ""}. This
-            cannot be undone.
+            {list.householdId
+              ? t("shopping:delete.messageHousehold", {
+                  name: list.name,
+                  count: list.items.length,
+                })
+              : t("shopping:delete.message", {
+                  name: list.name,
+                  count: list.items.length,
+                })}
           </Text>
           <View className="flex-row gap-3">
             <Button
               variant="outline"
-              label="Keep it"
+              label={t("shopping:delete.keep")}
               className="flex-1"
               onPress={() => setMode("menu")}
             />
             <Button
               variant="destructive"
-              label="Delete"
+              label={t("shopping:delete.confirm")}
               className="flex-1"
               onPress={() => {
                 actions.deleteList(list.id)
@@ -448,6 +467,7 @@ function ItemRow({
   onToggle: () => void
   onRemove: () => void
 }) {
+  const { t } = useTranslation()
   const amount = formatAmount(item, 1, units)
   const recipes = item.fromRecipes
   return (
@@ -475,20 +495,25 @@ function ItemRow({
           </Text>
           {recipes.length > 1 ? (
             <Text className="text-sm text-muted-foreground">
-              For {recipes.length} recipes
-              {item.quantity === null ? ", no amount given" : ""}
+              {item.quantity === null
+                ? t("shopping:item.fromRecipesNoAmount", {
+                    count: recipes.length,
+                  })
+                : t("shopping:item.fromRecipes", { count: recipes.length })}
             </Text>
           ) : recipes[0] ? (
             <Text numberOfLines={1} className="text-sm text-muted-foreground">
               {recipes[0]}
-              {item.quantity === null ? " · no amount given" : ""}
+              {item.quantity === null
+                ? ` · ${t("shopping:item.noAmount")}`
+                : ""}
             </Text>
           ) : null}
         </View>
       </Pressable>
       <Pressable
         role="button"
-        accessibilityLabel={`Remove ${item.name}`}
+        accessibilityLabel={t("shopping:item.remove", { name: item.name })}
         onPress={onRemove}
         className="h-11 w-11 items-center justify-center rounded-md active:bg-accent web:hover:bg-accent"
       >

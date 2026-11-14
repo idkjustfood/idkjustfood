@@ -1,0 +1,59 @@
+{
+  "languageName": "English",
+  "minutes_one": "{{count}} min",
+  "minutes_other": "{{count}} min",
+  "hours_one": "{{count}} h",
+  "hours_other": "{{count}} h",
+  "hoursMinutes": "{{hours}} h {{minutes}} min",
+  "units": {
+    "g": "g",
+    "kg": "kg",
+    "oz": "oz",
+    "lb": "lb",
+    "ml": "ml",
+    "l": "l",
+    "tsp": "tsp",
+    "tbsp": "tbsp",
+    "cup_one": "cup",
+    "cup_other": "cups"
+  },
+  "back": "Back",
+  "close": "Close",
+  "clearSearch": "Clear search",
+  "tryAgain": "Try again",
+  "comingSoon": "Coming soon",
+  "offline": {
+    "title": "You are offline",
+    "message": "You can keep ticking things off. Changes sync when you are back online.",
+    "pending_one": "{{count}} change is waiting.",
+    "pending_other": "{{count}} changes are waiting."
+  },
+  "tabs": {
+    "recipes": "Recipes",
+    "shopping": "Shopping",
+    "add": "Add",
+    "planner": "Planner",
+    "settings": "Settings",
+    "addRecipe": "Add a recipe",
+    "addRecipeButton": "Add recipe"
+  },
+  "space": {
+    "personal": "Personal",
+    "onlyYou": "Only you",
+    "shared": "Shared household",
+    "change": "Space: {{name}}. Change",
+    "choose": "Choose a space",
+    "label": "Space"
+  },
+  "demoOnly": "This doesn't work with sample data. Log in to manage a real household.",
+  "stepper": {
+    "fewer": "Fewer {{label}}",
+    "more": "More {{label}}"
+  },
+  "relativeDays": {
+    "today": "today",
+    "tomorrow": "tomorrow",
+    "inDays_one": "in {{count}} day",
+    "inDays_other": "in {{count}} days"
+  }
+}

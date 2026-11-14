@@ -9,6 +9,7 @@ import {
   X,
 } from "lucide-react-native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Text, View } from "react-native"
 
 import { ListGroup, ListRow } from "@/components/list-row"
@@ -39,21 +40,22 @@ import {
 import { copyText, inDays } from "@/lib/share"
 
 export default function HouseholdScreen() {
+  const { t } = useTranslation()
   const { household } = useHousehold()
   const { households, isPending, isError, error, refetch } = useHouseholds()
 
   if (isPending) {
     return (
-      <Screen title="Household" back="/settings" narrow>
-        <LoadingState label="Loading your household…" rows={2} />
+      <Screen title={t("settings:manage.title")} back="/settings" narrow>
+        <LoadingState label={t("settings:manage.loading")} rows={2} />
       </Screen>
     )
   }
   if (isError) {
     return (
-      <Screen title="Household" back="/settings" narrow>
+      <Screen title={t("settings:manage.title")} back="/settings" narrow>
         <ErrorState
-          title="Could not load your household"
+          title={t("settings:manage.loadError")}
           message={error.message}
           onRetry={() => refetch()}
         />
@@ -64,19 +66,19 @@ export default function HouseholdScreen() {
   // In the personal space there is no household to manage: pick one first.
   if (!household) {
     return (
-      <Screen title="Household" back="/settings" narrow>
+      <Screen title={t("settings:manage.title")} back="/settings" narrow>
         <View className="gap-2">
           <Text className="px-1 text-sm font-medium uppercase tracking-wide text-muted-foreground">
-            Manage household
+            {t("settings:manage.manage")}
           </Text>
           <SpaceSwitcher />
         </View>
         <EmptyState
           icon={House}
-          title="Pick a household"
-          message="You are in your personal space. Choose a household above to see its members and invite people."
+          title={t("settings:manage.pickTitle")}
+          message={t("settings:manage.pickMessage")}
         />
-        <CreateHouseholdCard title="Create another household" />
+        <CreateHouseholdCard title={t("settings:manage.createAnother")} />
       </Screen>
     )
   }
@@ -84,12 +86,13 @@ export default function HouseholdScreen() {
 }
 
 function CreateHousehold() {
+  const { t } = useTranslation()
   return (
-    <Screen title="Household" back="/settings" narrow>
+    <Screen title={t("settings:manage.title")} back="/settings" narrow>
       <EmptyState
         icon={House}
-        title="No household yet"
-        message="A household shares recipes and shopping lists. Create one and invite the people you live with, or open an invite link someone sent you."
+        title={t("settings:manage.noneTitle")}
+        message={t("settings:manage.noneMessage")}
       />
       <CreateHouseholdCard />
     </Screen>
@@ -98,6 +101,7 @@ function CreateHousehold() {
 
 /** Makes a household and switches to it. Also used to make a further one. */
 function CreateHouseholdCard({ title }: { title?: string }) {
+  const { t } = useTranslation()
   const [name, setName] = useState("")
   const create = useCreateHousehold()
   const { setHouseholdId } = useAppState()
@@ -119,10 +123,10 @@ function CreateHouseholdCard({ title }: { title?: string }) {
         </Text>
       )}
       <Input
-        label="Household name"
+        label={t("settings:manage.nameLabel")}
         value={name}
         onChangeText={setName}
-        placeholder="For example: Flat 3B"
+        placeholder={t("settings:manage.namePlaceholder")}
         onSubmitEditing={submit}
         maxLength={80}
       />
@@ -132,7 +136,11 @@ function CreateHouseholdCard({ title }: { title?: string }) {
         </Text>
       )}
       <Button
-        label={create.isPending ? "Creating…" : "Create household"}
+        label={
+          create.isPending
+            ? t("settings:manage.creating")
+            : t("settings:manage.create")
+        }
         disabled={!name.trim() || create.isPending}
         onPress={submit}
       />
@@ -143,6 +151,7 @@ function CreateHouseholdCard({ title }: { title?: string }) {
 type Confirm = { kind: "remove"; member: Member } | { kind: "leave" } | null
 
 function HouseholdDetails({ household }: { household: Household }) {
+  const { t } = useTranslation()
   const myUserId = useMyUserId()
   const owner = isOwner(household.role)
 
@@ -168,13 +177,13 @@ function HouseholdDetails({ household }: { household: Household }) {
   return (
     <Screen
       title={household.name}
-      subtitle="Your household shares recipes and shopping lists."
+      subtitle={t("settings:manage.subtitle")}
       back="/settings"
       narrow
     >
       <View className="gap-2">
         <Text className="px-1 text-sm font-medium uppercase tracking-wide text-muted-foreground">
-          Show recipes, lists and plans from
+          {t("settings:manage.showFrom")}
         </Text>
         <SpaceSwitcher />
       </View>
@@ -186,27 +195,35 @@ function HouseholdDetails({ household }: { household: Household }) {
       )}
 
       {members.isPending ? (
-        <LoadingState label="Loading members…" rows={2} />
+        <LoadingState label={t("settings:manage.loadingMembers")} rows={2} />
       ) : members.isError ? (
         <ErrorState
-          title="Could not load the members"
+          title={t("settings:manage.membersError")}
           message={members.error.message}
           onRetry={() => members.refetch()}
         />
       ) : (
-        <ListGroup title={`Members (${members.data.length})`}>
+        <ListGroup title={t("settings:manage.members", { count: members.data.length })}>
           {members.data.map((member) => {
             const you = member.userId === myUserId
             const removable = owner && !you && !isOwner(member.role)
             return (
               <ListRow
                 key={member.id}
-                title={you ? `${member.name} (you)` : member.name}
+                title={
+                  you
+                    ? t("settings:manage.you", { name: member.name })
+                    : member.name
+                }
                 detail={member.email}
                 right={
                   <View className="flex-row items-center gap-1">
                     <Badge
-                      label={isOwner(member.role) ? "owner" : "member"}
+                      label={
+                        isOwner(member.role)
+                          ? t("settings:manage.owner")
+                          : t("settings:manage.member")
+                      }
                       variant={isOwner(member.role) ? "default" : "secondary"}
                     />
                     {removable && (
@@ -214,7 +231,7 @@ function HouseholdDetails({ household }: { household: Household }) {
                         variant="ghost"
                         size="icon"
                         icon={UserMinus}
-                        label={`Remove ${member.name}`}
+                        label={t("settings:manage.remove", { name: member.name })}
                         onPress={() => setConfirm({ kind: "remove", member })}
                       />
                     )}
@@ -227,41 +244,48 @@ function HouseholdDetails({ household }: { household: Household }) {
       )}
 
       {owner && (
-        <ListGroup title="Open invite links">
+        <ListGroup title={t("settings:manage.invitesTitle")}>
           {invites.isPending ? (
-            <ListRow title="Loading…" />
+            <ListRow title={t("settings:manage.loadingInvites")} />
           ) : invites.isError ? (
             <ListRow
-              title="Could not load invites"
+              title={t("settings:manage.invitesError")}
               detail={invites.error.message}
             />
           ) : invites.data.length === 0 ? (
             <ListRow
               icon={Link2}
-              title="No open invites"
-              detail="Links that nobody has used yet show up here."
+              title={t("settings:manage.noInvites")}
+              detail={t("settings:manage.noInvitesDetail")}
             />
           ) : (
             invites.data.map((invite) => (
               <ListRow
                 key={invite.id}
                 icon={Link2}
-                title={copied === invite.id ? "Link copied" : "Invite link"}
-                detail={`Created by ${invite.inviterName} · expires ${inDays(invite.expiresAt)}`}
+                title={
+                  copied === invite.id
+                    ? t("settings:manage.linkCopied")
+                    : t("settings:manage.inviteLink")
+                }
+                detail={t("settings:manage.inviteDetail", {
+                  name: invite.inviterName,
+                  when: inDays(invite.expiresAt),
+                })}
                 right={
                   <View className="flex-row items-center">
                     <Button
                       variant="ghost"
                       size="icon"
                       icon={Copy}
-                      label="Copy invite link"
+                      label={t("settings:manage.copyLink")}
                       onPress={() => copy(invite.id, inviteLink(invite))}
                     />
                     <Button
                       variant="ghost"
                       size="icon"
                       icon={X}
-                      label="Cancel invite"
+                      label={t("settings:manage.cancelInvite")}
                       disabled={cancel.isPending}
                       onPress={() => cancel.mutate(invite.id)}
                     />
@@ -276,7 +300,7 @@ function HouseholdDetails({ household }: { household: Household }) {
       {owner && (
         <Button
           icon={UserPlus}
-          label="Invite someone"
+          label={t("settings:manage.invite")}
           onPress={() => router.push("/settings/household/invite")}
         />
       )}
@@ -284,31 +308,35 @@ function HouseholdDetails({ household }: { household: Household }) {
         <Button
           variant="ghost"
           icon={LogOut}
-          label="Leave household"
+          label={t("settings:manage.leave")}
           className="self-center"
           onPress={() => setConfirm({ kind: "leave" })}
         />
       )}
 
-      <CreateHouseholdCard title="Create another household" />
+      <CreateHouseholdCard title={t("settings:manage.createAnother")} />
 
       <Sheet
         open={!!confirm}
         onClose={() => setConfirm(null)}
         title={
           confirm?.kind === "remove"
-            ? `Remove ${confirm.member.name}?`
-            : `Leave ${household.name}?`
+            ? t("settings:manage.removeTitle", { name: confirm.member.name })
+            : t("settings:manage.leaveTitle", { name: household.name })
         }
       >
         <Text className="text-base text-muted-foreground">
           {confirm?.kind === "remove"
-            ? `${confirm.member.name} will no longer see this household's recipes and shopping lists. You can invite them again later.`
-            : "You will no longer see this household's recipes and shopping lists. You need a new invite to come back."}
+            ? t("settings:manage.removeText", { name: confirm.member.name })
+            : t("settings:manage.leaveText")}
         </Text>
         <Button
           variant="destructive"
-          label={confirm?.kind === "remove" ? "Remove" : "Leave household"}
+          label={
+            confirm?.kind === "remove"
+              ? t("settings:manage.removeConfirm")
+              : t("settings:manage.leave")
+          }
           disabled={remove.isPending || leave.isPending}
           onPress={() => {
             if (confirm?.kind === "remove") remove.mutate(confirm.member.id)
@@ -318,7 +346,7 @@ function HouseholdDetails({ household }: { household: Household }) {
         />
         <Button
           variant="outline"
-          label="Cancel"
+          label={t("settings:manage.cancel")}
           onPress={() => setConfirm(null)}
         />
       </Sheet>

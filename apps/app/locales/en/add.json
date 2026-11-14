@@ -1,0 +1,139 @@
+{
+  "methods": {
+    "video": {
+      "title": "Video link",
+      "description": "An Instagram reel, a TikTok or a YouTube Short."
+    },
+    "website": {
+      "title": "Website link",
+      "description": "A recipe page from any cooking website."
+    },
+    "photo": {
+      "title": "Photo or screenshot",
+      "description": "A cookbook page or a screenshot of a recipe."
+    },
+    "text": {
+      "title": "Paste text",
+      "description": "A recipe you copied from a message or a note."
+    },
+    "write": {
+      "title": "Write it yourself",
+      "description": "Type in a recipe from scratch, or one you know by heart."
+    },
+    "import": {
+      "title": "Import a recipe",
+      "description": "A recipe saved as JSON, or in the schema.org Recipe format."
+    }
+  },
+  "steps": {
+    "video": {
+      "download": "Downloading the video",
+      "caption": "Reading the caption",
+      "audio": "Listening to what is said",
+      "onScreenText": "Reading text shown in the video",
+      "write": "Writing the recipe"
+    },
+    "website": {
+      "open": "Opening the page",
+      "find": "Finding the recipe on the page",
+      "write": "Writing the recipe"
+    },
+    "photo": {
+      "upload": "Uploading the photo",
+      "read": "Reading the text",
+      "write": "Writing the recipe"
+    },
+    "text": {
+      "read": "Reading the text",
+      "write": "Writing the recipe"
+    }
+  },
+  "index": {
+    "title": "Add a recipe",
+    "subtitle": "Every way ends in the same clean recipe.",
+    "shareTip": "Tip: on your phone, tap Share on a reel in Instagram and pick idkjustfood."
+  },
+  "form": {
+    "cameraDenied": "Allow camera access in your settings to take a photo.",
+    "photoFailed": "Could not open the photo. Try a different one.",
+    "invalidLink": "That does not look like a link.",
+    "sending": "Sending…",
+    "getRecipe": "Get recipe",
+    "videoLabel": "Link to the video",
+    "websiteLabel": "Link to the recipe page",
+    "sampleIntro": "Try it with a sample link:",
+    "sampleGood": "Working link",
+    "sampleUnsupported": "Unsupported link",
+    "sampleBroken": "Broken link",
+    "textLabel": "Recipe text",
+    "textPlaceholder": "Paste the recipe here.\n\nFor example:\n2 eggs, 80 g oats…",
+    "photoChosen": "The photo you chose",
+    "photoChange": "Choose a different photo",
+    "takePhoto": "Take a photo",
+    "chooseLibrary": "Choose from library"
+  },
+  "progress": {
+    "readyTitle": "Recipe ready",
+    "workingTitle": "Working on it…",
+    "readySubtitle": "Check it before you keep it.",
+    "workingSubtitle": "This takes up to a minute. You can leave this screen: the recipe will be in your recipes when it is ready.",
+    "review": "Review recipe",
+    "lostJob": "Could not check on the recipe. Check your connection; it may still show up in your recipes.",
+    "leave": "Leave this screen"
+  },
+  "error": {
+    "title": "Could not add recipe",
+    "unsupportedTitle": "This link is not supported yet",
+    "unsupportedMessage": "idkjustfood reads Instagram reels, TikTok videos, YouTube Shorts and recipe websites. You can still paste the recipe text or add a screenshot.",
+    "failedTitle": "We could not read this recipe",
+    "failedMessage": "Something went wrong while reading the recipe. Try again, or paste the recipe text instead.",
+    "pasteText": "Paste the text instead",
+    "usePhoto": "Use a photo or screenshot",
+    "backToOptions": "Back to all options"
+  },
+  "errors": {
+    "generic": "Something went wrong while reading the recipe. Try again, or paste the recipe text instead.",
+    "network": "Could not reach the server. Check your connection.",
+    "unsupported_link": "This link is not supported yet. Paste the recipe text or add a screenshot instead.",
+    "private_address": "This link points to a private address and cannot be opened.",
+    "invalid_input": "There was nothing to read. Check the link, text or photo and try again.",
+    "ai_not_configured": "No AI is set up on this server yet. Ask the person who runs it to add one.",
+    "model_cannot_read_images": "The AI model that is set up cannot read photos. Try a link or the recipe text instead.",
+    "ai_failed": "The AI could not turn this into a recipe. Try again in a moment.",
+    "video_unavailable": "The video could not be downloaded. It may be private or removed.",
+    "video_too_long": "This video is too long to read.",
+    "tools_missing": "The tools needed to read videos are missing on this server.",
+    "page_unreachable": "The page could not be opened. Check the link and try again.",
+    "no_recipe_found": "No recipe was found. Try pasting the recipe text or adding a screenshot.",
+    "invalid_recipe": "What was found did not make a complete recipe. Try pasting the recipe text instead."
+  },
+  "review": {
+    "title": "Review recipe",
+    "loading": "Loading recipe",
+    "missingTitle": "This recipe does not exist",
+    "missingMessage": "It may have been deleted.",
+    "backToOptions": "Back to all options",
+    "loadErrorTitle": "Could not load this recipe",
+    "loadErrorMessage": "Check your connection and try again.",
+    "from": "From {{source}}",
+    "discard": "Discard",
+    "discarding": "Discarding…"
+  },
+  "write": {
+    "title": "Write a recipe",
+    "subtitle": "Only the title is needed. Add the rest now or later."
+  },
+  "import": {
+    "title": "Import a recipe",
+    "subtitle": "Paste a recipe exported from idkjustfood (JSON), or a schema.org Recipe.",
+    "label": "Recipe JSON",
+    "placeholder": "{ \"title\": \"…\", \"ingredients\": […] }",
+    "read": "Read recipe",
+    "reviewTitle": "Review recipe",
+    "reviewSubtitle": "Check it before you save it. Missing amounts stay empty.",
+    "back": "Back"
+  },
+  "saving": "Saving…",
+  "saveRecipe": "Save recipe",
+  "fieldsNeedFix": "Some fields need a fix. They are marked below."
+}

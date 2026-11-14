@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from "react-native"
+import { useTranslation } from "react-i18next"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 import { SocialButtons } from "@/components/social-buttons"
@@ -18,6 +19,7 @@ import { readableAuthError, validateCredentials } from "@/lib/auth-errors"
 import type { SocialProvider } from "@/lib/use-auth-config"
 
 export default function Login() {
+  const { t } = useTranslation("auth")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -35,9 +37,9 @@ export default function Login() {
         email: email.trim(),
         password,
       })
-      if (error) setError(readableAuthError(error, "Could not log in."))
+      if (error) setError(readableAuthError(error, t("login.failed")))
     } catch (e) {
-      setError(readableAuthError(e as Error, "Could not log in."))
+      setError(readableAuthError(e as Error, t("login.failed")))
     } finally {
       setBusy(false)
     }
@@ -50,9 +52,9 @@ export default function Login() {
         provider,
         callbackURL: "/",
       })
-      if (error) setError(readableAuthError(error, "Could not log in."))
+      if (error) setError(readableAuthError(error, t("login.failed")))
     } catch (e) {
-      setError(readableAuthError(e as Error, "Could not log in."))
+      setError(readableAuthError(e as Error, t("login.failed")))
     }
   }
 
@@ -66,9 +68,9 @@ export default function Login() {
           contentContainerClassName="w-full max-w-md flex-grow justify-center gap-5 self-center p-6"
           keyboardShouldPersistTaps="handled"
         >
-          <Text className="text-3xl font-semibold text-foreground">Log in</Text>
+          <Text className="text-3xl font-semibold text-foreground">{t("login.title")}</Text>
           <Input
-            label="Email"
+            label={t("fields.email")}
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
@@ -77,7 +79,7 @@ export default function Login() {
             textContentType="emailAddress"
           />
           <Input
-            label="Password"
+            label={t("fields.password")}
             value={password}
             onChangeText={setPassword}
             secureTextEntry
@@ -91,21 +93,21 @@ export default function Login() {
             </Text>
           )}
           <Button
-            label={busy ? "Logging in…" : "Log in"}
+            label={busy ? t("login.busy") : t("login.submit")}
             disabled={busy}
             className="h-12"
             onPress={submit}
           />
           <SocialButtons onPress={social} disabled={busy} />
           <View className="flex-row justify-center gap-1">
-            <Text className="text-muted-foreground">No account yet?</Text>
+            <Text className="text-muted-foreground">{t("login.noAccount")}</Text>
             <Link href="/register" className="font-medium text-primary">
-              Register
+              {t("login.register")}
             </Link>
           </View>
           <Button
             variant="ghost"
-            label="Look around with sample data"
+            label={t("login.demo")}
             onPress={() => setDemo(true)}
           />
         </ScrollView>
