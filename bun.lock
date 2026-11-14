@@ -21,6 +21,7 @@
         "@hono/zod-openapi": "^1.6.3",
         "@workspace/database": "workspace:*",
         "@workspace/extraction": "workspace:*",
+        "@workspace/logger": "workspace:*",
         "@workspace/schemas": "workspace:*",
         "better-auth": "^1.7.22",
         "drizzle-orm": "^0.44.0",
@@ -97,6 +98,7 @@
       "dependencies": {
         "@workspace/database": "workspace:*",
         "@workspace/extraction": "workspace:*",
+        "@workspace/logger": "workspace:*",
       },
       "devDependencies": {
         "@types/bun": "latest",
@@ -144,12 +146,24 @@
       "dependencies": {
         "@ai-sdk/openai": "^2",
         "@workspace/database": "workspace:*",
+        "@workspace/logger": "workspace:*",
         "@workspace/schemas": "workspace:*",
         "ai": "^5",
         "drizzle-orm": "^0.44.0",
         "pg-boss": "^10",
         "zod": "^4.6.7",
       },
+      "devDependencies": {
+        "@types/bun": "latest",
+        "@workspace/eslint-config": "workspace:*",
+        "@workspace/typescript-config": "workspace:*",
+        "eslint": "^10",
+        "typescript": "^5",
+      },
+    },
+    "packages/logger": {
+      "name": "@workspace/logger",
+      "version": "0.0.0",
       "devDependencies": {
         "@types/bun": "latest",
         "@workspace/eslint-config": "workspace:*",
@@ -715,6 +729,8 @@
     "@workspace/eslint-config": ["@workspace/eslint-config@workspace:packages/eslint-config"],
 
     "@workspace/extraction": ["@workspace/extraction@workspace:packages/extraction"],
+
+    "@workspace/logger": ["@workspace/logger@workspace:packages/logger"],
 
     "@workspace/schemas": ["@workspace/schemas@workspace:packages/schemas"],
 

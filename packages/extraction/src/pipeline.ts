@@ -2,9 +2,10 @@ import { mkdtemp, rm } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 
+import { silentLogger, type Logger } from "@workspace/logger"
 import type { RecipeContent } from "@workspace/schemas"
 
-import type { Ai } from "./ai/types.js"
+import type { Ai, AiJob } from "./ai/types.js"
 import { ExtractionError } from "./errors.js"
 import { inputModules, selectInput } from "./inputs/index.js"
 import type { ExtractionInput, Gathered, InputModule } from "./inputs/types.js"
@@ -21,7 +22,51 @@ export type PipelineOptions = {
   /** Where the temporary folder is made. Defaults to the system temp folder. */
   tempRoot?: string
   maxFrames?: number
+  /** Where progress and failures are logged. Defaults to a logger that writes nothing. */
+  logger?: Logger
 }
+
+/**
+ * Runs one step of the pipeline and logs how long it took, or why it failed.
+ * Failures with an `ExtractionError` are expected (bad link, no recipe), so they are
+ * a warning without a stack. Anything else is a bug or an outage and is an error.
+ */
+async function step<T>(
+  log: Logger,
+  name: string,
+  fields: Record<string, unknown>,
+  run: () => Promise<T>
+): Promise<T> {
+  const started = performance.now()
+  const elapsed = () => Math.round(performance.now() - started)
+  log.debug("step started", { step: name, ...fields })
+  try {
+    const result = await run()
+    log.info("step done", { step: name, durationMs: elapsed(), ...fields })
+    return result
+  } catch (cause) {
+    if (cause instanceof ExtractionError) {
+      log.warn("step failed", {
+        step: name,
+        durationMs: elapsed(),
+        code: cause.code,
+        reason: cause.message,
+        ...fields,
+      })
+    } else {
+      log.error("step failed", {
+        step: name,
+        durationMs: elapsed(),
+        err: cause,
+        ...fields,
+      })
+    }
+    throw cause
+  }
+}
+
+/** The AI provider and model of a job, for the logs. */
+const aiFields = (ai: Ai, job: AiJob) => ({ ...ai.describe?.(job) })
 
 const maxSectionChars = 30_000
 
@@ -37,10 +82,22 @@ function buildMaterial(sections: { label: string; text: string }[]) {
 }
 
 /** Collects speech and picture text with the AI, and returns all material as text. */
-async function readMaterial(gathered: Gathered, ai: Ai) {
+async function readMaterial(gathered: Gathered, ai: Ai, log: Logger) {
+  const { audio, images } = gathered
   const [transcript, seen] = await Promise.all([
-    gathered.audio ? ai.transcribe(gathered.audio) : "",
-    gathered.images.length > 0 ? ai.readImages(gathered.images) : "",
+    audio
+      ? step(log, "transcription", aiFields(ai, "transcription"), () =>
+          ai.transcribe(audio)
+        )
+      : "",
+    images.length > 0
+      ? step(
+          log,
+          "vision",
+          { ...aiFields(ai, "vision"), images: images.length },
+          () => ai.readImages(images)
+        )
+      : "",
   ])
   return buildMaterial([
     ...gathered.texts,
@@ -60,31 +117,53 @@ export async function extractRecipe(
   input: ExtractionInput,
   options: PipelineOptions
 ): Promise<RecipeContent> {
+  const log = options.logger ?? silentLogger
   const module = selectInput(input, options.modules ?? inputModules)
+  const source = { source: module.id }
+  log.info("extraction started", { ...source, input: input.type })
 
   const workDir = await mkdtemp(
     join(options.tempRoot ?? tmpdir(), "idkjustfood-")
   )
   try {
-    const gathered = await module.gather(input, {
-      workDir,
-      media: options.media ?? systemMedia,
-      fetchPage: options.fetchPage ?? ((url) => fetchPublicPage(url)),
-      maxFrames: options.maxFrames ?? 12,
-    })
+    // "gather" is where videos and pages are downloaded.
+    const gathered = await step(log, "gather", source, () =>
+      module.gather(input, {
+        workDir,
+        media: options.media ?? systemMedia,
+        fetchPage: options.fetchPage ?? ((url) => fetchPublicPage(url)),
+        maxFrames: options.maxFrames ?? 12,
+      })
+    )
 
-    if (gathered.recipe)
+    if (gathered.recipe) {
+      log.info("recipe data found in the source, no AI used", source)
       return toRecipeContent(gathered.recipe, gathered.source)
+    }
 
-    const material = await readMaterial(gathered, options.ai)
+    const material = await readMaterial(gathered, options.ai, log)
     if (!material.trim()) {
-      throw new ExtractionError(
+      const error = new ExtractionError(
         "no_recipe_found",
         "Nothing readable was found there: no caption, speech, text or picture content."
       )
+      log.warn("step failed", {
+        step: "material",
+        code: error.code,
+        reason: error.message,
+        ...source,
+      })
+      throw error
     }
-    const raw = await options.ai.parseRecipe(material)
-    return toRecipeContent(readExtractedRecipe(raw), gathered.source)
+    return await step(
+      log,
+      "parsing",
+      { ...aiFields(options.ai, "parsing"), materialChars: material.length },
+      async () => {
+        const raw = await options.ai.parseRecipe(material)
+        return toRecipeContent(readExtractedRecipe(raw), gathered.source)
+      }
+    )
   } finally {
     await rm(workDir, { recursive: true, force: true })
   }

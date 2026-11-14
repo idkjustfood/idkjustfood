@@ -3,6 +3,8 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { afterEach, beforeEach, describe, expect, test } from "bun:test"
 
+import { createLogger } from "@workspace/logger"
+
 import { ExtractionError } from "./errors.js"
 import { extractRecipe } from "./pipeline.js"
 import { fakeAi, fakeMedia, filesIn, pancakeJson, tinyPng } from "./testing.js"
@@ -200,7 +202,15 @@ describe("the recipe", () => {
     const recipe = await extractRecipe(text, {
       ai: withAnswer({
         ...pancakeJson,
-        tags: ["Pasta", "x".repeat(60), "tasty", "Italienisch", "italian", 5, ""],
+        tags: [
+          "Pasta",
+          "x".repeat(60),
+          "tasty",
+          "Italienisch",
+          "italian",
+          5,
+          "",
+        ],
       }),
       tempRoot,
     })
@@ -289,5 +299,93 @@ describe("the AI prompt for tags", () => {
     const { tagKeys } = await import("@workspace/schemas")
     for (const tag of tagKeys) expect(parseRecipeSystem).toContain(tag)
     expect(parseRecipeSystem).toMatch(/choose ONLY from the list/)
+  })
+})
+
+describe("logging", () => {
+  function capture() {
+    const lines: string[] = []
+    const logger = createLogger({
+      level: "debug",
+      write: (line) => lines.push(line),
+    })
+    return { logger, entries: () => lines.map((l) => JSON.parse(l)), lines }
+  }
+
+  test("logs each step of a video with the source and the AI provider", async () => {
+    const { logger, entries } = capture()
+    const ai = fakeAi({
+      describe: (job) => ({ provider: "openrouter", model: `${job}-model` }),
+    })
+    await extractRecipe(reel, {
+      ai,
+      media: fakeMedia(),
+      tempRoot,
+      logger: logger.child({ jobId: "j1" }),
+    })
+
+    const done = entries().filter((e) => e.msg === "step done")
+    expect(done.map((e) => e.step)).toEqual([
+      "gather",
+      "transcription",
+      "vision",
+      "parsing",
+    ])
+    expect(done.every((e) => e.jobId === "j1")).toBe(true)
+    expect(done.every((e) => typeof e.durationMs === "number")).toBe(true)
+    expect(done[0].source).toBe("instagram")
+    expect(done[1]).toMatchObject({
+      provider: "openrouter",
+      model: "transcription-model",
+    })
+  })
+
+  test("a failing step is logged with its name and the reason", async () => {
+    const { logger, entries } = capture()
+    const ai = fakeAi({
+      parseRecipe: async () => {
+        throw new ExtractionError("ai_failed", "The model did not answer")
+      },
+    })
+    await expect(
+      extractRecipe(reel, { ai, media: fakeMedia(), tempRoot, logger })
+    ).rejects.toThrow()
+    const failed = entries().find((e) => e.msg === "step failed")
+    expect(failed).toMatchObject({
+      level: "warn",
+      step: "parsing",
+      code: "ai_failed",
+      reason: "The model did not answer",
+    })
+  })
+
+  test("an unexpected crash is logged as an error with its stack", async () => {
+    const { logger, entries } = capture()
+    const ai = fakeAi({
+      parseRecipe: async () => {
+        throw new TypeError("cannot read x")
+      },
+    })
+    await expect(
+      extractRecipe(reel, { ai, media: fakeMedia(), tempRoot, logger })
+    ).rejects.toThrow()
+    const failed = entries().find((e) => e.msg === "step failed")
+    expect(failed.level).toBe("error")
+    expect(failed.step).toBe("parsing")
+    expect(failed.err.stack).toContain("cannot read x")
+  })
+
+  test("never writes the caption, the speech or the recipe text", async () => {
+    const { logger, lines } = capture()
+    await extractRecipe(reel, {
+      ai: fakeAi(),
+      media: fakeMedia(),
+      tempRoot,
+      logger,
+    })
+    const text = lines.join("\n")
+    expect(text).not.toContain("Easy pancakes!")
+    expect(text).not.toContain("Two hundred grams of flour")
+    expect(text).not.toContain("Fry for 2 minutes")
   })
 })

@@ -12,6 +12,7 @@
   "dependencies": {
     "@ai-sdk/openai": "^2",
     "@workspace/database": "workspace:*",
+    "@workspace/logger": "workspace:*",
     "@workspace/schemas": "workspace:*",
     "ai": "^5",
     "drizzle-orm": "^0.44.0",

@@ -23,6 +23,7 @@ import type { Auth } from "../auth.js"
 import { householdStore } from "../households/store.js"
 import { toRecipe } from "../recipes/routes.js"
 import { recipeStore } from "../recipes/store.js"
+import type { LogVariables } from "../logging.js"
 import { requireSession, type AuthVariables } from "../session.js"
 
 // ---------------------------------------------------------------------------
@@ -201,7 +202,7 @@ const getJob = createRoute({
 // Handlers
 // ---------------------------------------------------------------------------
 
-type Env = { Variables: AuthVariables }
+type Env = { Variables: AuthVariables & Partial<LogVariables> }
 
 /** A job that never finished (for example the worker was stopped) is reported as failed. */
 const staleAfterMs = 30 * 60 * 1000
@@ -301,7 +302,9 @@ export function extractionRoutes(
       return c.json({ error: "Household not found" }, 404)
     }
     const job = await jobs.create(user.id, household ?? null, input)
-    await deps.queue.enqueue(job.id)
+    await deps.queue.enqueue(job.id, c.get("requestId"))
+    // The request ID in this line is the same one the worker logs for the job.
+    c.get("log")?.info("extraction queued", { jobId: job.id, kind: input.type })
     return c.json({ job: await present(job, user.id) }, 202)
   }
 

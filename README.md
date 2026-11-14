@@ -13,6 +13,7 @@ apps/
 packages/
   schemas/           Shared Zod schemas and recipe logic.
   extraction/        Turns a link, photo or text into a recipe: input modules, AI providers, pipeline.
+  logger/            The small JSON logger used by the api and the worker.
   eslint-config/     Shared ESLint configs.
   typescript-config/ Shared tsconfig bases.
 ```
@@ -66,6 +67,13 @@ docker compose up -d
 
 More: [how to add an input or platform](docs/adding-an-input.md) and
 [how to add an AI provider](docs/ai-providers.md).
+
+## Logs
+
+The api and the worker write JSON log lines to the standard output (`docker compose logs api worker`).
+Set `LOG_LEVEL` (`debug`, `info`, `warn`, `error` or `silent`; default `info`) to print more or less.
+A request ID links a request to the extraction job it started. No logging service is needed. See
+[logging](docs/logging.md).
 
 ## Shopping lists
 

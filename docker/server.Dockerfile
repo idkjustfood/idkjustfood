@@ -30,7 +30,7 @@ WORKDIR /app
 COPY . .
 # --ignore-scripts: better-auth pulls in optional peers (better-sqlite3, @prisma/client) whose install
 # scripts need a compiler that this image does not have. We only use Postgres, so skip them.
-RUN bun install --frozen-lockfile --production --ignore-scripts --filter api --filter worker --filter @workspace/database --filter @workspace/schemas --filter @workspace/extraction
+RUN bun install --frozen-lockfile --production --ignore-scripts --filter api --filter worker --filter @workspace/database --filter @workspace/schemas --filter @workspace/extraction --filter @workspace/logger
 
 ENV NODE_ENV=production
 ENV PORT=3001
