@@ -6,6 +6,7 @@ import {
   afterError,
   applyOp,
   applyOps,
+  planAddItem,
   newId,
   type ShoppingOp,
 } from "./shopping-ops"
@@ -187,5 +188,42 @@ describe("newId", () => {
   test("gives different ids", () => {
     const ids = new Set(Array.from({ length: 200 }, newId))
     expect(ids.size).toBe(200)
+  })
+})
+
+describe("planAddItem", () => {
+  const flour = { ...milk, id: "f", name: "Flour", quantity: 200, unit: "g" }
+  const base = list("a", {
+    items: [
+      flour,
+      { ...milk, id: "o", name: "Olivenöl", quantity: null, unit: null },
+    ],
+  })
+
+  test("adds a new line", () => {
+    expect(planAddItem(base, { name: "Eggs", quantity: 6 }, "x")).toEqual({
+      type: "addItem",
+      listId: "a",
+      item: { id: "x", name: "Eggs", quantity: 6 },
+    })
+  })
+
+  test("adds up the same ingredient with an absolute amount", () => {
+    expect(
+      planAddItem(base, { name: "flour", quantity: 100, unit: "grams" }, "x")
+    ).toEqual({
+      type: "updateItem",
+      listId: "a",
+      itemId: "f",
+      change: { quantity: 300 },
+    })
+  })
+
+  test("the same item without an amount is not added twice", () => {
+    expect(planAddItem(base, { name: "olivenöl" }, "x")).toBeNull()
+  })
+
+  test("an amount and no amount stay separate lines", () => {
+    expect(planAddItem(base, { name: "Flour" }, "x")?.type).toBe("addItem")
   })
 })

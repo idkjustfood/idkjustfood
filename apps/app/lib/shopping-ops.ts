@@ -1,5 +1,7 @@
-import type {
-  ShoppingItem,
+import {
+  canMerge,
+  sumQuantity,
+  type ShoppingItem,
   ShoppingItemInput,
   ShoppingItemUpdate,
   ShoppingList,
@@ -116,6 +118,35 @@ function applyChange(item: ShoppingItem, change: ShoppingItemUpdate) {
   if (change.note !== undefined) next.note = change.note
   if (change.checked !== undefined) next.checked = change.checked
   return next
+}
+
+/**
+ * The change for adding an item by hand. When the list already has the same
+ * ingredient (same name and unit, not ticked off), the amounts are added up
+ * with an absolute update, so sending it twice gives the same result. Returns
+ * null when there is nothing to do (the same item without an amount).
+ */
+export function planAddItem(
+  list: ShoppingList,
+  input: ShoppingItemInput,
+  id: string
+): ShoppingOp | null {
+  const line = {
+    name: input.name,
+    quantity: input.quantity ?? null,
+    unit: input.unit ?? null,
+  }
+  const target = list.items.find((item) => canMerge(item, line))
+  if (!target) {
+    return { type: "addItem", listId: list.id, item: { ...input, id } }
+  }
+  if (target.quantity === null || line.quantity === null) return null
+  return {
+    type: "updateItem",
+    listId: list.id,
+    itemId: target.id,
+    change: { quantity: sumQuantity(target.quantity, line.quantity) },
+  }
 }
 
 /** The server's lists with the changes that are still waiting to be sent put on top. */

@@ -8,7 +8,9 @@ edition, so self-hosted installs have it too.
 
 - **Shopping tab:** all your lists, each marked "Personal" or with the household's name. Choose
   which kind when you make a list.
-- **Add items by hand**, tick them off (they move to "In the basket"), remove them, or clear all
+- **Add items by hand** with a name and an optional amount and unit. An item that matches a line
+  already on the list (same name and unit) is merged into it, like a recipe's ingredients. The same
+  item without an amount is not added twice. Tick them off (they move to "In the basket"), remove them, or clear all
   ticked items.
 - **Add a recipe:** from a list ("Add a recipe" in the header) or from the recipe screen
   ("Add to shopping list", for the servings you chose there).

@@ -90,6 +90,27 @@ const same = (a: string, b: string) =>
 const clean = (value: number) => Math.round(value * 10_000) / 10_000
 
 /**
+ * Whether a new line can be merged into an item: not ticked off yet, same name,
+ * same unit, and both have an amount or both have none.
+ */
+export function canMerge(
+  item: Pick<ShoppingItemContent, "name" | "quantity" | "unit" | "checked">,
+  line: { name: string; quantity: number | null; unit: string | null }
+) {
+  return (
+    !item.checked &&
+    same(item.name, line.name) &&
+    unitKey(item.unit) === unitKey(line.unit) &&
+    (item.quantity === null) === (line.quantity === null)
+  )
+}
+
+/** Adds two amounts without floating point noise. */
+export function sumQuantity(a: number, b: number) {
+  return clean(a + b)
+}
+
+/**
  * Puts a recipe's ingredients on a list and returns the new items. Identical
  * ingredients are merged: same name and the same unit add up (200 g + 100 g
  * flour is 300 g). Different units stay on separate lines, because converting
@@ -112,16 +133,16 @@ export function addIngredients(
   for (const ingredient of ingredients) {
     const amount =
       ingredient.quantity === null ? null : clean(ingredient.quantity * factor)
-    const target = result.find(
-      (item) =>
-        !item.checked &&
-        same(item.name, ingredient.name) &&
-        unitKey(item.unit) === unitKey(ingredient.unit) &&
-        (item.quantity === null) === (amount === null)
+    const target = result.find((item) =>
+      canMerge(item, {
+        name: ingredient.name,
+        quantity: amount,
+        unit: ingredient.unit,
+      })
     )
     if (target) {
       if (target.quantity !== null && amount !== null) {
-        target.quantity = clean(target.quantity + amount)
+        target.quantity = sumQuantity(target.quantity, amount)
       }
       if (!target.fromRecipes.includes(recipeTitle)) {
         target.fromRecipes.push(recipeTitle)

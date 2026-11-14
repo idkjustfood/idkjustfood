@@ -1,6 +1,10 @@
 import { describe, expect, test } from "bun:test"
 
-import { addIngredients, type ShoppingItemContent } from "./shopping.js"
+import {
+  addIngredients,
+  canMerge,
+  type ShoppingItemContent,
+} from "./shopping.js"
 
 const item = (
   name: string,
@@ -135,5 +139,28 @@ describe("addIngredients", () => {
     const first = addIngredients([], [ingredient("Milk", 0.1, "l")], "A")
     const second = addIngredients(first, [ingredient("Milk", 0.2, "l")], "B")
     expect(second[0]!.quantity).toBe(0.3)
+  })
+})
+
+describe("canMerge", () => {
+  const flour = item("Flour", 200, "g")
+  test("same name and unit, both with amounts", () => {
+    expect(canMerge(flour, { name: "flour", quantity: 5, unit: "grams" })).toBe(
+      true
+    )
+  })
+  test("not with a different unit, a missing amount or a ticked item", () => {
+    expect(canMerge(flour, { name: "Flour", quantity: 5, unit: "cup" })).toBe(
+      false
+    )
+    expect(canMerge(flour, { name: "Flour", quantity: null, unit: "g" })).toBe(
+      false
+    )
+    expect(
+      canMerge(
+        { ...flour, checked: true },
+        { name: "Flour", quantity: 5, unit: "g" }
+      )
+    ).toBe(false)
   })
 })

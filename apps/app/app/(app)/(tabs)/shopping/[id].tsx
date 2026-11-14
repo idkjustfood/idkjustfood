@@ -10,7 +10,11 @@ import {
 import { useState } from "react"
 import { Pressable, Text, TextInput, View } from "react-native"
 
-import type { ShoppingItem, ShoppingList } from "@workspace/schemas"
+import {
+  parseQuantity,
+  type ShoppingItem,
+  type ShoppingList,
+} from "@workspace/schemas"
 
 import { ListGroup, ListRow } from "@/components/list-row"
 import { OfflineBanner } from "@/components/offline-banner"
@@ -55,6 +59,9 @@ function ListView({ list }: { list: ShoppingList }) {
   const kindLabel = useListKind()(list, household?.name)
   const actions = useShoppingActions()
   const [draft, setDraft] = useState("")
+  const [amount, setAmount] = useState("")
+  const [unit, setUnit] = useState("")
+  const [amountError, setAmountError] = useState(false)
   const [recipeOpen, setRecipeOpen] = useState(false)
   const [optionsOpen, setOptionsOpen] = useState(false)
 
@@ -66,8 +73,21 @@ function ListView({ list }: { list: ShoppingList }) {
   function addItem() {
     const name = draft.trim()
     if (!name) return
-    actions.addItem(list.id, { name })
+    // An empty amount stays empty: it is never guessed.
+    const quantity = parseQuantity(amount)
+    if (quantity === undefined) {
+      setAmountError(true)
+      return
+    }
+    actions.addItem(list.id, {
+      name,
+      quantity,
+      unit: quantity !== null && unit.trim() ? unit.trim() : null,
+    })
     setDraft("")
+    setAmount("")
+    setUnit("")
+    setAmountError(false)
   }
 
   return (
@@ -97,19 +117,57 @@ function ListView({ list }: { list: ShoppingList }) {
     >
       <OfflineBanner />
 
-      <View className="flex-row gap-2">
-        <TextInput
-          accessibilityLabel="Add an item"
-          placeholder="Add an item"
-          placeholderTextColor="#737373"
-          value={draft}
-          onChangeText={setDraft}
-          onSubmitEditing={addItem}
-          returnKeyType="done"
-          maxLength={200}
-          className="h-12 min-w-0 flex-1 rounded-md border border-input bg-background px-3 text-base text-foreground"
-        />
-        <Button size="icon" icon={Plus} label="Add item" onPress={addItem} />
+      <View className="gap-2">
+        <View className="flex-row gap-2">
+          <TextInput
+            accessibilityLabel="Add an item"
+            placeholder="Add an item"
+            placeholderTextColor="#737373"
+            value={draft}
+            onChangeText={setDraft}
+            onSubmitEditing={addItem}
+            returnKeyType="done"
+            maxLength={200}
+            className="h-12 min-w-0 flex-1 rounded-md border border-input bg-background px-3 text-base text-foreground"
+          />
+          <Button size="icon" icon={Plus} label="Add item" onPress={addItem} />
+        </View>
+        <View className="flex-row gap-2">
+          <TextInput
+            accessibilityLabel="Amount"
+            placeholder="Amount (optional)"
+            placeholderTextColor="#737373"
+            value={amount}
+            onChangeText={(text) => {
+              setAmount(text)
+              setAmountError(false)
+            }}
+            onSubmitEditing={addItem}
+            keyboardType="numbers-and-punctuation"
+            maxLength={12}
+            aria-invalid={amountError}
+            className={cn(
+              "h-11 min-w-0 flex-1 rounded-md border bg-background px-3 text-base text-foreground",
+              amountError ? "border-destructive" : "border-input"
+            )}
+          />
+          <TextInput
+            accessibilityLabel="Unit"
+            placeholder="Unit (g, ml, EL…)"
+            placeholderTextColor="#737373"
+            value={unit}
+            onChangeText={setUnit}
+            onSubmitEditing={addItem}
+            autoCapitalize="none"
+            maxLength={40}
+            className="h-11 min-w-0 flex-1 rounded-md border border-input bg-background px-3 text-base text-foreground"
+          />
+        </View>
+        {amountError && (
+          <Text role="alert" className="text-sm text-destructive">
+            The amount must be a number, like 2, 1.5 or 1/2.
+          </Text>
+        )}
       </View>
 
       {list.items.length === 0 && (

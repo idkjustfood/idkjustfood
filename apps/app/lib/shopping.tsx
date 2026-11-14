@@ -27,7 +27,7 @@ import {
   shoppingLists as demoLists,
 } from "@/lib/mock-data"
 import { fromSample } from "@/lib/recipes"
-import { newId, type ShoppingOp } from "@/lib/shopping-ops"
+import { newId, planAddItem, type ShoppingOp } from "@/lib/shopping-ops"
 import {
   ShoppingStore,
   type ShoppingDeps,
@@ -231,12 +231,13 @@ export function useShoppingActions() {
         store.dispatch({ type: "renameList", listId, name }),
       deleteList: (listId: string) =>
         store.dispatch({ type: "deleteList", listId }),
-      addItem: (listId: string, item: Omit<ShoppingItemInput, "id">) =>
-        store.dispatch({
-          type: "addItem",
-          listId,
-          item: { ...item, id: newId() },
-        }),
+      /** Adds an item, or adds its amount to the same ingredient already on the list. */
+      addItem(listId: string, item: Omit<ShoppingItemInput, "id">) {
+        const list = store.getState().lists.find((l) => l.id === listId)
+        if (!list) return
+        const op = planAddItem(list, item, newId())
+        if (op) store.dispatch(op)
+      },
       updateItem: (
         listId: string,
         itemId: string,
