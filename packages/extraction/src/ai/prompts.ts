@@ -23,7 +23,7 @@ Rules:
 - Use only what the material says. Never invent a detail. If an amount is not given, set "quantity" to null (and "unit" to null if there is no unit too).
 - If the material conflicts with itself (for example caption and on-screen text), prefer on-screen text and written lists over spoken words for amounts.
 - Write the recipe in the language of the material.
-- "quantity" is a number: write 1/2 as 0.5 and 1 1/2 as 1.5. Keep the unit as written ("g", "cup", "tbsp", "clove"). Put extras like "finely chopped" in "note".
+- "quantity" is a number: write 1/2 as 0.5 and 1 1/2 as 1.5. "unit" is one of these keys, or null when there is no unit: g, kg, mg, ml, l, tsp, tbsp, cup, oz, lb, fl_oz, piece, pinch, clove, bunch, slice, can, pack (tsp = teaspoon, TL; tbsp = tablespoon, EL; piece = Stück). If the material uses a unit that is not in this list (for example "handful"), set "unit" to null and write that word in "note". Put extras like "finely chopped" in "note" too.
 - "servings" is a whole number, or null if the material does not say.
 - "prepMinutes" and "cookMinutes" are whole minutes, or null if not said.
 - "steps": one object per step, in order, in short clear sentences. Keep times in the text ("bake for 30 minutes").
@@ -38,7 +38,7 @@ JSON shape:
   "prepMinutes": number | null,
   "cookMinutes": number | null,
   "tags": string[],
-  "ingredients": [{ "name": string, "quantity": number | null, "unit": string | null, "note": string | null }],
+  "ingredients": [{ "name": string, "quantity": number | null, "unit": "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null, "note": string | null }],
   "steps": [{ "text": string }]
 }`
 

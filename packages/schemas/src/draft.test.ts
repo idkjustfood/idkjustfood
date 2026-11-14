@@ -5,6 +5,7 @@ import {
   emptyDraft,
   readDraft,
   RecipeContentSchema,
+  type DraftContent,
   type RecipeDraft,
 } from "./index.js"
 
@@ -29,7 +30,7 @@ describe("readDraft", () => {
       filled({
         ingredients: [
           { key: "a", quantity: "", unit: "", name: "Salt", note: "" },
-          { key: "b", quantity: " 1 1/2 ", unit: "cups", name: "Flour", note: "sifted" },
+          { key: "b", quantity: " 1 1/2 ", unit: "cup", name: "Flour", note: "sifted" },
           { key: "c", quantity: "", unit: "", name: "", note: "" },
         ],
         steps: [
@@ -45,7 +46,7 @@ describe("readDraft", () => {
     if (!result.ok) return
     expect(result.content.ingredients).toEqual([
       { name: "Salt", quantity: null, unit: null, note: null },
-      { name: "Flour", quantity: 1.5, unit: "cups", note: "sifted" },
+      { name: "Flour", quantity: 1.5, unit: "cup", note: "sifted" },
     ])
     expect(result.content.steps).toEqual([{ text: "Boil." }])
     expect(result.content.nutrition).toEqual({
@@ -89,7 +90,7 @@ describe("readDraft", () => {
   })
 
   test("a saved recipe becomes the same draft content again", () => {
-    const recipe = {
+    const recipe: DraftContent = {
       title: "Dal",
       description: "",
       servings: 4,

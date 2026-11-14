@@ -7,12 +7,13 @@ import {
 } from "./quantity.js"
 import {
   emptyNutrition,
+  fitIngredientUnits,
   RecipeContentSchema,
   type Ingredient,
   type Nutrition,
   type RecipeContent,
 } from "./recipe.js"
-import { knownUnitWords } from "./units.js"
+import { knownUnitWords, normalizeUnit, unitLabelEn } from "./units.js"
 
 /** The parts of a recipe that export and import care about. */
 type Exportable = Omit<RecipeContent, "source"> & { source?: unknown }
@@ -21,7 +22,8 @@ type Exportable = Omit<RecipeContent, "source"> & { source?: unknown }
 export function ingredientLine(ingredient: Ingredient) {
   const amount =
     ingredient.quantity === null ? "" : formatExactQuantity(ingredient.quantity)
-  const parts = [amount, ingredient.unit ?? "", ingredient.name].filter(Boolean)
+  const unit = ingredient.unit ? unitLabelEn(ingredient.unit) : ""
+  const parts = [amount, unit, ingredient.name].filter(Boolean)
   const line = parts.join(" ")
   return ingredient.note ? `${line}, ${ingredient.note}` : line
 }
@@ -177,8 +179,8 @@ const units = knownUnitWords
   .map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
   .join("|")
 const lineStart = new RegExp(
-  `^(${quantityPattern})(?:\\s*(?:-|–|to)\\s*${quantityPattern})?(?:\\s+(${units})\\b\\.?)?\\s*(.*)$`,
-  "i"
+  `^(${quantityPattern})(?:\\s*(?:-|–|to)\\s*${quantityPattern})?(?:\\s+(${units})(?![\\p{L}])\\.?)?\\s*(.*)$`,
+  "iu"
 )
 
 /**
@@ -190,11 +192,11 @@ export function parseIngredientLine(text: string): Ingredient | null {
   if (!line) return null
   const match = lineStart.exec(line)
   let quantity: number | null = null
-  let unit: string | null = null
+  let unit: Ingredient["unit"] = null
   let rest = line
   if (match && match[3]) {
     quantity = quantityValue(match[1]!)
-    unit = match[2] ?? null
+    unit = normalizeUnit(match[2])
     rest = match[3]
   }
   const comma = rest.indexOf(",")
@@ -315,7 +317,7 @@ export function fromSchemaOrg(data: unknown): RecipeContent | null {
 
   let ingredients: Ingredient[] | null = null
   const own = z.array(RecipeContentSchema.shape.ingredients.element).safeParse(
-    node[ingredientsKey]
+    fitIngredientUnits(node[ingredientsKey])
   )
   const lines: unknown[] = Array.isArray(node.recipeIngredient)
     ? node.recipeIngredient
@@ -378,7 +380,11 @@ export function parseImport(input: string): ImportResult {
       : { ok: false, error: "This schema.org recipe has no name." }
   }
 
-  const result = RecipeContentSchema.omit({ source: true }).safeParse(data)
+  const prepared =
+    data && typeof data === "object" && "ingredients" in data
+      ? { ...data, ingredients: fitIngredientUnits(data.ingredients) }
+      : data
+  const result = RecipeContentSchema.omit({ source: true }).safeParse(prepared)
   if (!result.success) {
     const issue = result.error.issues[0]
     const field = issue?.path.join(".")

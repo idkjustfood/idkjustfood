@@ -51,15 +51,15 @@ describe("pages with schema.org Recipe data", () => {
       fetchPage: page(blogWithGraph),
     })
     expect(ingredients).toEqual([
-      { name: "red lentils", quantity: 1.5, unit: "cups", note: null },
-      { name: "olive oil", quantity: 2, unit: "tablespoons", note: null },
+      { name: "red lentils", quantity: 1.5, unit: "cup", note: null },
+      { name: "olive oil", quantity: 2, unit: "tbsp", note: null },
       { name: "large onion", quantity: 1, unit: null, note: "finely chopped" },
-      { name: "garlic", quantity: 3, unit: "cloves", note: null },
+      { name: "garlic", quantity: 3, unit: "clove", note: null },
       // No amount in the source: the quantity stays empty.
       { name: "salt and pepper", quantity: null, unit: null, note: null },
       // A range is not turned into one number.
       { name: "2-3 carrots", quantity: null, unit: null, note: null },
-      { name: "cumin", quantity: 0.5, unit: "teaspoon", note: null },
+      { name: "cumin", quantity: 0.5, unit: "tsp", note: null },
     ])
   })
 
@@ -181,6 +181,18 @@ describe("schema.org helpers", () => {
     expect(parseIngredientLine("1,5 kg potatoes")).toMatchObject({
       quantity: 1.5,
       unit: "kg",
+    })
+    expect(parseIngredientLine("2 EL Olivenöl")).toMatchObject({
+      quantity: 2,
+      unit: "tbsp",
+      name: "Olivenöl",
+    })
+    // Not in the list: the amount stays and the word goes into the note.
+    expect(parseIngredientLine("1 handful basil")).toEqual({
+      name: "basil",
+      quantity: 1,
+      unit: null,
+      note: "handful",
     })
     expect(parseIngredientLine("2 eggs")).toEqual({
       name: "eggs",

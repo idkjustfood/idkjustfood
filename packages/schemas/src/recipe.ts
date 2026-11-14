@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+import { fitUnit, UnitSchema } from "./units.js"
+
 /** Where a recipe came from. Recipes typed in by hand are "manual". */
 export const sourceKinds = [
   "manual",
@@ -24,10 +26,27 @@ export const IngredientSchema = z.object({
   name: z.string().trim().min(1).max(200),
   /** Empty (null) when the source does not say. Never guessed. */
   quantity: z.number().positive().nullable(),
-  unit: z.string().trim().min(1).max(40).nullable(),
+  /** One of the fixed list of units (see `unitKeys`), or empty (null) for "no unit". */
+  unit: UnitSchema.nullable(),
   note: z.string().trim().min(1).max(300).nullable(),
 })
 export type Ingredient = z.infer<typeof IngredientSchema>
+
+/**
+ * Makes the units of ingredients from outside (an AI answer, a web page, a file
+ * someone imports) fit the list of units, see `fitUnit`. Anything that is not a
+ * list of ingredients is returned as it is, so the schema can report it.
+ */
+export function fitIngredientUnits(ingredients: unknown): unknown {
+  if (!Array.isArray(ingredients)) return ingredients
+  return ingredients.map((item) => {
+    if (!item || typeof item !== "object" || !("unit" in item)) return item
+    const row = item as { unit?: unknown; note?: unknown }
+    if (row.unit !== null && typeof row.unit !== "string") return item
+    const note = typeof row.note === "string" ? row.note : null
+    return { ...row, ...fitUnit(row.unit as string | null, note) }
+  })
+}
 
 /** A timer is not stored: it is found in the text, see `findTimers`. */
 export const StepSchema = z.object({

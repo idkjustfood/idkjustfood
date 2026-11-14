@@ -8,14 +8,27 @@
   "units": {
     "g": "g",
     "kg": "kg",
-    "oz": "oz",
-    "lb": "lb",
+    "mg": "mg",
     "ml": "ml",
     "l": "l",
     "tsp": "TL",
     "tbsp": "EL",
     "cup_one": "Tasse",
-    "cup_other": "Tassen"
+    "cup_other": "Tassen",
+    "oz": "oz",
+    "lb": "lb",
+    "fl_oz": "fl oz",
+    "piece": "Stück",
+    "pinch_one": "Prise",
+    "pinch_other": "Prisen",
+    "clove_one": "Zehe",
+    "clove_other": "Zehen",
+    "bunch": "Bund",
+    "slice_one": "Scheibe",
+    "slice_other": "Scheiben",
+    "can_one": "Dose",
+    "can_other": "Dosen",
+    "pack": "Päckchen"
   },
   "back": "Zurück",
   "close": "Schließen",
@@ -55,5 +68,8 @@
     "tomorrow": "morgen",
     "inDays_one": "in {{count}} Tag",
     "inDays_other": "in {{count}} Tagen"
+  },
+  "unitPicker": {
+    "none": "Keine Einheit"
   }
 }

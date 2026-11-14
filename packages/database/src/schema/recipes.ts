@@ -1,3 +1,4 @@
+import type { UnitKey } from "@workspace/schemas"
 import { sql } from "drizzle-orm"
 import { index, integer, jsonb, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 
@@ -33,7 +34,7 @@ export const recipe = pgTable(
         {
           name: string
           quantity: number | null
-          unit: string | null
+          unit: UnitKey | null
           note: string | null
         }[]
       >()

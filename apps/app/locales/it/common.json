@@ -8,14 +8,30 @@
   "units": {
     "g": "g",
     "kg": "kg",
-    "oz": "oz",
-    "lb": "lb",
+    "mg": "mg",
     "ml": "ml",
     "l": "l",
     "tsp": "cucchiaino",
     "tbsp": "cucchiaio",
     "cup_one": "tazza",
-    "cup_other": "tazze"
+    "cup_other": "tazze",
+    "oz": "oz",
+    "lb": "lb",
+    "fl_oz": "fl oz",
+    "piece_one": "pezzo",
+    "piece_other": "pezzi",
+    "pinch_one": "pizzico",
+    "pinch_other": "pizzichi",
+    "clove_one": "spicchio",
+    "clove_other": "spicchi",
+    "bunch_one": "mazzo",
+    "bunch_other": "mazzi",
+    "slice_one": "fetta",
+    "slice_other": "fette",
+    "can_one": "scatola",
+    "can_other": "scatole",
+    "pack_one": "confezione",
+    "pack_other": "confezioni"
   },
   "back": "Indietro",
   "close": "Chiudi",
@@ -55,5 +71,8 @@
     "tomorrow": "domani",
     "inDays_one": "tra {{count}} giorno",
     "inDays_other": "tra {{count}} giorni"
+  },
+  "unitPicker": {
+    "none": "Nessuna unità"
   }
 }

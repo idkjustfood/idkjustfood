@@ -8,14 +8,30 @@
   "units": {
     "g": "g",
     "kg": "kg",
-    "oz": "oz",
-    "lb": "lb",
+    "mg": "mg",
     "ml": "ml",
     "l": "l",
     "tsp": "c. à c.",
     "tbsp": "c. à s.",
     "cup_one": "tasse",
-    "cup_other": "tasses"
+    "cup_other": "tasses",
+    "oz": "oz",
+    "lb": "lb",
+    "fl_oz": "fl oz",
+    "piece_one": "pièce",
+    "piece_other": "pièces",
+    "pinch_one": "pincée",
+    "pinch_other": "pincées",
+    "clove_one": "gousse",
+    "clove_other": "gousses",
+    "bunch_one": "botte",
+    "bunch_other": "bottes",
+    "slice_one": "tranche",
+    "slice_other": "tranches",
+    "can_one": "boîte",
+    "can_other": "boîtes",
+    "pack_one": "paquet",
+    "pack_other": "paquets"
   },
   "back": "Retour",
   "close": "Fermer",
@@ -55,5 +71,8 @@
     "tomorrow": "demain",
     "inDays_one": "dans {{count}} jour",
     "inDays_other": "dans {{count}} jours"
+  },
+  "unitPicker": {
+    "none": "Sans unité"
   }
 }

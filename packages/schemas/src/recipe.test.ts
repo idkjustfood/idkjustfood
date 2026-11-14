@@ -26,8 +26,8 @@ const pasta: RecipeContent = {
   ingredients: [
     { name: "Penne", quantity: 400, unit: "g", note: null },
     { name: "Chicken breast", quantity: 500, unit: "g", note: "cut in strips" },
-    { name: "Garlic", quantity: 3, unit: "cloves", note: "minced" },
-    { name: "Flour", quantity: 1.5, unit: "cups", note: null },
+    { name: "Garlic", quantity: 3, unit: "clove", note: "minced" },
+    { name: "Flour", quantity: 1.5, unit: "cup", note: null },
     { name: "Salt and pepper", quantity: null, unit: null, note: null },
   ],
   steps: [
@@ -81,7 +81,7 @@ describe("formatAmount", () => {
   test("scales every amount", () => {
     const flour = { quantity: 200, unit: "g" }
     expect(formatAmount(flour, 6 / 4)).toBe("300 g")
-    expect(formatAmount({ quantity: 3, unit: "cloves" }, 1.5)).toBe("4½ cloves")
+    expect(formatAmount({ quantity: 3, unit: "clove" }, 1.5)).toBe("4½ cloves")
     expect(formatAmount({ quantity: 2, unit: null }, 0.5)).toBe("1")
   })
 
@@ -110,7 +110,7 @@ describe("formatAmount", () => {
     expect(formatAmount({ quantity: 1, unit: "cup" }, 1, "metric")).toBe(
       "235 ml"
     )
-    expect(formatAmount({ quantity: 1.5, unit: "cups" }, 1, "metric")).toBe(
+    expect(formatAmount({ quantity: 1.5, unit: "cup" }, 1, "metric")).toBe(
       "355 ml"
     )
     expect(formatAmount({ quantity: 8, unit: "oz" }, 1, "metric")).toBe("225 g")
@@ -123,7 +123,7 @@ describe("formatAmount", () => {
     expect(formatAmount({ quantity: 400, unit: "g" }, 1, "metric")).toBe(
       "400 g"
     )
-    expect(formatAmount({ quantity: 2, unit: "cups" }, 1.5, "imperial")).toBe(
+    expect(formatAmount({ quantity: 2, unit: "cup" }, 1.5, "imperial")).toBe(
       "3 cups"
     )
     expect(formatAmount({ quantity: 2, unit: "tbsp" }, 1, "imperial")).toBe(
@@ -134,10 +134,14 @@ describe("formatAmount", () => {
     )
   })
 
-  test("never converts units it does not know", () => {
-    expect(formatAmount({ quantity: 2, unit: "handfuls" }, 1, "imperial")).toBe(
-      "2 handfuls"
+  test("never converts units without a fixed size", () => {
+    expect(formatAmount({ quantity: 2, unit: "piece" }, 1, "imperial")).toBe(
+      "2 pieces"
     )
+    expect(formatAmount({ quantity: 1, unit: "pinch" }, 1, "metric")).toBe(
+      "1 pinch"
+    )
+    expect(formatAmount({ quantity: 3, unit: "clove" }, 1.5)).toBe("4½ cloves")
   })
 })
 
@@ -262,7 +266,7 @@ describe("export and import", () => {
       nutrition: { calories: 310, protein: null, carbs: null, fat: 6.5 },
     })
     expect(result.recipe.ingredients).toEqual([
-      { name: "red lentils", quantity: 1.5, unit: "cups", note: "rinsed" },
+      { name: "red lentils", quantity: 1.5, unit: "cup", note: "rinsed" },
       { name: "curry powder", quantity: 2, unit: "tbsp", note: null },
       { name: "Salt", quantity: null, unit: null, note: null },
       // No number, so no amount. We never guess one.
@@ -297,7 +301,7 @@ describe("parseIngredientLine", () => {
     expect(parseIngredientLine("2 tablespoons olive oil")).toEqual({
       name: "olive oil",
       quantity: 2,
-      unit: "tablespoons",
+      unit: "tbsp",
       note: null,
     })
     expect(parseIngredientLine("½ onion, chopped")).toEqual({

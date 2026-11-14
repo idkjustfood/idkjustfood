@@ -1,4 +1,5 @@
 import {
+  fitUnit,
   knownUnitWords,
   quantityPattern,
   quantityValue,
@@ -177,19 +178,25 @@ export function parseIngredientLine(
   if (!Number.isFinite(quantity) || quantity <= 0) return splitNote(whole)
 
   rest = rest.trim()
-  let unit: string | null = null
+  let fitted: ReturnType<typeof fitUnit> = { unit: null, note: null }
   const unitMatch = unitStart.exec(rest)
   if (unitMatch) {
-    unit = unitMatch[1]!.toLowerCase()
+    // A unit that is not in our list ("handful") goes into the note.
+    fitted = fitUnit(unitMatch[1]!.toLowerCase(), null)
     rest = rest.slice(unitMatch[0].length).trim()
   }
   rest = rest.replace(/^of\s+/i, "")
-  return splitNote({
+  const split = splitNote({
     name: rest.slice(0, 200) || text.slice(0, 200),
     quantity,
-    unit,
+    unit: fitted.unit,
     note: null,
   })
+  if (!fitted.note) return split
+  return {
+    ...split,
+    note: (split.note ? `${fitted.note}, ${split.note}` : fitted.note).slice(0, 300),
+  }
 }
 
 /** Moves a text after the first comma ("onion, finely chopped") into the note. */

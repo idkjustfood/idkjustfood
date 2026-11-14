@@ -2516,7 +2516,8 @@ export interface components {
             ingredients: {
                 name: string;
                 quantity: number | null;
-                unit: string | null;
+                /** @enum {string|null} */
+                unit: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
                 note: string | null;
             }[];
             steps: {
@@ -2550,7 +2551,8 @@ export interface components {
             ingredients: {
                 name: string;
                 quantity: number | null;
-                unit: string | null;
+                /** @enum {string|null} */
+                unit: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
                 note: string | null;
             }[];
             steps: {
@@ -2578,7 +2580,8 @@ export interface components {
             items: {
                 name: string;
                 quantity: number | null;
-                unit: string | null;
+                /** @enum {string|null} */
+                unit: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
                 note: string | null;
                 checked: boolean;
                 fromRecipes: string[];
@@ -2598,7 +2601,8 @@ export interface components {
         ShoppingItem: {
             name: string;
             quantity: number | null;
-            unit: string | null;
+            /** @enum {string|null} */
+            unit: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
             note: string | null;
             checked: boolean;
             fromRecipes: string[];
@@ -2608,13 +2612,15 @@ export interface components {
             id?: string;
             name: string;
             quantity?: number | null;
-            unit?: string | null;
+            /** @enum {string|null} */
+            unit?: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
             note?: string | null;
         };
         ShoppingItemUpdate: {
             name?: string;
             quantity?: number | null;
-            unit?: string | null;
+            /** @enum {string|null} */
+            unit?: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
             note?: string | null;
             checked?: boolean;
         };
@@ -2735,7 +2741,8 @@ export interface components {
                 ingredients: {
                     name: string;
                     quantity: number | null;
-                    unit: string | null;
+                    /** @enum {string|null} */
+                    unit: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
                     note: string | null;
                 }[];
                 steps: {

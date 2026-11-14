@@ -6,6 +6,7 @@ import { Text, TextInput, View } from "react-native"
 import {
   draftFromRecipe,
   emptyDraft,
+  isUnitKey,
   readDraft,
   type DraftContent,
   type RecipeDraft,
@@ -17,6 +18,7 @@ import { Button } from "@/components/ui/button"
 import { Card, SectionTitle } from "@/components/ui/card"
 import { Icon } from "@/components/ui/icon"
 import { Input } from "@/components/ui/input"
+import { UnitPicker } from "@/components/ui/unit-picker"
 import { cn } from "@/lib/utils"
 
 /**
@@ -233,12 +235,13 @@ export function RecipeForm({
                     setIngredient(ingredient.key, { quantity })
                   }
                 />
-                <Field
+                <UnitPicker
                   label={t("recipes:form.unit")}
-                  value={ingredient.unit}
-                  className="w-20"
-                  autoCapitalize="none"
-                  onChangeText={(unit) => setIngredient(ingredient.key, { unit })}
+                  value={isUnitKey(ingredient.unit) ? ingredient.unit : null}
+                  className="w-28"
+                  onChange={(unit) =>
+                    setIngredient(ingredient.key, { unit: unit ?? "" })
+                  }
                 />
                 <Field
                   label={t("recipes:form.ingredient")}

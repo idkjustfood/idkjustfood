@@ -1,6 +1,7 @@
 import { z } from "zod"
 
 import {
+  fitIngredientUnits,
   IngredientSchema,
   RecipeContentSchema,
   StepSchema,
@@ -63,10 +64,17 @@ export function readExtractedRecipe(raw: unknown): ExtractedRecipe {
     )
   }
   const prepared =
-    raw &&
-    typeof raw === "object" &&
-    Array.isArray((raw as { tags?: unknown }).tags)
-      ? { ...raw, tags: cleanTags((raw as { tags: unknown[] }).tags) }
+    raw && typeof raw === "object"
+      ? {
+          ...raw,
+          ...(Array.isArray((raw as { tags?: unknown }).tags)
+            ? { tags: cleanTags((raw as { tags: unknown[] }).tags) }
+            : {}),
+          // The AI writes units as the material does: fit them to our list.
+          ...("ingredients" in raw
+            ? { ingredients: fitIngredientUnits(raw.ingredients) }
+            : {}),
+        }
       : raw
   const result = ExtractedRecipeSchema.safeParse(prepared)
   if (!result.success) {

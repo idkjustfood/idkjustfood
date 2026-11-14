@@ -1,4 +1,5 @@
 import { parseQuantity } from "./quantity.js"
+import { isUnitKey } from "./units.js"
 import type { RecipeContent } from "./recipe.js"
 
 /**
@@ -20,6 +21,7 @@ export type RecipeDraft = {
   ingredients: {
     key: string
     quantity: string
+    /** A unit key from the list (see `unitKeys`), or "" for no unit. */
     unit: string
     name: string
     note: string
@@ -138,6 +140,9 @@ export function readDraft(draft: RecipeDraft): DraftResult {
   for (const row of draft.ingredients) {
     const name = row.name.trim()
     const unit = row.unit.trim()
+    if (unit && !isUnitKey(unit)) {
+      errors[`ingredient.${row.key}.unit`] = "Choose a unit from the list."
+    }
     const note = row.note.trim()
     const amount = row.quantity.trim()
     if (!name && !unit && !note && !amount) continue
@@ -150,7 +155,7 @@ export function readDraft(draft: RecipeDraft): DraftResult {
     ingredients.push({
       name,
       quantity: quantity ?? null,
-      unit: unit || null,
+      unit: isUnitKey(unit) ? unit : null,
       note: note || null,
     })
   }
