@@ -520,3 +520,35 @@ describe("nutrition estimate", () => {
     expect(parseRecipeSystem("en")).not.toContain('"nutrition"')
   })
 })
+
+describe("description", () => {
+  const run = (description: string) =>
+    extractRecipe(reel, {
+      ai: fakeAi({ parseRecipe: async () => ({ ...pancakeJson, description }) }),
+      media: fakeMedia(),
+      tempRoot,
+    })
+
+  test("the prompt forbids describing the dish or the video and prefers empty", () => {
+    for (const prompt of [parseRecipeSystem(), parseRecipeSystem("de", true)]) {
+      expect(prompt).toMatch(/never describe the dish/i)
+      expect(prompt).toMatch(/never describe the video/i)
+      expect(prompt).toMatch(/empty string is the normal case/i)
+    }
+  })
+
+  test("a description about the video is dropped", async () => {
+    for (const text of [
+      "In this video, she shows how to make pancakes.",
+      "This recipe shows a quick breakfast.",
+      "Im Video zeigt sie, wie man Pfannkuchen macht.",
+    ]) {
+      expect((await run(text)).description).toBe("")
+    }
+  })
+
+  test("a tip from the source is kept", async () => {
+    const tip = "Keeps 3 days in the fridge."
+    expect((await run(tip)).description).toBe(tip)
+  })
+})
