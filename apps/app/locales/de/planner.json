@@ -150,5 +150,25 @@
     "mealCount_other": "{{count}} Mahlzeiten",
     "earlier": "{{label}}: einen Tag früher",
     "later": "{{label}}: einen Tag später"
+  },
+  "prep": {
+    "button": "Meal Prep",
+    "addDays": "Weitere Tage hinzufügen",
+    "end": "Meal Prep beenden",
+    "leave": "Nicht aus dem Meal Prep",
+    "title": "Meal Prep · {{title}}",
+    "intro": "Koche {{title}} einmal ({{day}}, {{slot}}) und iss es später noch einmal. Wähle die Mahlzeiten, in denen du es isst.",
+    "servingsEach": "Portionen pro Rest-Mahlzeit",
+    "pick": "Nochmal essen bei",
+    "none": "Wähle mindestens eine Mahlzeit.",
+    "total_one": "Du kochst insgesamt {{count}} Portion.",
+    "total_other": "Du kochst insgesamt {{count}} Portionen.",
+    "plan": "Meal Prep planen",
+    "error": "Das Meal Prep konnte nicht geplant werden.",
+    "cooks_one": "Einmal gekocht: {{count}} Portion für {{meals}} weitere Mahlzeiten.",
+    "cooks_other": "Einmal gekocht: {{count}} Portionen für {{meals}} weitere Mahlzeiten.",
+    "leftoverFrom": "Reste von {{day}}, {{slot}}. Wird mit dieser Mahlzeit eingekauft.",
+    "cookBadge": "Fürs Meal Prep gekocht",
+    "leftoverBadge": "Reste vom Meal Prep"
   }
 }

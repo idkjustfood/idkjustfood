@@ -1,4 +1,5 @@
 import {
+  type AnyPgColumn,
   index,
   integer,
   pgTable,
@@ -58,6 +59,14 @@ export const mealPlanMeal = pgTable(
       .notNull()
       .references(() => recipe.id, { onDelete: "cascade" }),
     servings: integer("servings").notNull(),
+    /**
+     * Meal prep: set on a leftover, it points to the meal where the recipe is cooked. When
+     * the cooking meal goes, its leftovers stay as ordinary meals.
+     */
+    prepFromMealId: text("prep_from_meal_id").references(
+      (): AnyPgColumn => mealPlanMeal.id,
+      { onDelete: "set null" }
+    ),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
       .defaultNow()
@@ -73,5 +82,6 @@ export const mealPlanMeal = pgTable(
     ),
     index("meal_plan_meal_day_idx").on(table.planId, table.date),
     index("meal_plan_meal_recipeId_idx").on(table.recipeId),
+    index("meal_plan_meal_prepFrom_idx").on(table.prepFromMealId),
   ]
 )

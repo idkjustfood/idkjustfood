@@ -9,6 +9,7 @@ import {
   GeneratePlanSchema,
   GenerateResultSchema,
   MealPlanInputSchema,
+  MealPrepInputSchema,
   MealPlanRenameSchema,
   MealPlanSchema,
   MealSlotSchema,
@@ -41,6 +42,7 @@ const PlanInputBody = MealPlanInputSchema.openapi("MealPlanInput")
 const RenameBody = MealPlanRenameSchema.openapi("MealPlanRename")
 const SetMealBody = SetMealSchema.openapi("SetMeal")
 const UpdateMealBody = UpdateMealSchema.openapi("UpdateMeal")
+const MealPrepBody = MealPrepInputSchema.openapi("MealPrepInput")
 const GenerateBody = GeneratePlanSchema.openapi("GeneratePlan")
 const GenerateResultBody = GenerateResultSchema.openapi("GeneratePlanResult")
 const PlanToListBody = PlanToListSchema.openapi("PlanToList")
@@ -52,6 +54,9 @@ const PlanParams = z.object({
   planId: z.string().openapi({ param: { name: "planId", in: "path" } }),
 })
 const MealParams = PlanParams.extend({
+  mealId: z.string().openapi({ param: { name: "mealId", in: "path" } }),
+})
+const PrepParams = PlanParams.extend({
   mealId: z.string().openapi({ param: { name: "mealId", in: "path" } }),
 })
 const SlotParams = PlanParams.extend({
@@ -245,7 +250,9 @@ const updateMeal = createRoute({
     404: error(
       "The plan, the meal or the recipe doesn't exist, or you can't use it"
     ),
-    409: error("That recipe is already in this slot"),
+    409: error(
+      "That recipe is already in this slot, or it is the batch of a meal prep"
+    ),
     ...signedIn,
   },
 })
@@ -261,6 +268,51 @@ const removeMeal = createRoute({
   responses: {
     200: json(z.object({ plan: PlanBody }), "The plan without the meal"),
     404: error("The plan or the meal doesn't exist"),
+    ...signedIn,
+  },
+})
+
+const planMealPrep = createRoute({
+  method: "post",
+  path: "/meal-plans/{planId}/meal-prep",
+  tags,
+  security,
+  summary: "Plan meal prep: cook once, eat it in several slots",
+  description:
+    "Cook a recipe in one slot (`date`, `slot`) and eat it again in the slots of `eat`, which must come " +
+    "after the cooking meal. Every meal has its own servings: the cooking meal's plus all the " +
+    "leftovers' servings is what is cooked. A meal in the answer has `prep`: `cook` on the cooking " +
+    "meal (with the whole batch) and `leftover` on the others. When the plan is added to a shopping " +
+    "list, the batch is bought once, with the cooking meal. A recipe that is already in one of the " +
+    "slots is linked to the batch. Calling it again for the same cooking meal adds more days.",
+  request: { params: PlanParams, body: body(MealPrepBody) },
+  responses: {
+    200: json(z.object({ plan: PlanBody }), "The plan with the meal prep"),
+    400: error("Invalid meal prep"),
+    404: error("The plan or the recipe doesn't exist, or you can't use it"),
+    409: error(
+      "A slot is a leftover of another batch, or already has leftovers of its own"
+    ),
+    ...signedIn,
+  },
+})
+
+const endMealPrep = createRoute({
+  method: "delete",
+  path: "/meal-plans/{planId}/meal-prep/{mealId}",
+  tags,
+  security,
+  summary: "End meal prep for a meal",
+  description:
+    "Send the id of the cooking meal to turn all its leftovers into ordinary meals, or the id of one " +
+    "leftover to take only that meal out of the batch. No meal is deleted, but each meal that " +
+    "stops being a leftover is then bought for on its own when the plan is added to a shopping list.",
+  request: { params: PrepParams },
+  responses: {
+    200: json(z.object({ plan: PlanBody }), "The plan without that meal prep"),
+    404: error(
+      "The plan or the meal doesn't exist, or it is not part of a meal prep"
+    ),
     ...signedIn,
   },
 })
@@ -295,7 +347,9 @@ const toShoppingList = createRoute({
   summary: "Add the plan's ingredients to a shopping list",
   description:
     "Nothing is added to a list unless you call this. Every meal's ingredients are scaled to its servings " +
-    "and merged into the list like a recipe is. Use `from` and `to` to take only some days.",
+    "and merged into the list like a recipe is. A meal prep is bought once: the cooking meal adds the " +
+    "ingredients for the whole batch and its leftovers add nothing, so choose days that include the " +
+    "cooking day. Use `from` and `to` to take only some days.",
   request: { params: PlanParams, body: body(PlanToListBody) },
   responses: {
     200: json(AddedToListBody, "The ingredients were added"),
@@ -311,7 +365,7 @@ const toShoppingList = createRoute({
 
 type Env = { Variables: AuthVariables }
 
-export function toMeal({ meal, recipe }: MealWithRecipe): Meal {
+export function toMeal({ meal, recipe, prep }: MealWithRecipe): Meal {
   return {
     id: meal.id,
     date: meal.date,
@@ -325,6 +379,7 @@ export function toMeal({ meal, recipe }: MealWithRecipe): Meal {
       cookMinutes: recipe.cookMinutes,
       calories: recipe.nutrition.calories,
     },
+    prep,
   }
 }
 
@@ -505,6 +560,15 @@ export function plannerRoutes(db: Database, auth: Auth) {
     if (result === "duplicate") {
       return c.json({ error: "That recipe is already in this slot" }, 409)
     }
+    if (result === "linked") {
+      return c.json(
+        {
+          error:
+            "This meal is cooked for leftovers. End the meal prep before you swap the recipe",
+        },
+        409
+      )
+    }
     return c.json({ plan: await whole(found.row) }, 200)
   })
 
@@ -514,6 +578,37 @@ export function plannerRoutes(db: Database, auth: Auth) {
     if (!found) return notFound(c)
     if (!(await store.removeMealById(found.row.id, mealId))) {
       return c.json({ error: "Nothing is planned there" }, 404)
+    }
+    return c.json({ plan: await whole(found.row) }, 200)
+  })
+
+  app.openapi(planMealPrep, async (c) => {
+    const { planId } = c.req.valid("param")
+    const found = await store.access(planId, c.get("user").id)
+    if (!found) return notFound(c)
+    const input = c.req.valid("json")
+    if (!(await recipeForSlot(c, found.row, input.recipeId))) {
+      return c.json({ error: "Recipe not found" }, 404)
+    }
+    const result = await store.planMealPrep(found.row.id, input)
+    if (result === "invalid") {
+      return c.json(
+        {
+          error:
+            "A slot is a leftover of another batch, or already has leftovers of its own",
+        },
+        409
+      )
+    }
+    return c.json({ plan: await whole(found.row) }, 200)
+  })
+
+  app.openapi(endMealPrep, async (c) => {
+    const { planId, mealId } = c.req.valid("param")
+    const found = await store.access(planId, c.get("user").id)
+    if (!found) return notFound(c)
+    if (!(await store.endMealPrep(found.row.id, mealId))) {
+      return c.json({ error: "That meal is not part of a meal prep" }, 404)
     }
     return c.json({ plan: await whole(found.row) }, 200)
   })
@@ -602,16 +697,21 @@ export function plannerRoutes(db: Database, auth: Auth) {
     const list = await shopping.access(listId, user.id)
     if (!list) return c.json({ error: "Shopping list not found" }, 404)
 
-    const meals = await store.meals(found.row.id, { from, to })
+    // A leftover is eaten from a batch that was bought for with the cooking meal, so it adds
+    // nothing. A cooking meal adds the whole batch: its own servings and all its leftovers'.
+    const meals = (await store.meals(found.row.id, { from, to })).filter(
+      ({ prep }) => prep?.role !== "leftover"
+    )
     if (meals.length > 0) {
       await shopping.saveMerged(list.row.id, (current) =>
         meals.reduce(
-          (items: ReturnType<typeof addIngredients>, { meal, recipe }) =>
+          (items: ReturnType<typeof addIngredients>, { meal, recipe, prep }) =>
             addIngredients(
               items,
               recipe.ingredients,
               recipe.title,
-              meal.servings / recipe.servings
+              (prep?.role === "cook" ? prep.batchServings : meal.servings) /
+                recipe.servings
             ),
           current
         )

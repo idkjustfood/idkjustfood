@@ -18,6 +18,9 @@ self-hosted installs have it too.
   space dropdown at the top (your personal space or one of your households) decides which plans you
   see and where "New plan" puts the new one. Plans of other spaces never show. The choice is
   remembered on the device and is the same one the recipes and shopping lists use.
+- **Meal prep:** cook a recipe once and eat it in several slots. Open a meal and tap "Meal prep",
+  choose the later meals the batch is eaten in, and how many servings each one is. The planner
+  marks the cooking meal and the leftovers with an icon. See [Meal prep](#meal-prep).
 - **Calories:** every day shows the estimated calories for one person, added up from the recipes'
   nutrition values (every recipe of every slot counts). They are always estimates. A meal whose recipe has no estimate is not counted, and
   the day says so (a `+` after the number).
@@ -32,6 +35,25 @@ self-hosted installs have it too.
 
 The plan screen and the wizard use big touch targets and keep their main buttons at the bottom of
 the screen, so they work with one hand.
+
+## Meal prep
+
+Meal prep means cooking a recipe once and eating it again on other days. One meal is the
+**cooking meal**; the others are its **leftovers** and point back to it.
+
+- Servings add up: the cooking meal's servings plus all the leftovers' servings are what is
+  cooked. For example 1 serving on Sunday and 1 each on Monday, Tuesday and Thursday is a batch of 4.
+- Leftovers must come after the cooking meal (a later day, or a later slot on the same day).
+- Each meal keeps its own servings, so the daily calories count what is eaten that day.
+- On a **shopping list** the batch is bought once: the cooking meal adds the ingredients for the
+  whole batch and its leftovers add nothing. Choose days that include the cooking day, or the
+  batch is not added.
+- A cooking meal with leftovers can't swap its recipe. End the meal prep first. A leftover that
+  gets another recipe leaves the batch.
+- "End meal prep" on the cooking meal, or removing the cooking meal, turns its leftovers into
+  ordinary meals (they are then bought for on their own). Nothing is deleted.
+- If the recipe is deleted, the whole batch leaves the plan, like any other meal.
+- The automatic planner doesn't plan meal prep yet.
 
 ## Automatic planning
 
@@ -88,6 +110,8 @@ All endpoints need a signed-in user and are in the OpenAPI document (`/api/opena
 | `DELETE /api/meal-plans/{planId}/meals/{date}/{slot}` | Empty a slot (every meal in it) |
 | `PATCH /api/meal-plans/{planId}/meals/{mealId}` | Change one meal: `servings`, `recipeId` (a swap that keeps its place) or both. `409` if the new recipe is already in that slot |
 | `DELETE /api/meal-plans/{planId}/meals/{mealId}` | Remove one meal, the others in its slot stay |
+| `POST /api/meal-plans/{planId}/meal-prep` | Plan meal prep: `recipeId`, the cooking `date` and `slot`, `servings` and `eat` (later slots with servings). Calling it again for the same cooking meal adds days |
+| `DELETE /api/meal-plans/{planId}/meal-prep/{mealId}` | End meal prep: a cooking meal frees all its leftovers, a leftover leaves the batch |
 | `POST /api/meal-plans/{planId}/generate` | Fill days automatically (`goals`, `days`, `servings`, `overwrite`) |
 | `POST /api/meal-plans/{planId}/shopping-list` | Add the plan's ingredients to a list (`listId`, optional `from` and `to`, both days included) |
 
@@ -95,7 +119,9 @@ All endpoints need a signed-in user and are in the OpenAPI document (`/api/opena
 one meal when a slot holds several. Within a slot, meals come back in the order they were added. A
 recipe is in a slot only once (the same recipe in two slots of a day is fine). `date` is a calendar day, `YYYY-MM-DD`, with no
 time zone. A meal in the answer carries a small summary of its recipe (title, times, estimated
-calories per serving), so a plan can be shown without loading every recipe.
+calories per serving), so a plan can be shown without loading every recipe. A meal that takes part
+in meal prep has `prep`: `cook` (with `batchServings` and `leftovers`) or `leftover` (with the
+cooking meal's id, date and slot).
 
 ### Who can see what
 
@@ -118,7 +144,8 @@ in the future without making anything first. If a recipe is deleted, its slots b
 - `packages/schemas/src/planner.ts`: plan, meal and request schemas, week helpers.
 - `packages/schemas/src/autoplan.ts`: the automatic planner (pure function, with tests).
 - `packages/database/src/schema/planner.ts`: the `meal_plan` and `meal_plan_meal` tables. A meal is unique
-  per plan, date, slot and recipe, so a slot can hold several recipes.
+  per plan, date, slot and recipe, so a slot can hold several recipes. `prep_from_meal_id` links a
+  leftover to its cooking meal (meal prep).
 - `apps/api/src/planner/`: routes and database queries.
 - `apps/app/app/(app)/(tabs)/planner/`: the plan screen and the wizard. `apps/app/lib/planner.ts`
   holds the queries, `planner-wizard.ts` turns the wizard's state into a request.

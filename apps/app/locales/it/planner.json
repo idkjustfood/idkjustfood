@@ -150,5 +150,25 @@
     "mealCount_other": "{{count}} pasti",
     "earlier": "{{label}}: un giorno prima",
     "later": "{{label}}: un giorno dopo"
+  },
+  "prep": {
+    "button": "Meal prep",
+    "addDays": "Aggiungi altri giorni",
+    "end": "Termina il meal prep",
+    "leave": "Togli dal meal prep",
+    "title": "Meal prep · {{title}}",
+    "intro": "Cucina {{title}} una sola volta ({{day}}, {{slot}}) e mangialo di nuovo più tardi. Scegli i pasti in cui lo mangerai.",
+    "servingsEach": "Porzioni per pasto con gli avanzi",
+    "pick": "Mangialo di nuovo a",
+    "none": "Scegli almeno un pasto.",
+    "total_one": "Cucini {{count}} porzione in totale.",
+    "total_other": "Cucini {{count}} porzioni in totale.",
+    "plan": "Pianifica il meal prep",
+    "error": "Impossibile pianificare il meal prep.",
+    "cooks_one": "Cucinato una volta: {{count}} porzione per altri {{meals}} pasti.",
+    "cooks_other": "Cucinato una volta: {{count}} porzioni per altri {{meals}} pasti.",
+    "leftoverFrom": "Avanzi del {{day}}, {{slot}}. Si compra con quel pasto.",
+    "cookBadge": "Cucinato per il meal prep",
+    "leftoverBadge": "Avanzi del meal prep"
   }
 }

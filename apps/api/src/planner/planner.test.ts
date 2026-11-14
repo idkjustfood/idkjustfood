@@ -238,6 +238,7 @@ describe("meals", () => {
           cookMinutes: 10,
           calories: 500,
         },
+        prep: null,
       },
     ])
 
@@ -905,5 +906,354 @@ describe("shopping list", () => {
     )
     expect(res.status).toBe(200)
     expect((await listOf(list.id, noah)).items).toHaveLength(2)
+  })
+})
+
+describe("meal prep", () => {
+  const prepPath = (planId: string) => `/api/meal-plans/${planId}/meal-prep`
+
+  async function prep(planId: string, input: Record<string, unknown>) {
+    return api.post(prepPath(planId), olivia, input)
+  }
+
+  /** Cook Sunday 2026-01-04 (1 serving), eat Monday and Tuesday lunch and Thursday (1 each). */
+  async function planBatch(planId: string, recipeId: string) {
+    const res = await prep(planId, {
+      recipeId,
+      date: "2026-01-04",
+      slot: "midday",
+      servings: 1,
+      eat: [
+        { date: "2026-01-05", slot: "midday" },
+        { date: "2026-01-06", slot: "midday" },
+        { date: "2026-01-08", slot: "midday", servings: 1 },
+      ],
+    })
+    expect(res.status).toBe(200)
+    return (await body<{ plan: MealPlan }>(res)).plan
+  }
+
+  test("cooks once and eats it in several slots", async () => {
+    const plan = await makePlan()
+    const dal = await makeRecipe("Dal")
+    const planned = await planBatch(plan.id, dal.id)
+
+    expect(planned.meals.map((m) => `${m.date} ${m.prep?.role}`)).toEqual([
+      "2026-01-04 cook",
+      "2026-01-05 leftover",
+      "2026-01-06 leftover",
+      "2026-01-08 leftover",
+    ])
+    const cook = planned.meals[0]!
+    expect(cook.prep).toEqual({ role: "cook", batchServings: 4, leftovers: 3 })
+    expect(planned.meals[1]!.prep).toEqual({
+      role: "leftover",
+      cookMealId: cook.id,
+      cookDate: "2026-01-04",
+      cookSlot: "midday",
+    })
+  })
+
+  test("the cook and its leftovers show up even when only some days are asked for", async () => {
+    const plan = await makePlan()
+    const dal = await makeRecipe("Dal")
+    await planBatch(plan.id, dal.id)
+    const week = await getPlan(
+      plan.id,
+      olivia,
+      "?from=2026-01-05&to=2026-01-11"
+    )
+    expect(week.meals).toHaveLength(3)
+    expect(week.meals[0]!.prep).toMatchObject({
+      role: "leftover",
+      cookDate: "2026-01-04",
+    })
+    const first = await getPlan(
+      plan.id,
+      olivia,
+      "?from=2026-01-04&to=2026-01-04"
+    )
+    expect(first.meals[0]!.prep).toMatchObject({
+      role: "cook",
+      batchServings: 4,
+    })
+  })
+
+  test("leftovers must come after the cooking meal", async () => {
+    const plan = await makePlan()
+    const dal = await makeRecipe("Dal")
+    for (const eat of [
+      [{ date: "2026-01-03", slot: "midday" }],
+      [{ date: "2026-01-04", slot: "midday" }],
+      [{ date: "2026-01-04", slot: "breakfast" }],
+      [
+        { date: "2026-01-05", slot: "midday" },
+        { date: "2026-01-05", slot: "midday" },
+      ],
+      [],
+    ]) {
+      const res = await prep(plan.id, {
+        recipeId: dal.id,
+        date: "2026-01-04",
+        slot: "midday",
+        eat,
+      })
+      expect(res.status).toBe(400)
+    }
+    expect((await getPlan(plan.id)).meals).toEqual([])
+    // The same day, a later slot, is fine.
+    const ok = await prep(plan.id, {
+      recipeId: dal.id,
+      date: "2026-01-04",
+      slot: "midday",
+      eat: [{ date: "2026-01-04", slot: "afternoon" }],
+    })
+    expect(ok.status).toBe(200)
+  })
+
+  test("more days can be added to an existing batch", async () => {
+    const plan = await makePlan()
+    const dal = await makeRecipe("Dal")
+    await planBatch(plan.id, dal.id)
+    const res = await prep(plan.id, {
+      recipeId: dal.id,
+      date: "2026-01-04",
+      slot: "midday",
+      servings: 1,
+      eat: [{ date: "2026-01-09", slot: "midday", servings: 2 }],
+    })
+    const meals = (await body<{ plan: MealPlan }>(res)).plan.meals
+    expect(meals).toHaveLength(5)
+    expect(meals[0]!.prep).toEqual({
+      role: "cook",
+      batchServings: 6,
+      leftovers: 4,
+    })
+  })
+
+  test("a recipe already planned in a slot is linked to the batch", async () => {
+    const plan = await makePlan()
+    const dal = await makeRecipe("Dal")
+    await addMeal(plan.id, "2026-01-05", "midday", dal.id, 3)
+    const meals = (await planBatch(plan.id, dal.id)).meals
+    expect(meals).toHaveLength(4)
+    expect(meals[1]).toMatchObject({
+      date: "2026-01-05",
+      servings: 1,
+      prep: { role: "leftover" },
+    })
+  })
+
+  test("a leftover can't start a batch, and a batch can't be a leftover", async () => {
+    const plan = await makePlan()
+    const dal = await makeRecipe("Dal")
+    await planBatch(plan.id, dal.id)
+    // Monday is a leftover, so it can't be a cooking meal.
+    const asCook = await prep(plan.id, {
+      recipeId: dal.id,
+      date: "2026-01-05",
+      slot: "midday",
+      eat: [{ date: "2026-01-07", slot: "midday" }],
+    })
+    expect(asCook.status).toBe(409)
+    // Sunday has leftovers, so another batch can't take it as a leftover.
+    const other = await prep(plan.id, {
+      recipeId: dal.id,
+      date: "2026-01-03",
+      slot: "midday",
+      eat: [{ date: "2026-01-04", slot: "midday" }],
+    })
+    expect(other.status).toBe(409)
+  })
+
+  test("a household plan only takes the household's recipes", async () => {
+    const home = await household(olivia)
+    const plan = await makePlan("Home", olivia, { householdId: home.id })
+    const mine = await makeRecipe("Mine")
+    const res = await prep(plan.id, {
+      recipeId: mine.id,
+      date: "2026-01-04",
+      slot: "midday",
+      eat: [{ date: "2026-01-05", slot: "midday" }],
+    })
+    expect(res.status).toBe(404)
+  })
+
+  test("a plan you can't see answers 404", async () => {
+    const plan = await makePlan()
+    const dal = await makeRecipe("Dal")
+    const noah = await api.signUp("Noah")
+    const res = await api.post(prepPath(plan.id), noah, {
+      recipeId: dal.id,
+      date: "2026-01-04",
+      slot: "midday",
+      eat: [{ date: "2026-01-05", slot: "midday" }],
+    })
+    expect(res.status).toBe(404)
+    expect((await api.del(`${prepPath(plan.id)}/x`, noah)).status).toBe(404)
+  })
+
+  test("the servings of a leftover can change, the recipe of a batch can't", async () => {
+    const plan = await makePlan()
+    const dal = await makeRecipe("Dal")
+    const pasta = await makeRecipe("Pasta")
+    const [cook, monday] = (await planBatch(plan.id, dal.id)).meals
+
+    const more = await api.request(
+      "PATCH",
+      mealPath(plan.id, monday!.id),
+      olivia,
+      {
+        servings: 2,
+      }
+    )
+    expect(more.status).toBe(200)
+    expect(
+      (await body<{ plan: MealPlan }>(more)).plan.meals[0]!.prep
+    ).toMatchObject({ batchServings: 5 })
+
+    const swapCook = await api.request(
+      "PATCH",
+      mealPath(plan.id, cook!.id),
+      olivia,
+      {
+        recipeId: pasta.id,
+      }
+    )
+    expect(swapCook.status).toBe(409)
+
+    // A leftover with another recipe leaves the batch.
+    const swapLeftover = await api.request(
+      "PATCH",
+      mealPath(plan.id, monday!.id),
+      olivia,
+      { recipeId: pasta.id }
+    )
+    expect(swapLeftover.status).toBe(200)
+    const meals = (await body<{ plan: MealPlan }>(swapLeftover)).plan.meals
+    expect(meals.find((m) => m.id === monday!.id)!.prep).toBeNull()
+    expect(meals[0]!.prep).toMatchObject({ leftovers: 2 })
+  })
+
+  test("removing the cooking meal keeps the leftovers as ordinary meals", async () => {
+    const plan = await makePlan()
+    const dal = await makeRecipe("Dal")
+    const cook = (await planBatch(plan.id, dal.id)).meals[0]!
+    expect((await api.del(mealPath(plan.id, cook.id), olivia)).status).toBe(200)
+    const meals = (await getPlan(plan.id)).meals
+    expect(meals).toHaveLength(3)
+    expect(meals.every((m) => m.prep === null)).toBe(true)
+  })
+
+  test("ending meal prep unlinks the meals and deletes none", async () => {
+    const plan = await makePlan()
+    const dal = await makeRecipe("Dal")
+    const [cook, monday] = (await planBatch(plan.id, dal.id)).meals
+
+    const one = await api.del(`${prepPath(plan.id)}/${monday!.id}`, olivia)
+    expect(one.status).toBe(200)
+    const afterOne = (await body<{ plan: MealPlan }>(one)).plan.meals
+    expect(afterOne).toHaveLength(4)
+    expect(afterOne.find((m) => m.id === monday!.id)!.prep).toBeNull()
+    expect(afterOne[0]!.prep).toMatchObject({ leftovers: 2 })
+
+    const all = await api.del(`${prepPath(plan.id)}/${cook!.id}`, olivia)
+    expect(all.status).toBe(200)
+    const meals = (await body<{ plan: MealPlan }>(all)).plan.meals
+    expect(meals).toHaveLength(4)
+    expect(meals.every((m) => m.prep === null)).toBe(true)
+
+    // Nothing is left to end.
+    expect(
+      (await api.del(`${prepPath(plan.id)}/${cook!.id}`, olivia)).status
+    ).toBe(404)
+    expect((await api.del(`${prepPath(plan.id)}/nope`, olivia)).status).toBe(
+      404
+    )
+  })
+
+  test("a deleted recipe takes its whole batch out of the plan", async () => {
+    const plan = await makePlan()
+    const dal = await makeRecipe("Dal")
+    await planBatch(plan.id, dal.id)
+    expect((await api.del(`/api/recipes/${dal.id}`, olivia)).status).toBe(204)
+    expect((await getPlan(plan.id)).meals).toEqual([])
+  })
+
+  describe("on a shopping list", () => {
+    async function makeList() {
+      const res = await api.post("/api/shopping-lists", olivia, {
+        name: "Shop",
+      })
+      return (await body<{ list: ShoppingList }>(res)).list
+    }
+    async function flour(listId: string) {
+      const res = await api.get(`/api/shopping-lists/${listId}`, olivia)
+      const { list } = await body<{ list: ShoppingList }>(res)
+      return list.items.find((i) => i.name === "Flour")
+    }
+
+    test("the batch is bought once, with the cooking meal", async () => {
+      const plan = await makePlan()
+      const list = await makeList()
+      const dal = await makeRecipe("Dal") // 4 servings, 200 g flour
+      await planBatch(plan.id, dal.id) // 1 + 3 = 4 servings
+      const res = await api.post(
+        `/api/meal-plans/${plan.id}/shopping-list`,
+        olivia,
+        {
+          listId: list.id,
+        }
+      )
+      expect(await body(res)).toEqual({ listId: list.id, added: 1 })
+      expect((await flour(list.id))?.quantity).toBe(200)
+    })
+
+    test("a batch that is eaten more is bought for more", async () => {
+      const plan = await makePlan()
+      const list = await makeList()
+      const dal = await makeRecipe("Dal")
+      await prep(plan.id, {
+        recipeId: dal.id,
+        date: "2026-01-04",
+        slot: "midday",
+        servings: 2,
+        eat: [{ date: "2026-01-05", slot: "midday", servings: 6 }],
+      }) // 8 servings = 400 g
+      await api.post(`/api/meal-plans/${plan.id}/shopping-list`, olivia, {
+        listId: list.id,
+      })
+      expect((await flour(list.id))?.quantity).toBe(400)
+    })
+
+    test("days without the cooking meal add nothing for its leftovers", async () => {
+      const plan = await makePlan()
+      const list = await makeList()
+      const dal = await makeRecipe("Dal")
+      await planBatch(plan.id, dal.id)
+      const res = await api.post(
+        `/api/meal-plans/${plan.id}/shopping-list`,
+        olivia,
+        {
+          listId: list.id,
+          from: "2026-01-05",
+          to: "2026-01-11",
+        }
+      )
+      expect(await body(res)).toEqual({ listId: list.id, added: 0 })
+      expect(await flour(list.id)).toBeUndefined()
+    })
+
+    test("meals that left the batch are bought on their own", async () => {
+      const plan = await makePlan()
+      const list = await makeList()
+      const dal = await makeRecipe("Dal")
+      const [cook] = (await planBatch(plan.id, dal.id)).meals
+      await api.del(`${prepPath(plan.id)}/${cook!.id}`, olivia)
+      await api.post(`/api/meal-plans/${plan.id}/shopping-list`, olivia, {
+        listId: list.id,
+      })
+      expect((await flour(list.id))?.quantity).toBe(200) // 4 x 1 serving of 4
+    })
   })
 })

@@ -1,9 +1,11 @@
 import { router } from "expo-router"
 import {
   CalendarDays,
+  ChefHat,
   ChevronLeft,
   ChevronRight,
   Plus,
+  Repeat,
   ShoppingCart,
   Sparkles,
   Trash2,
@@ -388,6 +390,18 @@ function DayCard({
                       >
                         {meal.recipe.title}
                       </Text>
+                      {meal.prep && (
+                        <Icon
+                          as={meal.prep.role === "cook" ? ChefHat : Repeat}
+                          size={16}
+                          className="text-muted-foreground"
+                          accessibilityLabel={
+                            meal.prep.role === "cook"
+                              ? t("planner:prep.cookBadge")
+                              : t("planner:prep.leftoverBadge")
+                          }
+                        />
+                      )}
                       <Text className="text-sm text-muted-foreground">
                         ×{meal.servings}
                       </Text>

@@ -150,5 +150,25 @@
     "mealCount_other": "{{count}} meals",
     "earlier": "Earlier {{label}} day",
     "later": "Later {{label}} day"
+  },
+  "prep": {
+    "button": "Meal prep",
+    "addDays": "Add more days",
+    "end": "End meal prep",
+    "leave": "Not from meal prep",
+    "title": "Meal prep · {{title}}",
+    "intro": "Cook {{title}} once ({{day}}, {{slot}}) and eat it again later. Pick the meals you want to eat it in.",
+    "servingsEach": "Servings per leftover meal",
+    "pick": "Eat it again in",
+    "none": "Pick at least one meal.",
+    "total_one": "You cook {{count}} serving in total.",
+    "total_other": "You cook {{count}} servings in total.",
+    "plan": "Plan meal prep",
+    "error": "Could not plan the meal prep.",
+    "cooks_one": "Cooked once: {{count}} serving for {{meals}} more meals.",
+    "cooks_other": "Cooked once: {{count}} servings for {{meals}} more meals.",
+    "leftoverFrom": "Leftovers from {{day}}, {{slot}}. Bought with that meal.",
+    "cookBadge": "Cooked for meal prep",
+    "leftoverBadge": "Leftovers from meal prep"
   }
 }
