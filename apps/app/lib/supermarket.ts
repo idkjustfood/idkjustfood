@@ -44,3 +44,5 @@ export function useSupermarket() {
     nameOf,
   }
 }
+
+export type SupermarketState = ReturnType<typeof useSupermarket>

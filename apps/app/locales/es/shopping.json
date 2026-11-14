@@ -93,7 +93,9 @@
     "hint": "Tu lista se ordena según el recorrido por la tienda.",
     "change": "Cambiar de supermercado",
     "sortedFor": "Ordenada para {{name}}",
-    "standard": "Supermercado estándar"
+    "standard": "Supermercado estándar",
+    "search": "Buscar supermercados",
+    "none": "No se encontró ningún supermercado."
   },
   "section": {
     "produce": "Frutas y verduras",

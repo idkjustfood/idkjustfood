@@ -93,7 +93,9 @@
     "hint": "Ta liste est triée dans l'ordre du parcours dans le magasin.",
     "change": "Changer de supermarché",
     "sortedFor": "Triée pour {{name}}",
-    "standard": "Supermarché standard"
+    "standard": "Supermarché standard",
+    "search": "Rechercher un supermarché",
+    "none": "Aucun supermarché trouvé."
   },
   "section": {
     "produce": "Fruits et légumes",

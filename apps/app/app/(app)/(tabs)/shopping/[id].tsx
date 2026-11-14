@@ -11,7 +11,7 @@ import {
 } from "lucide-react-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Pressable, Text, TextInput, View } from "react-native"
+import { Pressable, ScrollView, Text, TextInput, View } from "react-native"
 
 import {
   parseQuantity,
@@ -28,6 +28,7 @@ import { Screen } from "@/components/screen"
 import { ErrorState, LoadingState } from "@/components/states"
 import { Button } from "@/components/ui/button"
 import { SectionTitle } from "@/components/ui/card"
+import { SearchField } from "@/components/ui/search-field"
 import { CheckboxBox } from "@/components/ui/checkbox"
 import { Icon } from "@/components/ui/icon"
 import { Input } from "@/components/ui/input"
@@ -43,7 +44,7 @@ import {
   useShoppingActions,
   useShoppingList,
 } from "@/lib/shopping"
-import { useSupermarket } from "@/lib/supermarket"
+import { useSupermarket, type SupermarketState } from "@/lib/supermarket"
 import { cn } from "@/lib/utils"
 
 export default function ShoppingListScreen() {
@@ -252,37 +253,11 @@ function ListView({ list }: { list: ShoppingList }) {
         </View>
       )}
 
-      <Sheet
+      <StoreSheet
         open={storeOpen}
         onClose={() => setStoreOpen(false)}
-        title={t("shopping:store.title")}
-      >
-        <Text className="text-muted-foreground">
-          {t("shopping:store.hint")}
-        </Text>
-        <ListGroup>
-          {store.supermarkets.map((option) => (
-            <ListRow
-              key={option.id}
-              title={store.nameOf(option)}
-              right={
-                option.id === store.supermarket.id ? (
-                  <Icon as={Check} className="text-primary" />
-                ) : undefined
-              }
-              onPress={() => {
-                store.choose(option.id)
-                setStoreOpen(false)
-              }}
-            />
-          ))}
-        </ListGroup>
-        <Button
-          variant="outline"
-          label={t("shopping:options.close")}
-          onPress={() => setStoreOpen(false)}
-        />
-      </Sheet>
+        store={store}
+      />
       <RecipeSheet
         list={list}
         open={recipeOpen}
@@ -295,6 +270,70 @@ function ListView({ list }: { list: ShoppingList }) {
         onClose={() => setOptionsOpen(false)}
       />
     </Screen>
+  )
+}
+
+/** Pick the supermarket the list is sorted for. Searchable, because there are many. */
+function StoreSheet({
+  open,
+  onClose,
+  store,
+}: {
+  open: boolean
+  onClose: () => void
+  store: SupermarketState
+}) {
+  const { t } = useTranslation()
+  const [query, setQuery] = useState("")
+  const needle = query.trim().toLowerCase()
+  const options = store.supermarkets.filter(
+    (option) => !needle || store.nameOf(option).toLowerCase().includes(needle)
+  )
+
+  function close() {
+    setQuery("")
+    onClose()
+  }
+
+  return (
+    <Sheet open={open} onClose={close} title={t("shopping:store.title")}>
+      <Text className="text-muted-foreground">{t("shopping:store.hint")}</Text>
+      <SearchField
+        value={query}
+        onChangeText={setQuery}
+        placeholder={t("shopping:store.search")}
+      />
+      <ScrollView className="max-h-72">
+        {options.length === 0 ? (
+          <Text className="py-3 text-foreground">
+            {t("shopping:store.none")}
+          </Text>
+        ) : (
+          <ListGroup>
+            {options.map((option) => (
+              <ListRow
+                key={option.id}
+                title={store.nameOf(option)}
+                right={
+                  option.id === store.supermarket.id ? (
+                    <Icon as={Check} className="text-primary" />
+                  ) : undefined
+                }
+                onPress={() => {
+                  store.choose(option.id)
+                  close()
+                }}
+              />
+            ))}
+          </ListGroup>
+        )}
+      </ScrollView>
+      <Button
+        variant="outline"
+        label={t("shopping:options.close")}
+        onPress={close}
+      />
+    </Sheet>
   )
 }
 
