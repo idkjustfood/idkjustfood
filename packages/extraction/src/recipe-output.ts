@@ -43,7 +43,7 @@ export const ExtractedRecipeSchema = z.object({
   ingredients: z.array(IngredientSchema).max(200),
   steps: z.array(StepSchema).max(200),
   /**
-   * Per serving, only asked for from videos. Each value may be empty. Unusable values
+   * Per serving, asked for from every AI-parsed recipe. Each value may be empty. Unusable values
    * never fail the recipe: they become empty.
    */
   nutrition: ExtractedNutritionSchema.optional(),
@@ -181,7 +181,7 @@ export function keepStructure(
 }
 
 /**
- * Adds the source and nutrition. Nutrition is empty unless `estimate` is set (videos): then
+ * Adds the source and nutrition. Nutrition is empty unless `estimate` is set (AI-parsed recipes): then
  * the AI's values are kept and marked as an estimate, or stay empty when it gave none.
  * When the source does not say how many servings the recipe makes, it is 1: we do not guess.
  */

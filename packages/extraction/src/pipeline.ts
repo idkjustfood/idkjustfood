@@ -214,8 +214,9 @@ export async function extractRecipe(
       })
       throw error
     }
-    // Videos almost never state nutrition, so the AI estimates it there (and only there).
-    const estimateNutrition = gathered.source.kind === "video"
+    // Every recipe the AI writes gets an estimate (sources rarely state nutrition).
+    // Recipes a page already contains (no AI) keep the page's own data.
+    const estimateNutrition = true
     return await step(
       log,
       "parsing",

@@ -458,7 +458,7 @@ describe("nutrition estimate", () => {
     expect(recipe.nutrition).toEqual({ ...estimate, estimated: true })
   })
 
-  test("only video parsing asks the AI for an estimate", async () => {
+  test("pasted text and photos get an estimate too", async () => {
     const asked: (boolean | undefined)[] = []
     const ai = fakeAi({
       parseRecipe: async (_material, options) => {
@@ -466,17 +466,14 @@ describe("nutrition estimate", () => {
         return { ...pancakeJson, nutrition: estimate }
       },
     })
-    const fromVideo = await run(ai)
     const fromText = await extractRecipe(text, { ai, tempRoot })
-    expect(asked).toEqual([true, false])
-    expect(fromVideo.nutrition.estimated).toBe(true)
-    // Not asked for, so an answer with values anyway is not kept.
-    expect(fromText.nutrition).toEqual({
-      calories: null,
-      protein: null,
-      carbs: null,
-      fat: null,
-    })
+    const fromPhoto = await extractRecipe(
+      { type: "image", data: tinyPng, mediaType: "image/png" },
+      { ai, tempRoot }
+    )
+    expect(asked).toEqual([true, true])
+    expect(fromText.nutrition).toEqual({ ...estimate, estimated: true })
+    expect(fromPhoto.nutrition).toEqual({ ...estimate, estimated: true })
   })
 
   test("without an estimate the values stay empty and nothing breaks", async () => {

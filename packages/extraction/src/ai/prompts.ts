@@ -59,7 +59,7 @@ export function languageRule(language?: RecipeLanguage) {
   )
 }
 
-/** Asked only for videos, which almost never state nutrition. */
+/** Asked for every recipe the AI parses: sources rarely state nutrition. */
 const nutritionRule =
   '- "nutrition": your best estimate per serving, worked out from the ingredients and the number of servings, as numbers: "calories" (kcal), "protein", "carbs" and "fat" (grams). The material rarely states these, so estimate them yourself. Set a value to null when you cannot estimate it (for example when amounts are missing); never make one up. If the material itself states the values, use those.'
 

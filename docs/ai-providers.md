@@ -42,12 +42,12 @@ with any provider and model that the parsing job uses.
 
 ## Nutrition estimate
 
-Videos almost never state nutrition. For recipes from a video link the pipeline passes
-`estimateNutrition: true`, and `parseRecipeSystem` then also asks for `nutrition` (calories,
+Sources rarely state nutrition. For every recipe the AI parses (video, photo, pasted text, or a page
+without recipe data) the pipeline passes `estimateNutrition: true`, and `parseRecipeSystem` then also asks for `nutrition` (calories,
 protein, carbs, fat per serving). Values the AI cannot estimate are `null`; a missing or broken
 `nutrition` never fails the recipe. The values are saved with `estimated: true`, and the app says
-they were estimated by AI. Photos, websites and pasted text, and recipes entered by hand, get no
-estimate. It works with any provider, because it is part of the shared prompt.
+they were estimated by AI. Recipes a website already contains
+as structured data, and recipes entered by hand, get no estimate. It works with any provider, because it is part of the shared prompt.
 
 ## Sections
 
