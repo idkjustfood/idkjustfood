@@ -292,6 +292,14 @@
                   ],
                   "minLength": 1,
                   "maxLength": 300
+                },
+                "section": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 100
                 }
               },
               "required": [
@@ -312,6 +320,14 @@
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 2000
+                },
+                "section": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 100
                 }
               },
               "required": [
@@ -577,6 +593,14 @@
                   ],
                   "minLength": 1,
                   "maxLength": 300
+                },
+                "section": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 100
                 }
               },
               "required": [
@@ -597,6 +621,14 @@
                   "type": "string",
                   "minLength": 1,
                   "maxLength": 2000
+                },
+                "section": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 100
                 }
               },
               "required": [
@@ -1802,6 +1834,14 @@
                       ],
                       "minLength": 1,
                       "maxLength": 300
+                    },
+                    "section": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "minLength": 1,
+                      "maxLength": 100
                     }
                   },
                   "required": [
@@ -1822,6 +1862,14 @@
                       "type": "string",
                       "minLength": 1,
                       "maxLength": 2000
+                    },
+                    "section": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "minLength": 1,
+                      "maxLength": 100
                     }
                   },
                   "required": [

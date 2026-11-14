@@ -2800,9 +2800,11 @@ export interface components {
                 /** @enum {string|null} */
                 unit: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
                 note: string | null;
+                section?: string | null;
             }[];
             steps: {
                 text: string;
+                section?: string | null;
             }[];
             nutrition: {
                 calories: number | null;
@@ -2835,9 +2837,11 @@ export interface components {
                 /** @enum {string|null} */
                 unit: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
                 note: string | null;
+                section?: string | null;
             }[];
             steps: {
                 text: string;
+                section?: string | null;
             }[];
             nutrition: {
                 calories: number | null;
@@ -3051,9 +3055,11 @@ export interface components {
                     /** @enum {string|null} */
                     unit: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
                     note: string | null;
+                    section?: string | null;
                 }[];
                 steps: {
                     text: string;
+                    section?: string | null;
                 }[];
                 nutrition: {
                     calories: number | null;

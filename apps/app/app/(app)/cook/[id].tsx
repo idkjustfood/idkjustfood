@@ -7,12 +7,18 @@ import {
   MicOff,
   X,
 } from "lucide-react-native"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, ScrollView, Text, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 
-import { IngredientList, StepTimers } from "@/components/recipe-parts"
+import { stepsInOrder } from "@workspace/schemas"
+
+import {
+  IngredientList,
+  SectionHeading,
+  StepTimers,
+} from "@/components/recipe-parts"
 import { ErrorState, LoadingState } from "@/components/states"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
@@ -61,8 +67,11 @@ function Cooking({ recipe }: { recipe: Recipe }) {
   const [listening, setListening] = useState(false)
   const [ingredientsOpen, setIngredientsOpen] = useState(false)
 
-  const step = recipe.steps[index]
-  const last = index === recipe.steps.length - 1
+  // The steps in the order they are cooked, each with its section (if any).
+  const ordered = useMemo(() => stepsInOrder(recipe.steps), [recipe.steps])
+  const current = ordered[index]!
+  const step = current.step
+  const last = index === ordered.length - 1
   const close = () =>
     router.canGoBack() ? router.back() : router.replace(`/recipe/${recipe.id}`)
 
@@ -88,7 +97,7 @@ function Cooking({ recipe }: { recipe: Recipe }) {
             <Text className="text-sm text-muted-foreground">
               {t("recipes:cook.step", {
                 current: index + 1,
-                total: recipe.steps.length,
+                total: ordered.length,
               })}
             </Text>
           </View>
@@ -104,11 +113,11 @@ function Cooking({ recipe }: { recipe: Recipe }) {
         <View
           role="progressbar"
           aria-valuemin={1}
-          aria-valuemax={recipe.steps.length}
+          aria-valuemax={ordered.length}
           aria-valuenow={index + 1}
           className="h-2 flex-row gap-1"
         >
-          {recipe.steps.map((s, i) => (
+          {ordered.map((s, i) => (
             <View
               key={i}
               className={cn(
@@ -123,16 +132,17 @@ function Cooking({ recipe }: { recipe: Recipe }) {
           className="flex-1"
           contentContainerClassName="flex-grow justify-center gap-8 py-8"
         >
+          {current.section && <SectionHeading name={current.section} />}
           <Text
             aria-live="polite"
             className="text-3xl font-semibold leading-tight text-foreground md:text-4xl"
           >
-            {step!.text}
+            {step.text}
           </Text>
           <StepTimers
             recipeId={recipe.id}
             index={index}
-            text={step!.text}
+            text={step.text}
             large
           />
         </ScrollView>

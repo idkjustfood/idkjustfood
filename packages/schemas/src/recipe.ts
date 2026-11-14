@@ -23,6 +23,13 @@ export type Source = z.infer<typeof SourceSchema>
 
 export const manualSource: Source = { kind: "manual", label: null, url: null }
 
+/**
+ * The headline of a part of a recipe, for example "Sauce" or "Dough". Sections
+ * are optional: an ingredient or step without one (empty or left out) belongs to
+ * no part, and a recipe without any sections is shown as one plain list.
+ */
+export const SectionNameSchema = z.string().trim().min(1).max(100)
+
 export const IngredientSchema = z.object({
   name: z.string().trim().min(1).max(200),
   /** Empty (null) when the source does not say. Never guessed. */
@@ -30,6 +37,8 @@ export const IngredientSchema = z.object({
   /** One of the fixed list of units (see `unitKeys`), or empty (null) for "no unit". */
   unit: UnitSchema.nullable(),
   note: z.string().trim().min(1).max(300).nullable(),
+  /** The part of the recipe this belongs to. Empty or left out: no section. */
+  section: SectionNameSchema.nullable().optional(),
 })
 export type Ingredient = z.infer<typeof IngredientSchema>
 
@@ -52,6 +61,8 @@ export function fitIngredientUnits(ingredients: unknown): unknown {
 /** A timer is not stored: it is found in the text, see `findTimers`. */
 export const StepSchema = z.object({
   text: z.string().trim().min(1).max(2000),
+  /** The part of the recipe this belongs to. Empty or left out: no section. */
+  section: SectionNameSchema.nullable().optional(),
 })
 export type Step = z.infer<typeof StepSchema>
 

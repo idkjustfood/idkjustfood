@@ -13,6 +13,7 @@ import {
   type Nutrition,
   type RecipeContent,
 } from "./recipe.js"
+import { groupBySection, hasSections } from "./sections.js"
 import { fitTags, tagLabelEn, type TagKey } from "./tags.js"
 import { knownUnitWords, normalizeUnit, unitLabelEn } from "./units.js"
 
@@ -88,17 +89,29 @@ export function toMarkdown(recipe: Exportable) {
   lines.push(facts.join(" · "), "")
   if (recipe.tags.length) lines.push(`**Tags:** ${recipe.tags.map(tagLabelEn).join(", ")}`, "")
 
+  // A section is a "###" headline under "Ingredients" and under "Steps".
   if (recipe.ingredients.length) {
     lines.push("## Ingredients", "")
-    for (const ingredient of recipe.ingredients) {
-      lines.push(`- ${ingredientLine(ingredient)}`)
+    for (const group of groupBySection(recipe.ingredients)) {
+      if (group.name) lines.push(`### ${group.name}`, "")
+      for (const { item } of group.items) {
+        lines.push(`- ${ingredientLine(item)}`)
+      }
+      if (group.name) lines.push("")
     }
-    lines.push("")
+    if (lines.at(-1) !== "") lines.push("")
   }
   if (recipe.steps.length) {
     lines.push("## Steps", "")
-    recipe.steps.forEach((step, i) => lines.push(`${i + 1}. ${step.text}`))
-    lines.push("")
+    for (const group of groupBySection(recipe.steps)) {
+      if (group.name) lines.push(`### ${group.name}`, "")
+      // Numbers go on across sections, so "step 4" is the same step everywhere.
+      group.items.forEach(({ item, index }) =>
+        lines.push(`${index + 1}. ${item.text}`)
+      )
+      if (group.name) lines.push("")
+    }
+    if (lines.at(-1) !== "") lines.push("")
   }
 
   const nutrition = nutritionFacts(recipe.nutrition)
@@ -164,10 +177,25 @@ export function toSchemaOrg(recipe: Exportable): Record<string, unknown> {
   }
   if (recipe.tags.length) out.keywords = recipe.tags.map(tagLabelEn).join(", ")
   out.recipeIngredient = recipe.ingredients.map(ingredientLine)
-  out.recipeInstructions = recipe.steps.map((step) => ({
+  const howToStep = (step: { text: string }) => ({
     "@type": "HowToStep",
     text: step.text,
-  }))
+  })
+  // Sections are a HowToSection per part. Without sections it is a plain list of steps.
+  const instructions: Record<string, unknown>[] = hasSections(recipe.steps)
+    ? groupBySection(recipe.steps).flatMap((group): Record<string, unknown>[] =>
+        group.name
+          ? [
+              {
+                "@type": "HowToSection",
+                name: group.name,
+                itemListElement: group.items.map(({ item }) => howToStep(item)),
+              },
+            ]
+          : group.items.map(({ item }) => howToStep(item))
+      )
+    : recipe.steps.map(howToStep)
+  out.recipeInstructions = instructions
   if (Object.keys(info).length > 1) out.nutrition = info
   // Other apps ignore this key. We use it to read the ingredients back exactly.
   out[ingredientsKey] = recipe.ingredients
@@ -249,23 +277,31 @@ function servingsFrom(value: unknown): number {
   return found ? Math.max(1, Math.min(1000, Number(found[0]))) : 1
 }
 
-function steps(value: unknown): string[] {
+type ReadStep = { text: string; section: string | null }
+
+/** Reads the instructions. A HowToSection (a named list of steps) gives its steps a section. */
+function steps(value: unknown, section: string | null = null): ReadStep[] {
   if (typeof value === "string") {
     return decodeEntities(value.replace(/<\/(?:p|li|div)>|<br\s*\/?>/gi, "\n"))
       .split(/\n+/)
       .map((s) => s.trim())
       .filter(Boolean)
+      .map((text) => ({ text, section }))
   }
   if (!Array.isArray(value)) {
-    if (value && typeof value === "object") return steps([value])
+    if (value && typeof value === "object") return steps([value], section)
     return []
   }
-  return value.flatMap((item): string[] => {
-    if (typeof item === "string") return steps(item)
+  return value.flatMap((item): ReadStep[] => {
+    if (typeof item === "string") return steps(item, section)
     if (item && typeof item === "object") {
       const node = item as Record<string, unknown>
-      if (Array.isArray(node.itemListElement)) return steps(node.itemListElement)
-      return text(node.text ?? node.name) ? [text(node.text ?? node.name)] : []
+      if (Array.isArray(node.itemListElement)) {
+        const named = text(node.name).slice(0, 100)
+        return steps(node.itemListElement, named || section)
+      }
+      const stepText = text(node.text ?? node.name)
+      return stepText ? [{ text: stepText, section }] : []
     }
     return []
   })
@@ -342,7 +378,10 @@ export function fromSchemaOrg(data: unknown): RecipeContent | null {
     cookMinutes: minutesFromDuration(node.cookTime),
     tags: tagsFrom(node.keywords),
     ingredients,
-    steps: steps(node.recipeInstructions).map((t) => ({ text: t.slice(0, 2000) })),
+    steps: steps(node.recipeInstructions).map((step) => ({
+      text: step.text.slice(0, 2000),
+      ...(step.section ? { section: step.section } : {}),
+    })),
     nutrition: nutritionFrom(node.nutrition),
     source: { kind: "import", label: null, url: null },
   })

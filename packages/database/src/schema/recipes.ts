@@ -38,10 +38,14 @@ export const recipe = pgTable(
           quantity: number | null
           unit: UnitKey | null
           note: string | null
+          /** The part of the recipe, or empty. Old rows have no such field. */
+          section?: string | null
         }[]
       >()
       .notNull(),
-    steps: jsonb("steps").$type<{ text: string }[]>().notNull(),
+    steps: jsonb("steps")
+      .$type<{ text: string; section?: string | null }[]>()
+      .notNull(),
     nutrition: jsonb("nutrition")
       .$type<{
         calories: number | null

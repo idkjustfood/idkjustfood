@@ -1,5 +1,6 @@
 import { parseQuantity } from "./quantity.js"
 import { sortTags, TagsSchema, type TagKey } from "./tags.js"
+import { arrangeSections } from "./sections.js"
 import { isUnitKey } from "./units.js"
 import type { RecipeContent } from "./recipe.js"
 
@@ -26,8 +27,15 @@ export type RecipeDraft = {
     unit: string
     name: string
     note: string
+    /** The `key` of a section in `sections`, or "" for no section. */
+    sectionKey: string
   }[]
-  steps: { key: string; text: string }[]
+  steps: { key: string; text: string; sectionKey: string }[]
+  /**
+   * The sections, in order. Optional: most recipes have none. Ingredients and
+   * steps point to them with `sectionKey`.
+   */
+  sections: { key: string; name: string }[]
 }
 
 export type DraftContent = Omit<RecipeContent, "source">
@@ -46,9 +54,10 @@ export function emptyDraft(newKey: () => string): RecipeDraft {
     carbs: "",
     fat: "",
     ingredients: [
-      { key: newKey(), quantity: "", unit: "", name: "", note: "" },
+      { key: newKey(), quantity: "", unit: "", name: "", note: "", sectionKey: "" },
     ],
-    steps: [{ key: newKey(), text: "" }],
+    steps: [{ key: newKey(), text: "", sectionKey: "" }],
+    sections: [],
   }
 }
 
@@ -58,6 +67,30 @@ export function draftFromRecipe(
   recipe: DraftContent,
   newKey: () => string
 ): RecipeDraft {
+  const sections: RecipeDraft["sections"] = []
+  const keyOf = (name: string | null | undefined) => {
+    const trimmed = name?.trim()
+    if (!trimmed) return ""
+    let found = sections.find((s) => s.name === trimmed)
+    if (!found) {
+      found = { key: newKey(), name: trimmed }
+      sections.push(found)
+    }
+    return found.key
+  }
+  const ingredients = recipe.ingredients.map((i) => ({
+    key: newKey(),
+    quantity: text(i.quantity),
+    unit: i.unit ?? "",
+    name: i.name,
+    note: i.note ?? "",
+    sectionKey: keyOf(i.section),
+  }))
+  const steps = recipe.steps.map((s) => ({
+    key: newKey(),
+    text: s.text,
+    sectionKey: keyOf(s.section),
+  }))
   return {
     title: recipe.title,
     description: recipe.description,
@@ -69,14 +102,9 @@ export function draftFromRecipe(
     protein: text(recipe.nutrition.protein),
     carbs: text(recipe.nutrition.carbs),
     fat: text(recipe.nutrition.fat),
-    ingredients: recipe.ingredients.map((i) => ({
-      key: newKey(),
-      quantity: text(i.quantity),
-      unit: i.unit ?? "",
-      name: i.name,
-      note: i.note ?? "",
-    })),
-    steps: recipe.steps.map((s) => ({ key: newKey(), text: s.text })),
+    ingredients,
+    steps,
+    sections,
   }
 }
 
@@ -137,8 +165,39 @@ export function readDraft(draft: RecipeDraft): DraftResult {
     fat: nutrient("fat"),
   }
 
+  // Sections: empty ones are dropped, and one with rows needs a name.
+  const sectionName = (sectionKey: string) => {
+    const section = draft.sections.find((s) => s.key === sectionKey)
+    const name = section?.name.trim()
+    return name || null
+  }
+  const used = new Set(
+    [...draft.ingredients, ...draft.steps]
+      .filter((row) => ("name" in row ? row.name.trim() : row.text.trim()))
+      .map((row) => row.sectionKey)
+      .filter(Boolean)
+  )
+  for (const section of draft.sections) {
+    if (used.has(section.key) && !section.name.trim()) {
+      errors[`section.${section.key}.name`] = "Give the section a name."
+    }
+  }
+  // Rows without a section first, then each section in its order.
+  const bySection = <T extends { sectionKey: string }>(rows: T[]) => [
+    ...rows.filter((row) => !sectionName(row.sectionKey)),
+    ...draft.sections.flatMap((section) =>
+      rows.filter((row) => row.sectionKey === section.key && sectionName(row.sectionKey))
+    ),
+  ]
+
+  // Without a section the field is left out, so a plain recipe stays as it was.
+  const sectionOf = (sectionKey: string) => {
+    const section = sectionName(sectionKey)
+    return section ? { section } : {}
+  }
+
   const ingredients: DraftContent["ingredients"] = []
-  for (const row of draft.ingredients) {
+  for (const row of bySection(draft.ingredients)) {
     const name = row.name.trim()
     const unit = row.unit.trim()
     if (unit && !isUnitKey(unit)) {
@@ -158,13 +217,13 @@ export function readDraft(draft: RecipeDraft): DraftResult {
       quantity: quantity ?? null,
       unit: isUnitKey(unit) ? unit : null,
       note: note || null,
+      ...sectionOf(row.sectionKey),
     })
   }
 
-  const steps = draft.steps
-    .map((s) => s.text.trim())
-    .filter(Boolean)
-    .map((t) => ({ text: t }))
+  const steps = bySection(draft.steps)
+    .map((s) => ({ text: s.text.trim(), ...sectionOf(s.sectionKey) }))
+    .filter((s) => s.text)
 
   const parsedTags = TagsSchema.safeParse(draft.tags)
   if (!parsedTags.success) errors.tags = "Choose tags from the list."
@@ -180,8 +239,8 @@ export function readDraft(draft: RecipeDraft): DraftResult {
       prepMinutes,
       cookMinutes,
       tags,
-      ingredients,
-      steps,
+      ingredients: arrangeSections(ingredients),
+      steps: arrangeSections(steps),
       nutrition,
     },
   }

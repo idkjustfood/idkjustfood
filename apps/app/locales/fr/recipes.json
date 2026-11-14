@@ -143,11 +143,24 @@
       "minutes": "Saisissez des minutes entières, par exemple 30.",
       "number": "Saisissez un nombre, par exemple 12,5.",
       "quantity": "Saisissez un nombre comme 2, 1,5 ou 1/2, ou laissez vide.",
-      "ingredientName": "Ajoutez le nom de l'ingrédient."
+      "ingredientName": "Ajoutez le nom de l'ingrédient.",
+      "sectionName": "Donnez un nom à la section."
     },
     "tagsHelp": "Touchez pour choisir des étiquettes dans la liste.",
     "tagsCount_one": "{{count}} étiquette choisie",
-    "tagsCount_other": "{{count}} étiquettes choisies"
+    "tagsCount_other": "{{count}} étiquettes choisies",
+    "sections": {
+      "title": "Sections",
+      "hint": "Facultatif. Divisez une recette en parties comme « Pâte » et « Sauce ». Ignorez cela si votre recette n’a pas de parties.",
+      "add": "Ajouter une section",
+      "name": "Nom de la section, par exemple « Sauce »",
+      "moveUp": "Monter {{name}}",
+      "moveDown": "Descendre {{name}}",
+      "remove": "Supprimer la section {{name}}",
+      "unnamed": "section {{n}}",
+      "none": "Aucune section",
+      "of": "Section de {{name}}"
+    }
   },
   "parts": {
     "fewerServings": "Moins de portions",

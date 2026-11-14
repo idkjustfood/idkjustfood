@@ -262,6 +262,59 @@ describe("the recipe", () => {
     ])
   })
 
+  test("parts of the recipe become sections, kept together in order", async () => {
+    const recipe = await extractRecipe(text, {
+      ai: withAnswer({
+        ...pancakeJson,
+        ingredients: [
+          { name: "tomato", quantity: 3, unit: null, note: null, section: "Sauce" },
+          { name: "flour", quantity: 200, unit: "g", note: null, section: "Dough" },
+          { name: "basil", quantity: null, unit: null, note: null, section: "Sauce" },
+        ],
+        steps: [
+          { text: "Simmer.", section: "Sauce" },
+          { text: "Knead.", section: "Dough" },
+          { text: "Serve.", section: null },
+        ],
+      }),
+      tempRoot,
+    })
+    expect(recipe.ingredients.map((i) => [i.name, i.section])).toEqual([
+      ["tomato", "Sauce"],
+      ["basil", "Sauce"],
+      ["flour", "Dough"],
+    ])
+    expect(recipe.steps.map((s) => [s.text, s.section])).toEqual([
+      ["Simmer.", "Sauce"],
+      ["Knead.", "Dough"],
+      ["Serve.", null],
+    ])
+  })
+
+  test("a recipe without parts gets no sections", async () => {
+    const recipe = await extractRecipe(text, {
+      ai: withAnswer(pancakeJson),
+      tempRoot,
+    })
+    expect(recipe.ingredients.every((i) => i.section === undefined)).toBe(true)
+    expect(recipe.steps.every((s) => s.section === undefined)).toBe(true)
+  })
+
+  test("a recipe with only one part gets no sections", async () => {
+    const recipe = await extractRecipe(text, {
+      ai: withAnswer({
+        ...pancakeJson,
+        ingredients: [
+          { name: "flour", quantity: 200, unit: "g", note: null, section: "Dough" },
+        ],
+        steps: [{ text: "Knead.", section: "Dough" }],
+      }),
+      tempRoot,
+    })
+    expect(recipe.ingredients[0]).not.toHaveProperty("section")
+    expect(recipe.steps[0]).not.toHaveProperty("section")
+  })
+
   test("a negative or zero amount is not accepted", async () => {
     const bad = {
       ...pancakeJson,

@@ -220,19 +220,29 @@ function splitNote(item: ExtractedRecipe["ingredients"][number]) {
 }
 
 /** Instructions come as text, a list of text, steps, or sections of steps. */
-function instructionTexts(value: unknown): string[] {
+function instructionTexts(
+  value: unknown,
+  section: string | null = null
+): { text: string; section: string | null }[] {
   if (typeof value === "string") {
     const html = value.replace(/<\/(?:li|p|div)>|<br\s*\/?>/gi, "\n")
     return plain(html.replace(/\n/g, "§"))
       .split("§")
       .map((s) => s.trim())
       .filter(Boolean)
+      .map((text) => ({ text, section }))
   }
-  if (Array.isArray(value)) return value.flatMap(instructionTexts)
+  if (Array.isArray(value)) {
+    return value.flatMap((item) => instructionTexts(item, section))
+  }
   if (value && typeof value === "object") {
     const node = value as Record<string, unknown>
-    if (node.itemListElement) return instructionTexts(node.itemListElement)
-    return instructionTexts(node.text ?? node.name)
+    // A HowToSection ("Sauce", "Dough") is a named part of the recipe.
+    if (node.itemListElement) {
+      const name = plain(node.name).slice(0, 100)
+      return instructionTexts(node.itemListElement, name || section)
+    }
+    return instructionTexts(node.text ?? node.name, section)
   }
   return []
 }
@@ -293,8 +303,9 @@ export function recipeFromSchemaOrg(
     ingredients: lines(node.recipeIngredient ?? node.ingredients)
       .map(parseIngredientLine)
       .filter((i) => i.name),
-    steps: instructionTexts(node.recipeInstructions).map((text) => ({
-      text: text.slice(0, 2000),
+    steps: instructionTexts(node.recipeInstructions).map((step) => ({
+      text: step.text.slice(0, 2000),
+      ...(step.section ? { section: step.section } : {}),
     })),
   }
 }

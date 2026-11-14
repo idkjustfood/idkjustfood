@@ -6,6 +6,7 @@ import { Pressable, Text, Vibration, View } from "react-native"
 import {
   findTimers,
   formatCountdown,
+  groupBySection,
   nutritionFacts,
   type Ingredient,
   type Nutrition,
@@ -54,7 +55,50 @@ export function ServingsScaler({
   )
 }
 
+/** The headline of a section ("Sauce", "Dough") above its ingredients or steps. */
+export function SectionHeading({ name }: { name: string }) {
+  return (
+    <Text
+      role="heading"
+      aria-level={3}
+      className="text-lg font-semibold text-foreground"
+    >
+      {name}
+    </Text>
+  )
+}
+
+/**
+ * The ingredients. A recipe with sections shows each headline with its
+ * ingredients below it; one without looks like a plain list.
+ */
 export function IngredientList({
+  ingredients,
+  factor,
+  units,
+}: {
+  ingredients: Ingredient[]
+  factor: number
+  units: Units
+}) {
+  const groups = groupBySection(ingredients)
+  return (
+    <View className="gap-4">
+      {groups.map((group) => (
+        <View key={group.name ?? ""} className="gap-1">
+          {group.name && <SectionHeading name={group.name} />}
+          <IngredientRows
+            ingredients={group.items.map(({ item }) => item)}
+            factor={factor}
+            units={units}
+          />
+        </View>
+      ))}
+    </View>
+  )
+}
+
+function IngredientRows({
   ingredients,
   factor,
   units,
@@ -240,20 +284,32 @@ export function StepList({
   recipeId: string
   steps: Step[]
 }) {
+  // Numbers go on across sections, so a step has one number everywhere.
   return (
     <View className="gap-5">
-      {steps.map((step, i) => (
-        <View key={i} className="flex-row gap-4">
-          <View className="h-8 w-8 items-center justify-center rounded-full bg-secondary">
-            <Text className="font-semibold text-secondary-foreground">
-              {i + 1}
-            </Text>
-          </View>
-          <View className="flex-1 gap-2">
-            <Text className="text-base leading-6 text-foreground">
-              {step.text}
-            </Text>
-            <StepTimers recipeId={recipeId} index={i} text={step.text} />
+      {groupBySection(steps).map((group) => (
+        <View key={group.name ?? ""} className="gap-3">
+          {group.name && <SectionHeading name={group.name} />}
+          <View className="gap-5">
+            {group.items.map(({ item: step, index }) => (
+              <View key={index} className="flex-row gap-4">
+                <View className="h-8 w-8 items-center justify-center rounded-full bg-secondary">
+                  <Text className="font-semibold text-secondary-foreground">
+                    {index + 1}
+                  </Text>
+                </View>
+                <View className="flex-1 gap-2">
+                  <Text className="text-base leading-6 text-foreground">
+                    {step.text}
+                  </Text>
+                  <StepTimers
+                    recipeId={recipeId}
+                    index={index}
+                    text={step.text}
+                  />
+                </View>
+              </View>
+            ))}
           </View>
         </View>
       ))}

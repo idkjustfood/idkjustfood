@@ -1,7 +1,13 @@
-import { CircleAlert, Plus, Trash2 } from "lucide-react-native"
+import {
+  ArrowDown,
+  ArrowUp,
+  CircleAlert,
+  Plus,
+  Trash2,
+} from "lucide-react-native"
 import { useCallback, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { Text, TextInput, View } from "react-native"
+import { Pressable, Text, TextInput, View } from "react-native"
 
 import {
   draftFromRecipe,
@@ -77,6 +83,7 @@ function Field({
 
 /** The text for a problem the draft reports, found by the field it belongs to. */
 function errorText(t: TFunction, field: string) {
+  if (field.startsWith("section.")) return t("recipes:form.errors.sectionName")
   if (field === "title") return t("recipes:form.errors.title")
   if (field === "servings") return t("recipes:form.errors.servings")
   if (field === "prepMinutes" || field === "cookMinutes") {
@@ -85,6 +92,68 @@ function errorText(t: TFunction, field: string) {
   if (field.endsWith(".quantity")) return t("recipes:form.errors.quantity")
   if (field.endsWith(".name")) return t("recipes:form.errors.ingredientName")
   return t("recipes:form.errors.number")
+}
+
+/**
+ * Chooses the section of an ingredient or a step. Only shown when the recipe has
+ * sections, so a recipe without any looks as simple as before.
+ */
+function SectionChoice({
+  sections,
+  value,
+  label,
+  onChange,
+}: {
+  sections: RecipeDraft["sections"]
+  value: string
+  label: string
+  onChange: (sectionKey: string) => void
+}) {
+  const { t } = useTranslation()
+  if (sections.length === 0) return null
+  const options = [
+    { key: "", name: t("recipes:form.sections.none") },
+    ...sections.map((s, i) => ({
+      key: s.key,
+      name: s.name.trim() || t("recipes:form.sections.unnamed", { n: i + 1 }),
+    })),
+  ]
+  return (
+    <View
+      role="radiogroup"
+      accessibilityLabel={label}
+      className="flex-row flex-wrap gap-2"
+    >
+      {options.map((option) => {
+        const selected = option.key === value
+        return (
+          <Pressable
+            key={option.key || "none"}
+            role="radio"
+            aria-checked={selected}
+            onPress={() => onChange(option.key)}
+            className={cn(
+              "min-h-10 justify-center rounded-full border px-4 active:opacity-80",
+              selected
+                ? "border-primary bg-primary/10"
+                : "border-input bg-background"
+            )}
+          >
+            <Text
+              className={cn(
+                "text-sm",
+                selected
+                  ? "font-semibold text-primary"
+                  : "text-muted-foreground"
+              )}
+            >
+              {option.name}
+            </Text>
+          </Pressable>
+        )
+      })}
+    </View>
+  )
 }
 
 function FieldError({ message }: { message?: string }) {
@@ -130,10 +199,38 @@ export function RecipeForm({
     }))
   }
 
-  function setStep(key: string, text: string) {
+  function setStep(
+    key: string,
+    patch: Partial<RecipeDraft["steps"][number]>
+  ) {
     setDraft((d) => ({
       ...d,
-      steps: d.steps.map((s) => (s.key === key ? { ...s, text } : s)),
+      steps: d.steps.map((s) => (s.key === key ? { ...s, ...patch } : s)),
+    }))
+  }
+
+  function moveSection(key: string, by: -1 | 1) {
+    setDraft((d) => {
+      const index = d.sections.findIndex((s) => s.key === key)
+      const target = index + by
+      if (index < 0 || target < 0 || target >= d.sections.length) return d
+      const sections = [...d.sections]
+      ;[sections[index], sections[target]] = [sections[target]!, sections[index]!]
+      return { ...d, sections }
+    })
+  }
+
+  /** A removed section is gone, but its ingredients and steps stay, without a section. */
+  function removeSection(key: string) {
+    setDraft((d) => ({
+      ...d,
+      sections: d.sections.filter((s) => s.key !== key),
+      ingredients: d.ingredients.map((i) =>
+        i.sectionKey === key ? { ...i, sectionKey: "" } : i
+      ),
+      steps: d.steps.map((s) =>
+        s.sectionKey === key ? { ...s, sectionKey: "" } : s
+      ),
     }))
   }
 
@@ -191,6 +288,73 @@ export function RecipeForm({
           </View>
         </View>
         <TagPicker value={draft.tags} onChange={(tags) => set({ tags })} />
+      </Card>
+
+      <Card className="gap-4 p-4">
+        <SectionTitle>{t("recipes:form.sections.title")}</SectionTitle>
+        <Text className="text-sm text-muted-foreground">
+          {t("recipes:form.sections.hint")}
+        </Text>
+        {draft.sections.map((section, index) => {
+          const label =
+            section.name.trim() ||
+            t("recipes:form.sections.unnamed", { n: index + 1 })
+          return (
+            <View key={section.key} className="gap-1.5">
+              <View className="flex-row items-center gap-1">
+                <Field
+                  label={t("recipes:form.sections.name")}
+                  value={section.name}
+                  className="flex-1"
+                  warn={!!errors[`section.${section.key}.name`]}
+                  onChangeText={(name) =>
+                    setDraft((d) => ({
+                      ...d,
+                      sections: d.sections.map((s) =>
+                        s.key === section.key ? { ...s, name } : s
+                      ),
+                    }))
+                  }
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  icon={ArrowUp}
+                  label={t("recipes:form.sections.moveUp", { name: label })}
+                  disabled={index === 0}
+                  onPress={() => moveSection(section.key, -1)}
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  icon={ArrowDown}
+                  label={t("recipes:form.sections.moveDown", { name: label })}
+                  disabled={index === draft.sections.length - 1}
+                  onPress={() => moveSection(section.key, 1)}
+                />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  icon={Trash2}
+                  label={t("recipes:form.sections.remove", { name: label })}
+                  onPress={() => removeSection(section.key)}
+                />
+              </View>
+              <FieldError message={errors[`section.${section.key}.name`]} />
+            </View>
+          )
+        })}
+        <Button
+          variant="outline"
+          icon={Plus}
+          label={t("recipes:form.sections.add")}
+          onPress={() =>
+            setDraft((d) => ({
+              ...d,
+              sections: [...d.sections, { key: newKey(), name: "" }],
+            }))
+          }
+        />
       </Card>
 
       <Card className="gap-4 p-4">
@@ -270,6 +434,14 @@ export function RecipeForm({
                   }
                 />
               </View>
+              <SectionChoice
+                sections={draft.sections}
+                value={ingredient.sectionKey}
+                label={t("recipes:form.sections.of", { name })}
+                onChange={(sectionKey) =>
+                  setIngredient(ingredient.key, { sectionKey })
+                }
+              />
               <FieldError message={quantityError ?? nameError} />
               {highlightMissing && empty && !quantityError && (
                 <Text className="text-sm text-amber-700 dark:text-amber-300">
@@ -288,7 +460,15 @@ export function RecipeForm({
               ...d,
               ingredients: [
                 ...d.ingredients,
-                { key: newKey(), quantity: "", unit: "", name: "", note: "" },
+                {
+                  key: newKey(),
+                  quantity: "",
+                  unit: "",
+                  name: "",
+                  note: "",
+                  // A new row starts in the section of the one above it.
+                  sectionKey: d.ingredients.at(-1)?.sectionKey ?? "",
+                },
               ],
             }))
           }
@@ -301,30 +481,42 @@ export function RecipeForm({
           {t("recipes:form.stepsHint")}
         </Text>
         {draft.steps.map((step, i) => (
-          <View key={step.key} className="flex-row items-start gap-2">
-            <Text className="w-6 pt-3 text-base font-semibold text-muted-foreground">
-              {i + 1}
-            </Text>
-            <Field
-              label={t("recipes:form.stepN", { n: i + 1 })}
-              value={step.text}
-              multiline
-              textAlignVertical="top"
-              className="h-auto min-h-20 flex-1 py-3"
-              onChangeText={(text) => setStep(step.key, text)}
-            />
-            <Button
-              variant="ghost"
-              size="icon"
-              icon={Trash2}
-              label={t("recipes:form.removeStep", { n: i + 1 })}
-              onPress={() =>
-                setDraft((d) => ({
-                  ...d,
-                  steps: d.steps.filter((s) => s.key !== step.key),
-                }))
-              }
-            />
+          <View key={step.key} className="gap-2">
+            <View className="flex-row items-start gap-2">
+              <Text className="w-6 pt-3 text-base font-semibold text-muted-foreground">
+                {i + 1}
+              </Text>
+              <Field
+                label={t("recipes:form.stepN", { n: i + 1 })}
+                value={step.text}
+                multiline
+                textAlignVertical="top"
+                className="h-auto min-h-20 flex-1 py-3"
+                onChangeText={(text) => setStep(step.key, { text })}
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                icon={Trash2}
+                label={t("recipes:form.removeStep", { n: i + 1 })}
+                onPress={() =>
+                  setDraft((d) => ({
+                    ...d,
+                    steps: d.steps.filter((s) => s.key !== step.key),
+                  }))
+                }
+              />
+            </View>
+            <View className="pl-8">
+              <SectionChoice
+                sections={draft.sections}
+                value={step.sectionKey}
+                label={t("recipes:form.sections.of", {
+                  name: t("recipes:form.stepN", { n: i + 1 }),
+                })}
+                onChange={(sectionKey) => setStep(step.key, { sectionKey })}
+              />
+            </View>
           </View>
         ))}
         <Button
@@ -334,7 +526,14 @@ export function RecipeForm({
           onPress={() =>
             setDraft((d) => ({
               ...d,
-              steps: [...d.steps, { key: newKey(), text: "" }],
+              steps: [
+                ...d.steps,
+                {
+                  key: newKey(),
+                  text: "",
+                  sectionKey: d.steps.at(-1)?.sectionKey ?? "",
+                },
+              ],
             }))
           }
         />

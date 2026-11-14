@@ -8,6 +8,7 @@ import {
   StepSchema,
   TagsSchema,
   emptyNutrition,
+  arrangeSections,
   type RecipeContent,
   type Source,
 } from "@workspace/schemas"
@@ -37,6 +38,31 @@ function describe(error: z.ZodError) {
   const issue = error.issues[0]
   const where = issue?.path.join(".")
   return where ? `${where}: ${issue?.message}` : (issue?.message ?? "unknown")
+}
+
+/**
+ * Tidies the parts of a recipe. The items of one part are kept together, in the
+ * order the parts appear. A recipe with only one part has no sections: a single
+ * headline over everything tells the reader nothing.
+ */
+function withoutSingleSection(recipe: ExtractedRecipe): ExtractedRecipe {
+  const items = [...recipe.ingredients, ...recipe.steps]
+  const names = new Set(items.map((i) => i.section?.trim()).filter(Boolean))
+  const single = names.size < 2 && items.every((i) => i.section?.trim())
+  const clean = <T extends { section?: string | null }>(list: T[]) =>
+    list.map(({ section: _section, ...rest }) => rest)
+  if (single && names.size > 0) {
+    return {
+      ...recipe,
+      ingredients: clean(recipe.ingredients),
+      steps: clean(recipe.steps),
+    }
+  }
+  return {
+    ...recipe,
+    ingredients: arrangeSections(recipe.ingredients),
+    steps: arrangeSections(recipe.steps),
+  }
 }
 
 /**
@@ -71,7 +97,7 @@ export function readExtractedRecipe(raw: unknown): ExtractedRecipe {
       `The AI's answer is not a valid recipe (${describe(result.error)}). Try again, or use a different parsing model.`
     )
   }
-  const recipe = result.data
+  const recipe = withoutSingleSection(result.data)
   if (recipe.ingredients.length === 0 && recipe.steps.length === 0) {
     throw new ExtractionError(
       "no_recipe_found",
@@ -99,6 +125,16 @@ export function keepStructure(
       "The translation changed the number of ingredients or steps. Try again."
     )
   }
+  // A section name is translated once, so its ingredients and steps keep the same headline.
+  const names = new Map<string, string>()
+  const sectionOf = (
+    name: string | null | undefined,
+    translatedName: string | null | undefined
+  ) => {
+    if (!name) return {}
+    if (!names.has(name)) names.set(name, translatedName || name)
+    return { section: names.get(name)! }
+  }
   return {
     ...original,
     title: translated.title,
@@ -107,10 +143,12 @@ export function keepStructure(
       ...ingredient,
       name: translated.ingredients[index]!.name,
       note: ingredient.note ? translated.ingredients[index]!.note : null,
+      ...sectionOf(ingredient.section, translated.ingredients[index]!.section),
     })),
     steps: original.steps.map((step, index) => ({
       ...step,
       text: translated.steps[index]!.text,
+      ...sectionOf(step.section, translated.steps[index]!.section),
     })),
   }
 }

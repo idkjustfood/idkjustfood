@@ -112,7 +112,7 @@ describe("validation", () => {
     const draft = emptyDraft(() => "row")
     draft.title = "Soup"
     draft.ingredients = [
-      { key: "a", quantity: "2", unit: "grams", name: "Salt", note: "" },
+      { key: "a", quantity: "2", unit: "grams", name: "Salt", note: "", sectionKey: "" },
     ]
     expect(readDraft(draft)).toMatchObject({
       ok: false,

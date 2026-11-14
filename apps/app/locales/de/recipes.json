@@ -143,11 +143,24 @@
       "minutes": "Gib ganze Minuten ein, zum Beispiel 30.",
       "number": "Gib eine Zahl ein, zum Beispiel 12,5.",
       "quantity": "Gib eine Zahl wie 2, 1,5 oder 1/2 ein, oder lass das Feld leer.",
-      "ingredientName": "Gib den Namen der Zutat ein."
+      "ingredientName": "Gib den Namen der Zutat ein.",
+      "sectionName": "Gib dem Abschnitt einen Namen."
     },
     "tagsHelp": "Tippe, um Tags aus der Liste zu wählen.",
     "tagsCount_one": "{{count}} Tag gewählt",
-    "tagsCount_other": "{{count}} Tags gewählt"
+    "tagsCount_other": "{{count}} Tags gewählt",
+    "sections": {
+      "title": "Abschnitte",
+      "hint": "Optional. Teile ein Rezept in Teile wie „Teig“ und „Soße“. Lass das weg, wenn dein Rezept keine Teile hat.",
+      "add": "Abschnitt hinzufügen",
+      "name": "Name des Abschnitts, zum Beispiel „Soße“",
+      "moveUp": "{{name}} nach oben schieben",
+      "moveDown": "{{name}} nach unten schieben",
+      "remove": "Abschnitt {{name}} entfernen",
+      "unnamed": "Abschnitt {{n}}",
+      "none": "Kein Abschnitt",
+      "of": "Abschnitt von {{name}}"
+    }
   },
   "parts": {
     "fewerServings": "Weniger Portionen",
