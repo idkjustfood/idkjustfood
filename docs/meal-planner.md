@@ -1,7 +1,8 @@
 # Meal planner
 
 A meal plan holds the meals you want to cook, for as many weeks as you like. Every day has exactly
-three slots: **Breakfast**, **Midday** and **Afternoon**. A slot holds one recipe and the number of
+three slots: **Breakfast**, **Midday** and **Afternoon** (the last main meal of the day, dinner;
+see `docs/tags.md` for what each meal means). A slot holds one recipe and the number of
 servings to cook. You fill the plan by hand, or let the app fill it from your saved recipes.
 
 A plan is either **personal** (only its owner sees it) or **shared with a household** (every member
@@ -58,7 +59,8 @@ wishes and recipes always give the same plan, with any AI provider or none.
   own calories, and the rest of the day is shared by the other slots. A skipped slot keeps its share,
   because you eat something else there.
 - **Meal tags:** a recipe tagged `breakfast`, `midday` or `afternoon` is only planned in the slot of
-  that name (and preferred there). A recipe with none of these tags fits any slot.
+  that name (and preferred there). A recipe with none of these tags fits any slot. A recipe tagged
+  `snack` is never planned: snacks have no slot (three meals a day stays as is).
 - **Variety:** the least used recipe wins ties, and a recipe is never planned twice on one day.
 - **Not enough recipes:** the slot stays empty and is listed in the answer (`unfilled`). Nothing is
   made up.

@@ -14,6 +14,7 @@ import { Pressable, Text, View } from "react-native"
 import type { Recipe } from "@workspace/schemas"
 
 import { TagBadge } from "@/components/tag-badge"
+import { cardTags } from "@/lib/recipe-filters"
 import { Icon } from "@/components/ui/icon"
 import { formatMinutes } from "@/lib/format"
 import i18n from "@/lib/i18n"
@@ -82,6 +83,7 @@ export function RecipeCover({
 export function RecipeCard({ recipe }: { recipe: Recipe }) {
   useTranslation()
   const total = totalMinutes(recipe)
+  const { shown, more } = cardTags(recipe.tags)
   return (
     <Pressable
       role="link"
@@ -97,15 +99,23 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
         >
           {recipe.title}
         </Text>
-        <View className="flex-row items-center gap-3">
-          {total !== null && (
-            <View className="flex-row items-center gap-1">
-              <Icon as={Clock} size={14} className="text-muted-foreground" />
-              <Text className="text-sm text-muted-foreground">
-                {formatMinutes(total)}
-              </Text>
-            </View>
-          )}
+        <View className="flex-row flex-wrap items-center gap-x-3 gap-y-1">
+          {/* The time is always shown. When the recipe says none, that is said instead of guessed. */}
+          <View className="flex-row items-center gap-1">
+            <Icon as={Clock} size={14} className="text-foreground" />
+            <Text
+              className={cn(
+                "text-sm",
+                total !== null
+                  ? "font-medium text-foreground"
+                  : "text-muted-foreground"
+              )}
+            >
+              {total !== null
+                ? formatMinutes(total)
+                : i18n.t("recipes:list.timeUnknown")}
+            </Text>
+          </View>
           <View className="flex-row items-center gap-1">
             <Icon
               as={sourceIcons[recipe.source.kind] ?? FileText}
@@ -117,11 +127,17 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
             </Text>
           </View>
         </View>
-        {recipe.tags.length > 0 && (
-          <View className="flex-row flex-wrap gap-1.5">
-            {recipe.tags.map((tag) => (
+        {shown.length > 0 && (
+          // Two tags at most keep the cards short; the recipe page shows them all.
+          <View className="flex-row flex-wrap items-center gap-1.5">
+            {shown.map((tag) => (
               <TagBadge key={tag} tag={tag} />
             ))}
+            {more > 0 && (
+              <Text className="text-xs text-muted-foreground">
+                {i18n.t("recipes:list.moreTags", { count: more })}
+              </Text>
+            )}
           </View>
         )}
       </View>

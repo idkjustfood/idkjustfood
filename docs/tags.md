@@ -12,11 +12,31 @@ order, each with its own color:
 | Group | Color | Tags |
 | --- | --- | --- |
 | `cuisine` | orange | `italian`, `french`, `spanish`, `greek`, `mediterranean`, `german`, `american`, `mexican`, `turkish`, `middle_eastern`, `indian`, `thai`, `vietnamese`, `chinese`, `japanese`, `korean` |
-| `dish` | blue | `pasta`, `pizza`, `salad`, `soup`, `stew`, `curry`, `rice`, `noodles`, `burger`, `sandwich`, `bread`, `bake`, `sauce`, `snack`, `dessert`, `cake`, `drink` |
+| `dish` | blue | `pasta`, `pizza`, `salad`, `soup`, `stew`, `curry`, `rice`, `noodles`, `burger`, `sandwich`, `bread`, `bake`, `sauce`, `dessert`, `cake`, `drink` |
 | `diet` | green | `vegetarian`, `vegan`, `gluten_free`, `dairy_free` |
 | `nutrition` | violet | `high_protein`, `low_carb`, `low_calorie`, `low_fat` |
 | `time` | amber | `under_15_min`, `under_30_min`, `under_45_min`, `under_60_min`, `under_90_min` (preparing and cooking together) |
-| `meal` | rose | `breakfast`, `midday`, `afternoon` |
+| `meal` | rose | `breakfast`, `midday`, `afternoon`, `snack` |
+
+### Meals
+
+The `meal` tags say **when** a recipe is eaten. A recipe has at most one. The AI, the planner and the
+recipe overview all use these definitions:
+
+| Tag | When | What belongs here |
+| --- | --- | --- |
+| `breakfast` | Morning | Porridge, eggs, bread with spreads, smoothies, pancakes |
+| `midday` | Around noon | The main meal of the middle of the day (lunch): pasta, bowls, soups, salads |
+| `afternoon` | Late afternoon into the evening | The last main meal of the day (dinner, supper). The key stays `afternoon` so saved recipes keep working |
+| `snack` | Between meals | Small food that is not a full meal: fruit, dips, bars, finger food, small bites |
+
+Rules:
+
+- A recipe with no meal tag is allowed. Nothing guesses one: it shows under "All" in the overview and
+  the planner may use it in any slot.
+- `snack` is only a meal tag. It used to be a dish tag; the key is the same, so saved recipes
+  keep it and need no migration.
+- Snacks are not planned: the planner has three slots (see `docs/meal-planner.md`).
 
 The stored value is the key, the same in every language. The app shows a translated name from
 `apps/app/locales/<lang>/common.json` (`tags.*`, and `tagGroups.*` for the group names).
@@ -33,7 +53,9 @@ Tags are sorted by group and then in the order above, so a recipe's tags look th
   them. Whatever comes back goes through `fitTags`, so a tag outside the list is dropped, never saved.
 - **Websites (schema.org):** the page's cuisine, diet and category are fitted with `fitTags` as well.
 - **Meal planner:** the `meal` tags `breakfast`, `midday` and `afternoon` put a recipe in the slot of
-  that name. The diet wish of the wizard is one of the `diet` tags. See `docs/meal-planner.md`.
+  that name. `snack` has no slot.
+- **Recipe overview:** a row of meal tabs (All, Breakfast, Midday, Afternoon, Snack) with counts, and
+  a scrolling row of pills (Cuisine, Diet, Time, ...) that each open a picker for the other groups. The diet wish of the wizard is one of the `diet` tags. See `docs/meal-planner.md`.
 - **Export and import:** JSON keeps the keys. Markdown and the schema.org `keywords` use English names
   ("Under 30 min"). Importing fits what it reads: known spellings become their key, other tags are
   dropped, so older files still work.
@@ -42,7 +64,7 @@ Tags are sorted by group and then in the order above, so a recipe's tags look th
 
 `fitTag` / `fitTags` map a text to a key: not case sensitive, dashes and underscores count as spaces.
 It knows the key itself, English, German, Spanish, French and Italian names and some common words
-("Lunch" is `midday`, "Dinner" is `afternoon`, "Under 1 hour" is `under_60_min`). Anything it does not
+("Lunch" is `midday`, "Dinner" is `afternoon`, "Snacks" is `snack`, "Under 1 hour" is `under_60_min`). Anything it does not
 know is dropped.
 
 ## Adding a tag

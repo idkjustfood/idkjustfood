@@ -28,7 +28,8 @@ export const tagGroupColors: Record<TagGroup, string> = {
  * is what is stored and sent, in every language; the app shows a translated
  * name (`tags.*` in `apps/app/locales/<lang>/common.json`).
  *
- * The planner uses the `meal` tags: `breakfast`, `midday` and `afternoon`.
+ * The `meal` tags say when a recipe is eaten (see `docs/tags.md`). The planner
+ * uses `breakfast`, `midday` and `afternoon`; `snack` is never planned.
  */
 export const tagsByGroup = {
   cuisine: [
@@ -63,7 +64,6 @@ export const tagsByGroup = {
     "bread",
     "bake",
     "sauce",
-    "snack",
     "dessert",
     "cake",
     "drink",
@@ -77,7 +77,7 @@ export const tagsByGroup = {
     "under_60_min",
     "under_90_min",
   ],
-  meal: ["breakfast", "midday", "afternoon"],
+  meal: ["breakfast", "midday", "afternoon", "snack"],
 } as const satisfies Record<TagGroup, readonly string[]>
 
 export type TagKey = (typeof tagsByGroup)[TagGroup][number]
@@ -160,7 +160,6 @@ const spellings: Record<TagKey, string[]> = {
   bread: ["brot", "pan", "pain", "pane"],
   bake: ["baked", "casserole", "auflauf", "gratin", "al horno", "horneado", "gratiné", "al forno"],
   sauce: ["sauces", "soße", "sosse", "salsa", "dip", "dressing"],
-  snack: ["snacks", "fingerfood", "finger food", "aperitivo", "apéritif", "appetizer", "starter"],
   dessert: ["desserts", "sweet", "nachtisch", "nachspeise", "süßspeise", "postre", "dolce", "dolci"],
   cake: ["cakes", "kuchen", "torte", "pastel", "tarta", "gâteau", "gateau", "torta", "cookies", "biscuits"],
   drink: ["drinks", "beverage", "getränk", "cocktail", "smoothie", "bebida", "boisson", "bevanda"],
@@ -184,6 +183,7 @@ const spellings: Record<TagKey, string[]> = {
   breakfast: ["frühstück", "fruehstueck", "desayuno", "petit-déjeuner", "petit déjeuner", "colazione", "brunch"],
   midday: ["lunch", "noon", "mittag", "mittagessen", "almuerzo", "comida", "déjeuner", "dejeuner", "pranzo"],
   afternoon: ["dinner", "supper", "evening", "abend", "abendessen", "nachmittag", "cena", "tarde", "dîner", "diner", "soir", "après-midi", "pomeriggio"],
+  snack: ["snacks", "fingerfood", "finger food", "zwischenmahlzeit", "imbiss", "aperitivo", "apéritif", "appetizer", "starter", "merienda", "tapas", "collation", "goûter", "spuntino"],
 }
 
 /** How a text is compared with the list: no case, no dashes, one space, no end dot. */
@@ -235,7 +235,7 @@ export function fitTags(tags: unknown): TagKey[] {
 export const mealTags = tagsByGroup.meal
 export type MealTag = (typeof mealTags)[number]
 
-/** True for the three tags that say when a meal is eaten. */
+/** True for the tags that say when a recipe is eaten. */
 export function isMealTag(tag: TagKey): tag is MealTag {
   return (mealTags as readonly string[]).includes(tag)
 }

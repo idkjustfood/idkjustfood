@@ -2883,7 +2883,7 @@ export interface components {
             servings: number;
             prepMinutes: number | null;
             cookMinutes: number | null;
-            tags: ("italian" | "french" | "spanish" | "greek" | "mediterranean" | "german" | "american" | "mexican" | "turkish" | "middle_eastern" | "indian" | "thai" | "vietnamese" | "chinese" | "japanese" | "korean" | "pasta" | "pizza" | "salad" | "soup" | "stew" | "curry" | "rice" | "noodles" | "burger" | "sandwich" | "bread" | "bake" | "sauce" | "snack" | "dessert" | "cake" | "drink" | "vegetarian" | "vegan" | "gluten_free" | "dairy_free" | "high_protein" | "low_carb" | "low_calorie" | "low_fat" | "under_15_min" | "under_30_min" | "under_45_min" | "under_60_min" | "under_90_min" | "breakfast" | "midday" | "afternoon")[];
+            tags: ("italian" | "french" | "spanish" | "greek" | "mediterranean" | "german" | "american" | "mexican" | "turkish" | "middle_eastern" | "indian" | "thai" | "vietnamese" | "chinese" | "japanese" | "korean" | "pasta" | "pizza" | "salad" | "soup" | "stew" | "curry" | "rice" | "noodles" | "burger" | "sandwich" | "bread" | "bake" | "sauce" | "dessert" | "cake" | "drink" | "vegetarian" | "vegan" | "gluten_free" | "dairy_free" | "high_protein" | "low_carb" | "low_calorie" | "low_fat" | "under_15_min" | "under_30_min" | "under_45_min" | "under_60_min" | "under_90_min" | "breakfast" | "midday" | "afternoon" | "snack")[];
             ingredients: {
                 name: string;
                 quantity: number | null;
@@ -2921,7 +2921,7 @@ export interface components {
             servings: number;
             prepMinutes: number | null;
             cookMinutes: number | null;
-            tags: ("italian" | "french" | "spanish" | "greek" | "mediterranean" | "german" | "american" | "mexican" | "turkish" | "middle_eastern" | "indian" | "thai" | "vietnamese" | "chinese" | "japanese" | "korean" | "pasta" | "pizza" | "salad" | "soup" | "stew" | "curry" | "rice" | "noodles" | "burger" | "sandwich" | "bread" | "bake" | "sauce" | "snack" | "dessert" | "cake" | "drink" | "vegetarian" | "vegan" | "gluten_free" | "dairy_free" | "high_protein" | "low_carb" | "low_calorie" | "low_fat" | "under_15_min" | "under_30_min" | "under_45_min" | "under_60_min" | "under_90_min" | "breakfast" | "midday" | "afternoon")[];
+            tags: ("italian" | "french" | "spanish" | "greek" | "mediterranean" | "german" | "american" | "mexican" | "turkish" | "middle_eastern" | "indian" | "thai" | "vietnamese" | "chinese" | "japanese" | "korean" | "pasta" | "pizza" | "salad" | "soup" | "stew" | "curry" | "rice" | "noodles" | "burger" | "sandwich" | "bread" | "bake" | "sauce" | "dessert" | "cake" | "drink" | "vegetarian" | "vegan" | "gluten_free" | "dairy_free" | "high_protein" | "low_carb" | "low_calorie" | "low_fat" | "under_15_min" | "under_30_min" | "under_45_min" | "under_60_min" | "under_90_min" | "breakfast" | "midday" | "afternoon" | "snack")[];
             ingredients: {
                 name: string;
                 quantity: number | null;
@@ -3175,7 +3175,7 @@ export interface components {
                 servings: number;
                 prepMinutes: number | null;
                 cookMinutes: number | null;
-                tags: ("italian" | "french" | "spanish" | "greek" | "mediterranean" | "german" | "american" | "mexican" | "turkish" | "middle_eastern" | "indian" | "thai" | "vietnamese" | "chinese" | "japanese" | "korean" | "pasta" | "pizza" | "salad" | "soup" | "stew" | "curry" | "rice" | "noodles" | "burger" | "sandwich" | "bread" | "bake" | "sauce" | "snack" | "dessert" | "cake" | "drink" | "vegetarian" | "vegan" | "gluten_free" | "dairy_free" | "high_protein" | "low_carb" | "low_calorie" | "low_fat" | "under_15_min" | "under_30_min" | "under_45_min" | "under_60_min" | "under_90_min" | "breakfast" | "midday" | "afternoon")[];
+                tags: ("italian" | "french" | "spanish" | "greek" | "mediterranean" | "german" | "american" | "mexican" | "turkish" | "middle_eastern" | "indian" | "thai" | "vietnamese" | "chinese" | "japanese" | "korean" | "pasta" | "pizza" | "salad" | "soup" | "stew" | "curry" | "rice" | "noodles" | "burger" | "sandwich" | "bread" | "bake" | "sauce" | "dessert" | "cake" | "drink" | "vegetarian" | "vegan" | "gluten_free" | "dairy_free" | "high_protein" | "low_carb" | "low_calorie" | "low_fat" | "under_15_min" | "under_30_min" | "under_45_min" | "under_60_min" | "under_90_min" | "breakfast" | "midday" | "afternoon" | "snack")[];
                 ingredients: {
                     name: string;
                     quantity: number | null;

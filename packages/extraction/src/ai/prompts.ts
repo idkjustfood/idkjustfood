@@ -14,7 +14,11 @@ const tagGroupHelp = {
   diet: "only when the recipe clearly fits the diet",
   nutrition: "only when the recipe clearly fits",
   time: "preparing and cooking together, pick at most one",
-  meal: "when it is eaten: breakfast, midday (lunch) or afternoon (dinner)",
+  meal:
+    "when it is eaten, pick at most one and leave it out when unsure: " +
+    "breakfast (morning meal), midday (the main meal around noon, lunch), " +
+    "afternoon (the last main meal, from late afternoon into the evening, dinner), " +
+    "snack (small food between meals, not a full meal)",
 } as const
 
 /** The list of tags the AI may choose from, one line per group. */

@@ -1,8 +1,8 @@
 import { router } from "expo-router"
-import { BookOpen, SearchX } from "lucide-react-native"
+import { BookOpen, ChevronDown, SearchX } from "lucide-react-native"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { ScrollView, View } from "react-native"
+import { Pressable, Text, View } from "react-native"
 
 import { isTagKey, sortTags, type TagKey } from "@workspace/schemas"
 
@@ -11,11 +11,24 @@ import { RecipeCard } from "@/components/recipe-card"
 import { Screen } from "@/components/screen"
 import { SpaceSwitcher } from "@/components/space-switcher"
 import { EmptyState, ErrorState, LoadingState } from "@/components/states"
-import { TagChip } from "@/components/tag-badge"
+import { MealTabs } from "@/components/meal-tabs"
+import { RecipeFilterPills } from "@/components/recipe-filter-pills"
+import { Chip } from "@/components/ui/chip"
+import { Icon } from "@/components/ui/icon"
+import { Sheet } from "@/components/ui/sheet"
 import { SearchField } from "@/components/ui/search-field"
 import { useAppState } from "@/lib/app-state"
 import { useHousehold } from "@/lib/households"
 import { useIsWide } from "@/lib/layout"
+import {
+  filterTags,
+  isOtherTag,
+  mealCounts,
+  recipeSorts,
+  sortRecipes,
+  type MealTab,
+  type RecipeSort,
+} from "@/lib/recipe-filters"
 import { useRecipes } from "@/lib/recipes"
 
 /** Waits a moment after typing before the search is sent. */
@@ -34,41 +47,34 @@ export default function RecipeList() {
   const { space } = useAppState()
   const { household } = useHousehold()
   const [query, setQuery] = useState("")
-  const [tags, setTags] = useState<TagKey[]>([])
+  const [meal, setMeal] = useState<MealTab>("all")
+  const [others, setOthers] = useState<TagKey[]>([])
+  const [sort, setSort] = useState<RecipeSort>("newest")
+  const [sortOpen, setSortOpen] = useState(false)
   const search = useDebounced(query)
 
-  // Everything in this space: gives the tag chips and tells empty from "nothing found".
+  // Everything in this space: gives the meal counts, the filter tags and tells empty from "nothing found".
   const all = useRecipes({ q: "", tags: [] })
-  const found = useRecipes({ q: search, tags })
+  const found = useRecipes({ q: search, tags: filterTags(meal, others) })
 
-  const allTags = useMemo(() => {
-    const names = new Set<TagKey>(tags)
+  const counts = useMemo(() => mealCounts(all.data ?? []), [all.data])
+
+  // The non-meal tags in use, in the fixed order of the list: grouped, same everywhere.
+  const available = useMemo(() => {
+    const names = new Set<TagKey>(others)
     for (const recipe of all.data ?? []) {
-      for (const tag of recipe.tags) if (isTagKey(tag)) names.add(tag)
+      for (const tag of recipe.tags) {
+        if (isTagKey(tag) && isOtherTag(tag)) names.add(tag)
+      }
     }
-    // The tags in use, in the fixed order of the list: grouped, same everywhere.
     return sortTags([...names])
-  }, [all.data, tags])
-
-  function toggleTag(tag: TagKey) {
-    setTags((current) =>
-      current.includes(tag)
-        ? current.filter((t) => t !== tag)
-        : [...current, tag]
-    )
-  }
+  }, [all.data, others])
 
   const hasRecipes = (all.data?.length ?? 0) > 0
-  const shown = found.data ?? []
-
-  const tagChips = allTags.map((tag) => (
-    <TagChip
-      key={tag}
-      tag={tag}
-      selected={tags.includes(tag)}
-      onPress={() => toggleTag(tag)}
-    />
-  ))
+  const shown = useMemo(
+    () => sortRecipes(found.data ?? [], sort),
+    [found.data, sort]
+  )
 
   return (
     <Screen
@@ -90,20 +96,28 @@ export default function RecipeList() {
                 onChangeText={setQuery}
                 placeholder={t("recipes:list.searchPlaceholder")}
               />
-              {allTags.length > 0 &&
-                (wide ? (
-                  <View className="flex-row flex-wrap gap-2">{tagChips}</View>
-                ) : (
-                  // One scrolling row on phones, so the list stays close to the top.
-                  <ScrollView
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerClassName="gap-2 px-4"
-                    className="-mx-4"
-                  >
-                    {tagChips}
-                  </ScrollView>
-                ))}
+              <MealTabs value={meal} onChange={setMeal} counts={counts} />
+              <RecipeFilterPills
+                available={available}
+                value={others}
+                onChange={setOthers}
+                resultCount={shown.length}
+              />
+              <Pressable
+                role="button"
+                onPress={() => setSortOpen(true)}
+                className="min-h-10 flex-row items-center gap-1 self-start active:opacity-80"
+              >
+                <Text className="text-sm text-muted-foreground">
+                  {t("recipes:list.count", { count: shown.length })} ·{" "}
+                  {t(`recipes:list.sort.${sort}`)}
+                </Text>
+                <Icon
+                  as={ChevronDown}
+                  size={16}
+                  className="text-muted-foreground"
+                />
+              </Pressable>
             </>
           )}
         </View>
@@ -143,7 +157,8 @@ export default function RecipeList() {
           action={t("recipes:list.nothing.action")}
           onAction={() => {
             setQuery("")
-            setTags([])
+            setMeal("all")
+            setOthers([])
           }}
         />
       )}
@@ -154,6 +169,26 @@ export default function RecipeList() {
           render={(r) => <RecipeCard recipe={r} />}
         />
       )}
+
+      <Sheet
+        open={sortOpen}
+        onClose={() => setSortOpen(false)}
+        title={t("recipes:list.sortTitle")}
+      >
+        <View className="flex-row flex-wrap gap-2">
+          {recipeSorts.map((option) => (
+            <Chip
+              key={option}
+              label={t(`recipes:list.sort.${option}`)}
+              selected={sort === option}
+              onPress={() => {
+                setSort(option)
+                setSortOpen(false)
+              }}
+            />
+          ))}
+        </View>
+      </Sheet>
     </Screen>
   )
 }

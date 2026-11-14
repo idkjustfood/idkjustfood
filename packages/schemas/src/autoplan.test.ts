@@ -209,6 +209,21 @@ describe("autoPlan", () => {
     expect(at("afternoon")).toBe("stew")
   })
 
+  test("never plans snacks, they have no slot", () => {
+    const result = autoPlan({
+      recipes: [recipe("nuts", { tags: ["snack"] })],
+      goals: {},
+      days: [monday],
+      servings: 2,
+    })
+    expect(result.meals).toEqual([])
+    expect(result.unfilled.map((u) => u.slot)).toEqual([
+      "breakfast",
+      "midday",
+      "afternoon",
+    ])
+  })
+
   test("a breakfast recipe is never planned for dinner", () => {
     const result = autoPlan({
       recipes: [recipe("porridge", { tags: ["breakfast"] })],
