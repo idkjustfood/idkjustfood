@@ -1667,6 +1667,165 @@
           "listId"
         ]
       },
+      "CompletedRecipe": {
+        "type": "object",
+        "properties": {
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "quantity": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "exclusiveMinimum": 0
+                },
+                "unit": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "enum": [
+                    "g",
+                    "kg",
+                    "mg",
+                    "ml",
+                    "l",
+                    "tsp",
+                    "tbsp",
+                    "cup",
+                    "oz",
+                    "lb",
+                    "fl_oz",
+                    "piece",
+                    "pinch",
+                    "clove",
+                    "bunch",
+                    "slice",
+                    "can",
+                    "pack",
+                    null
+                  ]
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 300
+                },
+                "section": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "name",
+                "quantity",
+                "unit",
+                "note"
+              ]
+            }
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 2000
+                },
+                "section": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 100
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          },
+          "addedIngredients": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Places in `ingredients` of the ingredients the AI added."
+          },
+          "addedSteps": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "description": "Places in `steps` of the steps the AI added."
+          }
+        },
+        "required": [
+          "ingredients",
+          "steps",
+          "addedIngredients",
+          "addedSteps"
+        ]
+      },
+      "CompleteRecipeError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string",
+            "example": "nothing_to_add"
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "CompleteRecipeInput": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000,
+            "description": "What is missing, in the person's own words, for example `add a pizza dough`.",
+            "example": "add a pizza dough"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en",
+              "de",
+              "es",
+              "fr",
+              "it"
+            ],
+            "description": "Write the new part in this language (`en`, `de`, `es`, `fr` or `it`)."
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
       "ExtractionJob": {
         "type": "object",
         "properties": {
@@ -5029,6 +5188,102 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/recipes/{recipeId}/complete": {
+      "post": {
+        "tags": [
+          "Recipes"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Complete a partial recipe with AI",
+        "description": "Takes a free-form message that says what is missing (for example `add a pizza dough`) and returns the recipe's ingredients and steps with the AI's additions merged in. The existing ingredients and steps stay exactly as they are. Nothing is saved: send the result to `PUT /recipes/{recipeId}` once the person has checked it.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "recipeId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteRecipeInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The recipe with the additions, and which ones are new",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompletedRecipe"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid message, or the AI had nothing to add",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompleteRecipeError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompleteRecipeError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The recipe doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompleteRecipeError"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The AI call failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompleteRecipeError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "No AI key is set on this server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompleteRecipeError"
                 }
               }
             }

@@ -2437,6 +2437,96 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/recipes/{recipeId}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Complete a partial recipe with AI
+         * @description Takes a free-form message that says what is missing (for example `add a pizza dough`) and returns the recipe's ingredients and steps with the AI's additions merged in. The existing ingredients and steps stay exactly as they are. Nothing is saved: send the result to `PUT /recipes/{recipeId}` once the person has checked it.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    recipeId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CompleteRecipeInput"];
+                };
+            };
+            responses: {
+                /** @description The recipe with the additions, and which ones are new */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CompletedRecipe"];
+                    };
+                };
+                /** @description Invalid message, or the AI had nothing to add */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CompleteRecipeError"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CompleteRecipeError"];
+                    };
+                };
+                /** @description The recipe doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CompleteRecipeError"];
+                    };
+                };
+                /** @description The AI call failed */
+                502: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CompleteRecipeError"];
+                    };
+                };
+                /** @description No AI key is set on this server */
+                503: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["CompleteRecipeError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/extractions/link": {
         parameters: {
             query?: never;
@@ -3035,6 +3125,41 @@ export interface components {
             listId: string;
             from?: string;
             to?: string;
+        };
+        CompletedRecipe: {
+            ingredients: {
+                name: string;
+                quantity: number | null;
+                /** @enum {string|null} */
+                unit: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
+                note: string | null;
+                section?: string | null;
+            }[];
+            steps: {
+                text: string;
+                section?: string | null;
+            }[];
+            /** @description Places in `ingredients` of the ingredients the AI added. */
+            addedIngredients: number[];
+            /** @description Places in `steps` of the steps the AI added. */
+            addedSteps: number[];
+        };
+        CompleteRecipeError: {
+            error: string;
+            /** @example nothing_to_add */
+            code?: string;
+        };
+        CompleteRecipeInput: {
+            /**
+             * @description What is missing, in the person's own words, for example `add a pizza dough`.
+             * @example add a pizza dough
+             */
+            message: string;
+            /**
+             * @description Write the new part in this language (`en`, `de`, `es`, `fr` or `it`).
+             * @enum {string}
+             */
+            language?: "en" | "de" | "es" | "fr" | "it";
         };
         ExtractionJob: {
             id: string;

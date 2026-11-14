@@ -186,5 +186,31 @@
     "startLabel": "Timer für {{duration}} starten",
     "running": "{{time}} · zum Stoppen tippen",
     "idle": "Timer {{duration}}"
+  },
+  "complete": {
+    "title": "Mit KI ergänzen",
+    "action": "Mit KI ergänzen",
+    "intro": "Sag der KI, was in diesem Rezept fehlt. Sie schreibt nur den fehlenden Teil und fügt ihn hinzu. Du prüfst es, bevor etwas gespeichert wird.",
+    "messageLabel": "Was fehlt?",
+    "placeholder": "Zum Beispiel: Ergänze einen Pizzateig",
+    "send": "Fehlenden Teil schreiben",
+    "sending": "Schreibt …",
+    "loading": "Die KI schreibt den fehlenden Teil. Das kann einen Moment dauern.",
+    "retry": "Erneut versuchen",
+    "cancel": "Abbrechen",
+    "aiWritten": "Von KI geschrieben",
+    "unchanged": "Der Rest des Rezepts bleibt unverändert.",
+    "new": "Neu",
+    "save": "Speichern",
+    "saving": "Speichert …",
+    "discard": "Verwerfen",
+    "errors": {
+      "network": "Der Server ist nicht erreichbar. Prüfe deine Verbindung und versuche es erneut.",
+      "ai_not_configured": "Auf diesem Server ist keine KI eingerichtet. Bitte den Admin, einen KI-Schlüssel zu hinterlegen.",
+      "ai_failed": "Die KI konnte nicht antworten. Versuche es gleich noch einmal.",
+      "nothing_to_add": "Die KI hatte nichts zu ergänzen. Beschreibe, was fehlt, zum Beispiel „Ergänze einen Pizzateig“.",
+      "invalid_recipe": "Die Antwort der KI war nicht brauchbar. Versuche es erneut.",
+      "generic": "Etwas ist schiefgelaufen. Versuche es erneut."
+    }
   }
 }

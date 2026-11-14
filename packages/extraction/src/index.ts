@@ -2,6 +2,7 @@
 // and queue requests) and by the worker (to do the work). See docs/ for how to add
 // an input or an AI provider.
 export * from "./ai/index.js"
+export * from "./complete.js"
 export * from "./errors.js"
 export * from "./inputs/index.js"
 export * from "./jobs/queue.js"

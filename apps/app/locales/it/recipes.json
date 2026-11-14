@@ -186,5 +186,31 @@
     "startLabel": "Avvia il timer di {{duration}}",
     "running": "{{time}} · tocca per fermare",
     "idle": "Timer di {{duration}}"
+  },
+  "complete": {
+    "title": "Completa con l'IA",
+    "action": "Completa con l'IA",
+    "intro": "Dì all'IA cosa manca in questa ricetta. Scrive solo la parte mancante e la aggiunge. Controlli tu prima che venga salvato qualcosa.",
+    "messageLabel": "Cosa manca?",
+    "placeholder": "Per esempio: aggiungi un impasto per la pizza",
+    "send": "Scrivi la parte mancante",
+    "sending": "Scrittura…",
+    "loading": "L'IA sta scrivendo la parte mancante. Può volerci un momento.",
+    "retry": "Riprova",
+    "cancel": "Annulla",
+    "aiWritten": "Scritto dall'IA",
+    "unchanged": "Il resto della ricetta resta com'è.",
+    "new": "Nuovo",
+    "save": "Salva",
+    "saving": "Salvataggio…",
+    "discard": "Scarta",
+    "errors": {
+      "network": "Impossibile raggiungere il server. Controlla la connessione e riprova.",
+      "ai_not_configured": "Su questo server non è configurata alcuna IA. Chiedi all'amministratore di aggiungere una chiave IA.",
+      "ai_failed": "L'IA non ha potuto rispondere. Riprova tra un attimo.",
+      "nothing_to_add": "L'IA non aveva nulla da aggiungere. Descrivi cosa manca, per esempio «aggiungi un impasto per la pizza».",
+      "invalid_recipe": "La risposta dell'IA non era utilizzabile. Riprova.",
+      "generic": "Qualcosa è andato storto. Riprova."
+    }
   }
 }

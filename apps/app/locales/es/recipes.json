@@ -186,5 +186,31 @@
     "startLabel": "Iniciar temporizador de {{duration}}",
     "running": "{{time}} · toca para detener",
     "idle": "Temporizador de {{duration}}"
+  },
+  "complete": {
+    "title": "Completar con IA",
+    "action": "Completar con IA",
+    "intro": "Dile a la IA qué falta en esta receta. Escribe solo la parte que falta y la añade. Tú lo revisas antes de guardar nada.",
+    "messageLabel": "¿Qué falta?",
+    "placeholder": "Por ejemplo: añade una masa de pizza",
+    "send": "Escribir la parte que falta",
+    "sending": "Escribiendo…",
+    "loading": "La IA está escribiendo la parte que falta. Puede tardar un momento.",
+    "retry": "Intentar de nuevo",
+    "cancel": "Cancelar",
+    "aiWritten": "Escrito por IA",
+    "unchanged": "El resto de la receta se queda como está.",
+    "new": "Nuevo",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "discard": "Descartar",
+    "errors": {
+      "network": "No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+      "ai_not_configured": "Este servidor no tiene IA configurada. Pide al administrador que añada una clave de IA.",
+      "ai_failed": "La IA no pudo responder. Inténtalo de nuevo en un momento.",
+      "nothing_to_add": "La IA no tenía nada que añadir. Describe qué falta, por ejemplo «añade una masa de pizza».",
+      "invalid_recipe": "No se pudo usar la respuesta de la IA. Inténtalo de nuevo.",
+      "generic": "Algo salió mal. Inténtalo de nuevo."
+    }
   }
 }

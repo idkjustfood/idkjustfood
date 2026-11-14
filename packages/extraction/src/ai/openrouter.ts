@@ -153,10 +153,12 @@ export const openrouter: AiProvider = {
             model: modelFor(options),
             temperature: 0,
             maxOutputTokens: 6000,
-            system: parseRecipeSystem(
-              parseOptions?.language,
-              parseOptions?.estimateNutrition
-            ),
+            system:
+              parseOptions?.instruction ??
+              parseRecipeSystem(
+                parseOptions?.language,
+                parseOptions?.estimateNutrition
+              ),
             prompt: material,
           })
           reply = text
