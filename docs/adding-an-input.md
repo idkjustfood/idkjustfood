@@ -22,6 +22,12 @@ input ──► module.gather ──► text, pictures, audio ──► AI reads
 5. The temporary folder (`context.workDir`) is deleted after every job. Download things into it, not
    anywhere else, and the cleanup is automatic.
 
+## Sections
+
+A module that returns a complete recipe can give its steps (and ingredients) a `section`, for
+example from a schema.org `HowToSection`. Leave it out when the source has no parts. See
+`docs/recipe-sections.md`.
+
 ## Language
 
 Every recipe is written in the language the person picked in the app (`en`, `de`, `es`, `fr`

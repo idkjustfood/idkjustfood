@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto"
 import { and, desc, eq, isNull, sql, type SQL } from "drizzle-orm"
 
 import { schema, type Database } from "@workspace/database"
-import type { RecipeContent, TagKey } from "@workspace/schemas"
+import { arrangeSections, type RecipeContent, type TagKey } from "@workspace/schemas"
 
 import { householdStore } from "../households/store.js"
 
@@ -45,8 +45,9 @@ export function recipeStore(db: Database) {
       prepMinutes: content.prepMinutes,
       cookMinutes: content.cookMinutes,
       tags: content.tags,
-      ingredients: content.ingredients,
-      steps: content.steps,
+      // The items of one section are saved next to each other. Without sections nothing changes.
+      ingredients: arrangeSections(content.ingredients),
+      steps: arrangeSections(content.steps),
       nutrition: content.nutrition,
       source: content.source,
     }

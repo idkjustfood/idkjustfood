@@ -40,6 +40,12 @@ units, tags, servings and times from the page and only takes the words). Without
 recipe stays in the language of the material. Nothing to set up on a self-hosted install: it works
 with any provider and model that the parsing job uses.
 
+## Sections
+
+When a recipe clearly has parts ("For the dough", "For the sauce"), the parsing prompt asks for a
+`section` on each ingredient and step. Without clear parts it stays `null`. See
+`docs/recipe-sections.md`.
+
 ## Add a provider
 
 1. Create `packages/extraction/src/ai/<name>.ts` that exports an `AiProvider`:

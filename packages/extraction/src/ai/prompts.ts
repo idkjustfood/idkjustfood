@@ -52,7 +52,7 @@ export function languageRule(language?: RecipeLanguage) {
   if (!language) return "Write the recipe in the language of the material."
   const name = recipeLanguageNames[language]
   return (
-    `Write the recipe in ${name}: the title, the description, the ingredient names, the notes and the steps. ` +
+    `Write the recipe in ${name}: the title, the description, the ingredient names, the notes, the section names and the steps. ` +
     `If the material is in another language, translate it into ${name}. If it is already in ${name}, keep its words. ` +
     "Translating changes words only: keep every quantity, unit, time and number as it is, never add an amount or detail that the material does not give, " +
     "and leave a missing amount empty. The \"unit\" and the \"tags\" are fixed keys, not words: never translate them."
@@ -70,6 +70,7 @@ Rules:
 - "servings" is a whole number, or null if the material does not say.
 - "prepMinutes" and "cookMinutes" are whole minutes, or null if not said.
 - "steps": one object per step, in order, in short clear sentences. Keep times in the text ("bake for 30 minutes").
+- "section": most recipes have no parts, and then "section" is null everywhere. Only when the material clearly splits the recipe into named parts (for example "For the dough" and "For the sauce"), write the short name of the part ("Dough", "Sauce") in "section" of every ingredient and step that belongs to it, always spelled the same way for the same part. Never invent parts, and do not use a section for a recipe with only one part. An ingredient or step that belongs to no part has "section": null.
 - "tags": choose ONLY from the list of tag keys below, using the key exactly as written. Never write any other tag. Pick a tag only when the material makes it clear, and leave the list empty when nothing fits. At most one or two cuisines, and at most one time tag (the smallest "under" value the recipe fits in, preparing and cooking together).
 ${tagListForPrompt()}
 - If the material contains no recipe at all, reply {"error": "no recipe found"}.
@@ -82,8 +83,8 @@ JSON shape:
   "prepMinutes": number | null,
   "cookMinutes": number | null,
   "tags": the chosen tag keys (string[]),
-  "ingredients": [{ "name": string, "quantity": number | null, "unit": "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null, "note": string | null }],
-  "steps": [{ "text": string }]
+  "ingredients": [{ "name": string, "quantity": number | null, "unit": "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null, "note": string | null, "section": string | null }],
+  "steps": [{ "text": string, "section": string | null }]
 }`
 
 /** Finds the JSON object in a model's reply, also when it is wrapped in a code fence. */

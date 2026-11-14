@@ -66,7 +66,8 @@ list. An ingredient is merged into an existing line when:
 - the line is not ticked off yet, and
 - both have an amount, or both have none.
 
-Then the amounts add up: 200 g flour + 100 g flour is 300 g flour. Otherwise a new line is added.
+Sections of a recipe (see `docs/recipe-sections.md`) do not matter: ingredients of all sections are merged
+as one list. Then the amounts add up: 200 g flour + 100 g flour is 300 g flour. Otherwise a new line is added.
 Units are **not converted** (cups to grams would be a guess), so `1 cup` and `200 g` of flour stay
 two lines. An ingredient without an amount is added without one and never changes another line's
 amount. The code is `addIngredients` in `packages/schemas/src/shopping.ts`. The API runs the merge

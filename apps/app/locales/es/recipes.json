@@ -143,11 +143,24 @@
       "minutes": "Introduce minutos enteros, por ejemplo 30.",
       "number": "Introduce un número, por ejemplo 12,5.",
       "quantity": "Introduce un número como 2, 1,5 o 1/2, o déjalo vacío.",
-      "ingredientName": "Añade el nombre del ingrediente."
+      "ingredientName": "Añade el nombre del ingrediente.",
+      "sectionName": "Ponle un nombre a la sección."
     },
     "tagsHelp": "Toca para elegir etiquetas de la lista.",
     "tagsCount_one": "{{count}} etiqueta elegida",
-    "tagsCount_other": "{{count}} etiquetas elegidas"
+    "tagsCount_other": "{{count}} etiquetas elegidas",
+    "sections": {
+      "title": "Secciones",
+      "hint": "Opcional. Divide una receta en partes como «Masa» y «Salsa». Omítelo si tu receta no tiene partes.",
+      "add": "Añadir una sección",
+      "name": "Nombre de la sección, por ejemplo «Salsa»",
+      "moveUp": "Subir {{name}}",
+      "moveDown": "Bajar {{name}}",
+      "remove": "Quitar la sección {{name}}",
+      "unnamed": "sección {{n}}",
+      "none": "Sin sección",
+      "of": "Sección de {{name}}"
+    }
   },
   "parts": {
     "fewerServings": "Menos raciones",

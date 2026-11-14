@@ -143,11 +143,24 @@
       "minutes": "Enter whole minutes, like 30.",
       "number": "Enter a number, like 12.5.",
       "quantity": "Enter a number like 2, 1.5 or 1/2, or leave it empty.",
-      "ingredientName": "Add the ingredient's name."
+      "ingredientName": "Add the ingredient's name.",
+      "sectionName": "Give the section a name."
     },
     "tagsHelp": "Tap to choose tags from the list.",
     "tagsCount_one": "{{count}} tag chosen",
-    "tagsCount_other": "{{count}} tags chosen"
+    "tagsCount_other": "{{count}} tags chosen",
+    "sections": {
+      "title": "Sections",
+      "hint": "Optional. Split a recipe into parts like “Dough” and “Sauce”. Skip this if your recipe has no parts.",
+      "add": "Add a section",
+      "name": "Section name, for example “Sauce”",
+      "moveUp": "Move {{name}} up",
+      "moveDown": "Move {{name}} down",
+      "remove": "Remove section {{name}}",
+      "unnamed": "section {{n}}",
+      "none": "No section",
+      "of": "Section of {{name}}"
+    }
   },
   "parts": {
     "fewerServings": "Fewer servings",

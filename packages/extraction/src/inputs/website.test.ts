@@ -76,6 +76,8 @@ describe("pages with schema.org Recipe data", () => {
       "Melt the butter.",
       "Boil the spaghetti for 10 minutes.",
     ])
+    // The page's "Sauce" and "Pasta" parts become sections of the steps.
+    expect(recipe.steps.map((s) => s.section)).toEqual(["Sauce", "Pasta"])
   })
 
   test("instructions given as one HTML text are split into steps; servings stay unknown", async () => {

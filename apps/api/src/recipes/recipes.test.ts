@@ -67,6 +67,41 @@ describe("recipes", () => {
     expect((await api.get("/api/recipes/abc")).status).toBe(401)
   })
 
+  test("can have sections, kept together in the order they appear", async () => {
+    const saved = await create({
+      ingredients: [
+        { name: "Flour", quantity: 200, unit: "g", note: null, section: "Dough" },
+        { name: "Tomato", quantity: 3, unit: null, note: null, section: "Sauce" },
+        { name: "Yeast", quantity: 7, unit: "g", note: null, section: "Dough" },
+      ],
+      steps: [
+        { text: "Knead.", section: "Dough" },
+        { text: "Simmer.", section: "Sauce" },
+        { text: "Bake." },
+      ],
+    })
+    expect(saved.ingredients.map((i) => [i.name, i.section])).toEqual([
+      ["Flour", "Dough"],
+      ["Yeast", "Dough"],
+      ["Tomato", "Sauce"],
+    ])
+    expect(saved.steps.map((s) => s.section ?? null)).toEqual([
+      "Dough",
+      "Sauce",
+      null,
+    ])
+    const res = await api.get(`/api/recipes/${saved.id}`, olivia)
+    expect((await body<{ recipe: Recipe }>(res)).recipe.steps[1]!.section).toBe(
+      "Sauce"
+    )
+  })
+
+  test("without sections nothing is added to what is saved", async () => {
+    const saved = await create()
+    expect(saved.ingredients).toEqual(pancakes.ingredients)
+    expect(saved.steps).toEqual(pancakes.steps)
+  })
+
   test("are saved exactly as written and can be read back", async () => {
     const saved = await create()
     expect(saved).toMatchObject({

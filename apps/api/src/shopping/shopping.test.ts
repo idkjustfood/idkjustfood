@@ -341,6 +341,31 @@ describe("adding a recipe", () => {
     ])
   })
 
+  test("ingredients of all sections are merged into one list without sections", async () => {
+    const list = await makeList("Shop")
+    const recipe = await makeRecipe({
+      ...pancakes,
+      title: "Pizza",
+      ingredients: [
+        { name: "Flour", quantity: 200, unit: "g", note: null, section: "Dough" },
+        { name: "Flour", quantity: 100, unit: "g", note: null, section: "Sauce" },
+        { name: "Tomato", quantity: 3, unit: null, note: null, section: "Sauce" },
+      ],
+      steps: [
+        { text: "Knead.", section: "Dough" },
+        { text: "Simmer.", section: "Sauce" },
+      ],
+    })
+    const result = await addRecipe(list.id, recipe.id)
+    expect(
+      result.items.map(({ name, quantity }) => ({ name, quantity }))
+    ).toEqual([
+      { name: "Flour", quantity: 300 },
+      { name: "Tomato", quantity: 3 },
+    ])
+    expect(result.items.every((item) => !("section" in item))).toBe(true)
+  })
+
   test("two recipes with flour in grams give one flour line with the sum", async () => {
     const list = await makeList("Shop")
     await addRecipe(list.id, (await makeRecipe(pancakes)).id)
