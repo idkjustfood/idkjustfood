@@ -150,5 +150,25 @@
     "mealCount_other": "{{count}} repas",
     "earlier": "{{label}} : un jour plus tôt",
     "later": "{{label}} : un jour plus tard"
+  },
+  "prep": {
+    "button": "Meal prep",
+    "addDays": "Ajouter des jours",
+    "end": "Terminer le meal prep",
+    "leave": "Retirer du meal prep",
+    "title": "Meal prep · {{title}}",
+    "intro": "Cuisinez {{title}} une seule fois ({{day}}, {{slot}}) et mangez-le à nouveau plus tard. Choisissez les repas où vous le mangerez.",
+    "servingsEach": "Portions par repas de restes",
+    "pick": "Le manger à nouveau lors de",
+    "none": "Choisissez au moins un repas.",
+    "total_one": "Vous cuisinez {{count}} portion au total.",
+    "total_other": "Vous cuisinez {{count}} portions au total.",
+    "plan": "Planifier le meal prep",
+    "error": "Impossible de planifier le meal prep.",
+    "cooks_one": "Cuisiné une fois : {{count}} portion pour {{meals}} repas de plus.",
+    "cooks_other": "Cuisiné une fois : {{count}} portions pour {{meals}} repas de plus.",
+    "leftoverFrom": "Restes du {{day}}, {{slot}}. Achetés avec ce repas.",
+    "cookBadge": "Cuisiné pour le meal prep",
+    "leftoverBadge": "Restes du meal prep"
   }
 }

@@ -64,6 +64,28 @@ export const MealRecipeSchema = z.object({
 })
 export type MealRecipe = z.infer<typeof MealRecipeSchema>
 
+/**
+ * Meal prep: one recipe is cooked once and eaten in several slots. The meal where the cooking
+ * happens is the `cook`; the others are `leftover`s that point back to it.
+ */
+export const MealPrepSchema = z.discriminatedUnion("role", [
+  z.object({
+    role: z.literal("cook"),
+    /** Everything that is cooked: this meal's servings plus all its leftovers' servings. */
+    batchServings: z.number().int(),
+    /** How many leftover meals eat from this batch. */
+    leftovers: z.number().int(),
+  }),
+  z.object({
+    role: z.literal("leftover"),
+    /** The meal where this batch is cooked. */
+    cookMealId: z.string(),
+    cookDate: DateSchema,
+    cookSlot: MealSlotSchema,
+  }),
+])
+export type MealPrep = z.infer<typeof MealPrepSchema>
+
 export const MealSchema = z.object({
   /** Identifies this meal. A slot can hold several meals, so a meal is addressed by its id. */
   id: z.string(),
@@ -72,6 +94,8 @@ export const MealSchema = z.object({
   /** How many servings are cooked for this meal. */
   servings: z.number().int().min(1).max(1000),
   recipe: MealRecipeSchema,
+  /** Null for a meal that is cooked just for itself. */
+  prep: MealPrepSchema.nullable(),
 })
 export type Meal = z.infer<typeof MealSchema>
 
@@ -118,6 +142,59 @@ export const UpdateMealSchema = z
     message: "Send servings, recipeId or both",
   })
 export type UpdateMeal = z.infer<typeof UpdateMealSchema>
+
+/** A slot of a day where a recipe is eaten, with the servings eaten there. */
+export const PrepEatSchema = z.object({
+  date: DateSchema,
+  slot: MealSlotSchema,
+  servings: z.number().int().min(1).max(1000).default(1),
+})
+
+/**
+ * Plans meal prep: cook a recipe in one slot and eat it again in other slots. The servings
+ * of the cooking meal and of every leftover add up to what is cooked (and bought).
+ */
+export const MealPrepInputSchema = z
+  .object({
+    recipeId: z.string().min(1),
+    /** Where the cooking happens. */
+    date: DateSchema,
+    slot: MealSlotSchema,
+    /** Servings eaten at the cooking meal itself. */
+    servings: z.number().int().min(1).max(1000).default(1),
+    /** The slots the leftovers are eaten in. They must come after the cooking meal. */
+    eat: z.array(PrepEatSchema).min(1).max(30),
+  })
+  .superRefine((value, ctx) => {
+    const seen = new Set<string>()
+    const cook = slotOrder(value.date, value.slot)
+    for (const [i, item] of value.eat.entries()) {
+      const key = `${item.date}/${item.slot}`
+      if (seen.has(key)) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["eat", i],
+          message: "Each slot can only be listed once",
+        })
+      }
+      seen.add(key)
+      if (slotOrder(item.date, item.slot) <= cook) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["eat", i],
+          message: "Leftovers are eaten after the meal is cooked",
+        })
+      }
+    }
+  })
+export type MealPrepInput = z.input<typeof MealPrepInputSchema>
+
+/** A number that sorts slots in the order they happen in: by day, then breakfast to afternoon. */
+export function slotOrder(date: string, slot: MealSlot) {
+  return (
+    (Date.parse(`${date}T00:00:00Z`) / MS_PER_DAY) * 3 + mealSlots.indexOf(slot)
+  )
+}
 
 /** One slot of one day. */
 export type SlotKey = { date: string; slot: MealSlot }

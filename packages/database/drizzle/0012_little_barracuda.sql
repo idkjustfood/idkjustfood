@@ -1,0 +1,3 @@
+ALTER TABLE "meal_plan_meal" ADD COLUMN "prep_from_meal_id" text;--> statement-breakpoint
+ALTER TABLE "meal_plan_meal" ADD CONSTRAINT "meal_plan_meal_prep_from_meal_id_meal_plan_meal_id_fk" FOREIGN KEY ("prep_from_meal_id") REFERENCES "public"."meal_plan_meal"("id") ON DELETE set null ON UPDATE no action;--> statement-breakpoint
+CREATE INDEX "meal_plan_meal_prepFrom_idx" ON "meal_plan_meal" USING btree ("prep_from_meal_id");

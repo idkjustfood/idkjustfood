@@ -2416,7 +2416,7 @@ export interface paths {
                         "application/json": components["schemas"]["Error"];
                     };
                 };
-                /** @description That recipe is already in this slot */
+                /** @description That recipe is already in this slot, or it is the batch of a meal prep */
                 409: {
                     headers: {
                         [name: string]: unknown;
@@ -2427,6 +2427,151 @@ export interface paths {
                 };
             };
         };
+        trace?: never;
+    };
+    "/api/meal-plans/{planId}/meal-prep": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Plan meal prep: cook once, eat it in several slots
+         * @description Cook a recipe in one slot (`date`, `slot`) and eat it again in the slots of `eat`, which must come after the cooking meal. Every meal has its own servings: the cooking meal's plus all the leftovers' servings is what is cooked. A meal in the answer has `prep`: `cook` on the cooking meal (with the whole batch) and `leftover` on the others. When the plan is added to a shopping list, the batch is bought once, with the cooking meal. A recipe that is already in one of the slots is linked to the batch. Calling it again for the same cooking meal adds more days.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    planId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["MealPrepInput"];
+                };
+            };
+            responses: {
+                /** @description The plan with the meal prep */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            plan: components["schemas"]["MealPlan"];
+                        };
+                    };
+                };
+                /** @description Invalid meal prep */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan or the recipe doesn't exist, or you can't use it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description A slot is a leftover of another batch, or already has leftovers of its own */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/meal-plans/{planId}/meal-prep/{mealId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * End meal prep for a meal
+         * @description Send the id of the cooking meal to turn all its leftovers into ordinary meals, or the id of one leftover to take only that meal out of the batch. No meal is deleted, but each meal that stops being a leftover is then bought for on its own when the plan is added to a shopping list.
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    planId: string;
+                    mealId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The plan without that meal prep */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            plan: components["schemas"]["MealPlan"];
+                        };
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan or the meal doesn't exist, or it is not part of a meal prep */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/meal-plans/{planId}/generate": {
@@ -2512,7 +2657,7 @@ export interface paths {
         put?: never;
         /**
          * Add the plan's ingredients to a shopping list
-         * @description Nothing is added to a list unless you call this. Every meal's ingredients are scaled to its servings and merged into the list like a recipe is. Use `from` and `to` to take only some days.
+         * @description Nothing is added to a list unless you call this. Every meal's ingredients are scaled to its servings and merged into the list like a recipe is. A meal prep is bought once: the cooking meal adds the ingredients for the whole batch and its leftovers add nothing, so choose days that include the cooking day. Use `from` and `to` to take only some days.
          */
         post: {
             parameters: {
@@ -3185,6 +3330,19 @@ export interface components {
                     cookMinutes: number | null;
                     calories: number | null;
                 };
+                prep: {
+                    /** @enum {string} */
+                    role: "cook";
+                    batchServings: number;
+                    leftovers: number;
+                } | {
+                    /** @enum {string} */
+                    role: "leftover";
+                    cookMealId: string;
+                    cookDate: string;
+                    /** @enum {string} */
+                    cookSlot: "breakfast" | "midday" | "afternoon";
+                } | null;
             }[];
             createdAt: string;
             updatedAt: string;
@@ -3206,6 +3364,21 @@ export interface components {
             servings?: number;
             recipeId?: string;
         };
+        MealPrepInput: {
+            recipeId: string;
+            date: string;
+            /** @enum {string} */
+            slot: "breakfast" | "midday" | "afternoon";
+            /** @default 1 */
+            servings: number;
+            eat: {
+                date: string;
+                /** @enum {string} */
+                slot: "breakfast" | "midday" | "afternoon";
+                /** @default 1 */
+                servings: number;
+            }[];
+        };
         GeneratePlanResult: {
             plan: {
                 id: string;
@@ -3226,6 +3399,19 @@ export interface components {
                         cookMinutes: number | null;
                         calories: number | null;
                     };
+                    prep: {
+                        /** @enum {string} */
+                        role: "cook";
+                        batchServings: number;
+                        leftovers: number;
+                    } | {
+                        /** @enum {string} */
+                        role: "leftover";
+                        cookMealId: string;
+                        cookDate: string;
+                        /** @enum {string} */
+                        cookSlot: "breakfast" | "midday" | "afternoon";
+                    } | null;
                 }[];
                 createdAt: string;
                 updatedAt: string;

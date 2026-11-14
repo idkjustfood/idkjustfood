@@ -1,10 +1,11 @@
-import { Repeat, Trash2 } from "lucide-react-native"
+import { ChefHat, Repeat, Trash2, Unlink } from "lucide-react-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, ScrollView, Text, View } from "react-native"
 
 import { type Meal, type MealSlot } from "@workspace/schemas"
 
+import { PrepSheet } from "@/components/planner/prep-sheet"
 import { RecipeCover } from "@/components/recipe-card"
 import { ErrorState, LoadingState } from "@/components/states"
 import { Button } from "@/components/ui/button"
@@ -12,7 +13,12 @@ import { Input } from "@/components/ui/input"
 import { Sheet } from "@/components/ui/sheet"
 import { Stepper } from "@/components/ui/stepper"
 import { formatNumber } from "@/lib/format"
-import { useAddMeal, useRemoveMeal, useUpdateMeal } from "@/lib/planner"
+import {
+  useAddMeal,
+  useEndMealPrep,
+  useRemoveMeal,
+  useUpdateMeal,
+} from "@/lib/planner"
 import { dayLabel } from "@/lib/planner-format"
 import { useAllRecipes, type Recipe } from "@/lib/recipes"
 import { cn } from "@/lib/utils"
@@ -44,6 +50,10 @@ export function SlotSheet({
   const addMeal = useAddMeal(planId)
   const updateMeal = useUpdateMeal(planId)
   const removeMeal = useRemoveMeal(planId)
+  const endPrep = useEndMealPrep(planId)
+  /** The meal whose meal prep is being planned. */
+  const [prepId, setPrepId] = useState<string | null>(null)
+  const prepMeal = meals.find((m) => m.id === prepId) ?? null
   const [search, setSearch] = useState("")
   const [message, setMessage] = useState<string | null>(null)
   const [servings, setLocalServings] = useState(2)
@@ -89,7 +99,21 @@ export function SlotSheet({
           () => setSearch("")
         )
 
-  const busy = addMeal.isPending || updateMeal.isPending || removeMeal.isPending
+  const busy =
+    addMeal.isPending ||
+    updateMeal.isPending ||
+    removeMeal.isPending ||
+    endPrep.isPending
+
+  if (prepMeal) {
+    return (
+      <PrepSheet
+        planId={planId}
+        meal={prepMeal}
+        onClose={() => setPrepId(null)}
+      />
+    )
+  }
 
   return (
     <Sheet
@@ -114,6 +138,10 @@ export function SlotSheet({
                 if (meal.id === swappingId) setSwappingId(null)
               }
             )
+          }
+          onPrep={() => setPrepId(meal.id)}
+          onEndPrep={() =>
+            void run(() => endPrep.mutateAsync({ mealId: meal.id }))
           }
           onSave={(value) =>
             void run(() =>
@@ -224,6 +252,8 @@ function MealCard({
   swapping,
   onSwap,
   onRemove,
+  onPrep,
+  onEndPrep,
   onSave,
 }: {
   meal: Meal
@@ -231,6 +261,10 @@ function MealCard({
   swapping: boolean
   onSwap: () => void
   onRemove: () => void
+  /** Plan meal prep from this meal (make it the cooking meal, or add more days). */
+  onPrep: () => void
+  /** Take the meal out of meal prep, or end the whole batch when it is the cooking meal. */
+  onEndPrep: () => void
   onSave: (servings: number) => void
 }) {
   const { t } = useTranslation()
@@ -254,6 +288,46 @@ function MealCard({
           onChange={setServings}
         />
       </View>
+      {meal.prep?.role === "cook" && (
+        <Text className="text-sm text-muted-foreground">
+          {t("planner:prep.cooks", {
+            count: meal.prep.batchServings,
+            meals: meal.prep.leftovers,
+          })}
+        </Text>
+      )}
+      {meal.prep?.role === "leftover" && (
+        <Text className="text-sm text-muted-foreground">
+          {t("planner:prep.leftoverFrom", {
+            day: dayLabel(meal.prep.cookDate),
+            slot: t(`planner:slots.${meal.prep.cookSlot}`),
+          })}
+        </Text>
+      )}
+      {meal.prep?.role !== "leftover" && (
+        <Button
+          variant="outline"
+          icon={ChefHat}
+          label={
+            meal.prep ? t("planner:prep.addDays") : t("planner:prep.button")
+          }
+          disabled={busy}
+          onPress={onPrep}
+        />
+      )}
+      {meal.prep && (
+        <Button
+          variant="outline"
+          icon={Unlink}
+          label={
+            meal.prep.role === "cook"
+              ? t("planner:prep.end")
+              : t("planner:prep.leave")
+          }
+          disabled={busy}
+          onPress={onEndPrep}
+        />
+      )}
       <View className="flex-row gap-3">
         <Button
           variant="outline"
@@ -269,7 +343,7 @@ function MealCard({
           label={
             swapping ? t("planner:slot.cancelSwap") : t("planner:slot.swap")
           }
-          disabled={busy}
+          disabled={busy || meal.prep?.role === "cook"}
           className="flex-1"
           onPress={onSwap}
         />

@@ -204,6 +204,44 @@ export function useRemoveMeal(planId: string) {
   })
 }
 
+/** Plans meal prep: cooks a recipe once and eats it in the chosen later slots. */
+export function usePlanMealPrep(planId: string) {
+  const client = useQueryClient()
+  const { demo } = useAppState()
+  return useMutation({
+    mutationFn: async (body: Schemas["MealPrepInput"]) =>
+      demo
+        ? demoOnly()
+        : call(
+            api.POST("/api/meal-plans/{planId}/meal-prep", {
+              params: { path: { planId } },
+              body,
+            })
+          ),
+    onSuccess: () => refresh(client),
+  })
+}
+
+/**
+ * Ends meal prep for a meal: for the cooking meal every leftover becomes an ordinary meal, for
+ * a leftover only that meal does. No meal is deleted.
+ */
+export function useEndMealPrep(planId: string) {
+  const client = useQueryClient()
+  const { demo } = useAppState()
+  return useMutation({
+    mutationFn: async ({ mealId }: { mealId: string }) =>
+      demo
+        ? demoOnly()
+        : call(
+            api.DELETE("/api/meal-plans/{planId}/meal-prep/{mealId}", {
+              params: { path: { planId, mealId } },
+            })
+          ),
+    onSuccess: () => refresh(client),
+  })
+}
+
 /** Fills the plan automatically (plain code on the server, no AI). */
 export function useGeneratePlan(planId: string) {
   const client = useQueryClient()

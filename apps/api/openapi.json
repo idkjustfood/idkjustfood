@@ -1300,6 +1300,67 @@
                     "cookMinutes",
                     "calories"
                   ]
+                },
+                "prep": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "cook"
+                          ]
+                        },
+                        "batchServings": {
+                          "type": "integer"
+                        },
+                        "leftovers": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "role",
+                        "batchServings",
+                        "leftovers"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "leftover"
+                          ]
+                        },
+                        "cookMealId": {
+                          "type": "string"
+                        },
+                        "cookDate": {
+                          "type": "string",
+                          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                        },
+                        "cookSlot": {
+                          "type": "string",
+                          "enum": [
+                            "breakfast",
+                            "midday",
+                            "afternoon"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "role",
+                        "cookMealId",
+                        "cookDate",
+                        "cookSlot"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 }
               },
               "required": [
@@ -1307,7 +1368,8 @@
                 "date",
                 "slot",
                 "servings",
-                "recipe"
+                "recipe",
+                "prep"
               ]
             }
           },
@@ -1397,6 +1459,71 @@
           }
         }
       },
+      "MealPrepInput": {
+        "type": "object",
+        "properties": {
+          "recipeId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "slot": {
+            "type": "string",
+            "enum": [
+              "breakfast",
+              "midday",
+              "afternoon"
+            ]
+          },
+          "servings": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "default": 1
+          },
+          "eat": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "slot": {
+                  "type": "string",
+                  "enum": [
+                    "breakfast",
+                    "midday",
+                    "afternoon"
+                  ]
+                },
+                "servings": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 1000,
+                  "default": 1
+                }
+              },
+              "required": [
+                "date",
+                "slot"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 30
+          }
+        },
+        "required": [
+          "recipeId",
+          "date",
+          "slot",
+          "eat"
+        ]
+      },
       "GeneratePlanResult": {
         "type": "object",
         "properties": {
@@ -1482,6 +1609,67 @@
                         "cookMinutes",
                         "calories"
                       ]
+                    },
+                    "prep": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "cook"
+                              ]
+                            },
+                            "batchServings": {
+                              "type": "integer"
+                            },
+                            "leftovers": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "role",
+                            "batchServings",
+                            "leftovers"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "role": {
+                              "type": "string",
+                              "enum": [
+                                "leftover"
+                              ]
+                            },
+                            "cookMealId": {
+                              "type": "string"
+                            },
+                            "cookDate": {
+                              "type": "string",
+                              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                            },
+                            "cookSlot": {
+                              "type": "string",
+                              "enum": [
+                                "breakfast",
+                                "midday",
+                                "afternoon"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "role",
+                            "cookMealId",
+                            "cookDate",
+                            "cookSlot"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     }
                   },
                   "required": [
@@ -1489,7 +1677,8 @@
                     "date",
                     "slot",
                     "servings",
-                    "recipe"
+                    "recipe",
+                    "prep"
                   ]
                 }
               },
@@ -5144,7 +5333,7 @@
             }
           },
           "409": {
-            "description": "That recipe is already in this slot",
+            "description": "That recipe is already in this slot, or it is the batch of a meal prep",
             "content": {
               "application/json": {
                 "schema": {
@@ -5215,6 +5404,172 @@
           },
           "404": {
             "description": "The plan or the meal doesn't exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meal-plans/{planId}/meal-prep": {
+      "post": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Plan meal prep: cook once, eat it in several slots",
+        "description": "Cook a recipe in one slot (`date`, `slot`) and eat it again in the slots of `eat`, which must come after the cooking meal. Every meal has its own servings: the cooking meal's plus all the leftovers' servings is what is cooked. A meal in the answer has `prep`: `cook` on the cooking meal (with the whole batch) and `leftover` on the others. When the plan is added to a shopping list, the batch is bought once, with the cooking meal. A recipe that is already in one of the slots is linked to the batch. Calling it again for the same cooking meal adds more days.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MealPrepInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The plan with the meal prep",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/components/schemas/MealPlan"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid meal prep",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan or the recipe doesn't exist, or you can't use it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A slot is a leftover of another batch, or already has leftovers of its own",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/meal-plans/{planId}/meal-prep/{mealId}": {
+      "delete": {
+        "tags": [
+          "Meal plans"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "End meal prep for a meal",
+        "description": "Send the id of the cooking meal to turn all its leftovers into ordinary meals, or the id of one leftover to take only that meal out of the batch. No meal is deleted, but each meal that stops being a leftover is then bought for on its own when the plan is added to a shopping list.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "planId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "mealId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The plan without that meal prep",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/components/schemas/MealPlan"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The plan or the meal doesn't exist, or it is not part of a meal prep",
             "content": {
               "application/json": {
                 "schema": {
@@ -5313,7 +5668,7 @@
           }
         ],
         "summary": "Add the plan's ingredients to a shopping list",
-        "description": "Nothing is added to a list unless you call this. Every meal's ingredients are scaled to its servings and merged into the list like a recipe is. Use `from` and `to` to take only some days.",
+        "description": "Nothing is added to a list unless you call this. Every meal's ingredients are scaled to its servings and merged into the list like a recipe is. A meal prep is bought once: the cooking meal adds the ingredients for the whole batch and its leftovers add nothing, so choose days that include the cooking day. Use `from` and `to` to take only some days.",
         "parameters": [
           {
             "schema": {

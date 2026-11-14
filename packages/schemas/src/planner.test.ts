@@ -29,6 +29,7 @@ const meal = (
     cookMinutes: null,
     calories,
   },
+  prep: null,
 })
 
 describe("dates", () => {
