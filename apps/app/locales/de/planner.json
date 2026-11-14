@@ -37,8 +37,9 @@
     "kcal": "≈ {{value}} kcal{{plus}}",
     "missing_one": "{{count}} Mahlzeit hat keine Kalorienschätzung.",
     "missing_other": "{{count}} Mahlzeiten haben keine Kalorienschätzung.",
-    "changeLabel_one": "{{slot}}, {{title}}, {{count}} Portion. Ändern",
-    "changeLabel_other": "{{slot}}, {{title}}, {{count}} Portionen. Ändern",
+    "changeLabel": "{{slot}}: {{titles}}. Ändern",
+    "mealLabel_one": "{{title}}, {{count}} Portion",
+    "mealLabel_other": "{{title}}, {{count}} Portionen",
     "addLabel": "{{slot}}, leer. Mahlzeit hinzufügen",
     "add": "Hinzufügen"
   },
@@ -104,8 +105,11 @@
   "slot": {
     "remove": "Entfernen",
     "save": "Portionen speichern",
-    "swap": "Gegen ein anderes Rezept tauschen",
+    "swap": "Tauschen",
+    "cancelSwap": "Tausch abbrechen",
+    "swapping": "Wähle ein Rezept als Ersatz für {{title}}",
     "pick": "Rezept wählen",
+    "addAnother": "Weiteres Rezept hinzufügen",
     "search": "Rezepte suchen",
     "loading": "Rezepte werden geladen",
     "loadError": "Rezepte konnten nicht geladen werden",
@@ -114,7 +118,8 @@
     "noMatch": "Kein Rezept passt.",
     "planLabel": "{{title}} einplanen",
     "kcalPerServing": "≈ {{value}} kcal pro Portion",
-    "error": "Etwas ist schiefgelaufen."
+    "error": "Etwas ist schiefgelaufen.",
+    "done": "Fertig"
   },
   "list": {
     "title": "Zutaten auf eine Einkaufsliste setzen",

@@ -48,6 +48,14 @@ export function plannerStore(db: Database) {
     return membership ? { row, householdRole: membership.role } : undefined
   }
 
+  function slotWhere(planId: string, date: string, slot: MealSlot) {
+    return and(
+      eq(mealPlanMeal.planId, planId),
+      eq(mealPlanMeal.date, date),
+      eq(mealPlanMeal.slot, slot)
+    )
+  }
+
   function inRange(planId: string, { from, to }: DateRange) {
     const where: (SQL | undefined)[] = [eq(mealPlanMeal.planId, planId)]
     if (from) where.push(gte(mealPlanMeal.date, from))
@@ -55,15 +63,23 @@ export function plannerStore(db: Database) {
     return and(...where)
   }
 
-  /** Meals of one plan, with their recipes, by day and then breakfast, midday, afternoon. */
+  /**
+   * Meals of one plan, with their recipes, by day, then breakfast, midday, afternoon, and
+   * within a slot in the order they were added.
+   */
   async function meals(planId: string, range: DateRange = {}) {
     const rows = await db
       .select({ meal: mealPlanMeal, recipe })
       .from(mealPlanMeal)
       .innerJoin(recipe, eq(recipe.id, mealPlanMeal.recipeId))
       .where(inRange(planId, range))
-      .orderBy(asc(mealPlanMeal.date))
-    // The slots are not in alphabetical order, so they are sorted here.
+      .orderBy(
+        asc(mealPlanMeal.date),
+        asc(mealPlanMeal.createdAt),
+        asc(mealPlanMeal.id)
+      )
+    // The slots are not in alphabetical order, so they are sorted here (a stable sort keeps
+    // the order in which meals were added within a slot).
     const order = (row: MealWithRecipe) =>
       mealSlots.indexOf(row.meal.slot as MealSlot)
     return (rows as MealWithRecipe[]).sort(
@@ -120,8 +136,11 @@ export function plannerStore(db: Database) {
       await db.delete(mealPlan).where(eq(mealPlan.id, planId))
     },
 
-    /** Puts a recipe in a slot. What was there is replaced. */
-    async setMeal(
+    /**
+     * Adds a recipe to a slot, next to what is already there. The same recipe is only in a
+     * slot once: adding it again changes its servings.
+     */
+    async addMeal(
       planId: string,
       date: string,
       slot: MealSlot,
@@ -132,43 +151,90 @@ export function plannerStore(db: Database) {
         .insert(mealPlanMeal)
         .values({ id: randomUUID(), planId, date, slot, recipeId, servings })
         .onConflictDoUpdate({
-          target: [mealPlanMeal.planId, mealPlanMeal.date, mealPlanMeal.slot],
-          set: { recipeId, servings, updatedAt: new Date() },
+          target: [
+            mealPlanMeal.planId,
+            mealPlanMeal.date,
+            mealPlanMeal.slot,
+            mealPlanMeal.recipeId,
+          ],
+          set: { servings, updatedAt: new Date() },
         })
       await touch(planId)
     },
 
-    async setServings(
+    /** Puts one recipe in a slot and takes out everything else that was there. */
+    async replaceSlot(
       planId: string,
       date: string,
       slot: MealSlot,
+      recipeId: string,
       servings: number
     ) {
-      const rows = await db
-        .update(mealPlanMeal)
-        .set({ servings })
+      await db.transaction(async (tx) => {
+        await tx.delete(mealPlanMeal).where(slotWhere(planId, date, slot))
+        await tx
+          .insert(mealPlanMeal)
+          .values({ id: randomUUID(), planId, date, slot, recipeId, servings })
+      })
+      await touch(planId)
+    },
+
+    /**
+     * Changes one meal: its servings, its recipe, or both. Answers `"missing"` when the
+     * plan has no such meal, and `"duplicate"` when the new recipe is already in that slot.
+     */
+    async updateMeal(
+      planId: string,
+      mealId: string,
+      change: { servings?: number; recipeId?: string }
+    ): Promise<"ok" | "missing" | "duplicate"> {
+      const [current] = await db
+        .select()
+        .from(mealPlanMeal)
         .where(
-          and(
-            eq(mealPlanMeal.planId, planId),
-            eq(mealPlanMeal.date, date),
-            eq(mealPlanMeal.slot, slot)
+          and(eq(mealPlanMeal.planId, planId), eq(mealPlanMeal.id, mealId))
+        )
+      if (!current) return "missing"
+      if (change.recipeId && change.recipeId !== current.recipeId) {
+        const [twin] = await db
+          .select({ id: mealPlanMeal.id })
+          .from(mealPlanMeal)
+          .where(
+            and(
+              slotWhere(planId, current.date, current.slot as MealSlot),
+              eq(mealPlanMeal.recipeId, change.recipeId)
+            )
           )
+        if (twin) return "duplicate"
+      }
+      await db
+        .update(mealPlanMeal)
+        .set({
+          ...(change.servings !== undefined && { servings: change.servings }),
+          ...(change.recipeId && { recipeId: change.recipeId }),
+        })
+        .where(eq(mealPlanMeal.id, mealId))
+      await touch(planId)
+      return "ok"
+    },
+
+    /** Takes one meal out of the plan. */
+    async removeMealById(planId: string, mealId: string) {
+      const rows = await db
+        .delete(mealPlanMeal)
+        .where(
+          and(eq(mealPlanMeal.planId, planId), eq(mealPlanMeal.id, mealId))
         )
         .returning({ id: mealPlanMeal.id })
       if (rows.length > 0) await touch(planId)
       return rows.length > 0
     },
 
-    async removeMeal(planId: string, date: string, slot: MealSlot) {
+    /** Empties a slot: every meal in it goes. */
+    async removeSlot(planId: string, date: string, slot: MealSlot) {
       const rows = await db
         .delete(mealPlanMeal)
-        .where(
-          and(
-            eq(mealPlanMeal.planId, planId),
-            eq(mealPlanMeal.date, date),
-            eq(mealPlanMeal.slot, slot)
-          )
-        )
+        .where(slotWhere(planId, date, slot))
         .returning({ id: mealPlanMeal.id })
       if (rows.length > 0) await touch(planId)
       return rows.length > 0
@@ -190,15 +256,7 @@ export function plannerStore(db: Database) {
     ) {
       await db.transaction(async (tx) => {
         for (const { date, slot } of clear) {
-          await tx
-            .delete(mealPlanMeal)
-            .where(
-              and(
-                eq(mealPlanMeal.planId, planId),
-                eq(mealPlanMeal.date, date),
-                eq(mealPlanMeal.slot, slot)
-              )
-            )
+          await tx.delete(mealPlanMeal).where(slotWhere(planId, date, slot))
         }
         for (const meal of planned) {
           await tx
@@ -209,8 +267,9 @@ export function plannerStore(db: Database) {
                 mealPlanMeal.planId,
                 mealPlanMeal.date,
                 mealPlanMeal.slot,
+                mealPlanMeal.recipeId,
               ],
-              set: { recipeId: meal.recipeId, servings: meal.servings },
+              set: { servings: meal.servings },
             })
         }
         await tx

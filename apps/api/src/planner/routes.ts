@@ -11,11 +11,11 @@ import {
   MealPlanInputSchema,
   MealPlanRenameSchema,
   MealPlanSchema,
-  MealServingsSchema,
   MealSlotSchema,
   mealSlots,
   PlanToListSchema,
   SetMealSchema,
+  UpdateMealSchema,
   type Meal,
   type MealPlan,
   type PlannableRecipe,
@@ -40,7 +40,7 @@ const PlanBody = MealPlanSchema.openapi("MealPlan")
 const PlanInputBody = MealPlanInputSchema.openapi("MealPlanInput")
 const RenameBody = MealPlanRenameSchema.openapi("MealPlanRename")
 const SetMealBody = SetMealSchema.openapi("SetMeal")
-const ServingsBody = MealServingsSchema.openapi("MealServings")
+const UpdateMealBody = UpdateMealSchema.openapi("UpdateMeal")
 const GenerateBody = GeneratePlanSchema.openapi("GeneratePlan")
 const GenerateResultBody = GenerateResultSchema.openapi("GeneratePlanResult")
 const PlanToListBody = PlanToListSchema.openapi("PlanToList")
@@ -50,6 +50,9 @@ const AddedToListBody = z
 
 const PlanParams = z.object({
   planId: z.string().openapi({ param: { name: "planId", in: "path" } }),
+})
+const MealParams = PlanParams.extend({
+  mealId: z.string().openapi({ param: { name: "mealId", in: "path" } }),
 })
 const SlotParams = PlanParams.extend({
   date: DateSchema.openapi({ param: { name: "date", in: "path" } }),
@@ -127,6 +130,7 @@ const getPlan = createRoute({
   summary: "Get a meal plan with its meals",
   description:
     "Every meal is a recipe in one of three slots of a day: `breakfast`, `midday` or `afternoon`. " +
+    "A slot can hold several meals. " +
     "Use `from` and `to` to get only some days. Calories are an estimate per serving.",
   request: { params: PlanParams, query: RangeQuery },
   responses: {
@@ -171,15 +175,35 @@ const deletePlan = createRoute({
   },
 })
 
+const addMeal = createRoute({
+  method: "post",
+  path: "/meal-plans/{planId}/meals/{date}/{slot}",
+  tags,
+  security,
+  summary: "Add a recipe to a slot",
+  description:
+    "A slot can hold several recipes, for example a bread and a smoothie for breakfast. The recipe is " +
+    "added next to what is already there. Adding a recipe that is already in the slot changes its " +
+    "servings instead of adding it twice. A household plan can only use the household's recipes, " +
+    "so that every member can open them. A personal plan can use your own recipes and your households'.",
+  request: { params: SlotParams, body: body(SetMealBody) },
+  responses: {
+    200: json(z.object({ plan: PlanBody }), "The plan with the meal added"),
+    400: error("Invalid meal"),
+    404: error("The plan or the recipe doesn't exist, or you can't use it"),
+    ...signedIn,
+  },
+})
+
 const setMeal = createRoute({
   method: "put",
   path: "/meal-plans/{planId}/meals/{date}/{slot}",
   tags,
   security,
-  summary: "Put a recipe in a slot",
+  summary: "Put one recipe in a slot",
   description:
-    "Plans or swaps the meal of one slot. A household plan can only use the household's recipes, " +
-    "so that every member can open them. A personal plan can use your own recipes and your households'.",
+    "Makes the recipe the only meal of the slot: everything else in that slot is taken out. " +
+    "To keep what is there, add a recipe with POST instead.",
   request: { params: SlotParams, body: body(SetMealBody) },
   responses: {
     200: json(z.object({ plan: PlanBody }), "The plan with the meal set"),
@@ -189,31 +213,54 @@ const setMeal = createRoute({
   },
 })
 
-const setServings = createRoute({
-  method: "patch",
+const removeSlot = createRoute({
+  method: "delete",
   path: "/meal-plans/{planId}/meals/{date}/{slot}",
   tags,
   security,
-  summary: "Change the servings of a meal",
-  request: { params: SlotParams, body: body(ServingsBody) },
+  summary: "Empty a slot",
+  description:
+    "Takes out every meal of the slot. To remove one meal, use its id.",
+  request: { params: SlotParams },
   responses: {
-    200: json(z.object({ plan: PlanBody }), "The plan with the new servings"),
-    400: error("Invalid servings"),
+    200: json(z.object({ plan: PlanBody }), "The plan without the meals"),
     404: error("The plan doesn't exist, or nothing is planned in that slot"),
+    ...signedIn,
+  },
+})
+
+const updateMeal = createRoute({
+  method: "patch",
+  path: "/meal-plans/{planId}/meals/{mealId}",
+  tags,
+  security,
+  summary: "Change one meal",
+  description:
+    "Change the servings, swap the recipe, or both. The meal stays in its slot and keeps its place. " +
+    "A recipe that is already in that slot can't be used twice.",
+  request: { params: MealParams, body: body(UpdateMealBody) },
+  responses: {
+    200: json(z.object({ plan: PlanBody }), "The plan with the changed meal"),
+    400: error("Invalid change"),
+    404: error(
+      "The plan, the meal or the recipe doesn't exist, or you can't use it"
+    ),
+    409: error("That recipe is already in this slot"),
     ...signedIn,
   },
 })
 
 const removeMeal = createRoute({
   method: "delete",
-  path: "/meal-plans/{planId}/meals/{date}/{slot}",
+  path: "/meal-plans/{planId}/meals/{mealId}",
   tags,
   security,
-  summary: "Empty a slot",
-  request: { params: SlotParams },
+  summary: "Remove one meal",
+  description: "Other meals in the same slot stay.",
+  request: { params: MealParams },
   responses: {
     200: json(z.object({ plan: PlanBody }), "The plan without the meal"),
-    404: error("The plan doesn't exist, or nothing is planned in that slot"),
+    404: error("The plan or the meal doesn't exist"),
     ...signedIn,
   },
 })
@@ -266,6 +313,7 @@ type Env = { Variables: AuthVariables }
 
 export function toMeal({ meal, recipe }: MealWithRecipe): Meal {
   return {
+    id: meal.id,
     date: meal.date,
     slot: meal.slot as Meal["slot"],
     servings: meal.servings,
@@ -396,38 +444,75 @@ export function plannerRoutes(db: Database, auth: Auth) {
     return c.body(null, 204)
   })
 
-  app.openapi(setMeal, async (c) => {
-    const user = c.get("user")
-    const { planId, date, slot } = c.req.valid("param")
-    const found = await store.access(planId, user.id)
-    if (!found) return notFound(c)
-    const { recipeId, servings } = c.req.valid("json")
-    if (!(await usable(found.row, recipeId, user.id))) {
-      return c.json({ error: "Recipe not found" }, 404)
-    }
-    await store.setMeal(found.row.id, date, slot, recipeId, servings)
-    return c.json({ plan: await whole(found.row) }, 200)
-  })
+  /** The recipe for a slot, if the plan may use it. */
+  async function recipeForSlot(
+    c: Context<Env>,
+    plan: MealPlanRow,
+    recipeId: string
+  ) {
+    return usable(plan, recipeId, c.get("user").id)
+  }
 
-  app.openapi(setServings, async (c) => {
+  app.openapi(addMeal, async (c) => {
     const { planId, date, slot } = c.req.valid("param")
     const found = await store.access(planId, c.get("user").id)
     if (!found) return notFound(c)
-    const changed = await store.setServings(
-      found.row.id,
-      date,
-      slot,
-      c.req.valid("json").servings
-    )
-    if (!changed) return c.json({ error: "Nothing is planned there" }, 404)
+    const { recipeId, servings } = c.req.valid("json")
+    if (!(await recipeForSlot(c, found.row, recipeId))) {
+      return c.json({ error: "Recipe not found" }, 404)
+    }
+    await store.addMeal(found.row.id, date, slot, recipeId, servings)
+    return c.json({ plan: await whole(found.row) }, 200)
+  })
+
+  app.openapi(setMeal, async (c) => {
+    const { planId, date, slot } = c.req.valid("param")
+    const found = await store.access(planId, c.get("user").id)
+    if (!found) return notFound(c)
+    const { recipeId, servings } = c.req.valid("json")
+    if (!(await recipeForSlot(c, found.row, recipeId))) {
+      return c.json({ error: "Recipe not found" }, 404)
+    }
+    await store.replaceSlot(found.row.id, date, slot, recipeId, servings)
+    return c.json({ plan: await whole(found.row) }, 200)
+  })
+
+  app.openapi(removeSlot, async (c) => {
+    const { planId, date, slot } = c.req.valid("param")
+    const found = await store.access(planId, c.get("user").id)
+    if (!found) return notFound(c)
+    if (!(await store.removeSlot(found.row.id, date, slot))) {
+      return c.json({ error: "Nothing is planned there" }, 404)
+    }
+    return c.json({ plan: await whole(found.row) }, 200)
+  })
+
+  app.openapi(updateMeal, async (c) => {
+    const { planId, mealId } = c.req.valid("param")
+    const found = await store.access(planId, c.get("user").id)
+    if (!found) return notFound(c)
+    const change = c.req.valid("json")
+    if (
+      change.recipeId &&
+      !(await recipeForSlot(c, found.row, change.recipeId))
+    ) {
+      return c.json({ error: "Recipe not found" }, 404)
+    }
+    const result = await store.updateMeal(found.row.id, mealId, change)
+    if (result === "missing") {
+      return c.json({ error: "Nothing is planned there" }, 404)
+    }
+    if (result === "duplicate") {
+      return c.json({ error: "That recipe is already in this slot" }, 409)
+    }
     return c.json({ plan: await whole(found.row) }, 200)
   })
 
   app.openapi(removeMeal, async (c) => {
-    const { planId, date, slot } = c.req.valid("param")
+    const { planId, mealId } = c.req.valid("param")
     const found = await store.access(planId, c.get("user").id)
     if (!found) return notFound(c)
-    if (!(await store.removeMeal(found.row.id, date, slot))) {
+    if (!(await store.removeMealById(found.row.id, mealId))) {
       return c.json({ error: "Nothing is planned there" }, 404)
     }
     return c.json({ plan: await whole(found.row) }, 200)

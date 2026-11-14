@@ -37,8 +37,9 @@
     "kcal": "≈ {{value}} kcal{{plus}}",
     "missing_one": "{{count}} repas n'a pas d'estimation de calories.",
     "missing_other": "{{count}} repas n'ont pas d'estimation de calories.",
-    "changeLabel_one": "{{slot}}, {{title}}, {{count}} portion. Modifier",
-    "changeLabel_other": "{{slot}}, {{title}}, {{count}} portions. Modifier",
+    "changeLabel": "{{slot}} : {{titles}}. Modifier",
+    "mealLabel_one": "{{title}}, {{count}} portion",
+    "mealLabel_other": "{{title}}, {{count}} portions",
     "addLabel": "{{slot}}, vide. Ajouter un repas",
     "add": "Ajouter"
   },
@@ -104,8 +105,11 @@
   "slot": {
     "remove": "Retirer",
     "save": "Enregistrer les portions",
-    "swap": "Remplacer par une autre recette",
+    "swap": "Remplacer",
+    "cancelSwap": "Annuler le remplacement",
+    "swapping": "Choisissez une recette pour remplacer {{title}}",
     "pick": "Choisir une recette",
+    "addAnother": "Ajouter une autre recette",
     "search": "Rechercher des recettes",
     "loading": "Chargement des recettes",
     "loadError": "Impossible de charger les recettes",
@@ -114,7 +118,8 @@
     "noMatch": "Aucune recette ne correspond.",
     "planLabel": "Planifier {{title}}",
     "kcalPerServing": "≈ {{value}} kcal par portion",
-    "error": "Une erreur s'est produite."
+    "error": "Une erreur s'est produite.",
+    "done": "Terminé"
   },
   "list": {
     "title": "Ajouter les ingrédients à une liste de courses",

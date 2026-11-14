@@ -135,8 +135,11 @@ export function useDeletePlan(planId: string) {
 
 type SlotKey = { date: string; slot: MealSlot }
 
-/** Puts a recipe in a slot (also to swap the recipe) with the servings to cook. */
-export function useSetMeal(planId: string) {
+/**
+ * Adds a recipe to a slot, next to the recipes that are already there, with the servings to
+ * cook. A recipe that is in the slot already only gets the new servings.
+ */
+export function useAddMeal(planId: string) {
   const client = useQueryClient()
   const { demo } = useAppState()
   return useMutation({
@@ -149,7 +152,7 @@ export function useSetMeal(planId: string) {
       demo
         ? demoOnly()
         : call(
-            api.PUT("/api/meal-plans/{planId}/meals/{date}/{slot}", {
+            api.POST("/api/meal-plans/{planId}/meals/{date}/{slot}", {
               params: { path: { planId, date, slot } },
               body: { recipeId, servings },
             })
@@ -158,37 +161,43 @@ export function useSetMeal(planId: string) {
   })
 }
 
-export function useSetServings(planId: string) {
+/** Changes one meal: its servings, its recipe (a swap that keeps its place), or both. */
+export function useUpdateMeal(planId: string) {
   const client = useQueryClient()
   const { demo } = useAppState()
   return useMutation({
     mutationFn: async ({
-      date,
-      slot,
+      mealId,
       servings,
-    }: SlotKey & { servings: number }) =>
+      recipeId,
+    }: {
+      mealId: string
+      servings?: number
+      recipeId?: string
+    }) =>
       demo
         ? demoOnly()
         : call(
-            api.PATCH("/api/meal-plans/{planId}/meals/{date}/{slot}", {
-              params: { path: { planId, date, slot } },
-              body: { servings },
+            api.PATCH("/api/meal-plans/{planId}/meals/{mealId}", {
+              params: { path: { planId, mealId } },
+              body: { servings, recipeId },
             })
           ),
     onSuccess: () => refresh(client),
   })
 }
 
+/** Removes one meal. The other recipes in its slot stay. */
 export function useRemoveMeal(planId: string) {
   const client = useQueryClient()
   const { demo } = useAppState()
   return useMutation({
-    mutationFn: async ({ date, slot }: SlotKey) =>
+    mutationFn: async ({ mealId }: { mealId: string }) =>
       demo
         ? demoOnly()
         : call(
-            api.DELETE("/api/meal-plans/{planId}/meals/{date}/{slot}", {
-              params: { path: { planId, date, slot } },
+            api.DELETE("/api/meal-plans/{planId}/meals/{mealId}", {
+              params: { path: { planId, mealId } },
             })
           ),
     onSuccess: () => refresh(client),

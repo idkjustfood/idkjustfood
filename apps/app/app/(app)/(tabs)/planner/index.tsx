@@ -72,7 +72,7 @@ export default function Planner() {
   const week = useWeek(plan?.id, start)
   const view = buildWeek(week.data?.meals ?? [], start)
   const mealsInWeek = view.days.reduce(
-    (sum, day) => sum + mealSlots.filter((s) => day.slots[s]).length,
+    (sum, day) => sum + mealSlots.reduce((n, s) => n + day.slots[s].length, 0),
     0
   )
   const today = todayString()
@@ -216,10 +216,10 @@ export default function Planner() {
           householdId={plan.householdId}
           date={editing.date}
           slot={editing.slot}
-          meal={
+          meals={
             view.days.find((d) => d.date === editing.date)?.slots[
               editing.slot
-            ] ?? null
+            ] ?? []
           }
           onClose={() => setEditing(null)}
         />
@@ -306,7 +306,7 @@ function WeekBar({
   )
 }
 
-/** One day: three slots, each tappable. */
+/** One day: three slots, each tappable. A slot lists all the recipes planned in it. */
 function DayCard({
   date,
   slots,
@@ -314,12 +314,12 @@ function DayCard({
   onEdit,
 }: {
   date: string
-  slots: Record<MealSlot, Meal | null>
+  slots: Record<MealSlot, Meal[]>
   isToday: boolean
   onEdit: (slot: MealSlot) => void
 }) {
   const { t } = useTranslation()
-  const total = dayCalories(mealSlots.map((slot) => slots[slot]))
+  const total = dayCalories(mealSlots.flatMap((slot) => slots[slot]))
   return (
     <View
       className={cn(
@@ -351,18 +351,24 @@ function DayCard({
       )}
       <View className="pt-1">
         {mealSlots.map((slot) => {
-          const meal = slots[slot]
+          const meals = slots[slot]
           const slotName = t(`planner:slots.${slot}`)
           return (
             <Pressable
               key={slot}
               role="button"
               accessibilityLabel={
-                meal
+                meals.length > 0
                   ? t("planner:day.changeLabel", {
                       slot: slotName,
-                      title: meal.recipe.title,
-                      count: meal.servings,
+                      titles: meals
+                        .map((meal) =>
+                          t("planner:day.mealLabel", {
+                            title: meal.recipe.title,
+                            count: meal.servings,
+                          })
+                        )
+                        .join("; "),
                     })
                   : t("planner:day.addLabel", { slot: slotName })
               }
@@ -372,18 +378,22 @@ function DayCard({
               <Text className="w-24 text-sm text-muted-foreground">
                 {slotName}
               </Text>
-              {meal ? (
-                <>
-                  <Text
-                    numberOfLines={2}
-                    className="flex-1 text-base text-foreground"
-                  >
-                    {meal.recipe.title}
-                  </Text>
-                  <Text className="text-sm text-muted-foreground">
-                    ×{meal.servings}
-                  </Text>
-                </>
+              {meals.length > 0 ? (
+                <View className="flex-1 gap-1">
+                  {meals.map((meal) => (
+                    <View key={meal.id} className="flex-row items-center gap-3">
+                      <Text
+                        numberOfLines={2}
+                        className="flex-1 text-base text-foreground"
+                      >
+                        {meal.recipe.title}
+                      </Text>
+                      <Text className="text-sm text-muted-foreground">
+                        ×{meal.servings}
+                      </Text>
+                    </View>
+                  ))}
+                </View>
               ) : (
                 <View className="flex-1 flex-row items-center gap-1">
                   <Icon as={Plus} size={16} className="text-muted-foreground" />

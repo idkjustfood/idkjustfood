@@ -1951,7 +1951,7 @@ export interface paths {
         };
         /**
          * Get a meal plan with its meals
-         * @description Every meal is a recipe in one of three slots of a day: `breakfast`, `midday` or `afternoon`. Use `from` and `to` to get only some days. Calories are an estimate per serving.
+         * @description Every meal is a recipe in one of three slots of a day: `breakfast`, `midday` or `afternoon`. A slot can hold several meals. Use `from` and `to` to get only some days. Calories are an estimate per serving.
          */
         get: {
             parameters: {
@@ -2125,8 +2125,8 @@ export interface paths {
         };
         get?: never;
         /**
-         * Put a recipe in a slot
-         * @description Plans or swaps the meal of one slot. A household plan can only use the household's recipes, so that every member can open them. A personal plan can use your own recipes and your households'.
+         * Put one recipe in a slot
+         * @description Makes the recipe the only meal of the slot: everything else in that slot is taken out. To keep what is there, add a recipe with POST instead.
          */
         put: {
             parameters: {
@@ -2185,8 +2185,71 @@ export interface paths {
                 };
             };
         };
-        post?: never;
-        /** Empty a slot */
+        /**
+         * Add a recipe to a slot
+         * @description A slot can hold several recipes, for example a bread and a smoothie for breakfast. The recipe is added next to what is already there. Adding a recipe that is already in the slot changes its servings instead of adding it twice. A household plan can only use the household's recipes, so that every member can open them. A personal plan can use your own recipes and your households'.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    planId: string;
+                    date: string;
+                    slot: "breakfast" | "midday" | "afternoon";
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["SetMeal"];
+                };
+            };
+            responses: {
+                /** @description The plan with the meal added */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            plan: components["schemas"]["MealPlan"];
+                        };
+                    };
+                };
+                /** @description Invalid meal */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan or the recipe doesn't exist, or you can't use it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        /**
+         * Empty a slot
+         * @description Takes out every meal of the slot. To remove one meal, use its id.
+         */
         delete: {
             parameters: {
                 query?: never;
@@ -2200,7 +2263,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description The plan without the meal */
+                /** @description The plan without the meals */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -2233,25 +2296,36 @@ export interface paths {
         };
         options?: never;
         head?: never;
-        /** Change the servings of a meal */
-        patch: {
+        patch?: never;
+        trace?: never;
+    };
+    "/api/meal-plans/{planId}/meals/{mealId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Remove one meal
+         * @description Other meals in the same slot stay.
+         */
+        delete: {
             parameters: {
                 query?: never;
                 header?: never;
                 path: {
                     planId: string;
-                    date: string;
-                    slot: "breakfast" | "midday" | "afternoon";
+                    mealId: string;
                 };
                 cookie?: never;
             };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["MealServings"];
-                };
-            };
+            requestBody?: never;
             responses: {
-                /** @description The plan with the new servings */
+                /** @description The plan without the meal */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -2262,7 +2336,60 @@ export interface paths {
                         };
                     };
                 };
-                /** @description Invalid servings */
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The plan or the meal doesn't exist */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /**
+         * Change one meal
+         * @description Change the servings, swap the recipe, or both. The meal stays in its slot and keeps its place. A recipe that is already in that slot can't be used twice.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    planId: string;
+                    mealId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateMeal"];
+                };
+            };
+            responses: {
+                /** @description The plan with the changed meal */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            plan: components["schemas"]["MealPlan"];
+                        };
+                    };
+                };
+                /** @description Invalid change */
                 400: {
                     headers: {
                         [name: string]: unknown;
@@ -2280,8 +2407,17 @@ export interface paths {
                         "application/json": components["schemas"]["Error"];
                     };
                 };
-                /** @description The plan doesn't exist, or nothing is planned in that slot */
+                /** @description The plan, the meal or the recipe doesn't exist, or you can't use it */
                 404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description That recipe is already in this slot */
+                409: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -3036,6 +3172,7 @@ export interface components {
             householdId: string | null;
             userId: string;
             meals: {
+                id: string;
                 date: string;
                 /** @enum {string} */
                 slot: "breakfast" | "midday" | "afternoon";
@@ -3065,8 +3202,9 @@ export interface components {
             /** @default 2 */
             servings: number;
         };
-        MealServings: {
-            servings: number;
+        UpdateMeal: {
+            servings?: number;
+            recipeId?: string;
         };
         GeneratePlanResult: {
             plan: {
@@ -3075,6 +3213,7 @@ export interface components {
                 householdId: string | null;
                 userId: string;
                 meals: {
+                    id: string;
                     date: string;
                     /** @enum {string} */
                     slot: "breakfast" | "midday" | "afternoon";
