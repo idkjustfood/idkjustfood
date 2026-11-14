@@ -94,7 +94,11 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
   const [exportOpen, setExportOpen] = useState(false)
   const [exportNote, setExportNote] = useState<string | null>(null)
   const [listOpen, setListOpen] = useState(false)
-  const [added, setAdded] = useState<{ id: string; name: string } | null>(null)
+  const [added, setAdded] = useState<{
+    id: string
+    name: string
+    skipped: string[]
+  } | null>(null)
   const [adding, setAdding] = useState<string | null>(null)
   const [listError, setListError] = useState<string | null>(null)
   const { lists } = useShoppingState()
@@ -106,8 +110,8 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
     setAdding(listId)
     setListError(null)
     try {
-      await addRecipe(listId, recipe.id, servings)
-      setAdded({ id: listId, name })
+      const { skipped } = await addRecipe(listId, recipe.id, servings)
+      setAdded({ id: listId, name, skipped })
     } catch (error) {
       setListError(
         error instanceof Error
@@ -337,6 +341,13 @@ function RecipeView({ recipe }: { recipe: Recipe }) {
                 list: added.name,
               })}
             </Text>
+            {added.skipped.length > 0 && (
+              <Text role="status" className="text-muted-foreground">
+                {t("recipes:addToList.skipped", {
+                  items: added.skipped.join(", "),
+                })}
+              </Text>
+            )}
             <Button
               label={t("recipes:addToList.open")}
               onPress={() => {

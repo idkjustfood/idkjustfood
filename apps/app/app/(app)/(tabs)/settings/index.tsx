@@ -12,6 +12,7 @@ import {
   Home,
   Languages,
   LogOut,
+  Package,
   Server,
   Sparkles,
   Upload,
@@ -91,6 +92,12 @@ export default function Settings() {
               : t("settings:household.detailNone")
           }
           onPress={() => router.push("/settings/household")}
+        />
+        <ListRow
+          icon={Package}
+          title={t("settings:pantry.title")}
+          detail={t("settings:pantry.rowDetail")}
+          onPress={() => router.push("/settings/pantry")}
         />
       </ListGroup>
 

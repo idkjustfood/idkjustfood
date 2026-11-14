@@ -55,7 +55,7 @@ function setup(initialDevice?: string) {
         Object.assign(item, op.change)
       }
     },
-    addRecipe: async () => weekly,
+    addRecipe: async () => ({ list: weekly, skipped: [] }),
     storage: {
       read: async () => device,
       write: async (value) => {
@@ -170,6 +170,18 @@ describe("ShoppingStore", () => {
     expect(store.getState()).toMatchObject({ online: true, pending: 0 })
   })
 
+  test("adding a recipe returns the ingredients that were left out", async () => {
+    const store = new ShoppingStore({
+      fetchLists: async () => [weekly],
+      send: async () => {},
+      addRecipe: async () => ({ list: weekly, skipped: ["Salt", "Olive oil"] }),
+    })
+    await store.start()
+    const result = await store.addRecipe("w", "r")
+    expect(result.skipped).toEqual(["Salt", "Olive oil"])
+    expect(result.list.id).toBe("w")
+  })
+
   test("adding a recipe needs a connection", async () => {
     const { store, server } = setup()
     await store.start()
@@ -186,7 +198,7 @@ describe("ShoppingStore", () => {
         throw new HttpError(500)
       },
       send: async () => {},
-      addRecipe: async () => weekly,
+      addRecipe: async () => ({ list: weekly, skipped: [] }),
       initial: undefined,
     })
     await broken.start()

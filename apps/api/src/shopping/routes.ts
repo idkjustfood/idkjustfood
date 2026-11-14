@@ -5,6 +5,7 @@ import type { Database } from "@workspace/database"
 import {
   addIngredients,
   AddRecipeToListSchema,
+  splitStaples,
   ShoppingItemInputSchema,
   ShoppingItemSchema,
   ShoppingItemUpdateSchema,
@@ -17,6 +18,7 @@ import {
 
 import type { Auth } from "../auth.js"
 import { householdStore, hasRole } from "../households/store.js"
+import { pantryStore } from "../pantry/store.js"
 import { recipeStore } from "../recipes/store.js"
 import { requireSession, type AuthVariables } from "../session.js"
 import {
@@ -228,11 +230,19 @@ const addRecipe = createRoute({
     "Scales the amounts to `servings` (the recipe's own servings by default) and merges identical " +
     "ingredients: the same name with the same unit adds up (200 g + 100 g flour is 300 g). " +
     "Different units stay on separate lines, and an ingredient without an amount is added " +
-    "without one. You need to be able to see the recipe.",
+    "without one. Ingredients on the pantry list of the list's space (your own, or the household's) " +
+    "are left out and returned in `skipped`. You need to be able to see the recipe.",
   request: { params: ListParams, body: body(AddRecipeBody) },
   responses: {
     200: json(
-      z.object({ list: ListBody }),
+      z.object({
+        list: ListBody,
+        skipped: z.array(z.string()).openapi({
+          description:
+            "Names of the ingredients that were left out because they are on the pantry list",
+          example: ["Salt"],
+        }),
+      }),
       "The list with the ingredients added"
     ),
     400: error("Invalid request"),
@@ -279,6 +289,7 @@ export function shoppingRoutes(db: Database, auth: Auth) {
   const store = shoppingStore(db)
   const recipes = recipeStore(db)
   const households = householdStore(db)
+  const pantry = pantryStore(db)
 
   const app = new OpenAPIHono<Env>({
     defaultHook: (result, c) => {
@@ -411,15 +422,32 @@ export function shoppingRoutes(db: Database, auth: Auth) {
     const user = c.get("user")
     const found = await store.access(c.req.valid("param").listId, user.id)
     if (!found) return notFound(c)
-    const { recipeId, servings } = c.req.valid("json")
+    const { recipeId, servings, language } = c.req.valid("json")
     const recipe = await recipes.access(recipeId, user.id)
     if (!recipe) return c.json({ error: "Recipe not found" }, 404)
 
     const factor = servings ? servings / recipe.row.servings : 1
-    await store.saveMerged(found.row.id, (current) =>
-      addIngredients(current, recipe.row.ingredients, recipe.row.title, factor)
+    // Ingredients the space always has at home are not added.
+    const space = await pantry.access(
+      user.id,
+      found.row.organizationId,
+      language
     )
-    return c.json({ list: await whole(found.row.id, found.row) }, 200)
+    const staples = space ? await pantry.items(space.id) : []
+    const { needed, skipped } = splitStaples(
+      recipe.row.ingredients,
+      staples.map((item) => item.name)
+    )
+    await store.saveMerged(found.row.id, (current) =>
+      addIngredients(current, needed, recipe.row.title, factor)
+    )
+    return c.json(
+      {
+        list: await whole(found.row.id, found.row),
+        skipped: skipped.map((ingredient) => ingredient.name),
+      },
+      200
+    )
   })
 
   return app

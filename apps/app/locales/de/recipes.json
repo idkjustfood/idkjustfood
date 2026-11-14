@@ -70,7 +70,8 @@
     "listDetail_other": "{{kind}} · {{count}} Einträge",
     "adding": "Wird hinzugefügt…",
     "newList": "Neue Liste",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "skipped": "Nicht hinzugefügt, weil du sie immer zu Hause hast: {{items}}."
   },
   "edit": {
     "title": "Rezept bearbeiten",

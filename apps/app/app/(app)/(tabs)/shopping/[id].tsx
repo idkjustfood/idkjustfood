@@ -140,7 +140,12 @@ function ListView({ list }: { list: ShoppingList }) {
             maxLength={200}
             className="h-12 min-w-0 flex-1 rounded-md border border-input bg-background px-3 text-base text-foreground"
           />
-          <Button size="icon" icon={Plus} label={t("shopping:list.addItemButton")} onPress={addItem} />
+          <Button
+            size="icon"
+            icon={Plus}
+            label={t("shopping:list.addItemButton")}
+            onPress={addItem}
+          />
         </View>
         <View className="flex-row gap-2">
           <TextInput
@@ -254,13 +259,22 @@ function RecipeSheet({
   const recipes = useAllRecipes()
   const [busy, setBusy] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
+  // Ingredients left out because they are pantry staples. Shown until the person closes the sheet.
+  const [skipped, setSkipped] = useState<string[] | null>(null)
+
+  function close() {
+    setSkipped(null)
+    setMessage(null)
+    onClose()
+  }
 
   async function add(recipeId: string, title: string) {
     setBusy(recipeId)
     setMessage(null)
     try {
-      await actions.addRecipe(list.id, recipeId)
-      onClose()
+      const result = await actions.addRecipe(list.id, recipeId)
+      if (result.skipped.length > 0) setSkipped(result.skipped)
+      else close()
     } catch (error) {
       setMessage(
         error instanceof OfflineError
@@ -275,59 +289,80 @@ function RecipeSheet({
   }
 
   return (
-    <Sheet open={open} onClose={onClose} title={t("shopping:recipe.title")}>
-      <Text className="text-muted-foreground">
-        {t("shopping:recipe.hint")}
-      </Text>
-      {recipes.isPending && <LoadingState label={t("shopping:recipe.loading")} rows={1} />}
-      {recipes.isError && (
-        <ErrorState
-          title={t("shopping:recipe.loadError.title")}
-          message={t("shopping:recipe.loadError.message")}
-          onRetry={() => void recipes.refetch()}
-        />
-      )}
-      {recipes.data && recipes.data.length === 0 && (
-        <Text className="text-foreground">{t("shopping:recipe.none")}</Text>
-      )}
-      <View className="gap-2">
-        {(recipes.data ?? []).map((recipe) => (
-          <Pressable
-            key={recipe.id}
-            role="button"
-            disabled={busy !== null}
-            accessibilityLabel={t("shopping:recipe.add", { title: recipe.title })}
-            onPress={() => void add(recipe.id, recipe.title)}
-            className={cn(
-              "h-14 flex-row items-center gap-3 overflow-hidden rounded-md border border-border active:bg-accent web:hover:bg-accent",
-              busy !== null && busy !== recipe.id && "opacity-50"
-            )}
-          >
-            <RecipeCover recipe={recipe} className="h-full w-14" />
-            <Text
-              numberOfLines={1}
-              className="flex-1 text-base text-foreground"
-            >
-              {recipe.title}
+    <Sheet
+      open={open}
+      onClose={close}
+      title={
+        skipped ? t("shopping:recipe.addedTitle") : t("shopping:recipe.title")
+      }
+    >
+      {skipped ? (
+        <>
+          <Text role="status" className="text-foreground">
+            {t("shopping:recipe.skipped", { items: skipped.join(", ") })}
+          </Text>
+          <Button label={t("shopping:recipe.done")} onPress={close} />
+        </>
+      ) : (
+        <>
+          <Text className="text-muted-foreground">
+            {t("shopping:recipe.hint")}
+          </Text>
+          {recipes.isPending && (
+            <LoadingState label={t("shopping:recipe.loading")} rows={1} />
+          )}
+          {recipes.isError && (
+            <ErrorState
+              title={t("shopping:recipe.loadError.title")}
+              message={t("shopping:recipe.loadError.message")}
+              onRetry={() => void recipes.refetch()}
+            />
+          )}
+          {recipes.data && recipes.data.length === 0 && (
+            <Text className="text-foreground">{t("shopping:recipe.none")}</Text>
+          )}
+          <View className="gap-2">
+            {(recipes.data ?? []).map((recipe) => (
+              <Pressable
+                key={recipe.id}
+                role="button"
+                disabled={busy !== null}
+                accessibilityLabel={t("shopping:recipe.add", {
+                  title: recipe.title,
+                })}
+                onPress={() => void add(recipe.id, recipe.title)}
+                className={cn(
+                  "h-14 flex-row items-center gap-3 overflow-hidden rounded-md border border-border active:bg-accent web:hover:bg-accent",
+                  busy !== null && busy !== recipe.id && "opacity-50"
+                )}
+              >
+                <RecipeCover recipe={recipe} className="h-full w-14" />
+                <Text
+                  numberOfLines={1}
+                  className="flex-1 text-base text-foreground"
+                >
+                  {recipe.title}
+                </Text>
+                {busy === recipe.id && (
+                  <Text className="pr-3 text-sm text-muted-foreground">
+                    {t("shopping:recipe.adding")}
+                  </Text>
+                )}
+              </Pressable>
+            ))}
+          </View>
+          {message && (
+            <Text role="alert" className="text-sm text-destructive">
+              {message}
             </Text>
-            {busy === recipe.id && (
-              <Text className="pr-3 text-sm text-muted-foreground">
-                {t("shopping:recipe.adding")}
-              </Text>
-            )}
-          </Pressable>
-        ))}
-      </View>
-      {message && (
-        <Text role="alert" className="text-sm text-destructive">
-          {message}
-        </Text>
+          )}
+          <Button
+            variant="outline"
+            label={t("shopping:cancel")}
+            onPress={close}
+          />
+        </>
       )}
-      <Button
-        variant="outline"
-        label={t("shopping:cancel")}
-        onPress={onClose}
-      />
     </Sheet>
   )
 }
@@ -385,7 +420,11 @@ function OptionsSheet({
               />
             )}
           </ListGroup>
-          <Button variant="outline" label={t("shopping:options.close")} onPress={close} />
+          <Button
+            variant="outline"
+            label={t("shopping:options.close")}
+            onPress={close}
+          />
         </>
       )}
       {mode === "rename" && (

@@ -70,7 +70,8 @@
     "listDetail_other": "{{kind}} · {{count}} artículos",
     "adding": "Añadiendo…",
     "newList": "Nueva lista",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "skipped": "Omitidos porque siempre los tienes en casa: {{items}}."
   },
   "edit": {
     "title": "Editar receta",

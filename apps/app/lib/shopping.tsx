@@ -12,6 +12,9 @@ import { AppState, Platform } from "react-native"
 
 import {
   addIngredients,
+  defaultPantry,
+  splitStaples,
+  toRecipeLanguage,
   type ShoppingItem,
   type ShoppingItemInput,
   type ShoppingItemUpdate,
@@ -104,14 +107,16 @@ function serverDeps(userId: string | undefined): ShoppingDeps {
     fetchLists: async () => (await call(api.GET("/api/shopping-lists"))).lists,
     send,
     addRecipe: async (list, recipeId, servings) =>
-      (
-        await call(
-          api.POST("/api/shopping-lists/{listId}/recipes", {
-            params: { path: { listId: list.id } },
-            body: { recipeId, servings },
-          })
-        )
-      ).list,
+      await call(
+        api.POST("/api/shopping-lists/{listId}/recipes", {
+          params: { path: { listId: list.id } },
+          body: {
+            recipeId,
+            servings,
+            language: toRecipeLanguage(i18n.language),
+          },
+        })
+      ),
     storage: {
       read: () => deviceStorage.read(key),
       write: (value) => deviceStorage.write(key, value),
@@ -147,18 +152,26 @@ function demoDeps(): ShoppingDeps {
         throw Object.assign(new Error("Recipe not found"), { status: 404 })
       const recipe = fromSample(sample)
       const { items } = list
+      // The demo has no pantry of its own: it uses the default list.
+      const { needed, skipped } = splitStaples(
+        recipe.ingredients,
+        defaultPantry("en")
+      )
       const merged = addIngredients(
         items,
-        recipe.ingredients,
+        needed,
         recipe.title,
         (servings ?? recipe.servings) / recipe.servings
       )
       return {
-        ...list,
-        items: merged.map((item, index) => ({
-          ...item,
-          id: items[index]?.id ?? newId(),
-        })),
+        list: {
+          ...list,
+          items: merged.map((item, index) => ({
+            ...item,
+            id: items[index]?.id ?? newId(),
+          })),
+        },
+        skipped: skipped.map((ingredient) => ingredient.name),
       }
     },
   }

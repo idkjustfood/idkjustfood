@@ -115,7 +115,9 @@
     "removeText": "{{name}} sieht die Rezepte und Einkaufslisten dieses Haushalts nicht mehr. Du kannst die Person später erneut einladen.",
     "leaveText": "Du siehst die Rezepte und Einkaufslisten dieses Haushalts nicht mehr. Um zurückzukommen, brauchst du eine neue Einladung.",
     "removeConfirm": "Entfernen",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "createdPantry": "{{name}} wurde mit einer Vorratsliste erstellt. Diese Zutaten werden nicht auf die Einkaufsliste gesetzt, wenn du ein Rezept hinzufügst.",
+    "viewPantry": "Liste ansehen"
   },
   "invite": {
     "title": "Jemanden einladen",
@@ -134,5 +136,28 @@
   "billing": {
     "title": "Tarif und Abrechnung",
     "message": "Verwalte hier deinen idkjustfood-Cloud-Tarif."
+  },
+  "pantry": {
+    "title": "Vorratsliste",
+    "subtitlePersonal": "Das, was du immer zu Hause hast",
+    "subtitleHousehold": "Das, was {{name}} immer zu Hause hat",
+    "hint": "Zutaten auf dieser Liste werden nicht auf die Einkaufsliste gesetzt, wenn du ein Rezept hinzufügst. Danach siehst du, welche übersprungen wurden.",
+    "loading": "Vorratsliste wird geladen",
+    "loadError": "Die Vorratsliste konnte nicht geladen werden",
+    "addLabel": "Eintrag hinzufügen",
+    "addPlaceholder": "Zum Beispiel Mehl",
+    "add": "Zur Liste hinzufügen",
+    "emptyTitle": "Die Liste ist leer",
+    "emptyMessage": "Alle Zutaten kommen auf die Einkaufslisten. Füge hinzu, was du immer zu Hause hast, oder setze die Standardliste zurück.",
+    "count_one": "{{count}} Eintrag",
+    "count_other": "{{count}} Einträge",
+    "remove": "{{name}} entfernen",
+    "reset": "Auf Standardliste zurücksetzen",
+    "resetTitle": "Auf die Standardliste zurücksetzen?",
+    "resetText": "Die ganze Liste wird durch die Standardliste ersetzt. Einträge, die du hinzugefügt hast, werden entfernt.",
+    "resetConfirm": "Liste zurücksetzen",
+    "cancel": "Abbrechen",
+    "rowDetail": "Salz, Öl und mehr kommen nicht auf Einkaufslisten",
+    "rowDetailHousehold": "Das, was der Haushalt immer zu Hause hat"
   }
 }

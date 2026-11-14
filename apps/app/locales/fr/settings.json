@@ -115,7 +115,9 @@
     "removeText": "{{name}} ne verra plus les recettes ni les listes de courses de ce foyer. Vous pourrez l'inviter à nouveau plus tard.",
     "leaveText": "Vous ne verrez plus les recettes ni les listes de courses de ce foyer. Il vous faudra une nouvelle invitation pour revenir.",
     "removeConfirm": "Retirer",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "createdPantry": "{{name}} a été créé avec une liste de basiques du placard. Ils ne sont pas ajoutés à la liste de courses quand vous ajoutez une recette.",
+    "viewPantry": "Voir la liste"
   },
   "invite": {
     "title": "Inviter quelqu'un",
@@ -134,5 +136,28 @@
   "billing": {
     "title": "Offre et facturation",
     "message": "Gérez ici votre offre idkjustfood Cloud."
+  },
+  "pantry": {
+    "title": "Basiques du placard",
+    "subtitlePersonal": "Ce que vous avez toujours à la maison",
+    "subtitleHousehold": "Ce que {{name}} a toujours à la maison",
+    "hint": "Les produits de cette liste ne sont pas ajoutés à la liste de courses quand vous ajoutez une recette. Ensuite, vous voyez lesquels ont été ignorés.",
+    "loading": "Chargement des basiques du placard",
+    "loadError": "Impossible de charger les basiques du placard",
+    "addLabel": "Ajouter un produit",
+    "addPlaceholder": "Par exemple de la farine",
+    "add": "Ajouter à la liste",
+    "emptyTitle": "La liste est vide",
+    "emptyMessage": "Tous les ingrédients sont ajoutés aux listes de courses. Ajoutez ce que vous avez toujours ou rétablissez la liste par défaut.",
+    "count_one": "{{count}} produit",
+    "count_other": "{{count}} produits",
+    "remove": "Retirer {{name}}",
+    "reset": "Rétablir la liste par défaut",
+    "resetTitle": "Rétablir la liste par défaut ?",
+    "resetText": "Toute la liste est remplacée par la liste par défaut. Les produits que vous avez ajoutés sont supprimés.",
+    "resetConfirm": "Rétablir la liste",
+    "cancel": "Annuler",
+    "rowDetail": "Le sel, l’huile et plus ne vont pas dans les listes de courses",
+    "rowDetailHousehold": "Ce que le foyer a toujours à la maison"
   }
 }

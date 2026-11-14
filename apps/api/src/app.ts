@@ -15,6 +15,7 @@ import {
 } from "./logging.js"
 import { plannerRoutes } from "./planner/routes.js"
 import { recipeRoutes } from "./recipes/routes.js"
+import { pantryRoutes } from "./pantry/routes.js"
 import { shoppingRoutes } from "./shopping/routes.js"
 import { signupModeFromEnv, signupPolicy } from "./signup-mode.js"
 import { requireSession, type AuthVariables } from "./session.js"
@@ -90,6 +91,9 @@ export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
 
   // Shopping lists: personal or household, with items and recipe ingredients.
   app.route("/api", shoppingRoutes(db, auth))
+
+  // Pantry staples: what a person or household always has at home.
+  app.route("/api", pantryRoutes(db, auth))
 
   // Meal plans: personal or household, three meals a day for any number of weeks.
   app.route("/api", plannerRoutes(db, auth))

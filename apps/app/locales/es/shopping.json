@@ -56,7 +56,10 @@
     "add": "Añadir {{title}}",
     "adding": "Añadiendo…",
     "addError": "No se pudo añadir {{title}}. Inténtalo de nuevo.",
-    "offline": "Necesitas conexión para añadir una receta. Tus otros cambios están guardados y se enviarán primero."
+    "offline": "Necesitas conexión para añadir una receta. Tus otros cambios están guardados y se enviarán primero.",
+    "addedTitle": "Receta añadida",
+    "skipped": "Omitidos porque siempre los tienes en casa: {{items}}.",
+    "done": "Listo"
   },
   "options": {
     "title": "Opciones de la lista",

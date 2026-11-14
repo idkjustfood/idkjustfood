@@ -7,6 +7,8 @@ import {
 import * as Linking from "expo-linking"
 import { useEffect } from "react"
 
+import { toRecipeLanguage } from "@workspace/schemas"
+
 import { api, ApiError, call, type Schemas } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
 import { authClient } from "@/lib/auth-client"
@@ -151,8 +153,13 @@ export function useCreateHousehold() {
     mutationFn: async (name: string) =>
       demo
         ? demoOnly()
-        : (await call(api.POST("/api/households", { body: { name } })))
-            .household,
+        : (
+            await call(
+              api.POST("/api/households", {
+                body: { name, language: toRecipeLanguage(i18n.language) },
+              })
+            )
+          ).household,
     onSuccess: () => refresh(client),
   })
 }

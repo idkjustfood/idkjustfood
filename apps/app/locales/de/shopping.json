@@ -56,7 +56,10 @@
     "add": "{{title}} hinzufügen",
     "adding": "Wird hinzugefügt…",
     "addError": "{{title}} konnte nicht hinzugefügt werden. Versuche es erneut.",
-    "offline": "Zum Hinzufügen eines Rezepts brauchst du eine Verbindung. Deine anderen Änderungen sind gespeichert und werden zuerst gesendet."
+    "offline": "Zum Hinzufügen eines Rezepts brauchst du eine Verbindung. Deine anderen Änderungen sind gespeichert und werden zuerst gesendet.",
+    "addedTitle": "Rezept hinzugefügt",
+    "skipped": "Nicht hinzugefügt, weil du sie immer zu Hause hast: {{items}}.",
+    "done": "Fertig"
   },
   "options": {
     "title": "Listenoptionen",

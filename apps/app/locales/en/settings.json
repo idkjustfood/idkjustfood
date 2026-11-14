@@ -115,7 +115,9 @@
     "removeText": "{{name}} will no longer see this household's recipes and shopping lists. You can invite them again later.",
     "leaveText": "You will no longer see this household's recipes and shopping lists. You need a new invite to come back.",
     "removeConfirm": "Remove",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "createdPantry": "{{name}} was created with a list of pantry staples. They are left out when you add a recipe to a shopping list.",
+    "viewPantry": "View the list"
   },
   "invite": {
     "title": "Invite someone",
@@ -134,5 +136,28 @@
   "billing": {
     "title": "Plan and billing",
     "message": "Manage your idkjustfood Cloud plan here."
+  },
+  "pantry": {
+    "title": "Pantry staples",
+    "subtitlePersonal": "Things you always have at home",
+    "subtitleHousehold": "Things {{name}} always has at home",
+    "hint": "Items on this list are left out when you add a recipe to a shopping list. After adding, you see which ones were skipped.",
+    "loading": "Loading pantry staples",
+    "loadError": "Could not load the pantry staples",
+    "addLabel": "Add an item",
+    "addPlaceholder": "For example flour",
+    "add": "Add to the list",
+    "emptyTitle": "The list is empty",
+    "emptyMessage": "Every ingredient is added to shopping lists. Add items you always have, or reset to the default list.",
+    "count_one": "{{count}} item",
+    "count_other": "{{count}} items",
+    "remove": "Remove {{name}}",
+    "reset": "Reset to default list",
+    "resetTitle": "Reset to the default list?",
+    "resetText": "This replaces the whole list with the default list. Items you added are removed.",
+    "resetConfirm": "Reset the list",
+    "cancel": "Cancel",
+    "rowDetail": "Salt, oil and more are left out of shopping lists",
+    "rowDetailHousehold": "Items the household always has at home"
   }
 }

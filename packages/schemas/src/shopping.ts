@@ -1,5 +1,6 @@
 import { z } from "zod"
 
+import { RecipeLanguageSchema } from "./language.js"
 import type { Ingredient } from "./recipe.js"
 import { UnitSchema, unitKey } from "./units.js"
 
@@ -80,6 +81,8 @@ export const AddRecipeToListSchema = z.object({
   recipeId: z.string().min(1),
   /** Scale the amounts to this many servings. Defaults to the recipe's own. */
   servings: z.number().int().min(1).max(1000).optional(),
+  /** Used when the pantry has to be made first, to pick its default list. */
+  language: RecipeLanguageSchema.optional(),
 })
 export type AddRecipeToList = z.infer<typeof AddRecipeToListSchema>
 
