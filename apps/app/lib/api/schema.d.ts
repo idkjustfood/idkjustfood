@@ -3242,6 +3242,7 @@ export interface components {
                 unit: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
                 note: string | null;
                 checked: boolean;
+                supermarket: string | null;
                 fromRecipes: string[];
                 id: string;
             }[];
@@ -3263,6 +3264,7 @@ export interface components {
             unit: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
             note: string | null;
             checked: boolean;
+            supermarket: string | null;
             fromRecipes: string[];
             id: string;
         };
@@ -3281,6 +3283,7 @@ export interface components {
             unit?: "g" | "kg" | "mg" | "ml" | "l" | "tsp" | "tbsp" | "cup" | "oz" | "lb" | "fl_oz" | "piece" | "pinch" | "clove" | "bunch" | "slice" | "can" | "pack" | null;
             note?: string | null;
             checked?: boolean;
+            supermarket?: string | null;
         };
         AddRecipeToList: {
             recipeId: string;

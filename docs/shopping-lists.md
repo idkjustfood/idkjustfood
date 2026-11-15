@@ -19,6 +19,15 @@ edition, so self-hosted installs have it too.
 - **Supermarket:** the list is shown in the order you walk through the shop. Pick the supermarket
   at the top of a list. The choice is saved on the device. See
   [adding-a-supermarket.md](adding-a-supermarket.md).
+- **Several stores:** every item is on the **default list** at first (items typed in and items
+  from a recipe). To shop in more than one store, tap the select button in the header (or press
+  and hold an item), tick the items, and choose "Move to…" to put them on the list of a
+  supermarket. The supermarkets are the ones from the list above, nothing is made by hand. Once
+  an item has been moved, chips above the list switch between **All**, the **default list** and
+  each supermarket that has items. A supermarket's chip shows only its items and sorts them in
+  that supermarket's order by itself. "All" and "default list" use the supermarket you picked at
+  the top. The same screen moves items back to the default list. See
+  [Supermarkets on a list](#supermarkets-on-a-list).
 - Same ingredients are merged. See [How merging works](#how-merging-works).
 - **Pantry staples** (Settings, "Pantry staples") are left out when a recipe is added, and the
   app tells you which ones were skipped. See [Pantry staples](#pantry-staples).
@@ -35,7 +44,7 @@ All endpoints need a signed-in user and are in the OpenAPI document (`/api/opena
 | `PATCH /api/shopping-lists/{listId}` | Rename. Everyone who can see the list can |
 | `DELETE /api/shopping-lists/{listId}` | Delete. The person who made it, or a household owner |
 | `POST /api/shopping-lists/{listId}/items` | Add an item as written |
-| `PATCH /api/shopping-lists/{listId}/items/{itemId}` | Change an item or tick it (`checked`) |
+| `PATCH /api/shopping-lists/{listId}/items/{itemId}` | Change an item, tick it (`checked`) or move it to a supermarket (`supermarket`, an id from the supermarket list, or `null` for the default list) |
 | `DELETE /api/shopping-lists/{listId}/items/{itemId}` | Remove an item |
 | `DELETE /api/shopping-lists/{listId}/items` | Remove all ticked items |
 | `POST /api/shopping-lists/{listId}/recipes` | Add a recipe's ingredients (`recipeId`, optional `servings`). Answers with the list and `skipped`: the names of the ingredients left out because they are pantry staples |
@@ -75,6 +84,20 @@ Units are **not converted** (cups to grams would be a guess), so `1 cup` and `20
 two lines. An ingredient without an amount is added without one and never changes another line's
 amount. The code is `addIngredients` in `packages/schemas/src/shopping.ts`. The API runs the merge
 in a transaction, so two people adding recipes at once don't lose each other's lines.
+
+## Supermarkets on a list
+
+An item has a `supermarket`: the id of the supermarket it was moved to, or `null` for the default
+list. New items always start with `null`, whether they are typed in, come from a recipe or from the
+meal planner. The app moves several items at once by sending one `PATCH` per item, so it works
+offline like every other change (see below). The view (All, default list, one supermarket) is only
+a filter on the screen. It is not saved, and the items themselves never change because of it.
+
+Merging only looks at the default list: a new line is never added to an item that was moved to a
+supermarket, because the amount would end up in a store the person did not choose. So 200 g flour
+in "Lidl" and 100 g flour from a recipe stay two lines (the second one on the default list). The
+rule is in `canMerge` in `packages/schemas/src/shopping.ts`, the views in
+`apps/app/lib/shopping-view.ts`.
 
 ## Pantry staples
 

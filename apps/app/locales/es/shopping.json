@@ -111,5 +111,23 @@
     "drinks": "Bebidas",
     "household": "Hogar",
     "other": "Otros"
+  },
+  "view": {
+    "label": "Mostrar artículos de",
+    "all": "Todos",
+    "default": "Lista general",
+    "store": "{{name}} ({{count}})",
+    "empty": "Aquí no hay nada. Selecciona artículos y muévelos aquí."
+  },
+  "select": {
+    "start": "Seleccionar artículos",
+    "done": "Listo",
+    "count_one": "{{count}} artículo seleccionado",
+    "count_other": "{{count}} artículos seleccionados",
+    "all": "Seleccionar todo",
+    "move": "Mover a…",
+    "moveTitle": "Mover a un supermercado",
+    "moveHint": "Los artículos movidos aparecen en la lista de ese supermercado, ordenados según su recorrido. Los artículos nuevos siempre empiezan en la lista general.",
+    "item": "Seleccionar {{name}}"
   }
 }

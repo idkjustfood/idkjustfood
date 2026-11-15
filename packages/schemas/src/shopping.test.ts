@@ -18,6 +18,7 @@ const item = (
   unit,
   note: null,
   checked: false,
+  supermarket: null,
   fromRecipes: [],
   ...extra,
 })
@@ -61,8 +62,24 @@ describe("addIngredients", () => {
     ])
   })
 
+  test("a new line never joins an item that was moved to a supermarket", () => {
+    const moved = [item("Flour", 200, "g", { supermarket: "lidl" })]
+    const result = addIngredients(
+      moved,
+      [ingredient("Flour", 100, "g")],
+      "Bread"
+    )
+    expect(result).toHaveLength(2)
+    expect(result[0]).toMatchObject({ quantity: 200, supermarket: "lidl" })
+    expect(result[1]).toMatchObject({ quantity: 100, supermarket: null })
+  })
+
   test("matches names loosely, and old unit spellings", () => {
-    const first = addIngredients([], [ingredient("flour", 200, "grams" as UnitKey)], "A")
+    const first = addIngredients(
+      [],
+      [ingredient("flour", 200, "grams" as UnitKey)],
+      "A"
+    )
     const second = addIngredients(first, [ingredient(" Flour ", 100, "g")], "B")
     expect(second).toHaveLength(1)
     expect(second[0]).toMatchObject({

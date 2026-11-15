@@ -111,5 +111,23 @@
     "drinks": "Drinks",
     "household": "Household",
     "other": "Other"
+  },
+  "view": {
+    "label": "Show items of",
+    "all": "All",
+    "default": "Default list",
+    "store": "{{name}} ({{count}})",
+    "empty": "Nothing here. Select items and move them here."
+  },
+  "select": {
+    "start": "Select items",
+    "done": "Done",
+    "count_one": "{{count}} item selected",
+    "count_other": "{{count}} items selected",
+    "all": "Select all",
+    "move": "Move to…",
+    "moveTitle": "Move to a supermarket",
+    "moveHint": "Moved items show up in that supermarket's list, sorted in its order. New items always start on the default list.",
+    "item": "Select {{name}}"
   }
 }

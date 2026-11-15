@@ -111,5 +111,23 @@
     "drinks": "Getränke",
     "household": "Haushalt",
     "other": "Sonstiges"
+  },
+  "view": {
+    "label": "Artikel anzeigen von",
+    "all": "Alle",
+    "default": "Standardliste",
+    "store": "{{name}} ({{count}})",
+    "empty": "Hier ist nichts. Wähle Artikel aus und verschiebe sie hierher."
+  },
+  "select": {
+    "start": "Artikel auswählen",
+    "done": "Fertig",
+    "count_one": "{{count}} Artikel ausgewählt",
+    "count_other": "{{count}} Artikel ausgewählt",
+    "all": "Alle auswählen",
+    "move": "Verschieben nach …",
+    "moveTitle": "In einen Supermarkt verschieben",
+    "moveHint": "Verschobene Artikel erscheinen in der Liste dieses Supermarkts, sortiert in seiner Reihenfolge. Neue Artikel landen immer auf der Standardliste.",
+    "item": "{{name}} auswählen"
   }
 }
