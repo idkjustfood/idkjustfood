@@ -29,6 +29,7 @@ const milk = {
   unit: "l",
   note: null,
   checked: false,
+  supermarket: null,
   fromRecipes: [],
 }
 
@@ -61,6 +62,38 @@ describe("applyOp", () => {
     expect(lists).toEqual(copy)
   })
 
+  test("moves an item to a supermarket and back to the default list", () => {
+    const lists = [list("a", { items: [milk] })]
+    const moved = applyOp(lists, {
+      type: "updateItem",
+      listId: "a",
+      itemId: "m",
+      change: { supermarket: "lidl" },
+    })
+    expect(moved[0]!.items[0]).toMatchObject({
+      name: "Milk",
+      supermarket: "lidl",
+    })
+    const back = applyOp(moved, {
+      type: "updateItem",
+      listId: "a",
+      itemId: "m",
+      change: { supermarket: null },
+    })
+    expect(back[0]!.items[0]!.supermarket).toBeNull()
+  })
+
+  test("a change without a supermarket leaves it where it is", () => {
+    const lists = [list("a", { items: [{ ...milk, supermarket: "lidl" }] })]
+    const ticked = applyOp(lists, {
+      type: "updateItem",
+      listId: "a",
+      itemId: "m",
+      change: { checked: true },
+    })
+    expect(ticked[0]!.items[0]!.supermarket).toBe("lidl")
+  })
+
   test("adds an item with an empty amount when none is given", () => {
     const result = applyOp([list("a")], {
       type: "addItem",
@@ -75,6 +108,7 @@ describe("applyOp", () => {
         unit: null,
         note: null,
         checked: false,
+        supermarket: null,
         fromRecipes: [],
       },
     ])
@@ -198,6 +232,19 @@ describe("planAddItem", () => {
       flour,
       { ...milk, id: "o", name: "Olivenöl", quantity: null, unit: null },
     ],
+  })
+
+  test("does not add up to an item that was moved to a supermarket", () => {
+    const moved = list("a", {
+      items: [{ ...flour, supermarket: "lidl" }],
+    })
+    expect(
+      planAddItem(moved, { name: "Flour", quantity: 100, unit: "g" }, "x")
+    ).toEqual({
+      type: "addItem",
+      listId: "a",
+      item: { id: "x", name: "Flour", quantity: 100, unit: "g" },
+    })
   })
 
   test("adds a new line", () => {

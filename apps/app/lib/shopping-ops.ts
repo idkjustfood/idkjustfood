@@ -85,6 +85,7 @@ export function applyOp(
                   unit: op.item.unit ?? null,
                   note: op.item.note ?? null,
                   checked: false,
+                  supermarket: null,
                   fromRecipes: [],
                 },
               ],
@@ -117,6 +118,7 @@ function applyChange(item: ShoppingItem, change: ShoppingItemUpdate) {
   if (change.unit !== undefined) next.unit = change.unit
   if (change.note !== undefined) next.note = change.note
   if (change.checked !== undefined) next.checked = change.checked
+  if (change.supermarket !== undefined) next.supermarket = change.supermarket
   return next
 }
 

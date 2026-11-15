@@ -14,6 +14,9 @@ sorting do not change when you add one.
    walking order. `sortByRoute` groups the items by section and orders the groups by the route.
 3. The person picks a supermarket on the shopping list screen. The choice is saved on the device
    (it works offline) and the "standard" layout is used until they pick one.
+4. Items can also be moved to a supermarket (see `docs/shopping-lists.md`). The `id` of the
+   supermarket is then saved on the item, so a new supermarket needs nothing else, but an `id`
+   must never change (use `aliases`).
 
 Most German supermarkets are laid out almost the same, so `standard.ts` is the default. A chain
 with a fixed path of its own gets its own file, like `aldi.ts`.

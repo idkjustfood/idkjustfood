@@ -12,6 +12,7 @@ const milk = {
   unit: null,
   note: null,
   checked: false,
+  supermarket: null,
   fromRecipes: [],
 }
 const weekly: ShoppingList = {

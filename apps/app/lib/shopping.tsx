@@ -140,6 +140,7 @@ function demoDeps(): ShoppingDeps {
       unit: item.unit,
       note: null,
       checked: item.checked,
+      supermarket: null,
       fromRecipes: item.fromRecipes,
     })),
   }))
@@ -258,6 +259,21 @@ export function useShoppingActions() {
         itemId: string,
         change: ShoppingItemUpdate
       ) => store.dispatch({ type: "updateItem", listId, itemId, change }),
+      /** Moves items to a supermarket, or back to the default list (null). One change per item. */
+      moveItems(
+        listId: string,
+        itemIds: readonly string[],
+        supermarket: string | null
+      ) {
+        for (const itemId of itemIds) {
+          store.dispatch({
+            type: "updateItem",
+            listId,
+            itemId,
+            change: { supermarket },
+          })
+        }
+      },
       removeItem: (listId: string, itemId: string) =>
         store.dispatch({ type: "removeItem", listId, itemId }),
       clearChecked: (listId: string) =>

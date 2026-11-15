@@ -226,6 +226,60 @@ describe("items", () => {
     expect(saved!.items.map((i) => i.name)).toEqual(["Free range eggs"])
   })
 
+  test("start on the default list and can be moved to a supermarket and back", async () => {
+    const list = await makeList("Shop")
+    const milk = await addItem(list.id, { name: "Milk" })
+    expect(milk.supermarket).toBeNull()
+
+    const patch = (change: Record<string, unknown>) =>
+      api.request(
+        "PATCH",
+        `/api/shopping-lists/${list.id}/items/${milk.id}`,
+        olivia,
+        change
+      )
+    const moved = await patch({ supermarket: "lidl" })
+    expect(moved.status).toBe(200)
+    expect((await body<{ item: ShoppingItem }>(moved)).item).toMatchObject({
+      name: "Milk",
+      supermarket: "lidl",
+    })
+
+    // Other changes keep it where it is.
+    const ticked = await patch({ checked: true })
+    expect((await body<{ item: ShoppingItem }>(ticked)).item.supermarket).toBe(
+      "lidl"
+    )
+    expect((await lists())[0]!.items[0]!.supermarket).toBe("lidl")
+
+    const back = await patch({ supermarket: null })
+    expect((await body<{ item: ShoppingItem }>(back)).item.supermarket).toBe(
+      null
+    )
+  })
+
+  test("an ingredient from a recipe does not join an item in a supermarket", async () => {
+    const list = await makeList("Shop")
+    const flour = await addItem(list.id, {
+      name: "Flour",
+      quantity: 50,
+      unit: "g",
+    })
+    await api.request(
+      "PATCH",
+      `/api/shopping-lists/${list.id}/items/${flour.id}`,
+      olivia,
+      { supermarket: "lidl" }
+    )
+    const recipe = await makeRecipe(pancakes)
+    const result = await addRecipe(list.id, recipe.id)
+    const flours = result.items.filter((i) => i.name === "Flour")
+    expect(flours.map((i) => [i.quantity, i.supermarket])).toEqual([
+      [50, "lidl"],
+      [200, null],
+    ])
+  })
+
   test("keep the order they were added in", async () => {
     const list = await makeList("Shop")
     for (const name of ["A", "B", "C"]) await addItem(list.id, { name })
@@ -347,9 +401,27 @@ describe("adding a recipe", () => {
       ...pancakes,
       title: "Pizza",
       ingredients: [
-        { name: "Flour", quantity: 200, unit: "g", note: null, section: "Dough" },
-        { name: "Flour", quantity: 100, unit: "g", note: null, section: "Sauce" },
-        { name: "Tomato", quantity: 3, unit: null, note: null, section: "Sauce" },
+        {
+          name: "Flour",
+          quantity: 200,
+          unit: "g",
+          note: null,
+          section: "Dough",
+        },
+        {
+          name: "Flour",
+          quantity: 100,
+          unit: "g",
+          note: null,
+          section: "Sauce",
+        },
+        {
+          name: "Tomato",
+          quantity: 3,
+          unit: null,
+          note: null,
+          section: "Sauce",
+        },
       ],
       steps: [
         { text: "Knead.", section: "Dough" },

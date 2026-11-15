@@ -265,6 +265,7 @@ export function toItem(row: ShoppingItemRow): ShoppingItem {
     unit: row.unit,
     note: row.note,
     checked: row.checked,
+    supermarket: row.supermarket,
     fromRecipes: row.fromRecipes,
   }
 }

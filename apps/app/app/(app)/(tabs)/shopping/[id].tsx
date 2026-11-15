@@ -3,13 +3,14 @@ import {
   BookPlus,
   Check,
   EllipsisVertical,
+  ListChecks,
   Store,
   Pencil,
   Plus,
   Trash2,
   X,
 } from "lucide-react-native"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native"
 
@@ -28,6 +29,7 @@ import { Screen } from "@/components/screen"
 import { ErrorState, LoadingState } from "@/components/states"
 import { Button } from "@/components/ui/button"
 import { SectionTitle } from "@/components/ui/card"
+import { Chip } from "@/components/ui/chip"
 import { SearchField } from "@/components/ui/search-field"
 import { CheckboxBox } from "@/components/ui/checkbox"
 import { Icon } from "@/components/ui/icon"
@@ -39,6 +41,14 @@ import { formatAmount } from "@/lib/format"
 import { isOwner, useHouseholdById, useMyUserId } from "@/lib/households"
 import { useAllRecipes } from "@/lib/recipes"
 import { OfflineError } from "@/lib/shopping-store"
+import {
+  itemsInView,
+  sortingFor,
+  storeCounts,
+  storeIdOf,
+  validView,
+  type ShoppingView,
+} from "@/lib/shopping-view"
 import {
   useListKind,
   useShoppingActions,
@@ -76,10 +86,53 @@ function ListView({ list }: { list: ShoppingList }) {
   const [recipeOpen, setRecipeOpen] = useState(false)
   const [optionsOpen, setOptionsOpen] = useState(false)
   const [storeOpen, setStoreOpen] = useState(false)
+  const [view, setView] = useState<ShoppingView>({ kind: "all" })
+  const [selecting, setSelecting] = useState(false)
+  const [selected, setSelected] = useState<ReadonlySet<string>>(new Set())
+  const [moveOpen, setMoveOpen] = useState(false)
   const store = useSupermarket()
 
-  const open = list.items.filter((i) => !i.checked)
-  const checked = list.items.filter((i) => i.checked)
+  // A supermarket without items has no view any more, so it falls back to all items.
+  const shown = validView(view, list.items)
+  const counts = useMemo(() => storeCounts(list.items), [list.items])
+  const visible = itemsInView(list.items, shown)
+  const open = visible.filter((i) => !i.checked)
+  const checked = visible.filter((i) => i.checked)
+  const showViews = counts.size > 0
+  const sortedFor = sortingFor(shown, store.supermarket)
+  const selectedIds = visible
+    .filter((item) => selected.has(item.id))
+    .map((item) => item.id)
+
+  function startSelecting(first?: string) {
+    setSelecting(true)
+    setSelected(new Set(first ? [first] : []))
+  }
+
+  function stopSelecting() {
+    setSelecting(false)
+    setSelected(new Set())
+  }
+
+  function toggleSelected(itemId: string) {
+    setSelected((current) => {
+      const next = new Set(current)
+      if (!next.delete(itemId)) next.add(itemId)
+      return next
+    })
+  }
+
+  function moveSelected(target: string | null) {
+    actions.moveItems(list.id, selectedIds, target)
+    stopSelecting()
+  }
+
+  const storeLabel = (item: ShoppingItem) => {
+    const id = storeIdOf(item)
+    if (id === null || shown.kind === "store") return undefined
+    const supermarket = store.supermarkets.find((s) => s.id === id)
+    return supermarket ? store.nameOf(supermarket) : undefined
+  }
   const canDelete =
     list.userId === myUserId || (!!list.householdId && isOwner(household?.role))
 
@@ -108,13 +161,22 @@ function ListView({ list }: { list: ShoppingList }) {
       title={list.name}
       subtitle={t("shopping:list.subtitle", {
         kind: kindLabel,
-        open: open.length,
-        done: checked.length,
+        open: list.items.filter((i) => !i.checked).length,
+        done: list.items.filter((i) => i.checked).length,
       })}
       back="/shopping"
       narrow
       actions={
         <>
+          <Button
+            variant={selecting ? "secondary" : "ghost"}
+            size="icon"
+            icon={ListChecks}
+            label={
+              selecting ? t("shopping:select.done") : t("shopping:select.start")
+            }
+            onPress={() => (selecting ? stopSelecting() : startSelecting())}
+          />
           <Button
             variant="ghost"
             size="icon"
@@ -187,27 +249,100 @@ function ListView({ list }: { list: ShoppingList }) {
         )}
       </View>
 
-      <Pressable
-        role="button"
-        accessibilityLabel={t("shopping:store.change")}
-        onPress={() => setStoreOpen(true)}
-        className="min-h-12 flex-row items-center gap-3 rounded-md border border-border px-3 active:bg-accent web:hover:bg-accent"
-      >
-        <Icon as={Store} className="text-muted-foreground" />
-        <Text className="flex-1 text-base text-foreground">
-          {t("shopping:store.sortedFor", {
-            name: store.nameOf(store.supermarket),
-          })}
-        </Text>
-      </Pressable>
+      {showViews && (
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerClassName="gap-2"
+          accessibilityLabel={t("shopping:view.label")}
+        >
+          <Chip
+            label={t("shopping:view.all")}
+            selected={shown.kind === "all"}
+            onPress={() => setView({ kind: "all" })}
+          />
+          <Chip
+            label={t("shopping:view.default")}
+            selected={shown.kind === "default"}
+            onPress={() => setView({ kind: "default" })}
+          />
+          {store.supermarkets
+            .filter((option) => counts.has(option.id))
+            .map((option) => (
+              <Chip
+                key={option.id}
+                label={t("shopping:view.store", {
+                  name: store.nameOf(option),
+                  count: counts.get(option.id),
+                })}
+                selected={shown.kind === "store" && shown.id === option.id}
+                onPress={() => setView({ kind: "store", id: option.id })}
+              />
+            ))}
+        </ScrollView>
+      )}
+
+      {shown.kind === "store" ? (
+        <View className="min-h-12 flex-row items-center gap-3 rounded-md border border-border px-3">
+          <Icon as={Store} className="text-muted-foreground" />
+          <Text className="flex-1 text-base text-foreground">
+            {t("shopping:store.sortedFor", { name: store.nameOf(sortedFor) })}
+          </Text>
+        </View>
+      ) : (
+        <Pressable
+          role="button"
+          accessibilityLabel={t("shopping:store.change")}
+          onPress={() => setStoreOpen(true)}
+          className="min-h-12 flex-row items-center gap-3 rounded-md border border-border px-3 active:bg-accent web:hover:bg-accent"
+        >
+          <Icon as={Store} className="text-muted-foreground" />
+          <Text className="flex-1 text-base text-foreground">
+            {t("shopping:store.sortedFor", {
+              name: store.nameOf(sortedFor),
+            })}
+          </Text>
+        </Pressable>
+      )}
+
+      {selecting && (
+        <View className="gap-2 rounded-md border border-border bg-accent/40 p-3">
+          <Text role="status" className="text-base font-medium text-foreground">
+            {t("shopping:select.count", { count: selectedIds.length })}
+          </Text>
+          <View className="flex-row flex-wrap gap-2">
+            <Button
+              variant="outline"
+              label={t("shopping:select.all")}
+              disabled={visible.length === 0}
+              onPress={() => setSelected(new Set(visible.map((i) => i.id)))}
+            />
+            <Button
+              label={t("shopping:select.move")}
+              disabled={selectedIds.length === 0}
+              onPress={() => setMoveOpen(true)}
+            />
+            <Button
+              variant="ghost"
+              label={t("shopping:select.done")}
+              onPress={stopSelecting}
+            />
+          </View>
+        </View>
+      )}
 
       {list.items.length === 0 && (
         <Text className="text-muted-foreground">
           {t("shopping:list.empty")}
         </Text>
       )}
+      {list.items.length > 0 && visible.length === 0 && (
+        <Text className="text-muted-foreground">
+          {t("shopping:view.empty")}
+        </Text>
+      )}
 
-      {sortByRoute(open, store.supermarket).map((group) => (
+      {sortByRoute(open, sortedFor).map((group) => (
         <View key={group.section} className="gap-1">
           <SectionTitle className="text-base text-muted-foreground">
             {t(`shopping:section.${group.section}`)}
@@ -217,6 +352,11 @@ function ListView({ list }: { list: ShoppingList }) {
               key={item.id}
               item={item}
               units={units}
+              storeLabel={storeLabel(item)}
+              selecting={selecting}
+              selected={selected.has(item.id)}
+              onSelect={() => toggleSelected(item.id)}
+              onLongPress={() => startSelecting(item.id)}
               onToggle={() =>
                 actions.updateItem(list.id, item.id, { checked: true })
               }
@@ -244,6 +384,11 @@ function ListView({ list }: { list: ShoppingList }) {
               key={item.id}
               item={item}
               units={units}
+              storeLabel={storeLabel(item)}
+              selecting={selecting}
+              selected={selected.has(item.id)}
+              onSelect={() => toggleSelected(item.id)}
+              onLongPress={() => startSelecting(item.id)}
               onToggle={() =>
                 actions.updateItem(list.id, item.id, { checked: false })
               }
@@ -257,6 +402,22 @@ function ListView({ list }: { list: ShoppingList }) {
         open={storeOpen}
         onClose={() => setStoreOpen(false)}
         store={store}
+        title={t("shopping:store.title")}
+        hint={t("shopping:store.hint")}
+        currentId={store.supermarket.id}
+        onChoose={(id) => store.choose(id ?? store.supermarket.id)}
+      />
+      <StoreSheet
+        open={moveOpen}
+        onClose={() => setMoveOpen(false)}
+        store={store}
+        title={t("shopping:select.moveTitle")}
+        hint={t("shopping:select.moveHint")}
+        defaultRow
+        onChoose={(id) => {
+          setMoveOpen(false)
+          moveSelected(id)
+        }}
       />
       <RecipeSheet
         list={list}
@@ -273,15 +434,28 @@ function ListView({ list }: { list: ShoppingList }) {
   )
 }
 
-/** Pick the supermarket the list is sorted for. Searchable, because there are many. */
+/**
+ * Pick a supermarket from the list the app knows. Searchable, because there are many. With
+ * `defaultRow` the default list (no supermarket) is offered too and chosen as null.
+ */
 function StoreSheet({
   open,
   onClose,
   store,
+  title,
+  hint,
+  currentId,
+  defaultRow,
+  onChoose,
 }: {
   open: boolean
   onClose: () => void
   store: SupermarketState
+  title: string
+  hint: string
+  currentId?: string
+  defaultRow?: boolean
+  onChoose: (id: string | null) => void
 }) {
   const { t } = useTranslation()
   const [query, setQuery] = useState("")
@@ -295,15 +469,28 @@ function StoreSheet({
     onClose()
   }
 
+  function choose(id: string | null) {
+    onChoose(id)
+    close()
+  }
+
   return (
-    <Sheet open={open} onClose={close} title={t("shopping:store.title")}>
-      <Text className="text-muted-foreground">{t("shopping:store.hint")}</Text>
+    <Sheet open={open} onClose={close} title={title}>
+      <Text className="text-muted-foreground">{hint}</Text>
       <SearchField
         value={query}
         onChangeText={setQuery}
         placeholder={t("shopping:store.search")}
       />
       <ScrollView className="max-h-72">
+        {defaultRow && !needle && (
+          <ListGroup>
+            <ListRow
+              title={t("shopping:view.default")}
+              onPress={() => choose(null)}
+            />
+          </ListGroup>
+        )}
         {options.length === 0 ? (
           <Text className="py-3 text-foreground">
             {t("shopping:store.none")}
@@ -315,14 +502,11 @@ function StoreSheet({
                 key={option.id}
                 title={store.nameOf(option)}
                 right={
-                  option.id === store.supermarket.id ? (
+                  option.id === currentId ? (
                     <Icon as={Check} className="text-primary" />
                   ) : undefined
                 }
-                onPress={() => {
-                  store.choose(option.id)
-                  close()
-                }}
+                onPress={() => choose(option.id)}
               />
             ))}
           </ListGroup>
@@ -588,11 +772,22 @@ function OptionsSheet({
 function ItemRow({
   item,
   units,
+  storeLabel,
+  selecting,
+  selected,
+  onSelect,
+  onLongPress,
   onToggle,
   onRemove,
 }: {
   item: ShoppingItem
   units: "metric" | "imperial"
+  /** The supermarket the item was moved to, when the view does not already say it. */
+  storeLabel?: string
+  selecting: boolean
+  selected: boolean
+  onSelect: () => void
+  onLongPress: () => void
   onToggle: () => void
   onRemove: () => void
 }) {
@@ -603,12 +798,18 @@ function ItemRow({
     <View className="min-h-14 flex-row items-center gap-1 rounded-md">
       <Pressable
         role="checkbox"
-        aria-checked={item.checked}
-        accessibilityLabel={item.name}
-        onPress={onToggle}
-        className="min-h-14 flex-1 flex-row items-center gap-3 rounded-md px-1 py-2 active:bg-accent web:hover:bg-accent"
+        aria-checked={selecting ? selected : item.checked}
+        accessibilityLabel={
+          selecting ? t("shopping:select.item", { name: item.name }) : item.name
+        }
+        onPress={selecting ? onSelect : onToggle}
+        onLongPress={selecting ? undefined : onLongPress}
+        className={cn(
+          "min-h-14 flex-1 flex-row items-center gap-3 rounded-md px-1 py-2 active:bg-accent web:hover:bg-accent",
+          selecting && selected && "bg-accent"
+        )}
       >
-        <CheckboxBox checked={item.checked} />
+        <CheckboxBox checked={selecting ? selected : item.checked} />
         <View className="flex-1 gap-0.5">
           <Text
             className={cn(
@@ -638,16 +839,23 @@ function ItemRow({
                 : ""}
             </Text>
           ) : null}
+          {storeLabel && (
+            <Text numberOfLines={1} className="text-sm text-muted-foreground">
+              {storeLabel}
+            </Text>
+          )}
         </View>
       </Pressable>
-      <Pressable
-        role="button"
-        accessibilityLabel={t("shopping:item.remove", { name: item.name })}
-        onPress={onRemove}
-        className="h-11 w-11 items-center justify-center rounded-md active:bg-accent web:hover:bg-accent"
-      >
-        <Icon as={X} size={18} className="text-muted-foreground" />
-      </Pressable>
+      {!selecting && (
+        <Pressable
+          role="button"
+          accessibilityLabel={t("shopping:item.remove", { name: item.name })}
+          onPress={onRemove}
+          className="h-11 w-11 items-center justify-center rounded-md active:bg-accent web:hover:bg-accent"
+        >
+          <Icon as={X} size={18} className="text-muted-foreground" />
+        </Pressable>
+      )}
     </View>
   )
 }

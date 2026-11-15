@@ -53,6 +53,8 @@ export const shoppingItem = pgTable(
     unit: text("unit").$type<UnitKey>(),
     note: text("note"),
     checked: boolean("checked").notNull().default(false),
+    /** The id of the supermarket the item was moved to. Null is the default list. */
+    supermarket: text("supermarket"),
     /** Titles of the recipes this item came from. */
     fromRecipes: text("from_recipes")
       .array()

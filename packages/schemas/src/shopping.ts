@@ -8,6 +8,11 @@ const name = z.string().trim().min(1).max(200)
 const quantity = z.number().positive().max(1_000_000).nullable()
 const unit = UnitSchema.nullable()
 const note = z.string().trim().min(1).max(300).nullable()
+/**
+ * The id of the supermarket (see `stores/`) an item is moved to. Null means the default list,
+ * where every new item starts.
+ */
+const supermarket = z.string().min(1).max(100).nullable()
 
 /** What an item on a shopping list is. The quantity is empty when nobody said how much. */
 export const ShoppingItemContentSchema = z.object({
@@ -16,6 +21,7 @@ export const ShoppingItemContentSchema = z.object({
   unit,
   note,
   checked: z.boolean(),
+  supermarket,
   /** Titles of the recipes the item came from. Empty for items typed in by hand. */
   fromRecipes: z.array(z.string().max(200)).max(100),
 })
@@ -41,6 +47,8 @@ export const ShoppingItemUpdateSchema = z.object({
   unit: unit.optional(),
   note: note.optional(),
   checked: z.boolean().optional(),
+  /** Moves the item to a supermarket, or back to the default list (null). */
+  supermarket: supermarket.optional(),
 })
 export type ShoppingItemUpdate = z.infer<typeof ShoppingItemUpdateSchema>
 
@@ -93,15 +101,19 @@ const same = (a: string, b: string) =>
 const clean = (value: number) => Math.round(value * 10_000) / 10_000
 
 /**
- * Whether a new line can be merged into an item: not ticked off yet, same name,
- * same unit, and both have an amount or both have none.
+ * Whether a new line can be merged into an item: not ticked off yet, on the default list (a new
+ * line always starts there, so it never joins an item that was moved to a supermarket), same
+ * name, same unit, and both have an amount or both have none.
  */
 export function canMerge(
-  item: Pick<ShoppingItemContent, "name" | "quantity" | "unit" | "checked">,
+  item: Pick<ShoppingItemContent, "name" | "quantity" | "unit" | "checked"> & {
+    supermarket?: string | null
+  },
   line: { name: string; quantity: number | null; unit: string | null }
 ) {
   return (
     !item.checked &&
+    (item.supermarket ?? null) === null &&
     same(item.name, line.name) &&
     unitKey(item.unit) === unitKey(line.unit) &&
     (item.quantity === null) === (line.quantity === null)
@@ -157,6 +169,7 @@ export function addIngredients(
         unit: ingredient.unit,
         note: ingredient.note,
         checked: false,
+        supermarket: null,
         fromRecipes: [recipeTitle],
       })
     }

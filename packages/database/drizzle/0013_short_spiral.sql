@@ -1,0 +1,1 @@
+ALTER TABLE "shopping_item" ADD COLUMN "supermarket" text;
