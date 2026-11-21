@@ -1,0 +1,45 @@
+{
+  "title": "Faccende di casa",
+  "ownChores": "Le tue faccende",
+  "sharedWith": "Condivise con {{name}}",
+  "add": "Aggiungi faccenda",
+  "loading": "Caricamento delle faccende",
+  "todo": "Da fare · {{count}}",
+  "later": "Più tardi · {{count}}",
+  "allDone": {
+    "title": "Tutto fatto per oggi",
+    "message": "Le faccende spuntate tornano nel loro giorno, alle 00:00."
+  },
+  "every_one": "Ogni giorno",
+  "every_other": "Ogni {{count}} giorni",
+  "comesBack": {
+    "tomorrow": "Torna domani",
+    "inDays_one": "Torna tra {{count}} giorno",
+    "inDays_other": "Torna tra {{count}} giorni"
+  },
+  "markDone": "Segna {{name}} come fatta",
+  "undo": "Annulla {{name}}, non è fatta",
+  "edit": "Modifica {{name}}",
+  "loadError": {
+    "title": "Impossibile caricare le faccende",
+    "message": "Le tue faccende vengono salvate su questo telefono dopo il caricamento. Riprova quando sei online."
+  },
+  "empty": {
+    "title": "Ancora nessuna faccenda",
+    "message": "Aggiungi una faccenda e ogni quanto torna, per esempio cambiare gli asciugamani ogni 3 giorni. Spuntala e tornerà nel suo giorno."
+  },
+  "form": {
+    "newTitle": "Nuova faccenda",
+    "editTitle": "Modifica faccenda",
+    "name": "Nome",
+    "placeholder": "Per esempio: Cambiare gli asciugamani",
+    "interval": "Ripeti ogni",
+    "days": "Giorni",
+    "hint": "Solo giorni interi. Una faccenda spuntata torna alle 00:00, dopo questi giorni.",
+    "visiblePersonal": "Solo tu vedi questa faccenda.",
+    "visibleHousehold": "Tutti in {{name}} possono vedere e spuntare questa faccenda.",
+    "create": "Aggiungi faccenda",
+    "save": "Salva",
+    "delete": "Elimina"
+  }
+}

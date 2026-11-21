@@ -1,0 +1,45 @@
+{
+  "title": "Haushaltsaufgaben",
+  "ownChores": "Deine eigenen Aufgaben",
+  "sharedWith": "Geteilt mit {{name}}",
+  "add": "Aufgabe hinzufügen",
+  "loading": "Aufgaben werden geladen",
+  "todo": "Zu erledigen · {{count}}",
+  "later": "Später · {{count}}",
+  "allDone": {
+    "title": "Für heute alles erledigt",
+    "message": "Abgehakte Aufgaben kommen an ihrem Tag um 00:00 Uhr zurück."
+  },
+  "every_one": "Jeden Tag",
+  "every_other": "Alle {{count}} Tage",
+  "comesBack": {
+    "tomorrow": "Wieder morgen",
+    "inDays_one": "Wieder in {{count}} Tag",
+    "inDays_other": "Wieder in {{count}} Tagen"
+  },
+  "markDone": "{{name}} als erledigt markieren",
+  "undo": "{{name}} zurücknehmen, nicht erledigt",
+  "edit": "{{name}} bearbeiten",
+  "loadError": {
+    "title": "Aufgaben konnten nicht geladen werden",
+    "message": "Deine Aufgaben werden auf diesem Handy gespeichert, sobald sie geladen sind. Versuche es erneut, wenn du online bist."
+  },
+  "empty": {
+    "title": "Noch keine Aufgaben",
+    "message": "Lege eine Aufgabe an und wie oft sie wiederkommt, zum Beispiel Handtücher wechseln alle 3 Tage. Hake sie ab, und sie kommt an ihrem Tag zurück."
+  },
+  "form": {
+    "newTitle": "Neue Aufgabe",
+    "editTitle": "Aufgabe bearbeiten",
+    "name": "Name",
+    "placeholder": "Zum Beispiel: Handtücher wechseln",
+    "interval": "Wiederholen alle",
+    "days": "Tage",
+    "hint": "Nur ganze Tage. Eine abgehakte Aufgabe kommt nach so vielen Tagen um 00:00 Uhr zurück.",
+    "visiblePersonal": "Nur du siehst diese Aufgabe.",
+    "visibleHousehold": "Alle in {{name}} können diese Aufgabe sehen und abhaken.",
+    "create": "Aufgabe hinzufügen",
+    "save": "Speichern",
+    "delete": "Löschen"
+  }
+}

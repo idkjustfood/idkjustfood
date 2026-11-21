@@ -5,10 +5,15 @@ import { Text, View } from "react-native"
 import { Icon } from "@/components/ui/icon"
 import { useShoppingState } from "@/lib/shopping"
 
-/** Tells the user they can keep using lists without a connection, and what is waiting to be sent. */
-export function OfflineBanner() {
+/**
+ * Tells the user they can keep using lists without a connection, and what is waiting to be
+ * sent. Shows the state of the shopping lists, or the state given (for example the chores').
+ */
+export function OfflineBanner(props: { online?: boolean; pending?: number }) {
   const { t } = useTranslation("common")
-  const { online, pending } = useShoppingState()
+  const shopping = useShoppingState()
+  const online = props.online ?? shopping.online
+  const pending = props.pending ?? shopping.pending
   if (online) return null
   return (
     <View

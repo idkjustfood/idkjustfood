@@ -75,7 +75,7 @@
   },
   "chores": {
     "name": "Labores",
-    "description": "Labores por turnos, con quién toca.",
+    "description": "Tareas del hogar que vuelven pasados unos días.",
     "soon": "Repartid las tareas del hogar con justicia: las labores rotan y muestran a quién le toca.",
     "quickAction": "Añadir labor"
   },

@@ -75,7 +75,7 @@
   },
   "chores": {
     "name": "Chores",
-    "description": "Chores with rotation and who is next.",
+    "description": "Chores that come back after a number of days.",
     "soon": "Share the housework fairly: chores rotate and show who is next.",
     "quickAction": "Add chore"
   },

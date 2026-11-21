@@ -1,0 +1,45 @@
+{
+  "title": "Chores",
+  "ownChores": "Your own chores",
+  "sharedWith": "Shared with {{name}}",
+  "add": "Add chore",
+  "loading": "Loading chores",
+  "todo": "To do · {{count}}",
+  "later": "Later · {{count}}",
+  "allDone": {
+    "title": "All done for today",
+    "message": "Checked chores come back on their day, at 00:00."
+  },
+  "every_one": "Every day",
+  "every_other": "Every {{count}} days",
+  "comesBack": {
+    "tomorrow": "Back tomorrow",
+    "inDays_one": "Back in {{count}} day",
+    "inDays_other": "Back in {{count}} days"
+  },
+  "markDone": "Mark {{name}} as done",
+  "undo": "Undo {{name}}, it is not done",
+  "edit": "Edit {{name}}",
+  "loadError": {
+    "title": "Could not load your chores",
+    "message": "Your chores are saved on this phone once they have loaded. Try again when you are online."
+  },
+  "empty": {
+    "title": "No chores yet",
+    "message": "Add a chore and how often it comes back, like switching the towels every 3 days. Check it off and it returns on its day."
+  },
+  "form": {
+    "newTitle": "New chore",
+    "editTitle": "Edit chore",
+    "name": "Name",
+    "placeholder": "For example: Switch towels",
+    "interval": "Repeat every",
+    "days": "Days",
+    "hint": "Only whole days. A checked chore comes back at 00:00, after this many days.",
+    "visiblePersonal": "Only you can see this chore.",
+    "visibleHousehold": "Everyone in {{name}} can see and check this chore.",
+    "create": "Add chore",
+    "save": "Save",
+    "delete": "Delete"
+  }
+}

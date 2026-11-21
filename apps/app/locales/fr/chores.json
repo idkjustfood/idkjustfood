@@ -1,0 +1,45 @@
+{
+  "title": "Tâches ménagères",
+  "ownChores": "Vos propres tâches",
+  "sharedWith": "Partagées avec {{name}}",
+  "add": "Ajouter une tâche",
+  "loading": "Chargement des tâches",
+  "todo": "À faire · {{count}}",
+  "later": "Plus tard · {{count}}",
+  "allDone": {
+    "title": "Tout est fait pour aujourd'hui",
+    "message": "Les tâches cochées reviennent le jour prévu, à 00:00."
+  },
+  "every_one": "Tous les jours",
+  "every_other": "Tous les {{count}} jours",
+  "comesBack": {
+    "tomorrow": "Revient demain",
+    "inDays_one": "Revient dans {{count}} jour",
+    "inDays_other": "Revient dans {{count}} jours"
+  },
+  "markDone": "Marquer {{name}} comme faite",
+  "undo": "Annuler {{name}}, elle n'est pas faite",
+  "edit": "Modifier {{name}}",
+  "loadError": {
+    "title": "Impossible de charger vos tâches",
+    "message": "Vos tâches sont enregistrées sur ce téléphone une fois chargées. Réessayez quand vous êtes en ligne."
+  },
+  "empty": {
+    "title": "Pas encore de tâches",
+    "message": "Ajoutez une tâche et sa fréquence, par exemple changer les serviettes tous les 3 jours. Cochez-la et elle revient le jour prévu."
+  },
+  "form": {
+    "newTitle": "Nouvelle tâche",
+    "editTitle": "Modifier la tâche",
+    "name": "Nom",
+    "placeholder": "Par exemple : Changer les serviettes",
+    "interval": "Répéter tous les",
+    "days": "Jours",
+    "hint": "Uniquement des jours entiers. Une tâche cochée revient à 00:00, après ce nombre de jours.",
+    "visiblePersonal": "Vous seul voyez cette tâche.",
+    "visibleHousehold": "Tous les membres de {{name}} peuvent voir et cocher cette tâche.",
+    "create": "Ajouter la tâche",
+    "save": "Enregistrer",
+    "delete": "Supprimer"
+  }
+}
