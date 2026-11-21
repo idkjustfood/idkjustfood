@@ -1,0 +1,44 @@
+{
+  "title": "Calendario",
+  "subtitle": "I tuoi giorni e quelli della tua casa",
+  "add": "Aggiungi voce",
+  "addOnDay": "Aggiungi una voce il {{day}}",
+  "loading": "Caricamento del calendario",
+  "loadError": {
+    "title": "Impossibile caricare il tuo calendario",
+    "message": "Il tuo calendario viene salvato su questo telefono dopo il caricamento. Riprova quando sei online."
+  },
+  "previousMonth": "Mese precedente",
+  "nextMonth": "Mese successivo",
+  "goToToday": "Vai a oggi",
+  "noEntries": "Niente in programma questo giorno.",
+  "personal": "Personale",
+  "household": "Casa",
+  "entryCount_one": "{{count}} voce",
+  "entryCount_other": "{{count}} voci",
+  "edit": "Modifica {{title}}",
+  "colors": {
+    "rose": "Rosa",
+    "peach": "Pesca",
+    "butter": "Burro",
+    "sage": "Salvia",
+    "sky": "Cielo",
+    "lavender": "Lavanda"
+  },
+  "form": {
+    "newTitle": "Nuova voce",
+    "editTitle": "Modifica voce",
+    "title": "Titolo",
+    "placeholder": "Per esempio: Dentista",
+    "color": "Colore",
+    "day": "Giorno",
+    "dayBefore": "Giorno prima",
+    "dayAfter": "Giorno dopo",
+    "for": "Aggiungi a",
+    "visiblePersonal": "Solo tu puoi vedere questa voce.",
+    "visibleHousehold": "Tutti in {{name}} possono vedere e modificare questa voce.",
+    "create": "Aggiungi voce",
+    "save": "Salva",
+    "delete": "Elimina"
+  }
+}

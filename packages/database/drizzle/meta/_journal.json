@@ -120,6 +120,13 @@
       "when": 1795271228732,
       "tag": "0016_quiet_puff_adder",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1795273684520,
+      "tag": "0017_talented_iron_monger",
+      "breakpoints": true
     }
   ]
 }

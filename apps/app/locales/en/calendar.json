@@ -1,0 +1,44 @@
+{
+  "title": "Calendar",
+  "subtitle": "Your days, and your household's",
+  "add": "Add entry",
+  "addOnDay": "Add entry on {{day}}",
+  "loading": "Loading calendar",
+  "loadError": {
+    "title": "Could not load your calendar",
+    "message": "Your calendar is saved on this phone once it has loaded. Try again when you are online."
+  },
+  "previousMonth": "Previous month",
+  "nextMonth": "Next month",
+  "goToToday": "Go to today",
+  "noEntries": "Nothing on this day.",
+  "personal": "Personal",
+  "household": "Household",
+  "entryCount_one": "{{count}} entry",
+  "entryCount_other": "{{count}} entries",
+  "edit": "Edit {{title}}",
+  "colors": {
+    "rose": "Rose",
+    "peach": "Peach",
+    "butter": "Butter",
+    "sage": "Sage",
+    "sky": "Sky",
+    "lavender": "Lavender"
+  },
+  "form": {
+    "newTitle": "New entry",
+    "editTitle": "Edit entry",
+    "title": "Title",
+    "placeholder": "For example: Dentist",
+    "color": "Colour",
+    "day": "Day",
+    "dayBefore": "Day before",
+    "dayAfter": "Day after",
+    "for": "Add it to",
+    "visiblePersonal": "Only you can see this entry.",
+    "visibleHousehold": "Everyone in {{name}} can see and change this entry.",
+    "create": "Add entry",
+    "save": "Save",
+    "delete": "Delete"
+  }
+}

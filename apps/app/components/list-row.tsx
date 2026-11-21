@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 /** One row in a grouped list, like on a settings screen. Tappable when `onPress` is set. */
 export function ListRow({
   icon,
+  leading,
   title,
   detail,
   right,
@@ -16,6 +17,8 @@ export function ListRow({
   destructive,
 }: {
   icon?: LucideIcon
+  /** Something else at the start of the row, like a colour block. Used instead of the icon. */
+  leading?: ReactNode
   title: string
   detail?: string
   right?: ReactNode
@@ -24,7 +27,8 @@ export function ListRow({
 }) {
   const body = (
     <>
-      {icon && (
+      {leading}
+      {!leading && icon && (
         <Icon
           as={icon}
           className={destructive ? "text-destructive" : "text-muted-foreground"}

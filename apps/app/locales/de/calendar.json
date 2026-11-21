@@ -1,0 +1,44 @@
+{
+  "title": "Kalender",
+  "subtitle": "Deine Tage und die deines Haushalts",
+  "add": "Eintrag hinzufügen",
+  "addOnDay": "Eintrag am {{day}} hinzufügen",
+  "loading": "Kalender wird geladen",
+  "loadError": {
+    "title": "Dein Kalender konnte nicht geladen werden",
+    "message": "Dein Kalender wird auf diesem Handy gespeichert, sobald er geladen ist. Versuche es erneut, wenn du online bist."
+  },
+  "previousMonth": "Voriger Monat",
+  "nextMonth": "Nächster Monat",
+  "goToToday": "Zu heute",
+  "noEntries": "An diesem Tag steht nichts an.",
+  "personal": "Persönlich",
+  "household": "Haushalt",
+  "entryCount_one": "{{count}} Eintrag",
+  "entryCount_other": "{{count}} Einträge",
+  "edit": "{{title}} bearbeiten",
+  "colors": {
+    "rose": "Rosé",
+    "peach": "Pfirsich",
+    "butter": "Butter",
+    "sage": "Salbei",
+    "sky": "Himmel",
+    "lavender": "Lavendel"
+  },
+  "form": {
+    "newTitle": "Neuer Eintrag",
+    "editTitle": "Eintrag bearbeiten",
+    "title": "Titel",
+    "placeholder": "Zum Beispiel: Zahnarzt",
+    "color": "Farbe",
+    "day": "Tag",
+    "dayBefore": "Tag davor",
+    "dayAfter": "Tag danach",
+    "for": "Hinzufügen zu",
+    "visiblePersonal": "Nur du siehst diesen Eintrag.",
+    "visibleHousehold": "Alle in {{name}} können diesen Eintrag sehen und ändern.",
+    "create": "Eintrag hinzufügen",
+    "save": "Speichern",
+    "delete": "Löschen"
+  }
+}

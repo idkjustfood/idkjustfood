@@ -3,6 +3,7 @@ import { describe, expect, test } from "bun:test"
 import type { Meal } from "@workspace/schemas"
 
 import {
+  calendarItems,
   choreItems,
   mealItems,
   shoppingItems,
@@ -158,6 +159,91 @@ describe("today timeline", () => {
         "chores",
       ])
       expect(all).toEqual([])
+    })
+  })
+
+  describe("calendar", () => {
+    const entry = (
+      id: string,
+      date: string,
+      householdId: string | null = null
+    ) => ({ id, title: `Entry ${id}`, color: "sky" as const, date, householdId })
+    const chore = (id: string, lastDoneOn: string | null) => ({
+      id,
+      name: id,
+      intervalDays: 3,
+      lastDoneOn,
+    })
+    const today = "2026-11-21"
+
+    test("shows today's and tomorrow's entries, and nothing from other days", () => {
+      const items = calendarItems(
+        [
+          entry("yesterday", "2026-11-20"),
+          entry("today", "2026-11-21"),
+          entry("tomorrow", "2026-11-22"),
+          entry("later", "2026-11-23"),
+        ],
+        today
+      )
+      expect(items.map((i) => i.kind === "calendar" && [i.id, i.day])).toEqual([
+        ["today", "today"],
+        ["tomorrow", "tomorrow"],
+      ])
+    })
+
+    test("tomorrow rolls over the end of a month and a year", () => {
+      const items = calendarItems([entry("new-year", "2027-01-01")], "2026-12-31")
+      expect(items[0]).toMatchObject({ id: "new-year", day: "tomorrow" })
+    })
+
+    test("personal and household entries are shown together and keep their owner", () => {
+      const items = calendarItems(
+        [entry("mine", today), entry("ours", today, "home")],
+        today
+      )
+      expect(
+        items.map((i) => i.kind === "calendar" && i.householdId)
+      ).toEqual([null, "home"])
+    })
+
+    test("tomorrow only brings calendar entries: tomorrow's chores and meals are not shown", () => {
+      const sections = todaySections(
+        timeline(
+          [
+            ...calendarItems([entry("t", "2026-11-22")], today),
+            ...choreItems([chore("c", "2026-11-19")], "2026-11-21"),
+            ...mealItems([meal("a", "2026-11-22", "midday")], today),
+          ],
+          []
+        )
+      )
+      expect(sections.map((s) => s.id)).toEqual(["tomorrow"])
+    })
+
+    test("sections run calendar, meals, shopping, tasks, tomorrow", () => {
+      const sections = todaySections(
+        timeline(
+          [
+            ...choreItems([chore("c", null)], today),
+            ...calendarItems([entry("t", "2026-11-22"), entry("n", today)], today),
+            ...mealItems([meal("a", today, "midday")], today),
+          ],
+          []
+        )
+      )
+      expect(sections.map((s) => s.id)).toEqual([
+        "calendar",
+        "meals",
+        "tasks",
+        "tomorrow",
+      ])
+    })
+
+    test("entries of a switched-off calendar are dropped", () => {
+      expect(
+        timeline(calendarItems([entry("n", today)], today), ["calendar"])
+      ).toEqual([])
     })
   })
 })

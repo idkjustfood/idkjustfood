@@ -1,0 +1,44 @@
+{
+  "title": "Calendario",
+  "subtitle": "Tus días y los de tu hogar",
+  "add": "Añadir entrada",
+  "addOnDay": "Añadir entrada el {{day}}",
+  "loading": "Cargando el calendario",
+  "loadError": {
+    "title": "No se pudo cargar tu calendario",
+    "message": "Tu calendario se guarda en este teléfono una vez cargado. Inténtalo de nuevo cuando tengas conexión."
+  },
+  "previousMonth": "Mes anterior",
+  "nextMonth": "Mes siguiente",
+  "goToToday": "Ir a hoy",
+  "noEntries": "No hay nada este día.",
+  "personal": "Personal",
+  "household": "Hogar",
+  "entryCount_one": "{{count}} entrada",
+  "entryCount_other": "{{count}} entradas",
+  "edit": "Editar {{title}}",
+  "colors": {
+    "rose": "Rosa",
+    "peach": "Melocotón",
+    "butter": "Mantequilla",
+    "sage": "Salvia",
+    "sky": "Cielo",
+    "lavender": "Lavanda"
+  },
+  "form": {
+    "newTitle": "Nueva entrada",
+    "editTitle": "Editar entrada",
+    "title": "Título",
+    "placeholder": "Por ejemplo: Dentista",
+    "color": "Color",
+    "day": "Día",
+    "dayBefore": "Día anterior",
+    "dayAfter": "Día siguiente",
+    "for": "Añadir a",
+    "visiblePersonal": "Solo tú puedes ver esta entrada.",
+    "visibleHousehold": "Todos en {{name}} pueden ver y cambiar esta entrada.",
+    "create": "Añadir entrada",
+    "save": "Guardar",
+    "delete": "Eliminar"
+  }
+}

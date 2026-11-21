@@ -95,6 +95,7 @@ describe("areaOfRoute", () => {
     expect(areaOfRoute("shopping")).toBe("food")
     expect(areaOfRoute("(recipes)")).toBe("food")
     expect(areaOfRoute("planner")).toBe("plan")
+    expect(areaOfRoute("calendar")).toBe("plan")
     expect(areaOfRoute("settings")).toBe("more")
   })
 

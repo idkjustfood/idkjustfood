@@ -29,12 +29,14 @@
     "error": "Could not load today",
     "errorMessage": "Check your connection and try again.",
     "emptyTitle": "Nothing planned for today",
-    "emptyMessage": "Meals from your meal planner, open shopping lists and chores that are due show up here.",
+    "emptyMessage": "Calendar entries, meals from your meal planner, open shopping lists and chores that are due show up here.",
     "more": "More modules will add their items to this timeline.",
     "sections": {
+      "calendar": "Calendar",
       "meals": "Meals",
       "shopping": "Shopping",
-      "tasks": "Tasks"
+      "tasks": "Tasks",
+      "tomorrow": "Tomorrow"
     },
     "slots": {
       "breakfast": "Breakfast",
@@ -70,8 +72,7 @@
   },
   "calendar": {
     "name": "Calendar",
-    "description": "Shared calendar and events for the household.",
-    "soon": "Plan appointments and events together, with one calendar for everyone.",
+    "description": "Calendar entries for you and your household, with a month view.",
     "quickAction": "Add event"
   },
   "tasks": {
