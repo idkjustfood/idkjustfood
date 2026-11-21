@@ -29,12 +29,14 @@
     "error": "Impossibile caricare oggi",
     "errorMessage": "Controlla la connessione e riprova.",
     "emptyTitle": "Niente in programma per oggi",
-    "emptyMessage": "I pasti del tuo planner, le liste della spesa aperte e le faccende da fare compaiono qui.",
+    "emptyMessage": "Qui compaiono le voci del calendario, i pasti del tuo planner, le liste della spesa aperte e le faccende da fare.",
     "more": "Altri moduli aggiungeranno i loro elementi a questa cronologia.",
     "sections": {
+      "calendar": "Calendario",
       "meals": "Pasti",
       "shopping": "Spesa",
-      "tasks": "Faccende"
+      "tasks": "Faccende",
+      "tomorrow": "Domani"
     },
     "slots": {
       "breakfast": "Colazione",
@@ -70,9 +72,8 @@
   },
   "calendar": {
     "name": "Calendario",
-    "description": "Calendario condiviso ed eventi della famiglia.",
-    "soon": "Pianificate appuntamenti ed eventi insieme, con un calendario per tutti.",
-    "quickAction": "Aggiungi evento"
+    "description": "Calendario con voci per te e per la tua casa, con vista mensile.",
+    "quickAction": "Aggiungi voce"
   },
   "tasks": {
     "name": "Attività",

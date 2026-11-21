@@ -108,6 +108,9 @@ TypeScript everywhere, in one monorepo.
   number of weeks, manual planning, an automatic planner in plain code (goals, wizard) and adding a
   plan's ingredients to a shopping list. See `docs/meal-planner.md`. The calorie and nutrient
   optimizer on top of it is not built yet.
+- The calendar works end to end: entries with a title and a colour, a month view, personal or for a
+  household, offline on the phone. Today shows the entries of today and tomorrow. See
+  `docs/calendar.md`.
 - Household chores work end to end: tasks that come back after a number of days, personal or
   shared with a household, offline on the phone. See `docs/household-tasks.md`.
 - Documents (warranties, contracts, scans) can be uploaded, personal or shared with a household.

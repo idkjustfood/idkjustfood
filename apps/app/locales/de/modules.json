@@ -29,12 +29,14 @@
     "error": "Heute konnte nicht geladen werden",
     "errorMessage": "Prüfe deine Verbindung und versuche es erneut.",
     "emptyTitle": "Für heute ist nichts geplant",
-    "emptyMessage": "Mahlzeiten aus deinem Essensplan, offene Einkaufslisten und fällige Aufgaben erscheinen hier.",
+    "emptyMessage": "Kalendereinträge, Mahlzeiten aus deinem Essensplaner, offene Einkaufslisten und fällige Aufgaben erscheinen hier.",
     "more": "Weitere Module fügen ihre Einträge zu dieser Zeitleiste hinzu.",
     "sections": {
+      "calendar": "Kalender",
       "meals": "Mahlzeiten",
       "shopping": "Einkaufen",
-      "tasks": "Aufgaben"
+      "tasks": "Aufgaben",
+      "tomorrow": "Morgen"
     },
     "slots": {
       "breakfast": "Frühstück",
@@ -70,9 +72,8 @@
   },
   "calendar": {
     "name": "Kalender",
-    "description": "Gemeinsamer Kalender und Termine für den Haushalt.",
-    "soon": "Plant Termine und Ereignisse gemeinsam, mit einem Kalender für alle.",
-    "quickAction": "Termin hinzufügen"
+    "description": "Kalender mit Einträgen für dich und deinen Haushalt, mit Monatsansicht.",
+    "quickAction": "Eintrag hinzufügen"
   },
   "tasks": {
     "name": "Aufgaben",

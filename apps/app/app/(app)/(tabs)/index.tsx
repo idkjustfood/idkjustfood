@@ -11,15 +11,17 @@ import { Screen } from "@/components/screen"
 import { SearchButton } from "@/components/search-button"
 import { SpaceSwitcher } from "@/components/space-switcher"
 import { EmptyState, ErrorState, LoadingState } from "@/components/states"
+import { CalendarSwatch } from "@/components/calendar-swatch"
 import { CheckboxBox } from "@/components/ui/checkbox"
 import { useChoreActions, useToday } from "@/lib/chores"
+import { useHouseholds } from "@/lib/households"
 import { useIsWide } from "@/lib/layout"
 import { todaySections, type TodayItem } from "@/lib/today"
 import { useTodayItems } from "@/lib/use-today"
 
 /** Today: a timeline that collects what is on from the modules that provide items. */
 export default function Today() {
-  const { t } = useTranslation(["modules", "chores"])
+  const { t } = useTranslation(["modules", "chores", "calendar"])
   const wide = useIsWide()
   const { items, loading, error, retry } = useTodayItems()
   const sections = todaySections(items)
@@ -69,6 +71,22 @@ function TimelineRow({ item }: { item: TodayItem }) {
   const { t } = useTranslation("modules")
   const actions = useChoreActions()
   const today = useToday()
+  const { households } = useHouseholds()
+  if (item.kind === "calendar") {
+    // Personal and household entries come together here, so each says which one it is.
+    const owner = item.householdId
+      ? (households.find((h) => h.id === item.householdId)?.name ??
+        t("calendar:household"))
+      : t("calendar:personal")
+    return (
+      <ListRow
+        leading={<CalendarSwatch color={item.color} />}
+        title={item.title}
+        detail={owner}
+        onPress={() => router.push("/calendar" as Href)}
+      />
+    )
+  }
   if (item.kind === "meal")
     return (
       <ListRow

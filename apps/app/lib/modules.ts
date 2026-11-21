@@ -39,9 +39,9 @@ export const modules: readonly AppModule[] = [
   {
     id: "calendar",
     area: "plan",
-    route: placeholder("calendar"),
-    built: false,
-    quickAction: { route: placeholder("calendar") },
+    route: "/calendar",
+    built: true,
+    quickAction: { route: "/calendar" },
   },
   {
     id: "tasks",
@@ -297,6 +297,7 @@ export function areaOfRoute(
     case "add":
       return "food"
     case "planner":
+    case "calendar":
       return "plan"
     case "chores":
     case "documents":

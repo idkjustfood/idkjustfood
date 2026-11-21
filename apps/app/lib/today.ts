@@ -1,7 +1,11 @@
 import {
+  addDays,
   daysUntilDue,
+  entriesOn,
   mealSlots,
   splitChores,
+  type CalendarColor,
+  type CalendarEntry,
   type Chore,
   type ChoreDay,
   type Meal,
@@ -13,6 +17,17 @@ import {
  * how to draw it. This file is plain logic, so it can be tested.
  */
 export type TodayItem =
+  | {
+      kind: "calendar"
+      id: string
+      moduleId: "calendar"
+      title: string
+      color: CalendarColor
+      /** Whether the entry is today or tomorrow. Tomorrow's entries are shown in their own section. */
+      day: "today" | "tomorrow"
+      /** The household the entry is for, or null for a personal entry. */
+      householdId: string | null
+    }
   | {
       kind: "meal"
       id: string
@@ -39,6 +54,34 @@ export type TodayItem =
       /** How many days ago the chore came back. 0 when it is due today or was never checked. */
       overdueDays: number
     }
+
+/**
+ * Calendar entries of today and of tomorrow, personal and household ones together. Only the
+ * calendar looks ahead to tomorrow: other modules show today only.
+ */
+export function calendarItems(
+  entries: readonly Pick<
+    CalendarEntry,
+    "id" | "title" | "color" | "date" | "householdId"
+  >[],
+  today: string
+): TodayItem[] {
+  const toItem =
+    (day: "today" | "tomorrow") =>
+    (entry: (typeof entries)[number]): TodayItem => ({
+      kind: "calendar",
+      id: entry.id,
+      moduleId: "calendar",
+      title: entry.title,
+      color: entry.color,
+      day,
+      householdId: entry.householdId,
+    })
+  return [
+    ...entriesOn(entries, today).map(toItem("today")),
+    ...entriesOn(entries, addDays(today, 1)).map(toItem("tomorrow")),
+  ]
+}
 
 /** Meals eaten on `date`, in the order of the day. */
 export function mealItems(meals: readonly Meal[], date: string): TodayItem[] {
@@ -99,24 +142,39 @@ export function choreItems(
     .sort((a, b) => b.overdueDays - a.overdueDays)
 }
 
-/** The timeline: meals first, then what is left to buy, then chores. Items of switched-off modules are dropped. */
+/** The timeline in the order of the sections. Items of switched-off modules are dropped. */
 export function timeline(
   items: readonly TodayItem[],
   disabled: readonly string[]
 ): TodayItem[] {
-  const rank = (item: TodayItem) =>
-    item.kind === "meal" ? 0 : item.kind === "shopping" ? 1 : 2
+  const rank = (item: TodayItem) => todaySectionIds.indexOf(sectionOf(item))
   return items
     .filter((item) => !disabled.includes(item.moduleId))
     .sort((a, b) => rank(a) - rank(b))
 }
 
 /** The sections of the Today screen, in the order they are shown. */
-export const todaySectionIds = ["meals", "shopping", "tasks"] as const
+export const todaySectionIds = [
+  "calendar",
+  "meals",
+  "shopping",
+  "tasks",
+  "tomorrow",
+] as const
 export type TodaySectionId = (typeof todaySectionIds)[number]
 
-const sectionOf = (item: TodayItem): TodaySectionId =>
-  item.kind === "meal" ? "meals" : item.kind === "shopping" ? "shopping" : "tasks"
+const sectionOf = (item: TodayItem): TodaySectionId => {
+  switch (item.kind) {
+    case "calendar":
+      return item.day === "today" ? "calendar" : "tomorrow"
+    case "meal":
+      return "meals"
+    case "shopping":
+      return "shopping"
+    case "chore":
+      return "tasks"
+  }
+}
 
 /**
  * Items grouped into sections. The order of sections is fixed, the order inside a section is kept,

@@ -29,12 +29,14 @@
     "error": "No se pudo cargar hoy",
     "errorMessage": "Comprueba tu conexión e inténtalo de nuevo.",
     "emptyTitle": "Nada planificado para hoy",
-    "emptyMessage": "Las comidas de tu planificador, las listas de compras abiertas y las tareas pendientes aparecen aquí.",
+    "emptyMessage": "Aquí aparecen las entradas del calendario, las comidas de tu planificador, las listas de la compra abiertas y las tareas pendientes.",
     "more": "Más módulos añadirán sus elementos a esta cronología.",
     "sections": {
+      "calendar": "Calendario",
       "meals": "Comidas",
       "shopping": "Compras",
-      "tasks": "Tareas"
+      "tasks": "Tareas",
+      "tomorrow": "Mañana"
     },
     "slots": {
       "breakfast": "Desayuno",
@@ -70,9 +72,8 @@
   },
   "calendar": {
     "name": "Calendario",
-    "description": "Calendario compartido y eventos del hogar.",
-    "soon": "Planificad citas y eventos juntos, con un calendario para todos.",
-    "quickAction": "Añadir evento"
+    "description": "Calendario con entradas para ti y tu hogar, con vista mensual.",
+    "quickAction": "Añadir entrada"
   },
   "tasks": {
     "name": "Tareas",

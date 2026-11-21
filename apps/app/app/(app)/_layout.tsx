@@ -1,6 +1,7 @@
 import { router, Stack } from "expo-router"
 import { useEffect } from "react"
 
+import { CalendarProvider } from "@/lib/calendar"
 import { ChoreProvider } from "@/lib/chores"
 import { isCloud } from "@/lib/edition"
 import { takePendingInvite } from "@/lib/pending-invite"
@@ -16,6 +17,7 @@ export default function AppLayout() {
   return (
     <ShoppingProvider>
       <ChoreProvider>
+      <CalendarProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
         {/* Cooking mode covers the whole screen, without tab bar or side bar. */}
@@ -28,6 +30,7 @@ export default function AppLayout() {
           <Stack.Screen name="billing" />
         </Stack.Protected>
       </Stack>
+      </CalendarProvider>
       </ChoreProvider>
     </ShoppingProvider>
   )

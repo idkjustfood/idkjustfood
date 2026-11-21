@@ -81,6 +81,11 @@ Personal and household shopping lists that work offline on the phone, with recip
 merged into one line per ingredient. See [shopping lists](docs/shopping-lists.md) for the API and
 how offline works.
 
+## Calendar
+
+Entries with a title and a colour on a day, in a month view. Personal or for a household, offline on
+the phone. Today shows the entries of today and tomorrow. See [calendar](docs/calendar.md).
+
 ## Household chores
 
 Tasks that come back after a number of days ("switch towels, every 3 days"). Check one off and it

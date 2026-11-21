@@ -29,12 +29,14 @@
     "error": "Impossible de charger aujourd’hui",
     "errorMessage": "Vérifiez votre connexion et réessayez.",
     "emptyTitle": "Rien de prévu aujourd’hui",
-    "emptyMessage": "Les repas de votre planificateur, les listes de courses ouvertes et les tâches à faire apparaissent ici.",
+    "emptyMessage": "Les entrées du calendrier, les repas de ton planificateur, les listes de courses ouvertes et les tâches à faire apparaissent ici.",
     "more": "D’autres modules ajouteront leurs éléments à cette chronologie.",
     "sections": {
+      "calendar": "Calendrier",
       "meals": "Repas",
       "shopping": "Courses",
-      "tasks": "Tâches"
+      "tasks": "Tâches",
+      "tomorrow": "Demain"
     },
     "slots": {
       "breakfast": "Petit-déjeuner",
@@ -70,9 +72,8 @@
   },
   "calendar": {
     "name": "Calendrier",
-    "description": "Calendrier partagé et événements du foyer.",
-    "soon": "Planifiez rendez-vous et événements ensemble, avec un calendrier pour tous.",
-    "quickAction": "Ajouter un événement"
+    "description": "Calendrier avec des entrées pour toi et ton foyer, avec une vue par mois.",
+    "quickAction": "Ajouter une entrée"
   },
   "tasks": {
     "name": "Tâches",

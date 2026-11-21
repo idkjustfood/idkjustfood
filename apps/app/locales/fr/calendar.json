@@ -1,0 +1,44 @@
+{
+  "title": "Calendrier",
+  "subtitle": "Tes journées et celles de ton foyer",
+  "add": "Ajouter une entrée",
+  "addOnDay": "Ajouter une entrée le {{day}}",
+  "loading": "Chargement du calendrier",
+  "loadError": {
+    "title": "Impossible de charger ton calendrier",
+    "message": "Ton calendrier est conservé sur ce téléphone une fois chargé. Réessaie quand tu es en ligne."
+  },
+  "previousMonth": "Mois précédent",
+  "nextMonth": "Mois suivant",
+  "goToToday": "Aller à aujourd'hui",
+  "noEntries": "Rien de prévu ce jour-là.",
+  "personal": "Personnel",
+  "household": "Foyer",
+  "entryCount_one": "{{count}} entrée",
+  "entryCount_other": "{{count}} entrées",
+  "edit": "Modifier {{title}}",
+  "colors": {
+    "rose": "Rose",
+    "peach": "Pêche",
+    "butter": "Beurre",
+    "sage": "Sauge",
+    "sky": "Ciel",
+    "lavender": "Lavande"
+  },
+  "form": {
+    "newTitle": "Nouvelle entrée",
+    "editTitle": "Modifier l'entrée",
+    "title": "Titre",
+    "placeholder": "Par exemple : Dentiste",
+    "color": "Couleur",
+    "day": "Jour",
+    "dayBefore": "Jour précédent",
+    "dayAfter": "Jour suivant",
+    "for": "Ajouter à",
+    "visiblePersonal": "Toi seul peux voir cette entrée.",
+    "visibleHousehold": "Tous les membres de {{name}} peuvent voir et modifier cette entrée.",
+    "create": "Ajouter l'entrée",
+    "save": "Enregistrer",
+    "delete": "Supprimer"
+  }
+}
