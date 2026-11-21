@@ -29,17 +29,20 @@
     "error": "No se pudo cargar hoy",
     "errorMessage": "Comprueba tu conexión e inténtalo de nuevo.",
     "emptyTitle": "Nada planificado para hoy",
-    "emptyMessage": "Aquí aparecen las comidas de tu planificador y las listas de la compra abiertas.",
+    "emptyMessage": "Las comidas de tu planificador, las listas de compras abiertas y las tareas pendientes aparecen aquí.",
     "more": "Más módulos añadirán sus elementos a esta cronología.",
     "sections": {
       "meals": "Comidas",
-      "shopping": "Compras"
+      "shopping": "Compras",
+      "tasks": "Tareas"
     },
     "slots": {
       "breakfast": "Desayuno",
       "midday": "Mediodía",
       "afternoon": "Tarde"
     },
+    "overdue_one": "{{count}} día de retraso",
+    "overdue_other": "{{count}} días de retraso",
     "servings_one": "{{count}} ración",
     "servings_other": "{{count}} raciones",
     "toBuy_one": "{{count}} artículo por comprar",

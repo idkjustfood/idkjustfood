@@ -29,17 +29,20 @@
     "error": "Heute konnte nicht geladen werden",
     "errorMessage": "Prüfe deine Verbindung und versuche es erneut.",
     "emptyTitle": "Für heute ist nichts geplant",
-    "emptyMessage": "Mahlzeiten aus deinem Essensplan und offene Einkaufslisten erscheinen hier.",
+    "emptyMessage": "Mahlzeiten aus deinem Essensplan, offene Einkaufslisten und fällige Aufgaben erscheinen hier.",
     "more": "Weitere Module fügen ihre Einträge zu dieser Zeitleiste hinzu.",
     "sections": {
       "meals": "Mahlzeiten",
-      "shopping": "Einkaufen"
+      "shopping": "Einkaufen",
+      "tasks": "Aufgaben"
     },
     "slots": {
       "breakfast": "Frühstück",
       "midday": "Mittag",
       "afternoon": "Nachmittag"
     },
+    "overdue_one": "{{count}} Tag überfällig",
+    "overdue_other": "{{count}} Tage überfällig",
     "servings_one": "{{count}} Portion",
     "servings_other": "{{count}} Portionen",
     "toBuy_one": "{{count}} Artikel zu kaufen",

@@ -29,17 +29,20 @@
     "error": "Impossible de charger aujourd’hui",
     "errorMessage": "Vérifiez votre connexion et réessayez.",
     "emptyTitle": "Rien de prévu aujourd’hui",
-    "emptyMessage": "Les repas de votre planificateur et les listes de courses ouvertes apparaissent ici.",
+    "emptyMessage": "Les repas de votre planificateur, les listes de courses ouvertes et les tâches à faire apparaissent ici.",
     "more": "D’autres modules ajouteront leurs éléments à cette chronologie.",
     "sections": {
       "meals": "Repas",
-      "shopping": "Courses"
+      "shopping": "Courses",
+      "tasks": "Tâches"
     },
     "slots": {
       "breakfast": "Petit-déjeuner",
       "midday": "Midi",
       "afternoon": "Après-midi"
     },
+    "overdue_one": "{{count}} jour de retard",
+    "overdue_other": "{{count}} jours de retard",
     "servings_one": "{{count}} portion",
     "servings_other": "{{count}} portions",
     "toBuy_one": "{{count}} article à acheter",

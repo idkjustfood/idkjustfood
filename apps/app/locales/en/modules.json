@@ -29,17 +29,20 @@
     "error": "Could not load today",
     "errorMessage": "Check your connection and try again.",
     "emptyTitle": "Nothing planned for today",
-    "emptyMessage": "Meals from your meal planner and open shopping lists show up here.",
+    "emptyMessage": "Meals from your meal planner, open shopping lists and chores that are due show up here.",
     "more": "More modules will add their items to this timeline.",
     "sections": {
       "meals": "Meals",
-      "shopping": "Shopping"
+      "shopping": "Shopping",
+      "tasks": "Tasks"
     },
     "slots": {
       "breakfast": "Breakfast",
       "midday": "Midday",
       "afternoon": "Afternoon"
     },
+    "overdue_one": "{{count}} day overdue",
+    "overdue_other": "{{count}} days overdue",
     "servings_one": "{{count}} serving",
     "servings_other": "{{count}} servings",
     "toBuy_one": "{{count}} item to buy",
