@@ -2,43 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Design tokens come from the selected theme (lib/themes.ts), which
+ * AppThemeProvider applies at runtime. These are only the fallback for the very
+ * first paint on the web: the default "cozy" theme, light variant.
+ */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --primary: 226 70% 40%;
-    --primary-foreground: 214 100% 97%;
-    --secondary: 240 5% 96%;
-    --secondary-foreground: 240 6% 10%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 72% 51%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 63%;
-    --radius: 0.625rem;
-  }
-
-  .dark:root {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 7%;
-    --card-foreground: 0 0% 98%;
-    --primary: 226 70% 55%;
-    --primary-foreground: 214 100% 97%;
-    --secondary: 240 4% 16%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 70% 55%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 45%;
+    --background: 40 60% 96%;
+    --foreground: 20 25% 16%;
+    --card: 40 75% 99%;
+    --card-foreground: 20 25% 16%;
+    --primary: 14 58% 38%;
+    --primary-foreground: 40 70% 97%;
+    --secondary: 35 45% 90%;
+    --secondary-foreground: 20 25% 16%;
+    --muted: 35 35% 92%;
+    --muted-foreground: 25 15% 33%;
+    --accent: 35 50% 88%;
+    --accent-foreground: 20 25% 16%;
+    --destructive: 4 65% 40%;
+    --border: 30 30% 83%;
+    --input: 28 22% 52%;
+    --ring: 14 58% 50%;
+    --tone-rose: 350 70% 90%;
+    --tone-rose-foreground: 345 50% 24%;
+    --tone-sage: 135 28% 85%;
+    --tone-sage-foreground: 140 35% 18%;
+    --tone-peach: 25 90% 87%;
+    --tone-peach-foreground: 20 60% 21%;
+    --tone-lavender: 265 55% 91%;
+    --tone-lavender-foreground: 265 35% 25%;
+    --tone-butter: 45 90% 86%;
+    --tone-butter-foreground: 35 70% 20%;
+    --tone-sky: 205 65% 88%;
+    --tone-sky-foreground: 210 50% 20%;
+    --radius: 1.25rem;
   }
 }

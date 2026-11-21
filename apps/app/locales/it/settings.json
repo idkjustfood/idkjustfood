@@ -20,6 +20,7 @@
   "preferences": {
     "title": "Preferenze",
     "units": "Unità",
+    "theme": "Tema",
     "metric": "Metrico (g, ml)",
     "imperial": "Imperiale (oz, tazze)",
     "appearance": "Aspetto",
@@ -27,6 +28,10 @@
     "light": "Chiaro",
     "dark": "Scuro",
     "language": "Lingua"
+  },
+  "theme": {
+    "cozy": "Accogliente",
+    "classic": "Classico"
   },
   "language": {
     "title": "Lingua",

@@ -20,6 +20,7 @@ import { formatAmount, formatMinutes, type Units } from "@/lib/format"
 import i18n from "@/lib/i18n"
 import { highlightStep } from "@/lib/step-highlight"
 import { cn } from "@/lib/utils"
+import { Heading } from "@/components/ui/heading"
 
 export function ServingsScaler({
   servings,
@@ -60,13 +61,13 @@ export function ServingsScaler({
 /** The headline of a section ("Sauce", "Dough") above its ingredients or steps. */
 export function SectionHeading({ name }: { name: string }) {
   return (
-    <Text
-      role="heading"
+    <Heading
+     
       aria-level={3}
       className="text-lg font-semibold text-foreground"
     >
       {name}
-    </Text>
+    </Heading>
   )
 }
 

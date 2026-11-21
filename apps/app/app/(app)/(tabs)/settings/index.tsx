@@ -28,6 +28,7 @@ import { Screen } from "@/components/screen"
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
 import { Segmented } from "@/components/ui/segmented"
+import { Select } from "@/components/ui/select"
 import { Sheet } from "@/components/ui/sheet"
 import { useAppState } from "@/lib/app-state"
 import { API_URL, authClient } from "@/lib/auth-client"
@@ -35,6 +36,7 @@ import { isCloud } from "@/lib/edition"
 import { useHouseholds } from "@/lib/households"
 import i18n, { supportedLanguages } from "@/lib/i18n"
 import { aiProviders } from "@/lib/mock-data"
+import { themes } from "@/lib/themes"
 
 type Open = "language" | "export" | "import" | null
 
@@ -122,6 +124,20 @@ export default function Settings() {
               { value: "metric", label: t("settings:preferences.metric") },
               { value: "imperial", label: t("settings:preferences.imperial") },
             ]}
+          />
+        </View>
+        <View className="gap-2 px-4 py-3">
+          <Text className="text-base text-foreground">
+            {t("settings:preferences.theme")}
+          </Text>
+          <Select
+            label={t("settings:preferences.theme")}
+            value={state.themeId}
+            onChange={state.setThemeId}
+            options={themes.map((theme) => ({
+              value: theme.id,
+              label: t(`settings:${theme.nameKey}`),
+            }))}
           />
         </View>
         <View className="gap-2 px-4 py-3">

@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input"
 import { TagPicker } from "@/components/tag-picker"
 import { UnitPicker } from "@/components/ui/unit-picker"
 import { cn } from "@/lib/utils"
+import { useTheme } from "@/lib/theme"
 
 /**
  * The state of a recipe form. Screens create it, show `RecipeForm` with it and
@@ -64,15 +65,17 @@ function Field({
   warn,
   ...props
 }: React.ComponentProps<typeof TextInput> & { label: string; warn?: boolean }) {
+  const { color } = useTheme()
+  const placeholderColor = color("muted-foreground")
   return (
     <TextInput
       accessibilityLabel={label}
       placeholder={label}
-      placeholderTextColor="#737373"
+      placeholderTextColor={placeholderColor}
       className={cn(
         "h-12 min-w-0 rounded-md border bg-background px-3 text-base text-foreground",
         warn
-          ? "border-amber-500 bg-amber-50 dark:bg-amber-950/40"
+          ? "border-tone-butter-foreground bg-tone-butter"
           : "border-input",
         className
       )}
@@ -363,12 +366,12 @@ export function RecipeForm({
           {t("recipes:form.amountHint")}
         </Text>
         {highlightMissing && missing > 0 && (
-          <View className="flex-row gap-3 rounded-md bg-amber-100 p-3 dark:bg-amber-950">
+          <View className="flex-row gap-3 rounded-md bg-tone-butter p-3">
             <Icon
               as={CircleAlert}
-              className="text-amber-700 dark:text-amber-300"
+              className="text-tone-butter-foreground"
             />
-            <Text className="flex-1 text-amber-900 dark:text-amber-200">
+            <Text className="flex-1 text-tone-butter-foreground">
               {t("recipes:form.missingAmounts", { count: missing })}
             </Text>
           </View>
@@ -444,7 +447,7 @@ export function RecipeForm({
               />
               <FieldError message={quantityError ?? nameError} />
               {highlightMissing && empty && !quantityError && (
-                <Text className="text-sm text-amber-700 dark:text-amber-300">
+                <Text className="text-sm text-tone-butter-foreground">
                   {t("recipes:form.amountMissing")}
                 </Text>
               )}

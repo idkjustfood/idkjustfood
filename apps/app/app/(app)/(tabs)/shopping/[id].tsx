@@ -56,6 +56,7 @@ import {
 } from "@/lib/shopping"
 import { useSupermarket, type SupermarketState } from "@/lib/supermarket"
 import { cn } from "@/lib/utils"
+import { useTheme } from "@/lib/theme"
 
 export default function ShoppingListScreen() {
   const { t } = useTranslation()
@@ -73,6 +74,8 @@ export default function ShoppingListScreen() {
 }
 
 function ListView({ list }: { list: ShoppingList }) {
+  const { color } = useTheme()
+  const placeholderColor = color("muted-foreground")
   const { t } = useTranslation()
   const { units } = useAppState()
   const household = useHouseholdById(list.householdId)
@@ -201,7 +204,7 @@ function ListView({ list }: { list: ShoppingList }) {
           <TextInput
             accessibilityLabel={t("shopping:list.addItem")}
             placeholder={t("shopping:list.addItem")}
-            placeholderTextColor="#737373"
+            placeholderTextColor={placeholderColor}
             value={draft}
             onChangeText={setDraft}
             onSubmitEditing={addItem}
@@ -220,7 +223,7 @@ function ListView({ list }: { list: ShoppingList }) {
           <TextInput
             accessibilityLabel={t("shopping:list.amount")}
             placeholder={t("shopping:list.amountPlaceholder")}
-            placeholderTextColor="#737373"
+            placeholderTextColor={placeholderColor}
             value={amount}
             onChangeText={(text) => {
               setAmount(text)

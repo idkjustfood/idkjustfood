@@ -39,6 +39,7 @@ import {
   type Member,
 } from "@/lib/households"
 import { copyText, inDays } from "@/lib/share"
+import { Heading } from "@/components/ui/heading"
 
 export default function HouseholdScreen() {
   const { t } = useTranslation()
@@ -132,9 +133,9 @@ function CreateHouseholdCard({ title }: { title?: string }) {
   return (
     <Card className="gap-4 p-4">
       {title && (
-        <Text role="heading" className="text-lg font-semibold text-foreground">
+        <Heading className="text-lg font-semibold text-foreground">
           {title}
-        </Text>
+        </Heading>
       )}
       <Input
         label={t("settings:manage.nameLabel")}

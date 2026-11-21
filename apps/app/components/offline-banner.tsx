@@ -13,14 +13,14 @@ export function OfflineBanner() {
   return (
     <View
       role="status"
-      className="flex-row items-start gap-3 rounded-lg bg-amber-100 p-3 dark:bg-amber-950"
+      className="flex-row items-start gap-3 rounded-lg bg-tone-butter p-3"
     >
-      <Icon as={CloudOff} className="text-amber-700 dark:text-amber-300" />
+      <Icon as={CloudOff} className="text-tone-butter-foreground" />
       <View className="flex-1">
-        <Text className="font-semibold text-amber-900 dark:text-amber-100">
+        <Text className="font-semibold text-tone-butter-foreground">
           {t("offline.title")}
         </Text>
-        <Text className="text-amber-900 dark:text-amber-200">
+        <Text className="text-tone-butter-foreground">
           {t("offline.message")}
           {pending > 0 ? ` ${t("offline.pending", { count: pending })}` : ""}
         </Text>

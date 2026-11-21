@@ -7,7 +7,13 @@ import { useMemo } from "react"
 
 import { AppStateProvider, useAppState } from "@/lib/app-state"
 import { authClient } from "@/lib/auth-client"
-import { NAV_THEME, useAppearance } from "@/lib/theme"
+import { useAppFonts } from "@/lib/fonts"
+import {
+  AppThemeProvider,
+  navTheme,
+  useAppearance,
+  useTheme,
+} from "@/lib/theme"
 
 export default function RootLayout() {
   return (
@@ -19,7 +25,8 @@ export default function RootLayout() {
 
 function Root() {
   const { data: session, isPending } = authClient.useSession()
-  const { demo, appearance } = useAppState()
+  const { demo, appearance, themeId } = useAppState()
+  const fontsReady = useAppFonts()
   const scheme = useAppearance(appearance)
   const userId = session?.user.id
 
@@ -32,14 +39,31 @@ function Root() {
 
   // Wait for the stored session before choosing a screen, so a signed-in
   // person does not see the login screen flash by.
-  if (isPending) return null
+  if (isPending || !fontsReady) return null
 
   // The demo shows the app with sample data, without an account or a running API.
   const signedIn = !!session || demo
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider value={NAV_THEME[scheme]}>
+      <AppThemeProvider themeId={themeId} scheme={scheme}>
+        <Navigation scheme={scheme} signedIn={signedIn} />
+      </AppThemeProvider>
+    </QueryClientProvider>
+  )
+}
+
+function Navigation({
+  scheme,
+  signedIn,
+}: {
+  scheme: "light" | "dark"
+  signedIn: boolean
+}) {
+  const theme = useTheme()
+  return (
+    <>
+      <ThemeProvider value={navTheme(theme)}>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Protected guard={signedIn}>
             <Stack.Screen name="(app)" />
@@ -52,6 +76,6 @@ function Root() {
         </Stack>
         <StatusBar style={scheme === "dark" ? "light" : "dark"} />
       </ThemeProvider>
-    </QueryClientProvider>
+    </>
   )
 }

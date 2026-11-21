@@ -50,6 +50,7 @@ import {
 import { dayLabel, weekLabel } from "@/lib/planner-format"
 import { inSpace } from "@/lib/space"
 import { cn } from "@/lib/utils"
+import { Heading } from "@/components/ui/heading"
 
 type Editing = { date: string; slot: MealSlot }
 
@@ -330,13 +331,13 @@ function DayCard({
       )}
     >
       <View className="flex-row items-baseline justify-between gap-2 px-4 pt-3">
-        <Text
-          role="heading"
+        <Heading
+         
           className="text-base font-semibold text-foreground"
         >
           {dayLabel(date)}
           {isToday ? ` · ${t("planner:day.today")}` : ""}
-        </Text>
+        </Heading>
         {total.planned > 0 && total.calories > 0 && (
           <Text className="text-xs text-muted-foreground">
             {t("planner:day.kcal", {

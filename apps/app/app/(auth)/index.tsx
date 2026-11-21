@@ -17,6 +17,7 @@ import { useAppState } from "@/lib/app-state"
 import { authClient } from "@/lib/auth-client"
 import { readableAuthError, validateCredentials } from "@/lib/auth-errors"
 import type { SocialProvider } from "@/lib/use-auth-config"
+import { Heading } from "@/components/ui/heading"
 
 export default function Login() {
   const { t } = useTranslation("auth")
@@ -68,7 +69,7 @@ export default function Login() {
           contentContainerClassName="w-full max-w-md flex-grow justify-center gap-5 self-center p-6"
           keyboardShouldPersistTaps="handled"
         >
-          <Text className="text-3xl font-semibold text-foreground">{t("login.title")}</Text>
+          <Heading className="text-3xl font-semibold text-foreground">{t("login.title")}</Heading>
           <Input
             label={t("fields.email")}
             value={email}

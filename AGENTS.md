@@ -108,6 +108,8 @@ TypeScript everywhere, in one monorepo.
   number of weeks, manual planning, an automatic planner in plain code (goals, wizard) and adding a
   plan's ingredients to a shopping list. See `docs/meal-planner.md`. The calorie and nutrient
   optimizer on top of it is not built yet.
+- The app has a theme system (cozy hand-drawn look by default, chosen in settings). See
+  `docs/themes.md`. Screens use design tokens only, never hardcoded colours.
 - The app has all its screens; adding a recipe from a link, photo or text is not connected to the
   extraction endpoints yet.
 

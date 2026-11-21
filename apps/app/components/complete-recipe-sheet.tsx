@@ -18,6 +18,7 @@ import {
 } from "@/lib/complete-recipe"
 import { formatAmount, type Units } from "@/lib/format"
 import { useUpdateRecipe, type Recipe } from "@/lib/recipes"
+import { useTheme } from "@/lib/theme"
 
 /**
  * "Complete with AI": the person says what is missing, the AI writes it, and the new
@@ -32,6 +33,8 @@ export function CompleteRecipeSheet({
   open: boolean
   onClose: () => void
 }) {
+  const { color } = useTheme()
+  const placeholderColor = color("muted-foreground")
   const { t } = useTranslation()
   const { units } = useAppState()
   const complete = useCompleteRecipe(recipe.id)
@@ -129,7 +132,7 @@ export function CompleteRecipeSheet({
           <TextInput
             accessibilityLabel={t("recipes:complete.messageLabel")}
             placeholder={t("recipes:complete.placeholder")}
-            placeholderTextColor="#737373"
+            placeholderTextColor={placeholderColor}
             value={message}
             onChangeText={setMessage}
             multiline
@@ -207,7 +210,7 @@ function Preview({
           {added.ingredients.map((ingredient, i) => (
             <View
               key={i}
-              className="flex-row items-start gap-2 rounded-md bg-amber-100 p-2 dark:bg-amber-950"
+              className="flex-row items-start gap-2 rounded-md bg-tone-butter p-2"
             >
               <Badge variant="warning" label={t("recipes:complete.new")} />
               <Text className="flex-1 text-base text-foreground">
@@ -228,7 +231,7 @@ function Preview({
           {added.steps.map((step, i) => (
             <View
               key={i}
-              className="flex-row items-start gap-2 rounded-md bg-amber-100 p-2 dark:bg-amber-950"
+              className="flex-row items-start gap-2 rounded-md bg-tone-butter p-2"
             >
               <Badge variant="warning" label={t("recipes:complete.new")} />
               <Text className="flex-1 text-base text-foreground">
