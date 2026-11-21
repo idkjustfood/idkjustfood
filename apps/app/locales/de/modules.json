@@ -101,9 +101,9 @@
     "soon": "Vergiss keine wiederkehrende Arbeit im Haus: Filter, Rauchmelder und mehr."
   },
   "documents": {
-    "name": "Dokumente und Garantien",
-    "description": "Unterlagen und Garantien an einem Ort.",
-    "soon": "Bewahre Dokumente und Garantien auf und finde sie, wenn etwas kaputtgeht.",
+    "name": "Dokumente",
+    "description": "Unterlagen an einem Ort.",
+    "soon": "Bewahre Dokumente in Ordnern auf und finde sie, wenn du sie brauchst.",
     "quickAction": "Dokument hochladen"
   },
   "inventory": {

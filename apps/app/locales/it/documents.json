@@ -17,12 +17,43 @@
   },
   "empty": {
     "title": "Ancora nessun documento",
-    "message": "Carica una garanzia, un contratto o una scansione per tenere tutto in un posto solo."
+    "message": "Carica un contratto, una ricevuta o una scansione per tenere tutto in un unico posto."
   },
   "size": {
     "bytes": "{{value}} B",
     "kb": "{{value}} KB",
     "mb": "{{value}} MB",
     "gb": "{{value}} GB"
+  },
+  "newFolder": "Nuova cartella",
+  "editFolder": "Modifica cartella",
+  "allDocuments": "Tutti i documenti",
+  "uploadTitle": "Carica documento",
+  "nameLabel": "Nome",
+  "folderLabel": "Cartella",
+  "noFolder": "Nessuna cartella",
+  "cancel": "Annulla",
+  "save": "Salva",
+  "rename": "Rinomina",
+  "folderName": "Nome della cartella",
+  "colorLabel": "Colore",
+  "deleteFolder": "Elimina cartella",
+  "deleteFolderConfirm": "Eliminare «{{name}}» e tutti i documenti al suo interno? Non si può annullare.",
+  "folderNotAllowed": "Solo chi ha creato questa cartella o un amministratore della famiglia può modificarla.",
+  "openFolder": "Apri la cartella {{name}}",
+  "fileCount_one": "{{count}} documento",
+  "fileCount_other": "{{count}} documenti",
+  "emptyFolder": {
+    "title": "Questa cartella è vuota",
+    "message": "Carica un documento per metterlo in questa cartella."
+  },
+  "color": {
+    "none": "Nessun colore",
+    "rose": "Rosa",
+    "sage": "Salvia",
+    "peach": "Pesca",
+    "lavender": "Lavanda",
+    "butter": "Burro",
+    "sky": "Cielo"
   }
 }

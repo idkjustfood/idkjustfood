@@ -17,12 +17,43 @@
   },
   "empty": {
     "title": "No documents yet",
-    "message": "Upload a warranty, a contract or a scan to keep it in one place."
+    "message": "Upload a contract, a receipt or a scan to keep it in one place."
   },
   "size": {
     "bytes": "{{value}} B",
     "kb": "{{value}} KB",
     "mb": "{{value}} MB",
     "gb": "{{value}} GB"
+  },
+  "newFolder": "New folder",
+  "editFolder": "Edit folder",
+  "allDocuments": "All documents",
+  "uploadTitle": "Upload document",
+  "nameLabel": "Name",
+  "folderLabel": "Folder",
+  "noFolder": "No folder",
+  "cancel": "Cancel",
+  "save": "Save",
+  "rename": "Rename",
+  "folderName": "Folder name",
+  "colorLabel": "Colour",
+  "deleteFolder": "Delete folder",
+  "deleteFolderConfirm": "Delete \"{{name}}\" and every document in it? This cannot be undone.",
+  "folderNotAllowed": "Only the person who made this folder or a household admin can change it.",
+  "openFolder": "Open folder {{name}}",
+  "fileCount_one": "{{count}} document",
+  "fileCount_other": "{{count}} documents",
+  "emptyFolder": {
+    "title": "This folder is empty",
+    "message": "Upload a document to put it in this folder."
+  },
+  "color": {
+    "none": "No colour",
+    "rose": "Rose",
+    "sage": "Sage",
+    "peach": "Peach",
+    "lavender": "Lavender",
+    "butter": "Butter",
+    "sky": "Sky"
   }
 }

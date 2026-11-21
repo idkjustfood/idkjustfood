@@ -3,6 +3,10 @@ import { describe, expect, test } from "bun:test"
 import {
   cacheFileName,
   documentKind,
+  filesInFolder,
+  isValidName,
+  sortFolders,
+  suggestedName,
   mayDeleteDocument,
   sizeParts,
 } from "./document-view"
@@ -48,5 +52,35 @@ describe("mayDeleteDocument", () => {
     expect(mayDeleteDocument(shared, "me", "member")).toBe(false)
     expect(mayDeleteDocument(shared, "me", "owner")).toBe(true)
     expect(mayDeleteDocument(shared, "me", "member,admin")).toBe(true)
+  })
+})
+
+describe("names", () => {
+  test("the upload name starts as the file name", () => {
+    expect(suggestedName("  scan 12.pdf ")).toBe("scan 12.pdf")
+  })
+
+  test("a name needs a visible character", () => {
+    expect(isValidName("Lease")).toBe(true)
+    expect(isValidName("   ")).toBe(false)
+    expect(isValidName("")).toBe(false)
+  })
+})
+
+describe("folders", () => {
+  test("are sorted by name, ignoring case", () => {
+    const names = sortFolders([{ name: "taxes" }, { name: "Bills" }]).map(
+      (folder) => folder.name
+    )
+    expect(names).toEqual(["Bills", "taxes"])
+  })
+
+  test("files are found per folder, with null meaning the root", () => {
+    const files = [
+      { id: "a", folderId: null },
+      { id: "b", folderId: "f1" },
+    ]
+    expect(filesInFolder(files, null).map((f) => f.id)).toEqual(["a"])
+    expect(filesInFolder(files, "f1").map((f) => f.id)).toEqual(["b"])
   })
 })

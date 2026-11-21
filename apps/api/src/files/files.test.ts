@@ -233,3 +233,147 @@ describe("files", () => {
     await expect(storage.remove("..")).rejects.toThrow()
   })
 })
+
+type FolderBody = { folder: { id: string; name: string; color: string | null } }
+
+const patch = (path: string, cookie: string, body: unknown) =>
+  api.request("PATCH", path, cookie, body)
+
+async function addFolder(cookie = olivia, body: object = { name: "Home" }) {
+  const res = await api.post("/api/file-folders", cookie, body)
+  expect(res.status).toBe(201)
+  return (await body_<FolderBody>(res)).folder
+}
+const body_ = body
+
+describe("file names", () => {
+  test("the person can name the file when uploading", async () => {
+    const data = form("x", "IMG_0042.pdf")
+    data.append("name", "Rental contract")
+    const file = await addFile(data)
+    expect(file.name).toBe("Rental contract")
+    expect(file.mimeType).toBe("application/pdf")
+  })
+
+  test("a file can be renamed", async () => {
+    const file = await addFile()
+    const res = await patch(`/api/files/${file.id}`, olivia, {
+      name: "  Insurance  ",
+    })
+    expect(res.status).toBe(200)
+    expect((await body<{ file: StoredFile }>(res)).file.name).toBe("Insurance")
+    expect(
+      (await patch(`/api/files/${file.id}`, olivia, { name: "" })).status
+    ).toBe(400)
+  })
+})
+
+describe("folders", () => {
+  test("create, recolour, rename and list folders", async () => {
+    const folder = await addFolder(olivia, { name: "Taxes", color: "sage" })
+    expect(folder.color).toBe("sage")
+    const res = await patch(`/api/file-folders/${folder.id}`, olivia, {
+      name: "Taxes 2026",
+      color: null,
+    })
+    expect(res.status).toBe(200)
+    const updated = (await body<FolderBody>(res)).folder
+    expect(updated).toMatchObject({ name: "Taxes 2026", color: null })
+    const list = await body<{ folders: unknown[] }>(
+      await api.get("/api/file-folders", olivia)
+    )
+    expect(list.folders).toHaveLength(1)
+  })
+
+  test("only the theme colours are accepted", async () => {
+    const res = await api.post("/api/file-folders", olivia, {
+      name: "x",
+      color: "#ff0000",
+    })
+    expect(res.status).toBe(400)
+  })
+
+  test("a file can be uploaded into a folder, moved and moved back to the root", async () => {
+    const folder = await addFolder()
+    const data = form()
+    data.append("folderId", folder.id)
+    const file = await addFile(data)
+    expect(file.folderId).toBe(folder.id)
+    const root = await addFile()
+    expect(root.folderId).toBeNull()
+    const moved = await patch(`/api/files/${root.id}`, olivia, {
+      folderId: folder.id,
+    })
+    expect((await body<{ file: StoredFile }>(moved)).file.folderId).toBe(
+      folder.id
+    )
+    const back = await patch(`/api/files/${root.id}`, olivia, {
+      folderId: null,
+    })
+    expect((await body<{ file: StoredFile }>(back)).file.folderId).toBeNull()
+  })
+
+  test("a folder of someone else, or of another space, can't be used", async () => {
+    const folder = await addFolder()
+    const sam = await api.signUp("Pat")
+    const data = form()
+    data.append("folderId", folder.id)
+    expect((await upload(data, sam)).status).toBe(400)
+    expect(
+      (await patch(`/api/file-folders/${folder.id}`, sam, { name: "x" })).status
+    ).toBe(404)
+    expect((await api.del(`/api/file-folders/${folder.id}`, sam)).status).toBe(
+      404
+    )
+    const { id } = await household(olivia)
+    const shared = form("x", "a.pdf", "application/pdf", id)
+    shared.append("folderId", folder.id)
+    expect((await upload(shared)).status).toBe(400)
+  })
+
+  test("deleting a folder deletes its files from the disk too", async () => {
+    const folder = await addFolder()
+    const data = form()
+    data.append("folderId", folder.id)
+    await addFile(data)
+    const kept = await addFile()
+    expect(readdirSync(dir)).toHaveLength(2)
+    expect(
+      (await api.del(`/api/file-folders/${folder.id}`, olivia)).status
+    ).toBe(204)
+    expect(readdirSync(dir)).toHaveLength(1)
+    const list = await body<{ files: StoredFile[] }>(
+      await api.get("/api/files", olivia)
+    )
+    expect(list.files.map((file) => file.id)).toEqual([kept.id])
+  })
+
+  test("in a household a member can't change another member's folder, an admin can", async () => {
+    const { id, member } = await household(olivia)
+    const res = await api.post("/api/file-folders", member, {
+      name: "Sam's",
+      householdId: id,
+    })
+    const folder = (await body<FolderBody>(res)).folder
+    expect(
+      (await patch(`/api/file-folders/${folder.id}`, olivia, { name: "x" }))
+        .status
+    ).toBe(200)
+    const own = await addFolder(olivia, { name: "Mine", householdId: id })
+    expect(
+      (await patch(`/api/file-folders/${own.id}`, member, { name: "x" })).status
+    ).toBe(403)
+    expect((await api.del(`/api/file-folders/${own.id}`, member)).status).toBe(
+      403
+    )
+  })
+})
+
+describe("deleting files", () => {
+  test("the bytes are removed from the disk", async () => {
+    const file = await addFile()
+    expect(readdirSync(dir)).toHaveLength(1)
+    expect((await api.del(`/api/files/${file.id}`, olivia)).status).toBe(204)
+    expect(readdirSync(dir)).toHaveLength(0)
+  })
+})

@@ -17,12 +17,43 @@
   },
   "empty": {
     "title": "Aún no hay documentos",
-    "message": "Sube una garantía, un contrato o un escaneo para tenerlo todo en un solo sitio."
+    "message": "Sube un contrato, un recibo o un escaneo para tenerlo todo en un solo sitio."
   },
   "size": {
     "bytes": "{{value}} B",
     "kb": "{{value}} KB",
     "mb": "{{value}} MB",
     "gb": "{{value}} GB"
+  },
+  "newFolder": "Nueva carpeta",
+  "editFolder": "Editar carpeta",
+  "allDocuments": "Todos los documentos",
+  "uploadTitle": "Subir documento",
+  "nameLabel": "Nombre",
+  "folderLabel": "Carpeta",
+  "noFolder": "Sin carpeta",
+  "cancel": "Cancelar",
+  "save": "Guardar",
+  "rename": "Renombrar",
+  "folderName": "Nombre de la carpeta",
+  "colorLabel": "Color",
+  "deleteFolder": "Eliminar carpeta",
+  "deleteFolderConfirm": "¿Eliminar «{{name}}» y todos los documentos que contiene? No se puede deshacer.",
+  "folderNotAllowed": "Solo quien creó esta carpeta o un administrador del hogar puede cambiarla.",
+  "openFolder": "Abrir la carpeta {{name}}",
+  "fileCount_one": "{{count}} documento",
+  "fileCount_other": "{{count}} documentos",
+  "emptyFolder": {
+    "title": "Esta carpeta está vacía",
+    "message": "Sube un documento para guardarlo en esta carpeta."
+  },
+  "color": {
+    "none": "Sin color",
+    "rose": "Rosa",
+    "sage": "Salvia",
+    "peach": "Melocotón",
+    "lavender": "Lavanda",
+    "butter": "Mantequilla",
+    "sky": "Cielo"
   }
 }
