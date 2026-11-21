@@ -75,7 +75,7 @@
   },
   "chores": {
     "name": "Corvées",
-    "description": "Corvées en rotation, avec qui est le suivant.",
+    "description": "Des tâches ménagères qui reviennent après quelques jours.",
     "soon": "Partagez les tâches ménagères équitablement : les corvées tournent et montrent qui est le suivant.",
     "quickAction": "Ajouter une corvée"
   },

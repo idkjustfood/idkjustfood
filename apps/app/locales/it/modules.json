@@ -75,7 +75,7 @@
   },
   "chores": {
     "name": "Faccende",
-    "description": "Faccende a rotazione, con a chi tocca.",
+    "description": "Faccende di casa che tornano dopo alcuni giorni.",
     "soon": "Dividete le faccende in modo equo: ruotano e mostrano a chi tocca.",
     "quickAction": "Aggiungi faccenda"
   },

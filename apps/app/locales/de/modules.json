@@ -75,7 +75,7 @@
   },
   "chores": {
     "name": "Haushaltsaufgaben",
-    "description": "Aufgaben im Wechsel, mit Anzeige, wer dran ist.",
+    "description": "Haushaltsaufgaben, die nach einigen Tagen wiederkommen.",
     "soon": "Teilt die Hausarbeit fair: Aufgaben wechseln und zeigen, wer als Nächstes dran ist.",
     "quickAction": "Haushaltsaufgabe hinzufügen"
   },

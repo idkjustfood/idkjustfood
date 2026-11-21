@@ -81,6 +81,12 @@ Personal and household shopping lists that work offline on the phone, with recip
 merged into one line per ingredient. See [shopping lists](docs/shopping-lists.md) for the API and
 how offline works.
 
+## Household chores
+
+Tasks that come back after a number of days ("switch towels, every 3 days"). Check one off and it
+returns at 00:00 on its day. Personal or shared with a household, and they work offline on the
+phone. See [household chores](docs/household-tasks.md).
+
 ## Meal planner
 
 Plan breakfast, midday and afternoon meals for as many weeks as you like, by hand or filled

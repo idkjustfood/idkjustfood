@@ -1,0 +1,45 @@
+{
+  "title": "Tareas del hogar",
+  "ownChores": "Tus propias tareas",
+  "sharedWith": "Compartidas con {{name}}",
+  "add": "Añadir tarea",
+  "loading": "Cargando tareas",
+  "todo": "Por hacer · {{count}}",
+  "later": "Más tarde · {{count}}",
+  "allDone": {
+    "title": "Todo hecho por hoy",
+    "message": "Las tareas marcadas vuelven en su día, a las 00:00."
+  },
+  "every_one": "Cada día",
+  "every_other": "Cada {{count}} días",
+  "comesBack": {
+    "tomorrow": "Vuelve mañana",
+    "inDays_one": "Vuelve en {{count}} día",
+    "inDays_other": "Vuelve en {{count}} días"
+  },
+  "markDone": "Marcar {{name}} como hecha",
+  "undo": "Deshacer {{name}}, no está hecha",
+  "edit": "Editar {{name}}",
+  "loadError": {
+    "title": "No se pudieron cargar tus tareas",
+    "message": "Tus tareas se guardan en este teléfono cuando se han cargado. Inténtalo de nuevo cuando tengas conexión."
+  },
+  "empty": {
+    "title": "Aún no hay tareas",
+    "message": "Añade una tarea y cada cuánto vuelve, por ejemplo cambiar las toallas cada 3 días. Márcala y volverá en su día."
+  },
+  "form": {
+    "newTitle": "Nueva tarea",
+    "editTitle": "Editar tarea",
+    "name": "Nombre",
+    "placeholder": "Por ejemplo: Cambiar las toallas",
+    "interval": "Repetir cada",
+    "days": "Días",
+    "hint": "Solo días enteros. Una tarea marcada vuelve a las 00:00, pasados estos días.",
+    "visiblePersonal": "Solo tú ves esta tarea.",
+    "visibleHousehold": "Todos en {{name}} pueden ver y marcar esta tarea.",
+    "create": "Añadir tarea",
+    "save": "Guardar",
+    "delete": "Eliminar"
+  }
+}
