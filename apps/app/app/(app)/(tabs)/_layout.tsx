@@ -20,7 +20,20 @@ export default function TabsLayout() {
           headerShown: false,
           tabBarPosition: wide ? "left" : "bottom",
         }}
-      />
+      >
+        {/* Expo Router renders only declared screens, so every route in this folder is listed. */}
+        <Tabs.Screen name="index" />
+        <Tabs.Screen name="plan" />
+        <Tabs.Screen name="food" />
+        <Tabs.Screen name="money" />
+        <Tabs.Screen name="more" />
+        <Tabs.Screen name="(recipes)" />
+        <Tabs.Screen name="shopping" />
+        <Tabs.Screen name="add" />
+        <Tabs.Screen name="planner" />
+        <Tabs.Screen name="settings" />
+        <Tabs.Screen name="m/[id]" />
+      </Tabs>
       <ShellSheets />
     </ShellProvider>
   )
