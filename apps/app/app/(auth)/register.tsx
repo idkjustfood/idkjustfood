@@ -17,6 +17,7 @@ import { authClient } from "@/lib/auth-client"
 import { readableAuthError, validateCredentials } from "@/lib/auth-errors"
 import { peekPendingInvite } from "@/lib/pending-invite"
 import { useAuthConfig, type SocialProvider } from "@/lib/use-auth-config"
+import { Heading } from "@/components/ui/heading"
 
 export default function Register() {
   const { t } = useTranslation("auth")
@@ -74,9 +75,9 @@ export default function Register() {
           contentContainerClassName="w-full max-w-md flex-grow justify-center gap-5 self-center p-6"
           keyboardShouldPersistTaps="handled"
         >
-          <Text className="text-3xl font-semibold text-foreground">
+          <Heading className="text-3xl font-semibold text-foreground">
             {closed ? t("register.closedTitle") : t("register.title")}
-          </Text>
+          </Heading>
           {closed && (
             <Text className="text-base text-muted-foreground">
               {config.signupMode === "invite"

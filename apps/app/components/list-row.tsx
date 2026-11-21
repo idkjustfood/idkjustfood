@@ -3,6 +3,7 @@ import { Children, type ReactNode } from "react"
 import { Pressable, Text, View } from "react-native"
 
 import { Icon } from "@/components/ui/icon"
+import { useTheme } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 
 /** One row in a grouped list, like on a settings screen. Tappable when `onPress` is set. */
@@ -70,6 +71,7 @@ export function ListGroup({
   title?: string
   children: ReactNode
 }) {
+  const { cardStyle } = useTheme()
   return (
     <View className="gap-2">
       {title && (
@@ -77,7 +79,10 @@ export function ListGroup({
           {title}
         </Text>
       )}
-      <View className="overflow-hidden rounded-lg border border-border bg-card">
+      <View
+        style={cardStyle}
+        className="overflow-hidden rounded-lg border border-border bg-card"
+      >
         {Children.toArray(children)
           .filter(Boolean)
           .map((child, i) => (

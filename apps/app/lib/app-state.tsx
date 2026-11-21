@@ -15,11 +15,14 @@ import i18n, { deviceLanguage, supportedLanguages } from "@/lib/i18n"
 import {
   loadLanguage,
   loadSpace,
+  loadTheme,
   loadUnits,
   saveLanguage,
   saveSpace,
+  saveTheme,
   saveUnits,
 } from "@/lib/preferences"
+import { DEFAULT_THEME_ID, isThemeId } from "@/lib/themes"
 
 export type Appearance = "system" | "light" | "dark"
 /** Lets the prototype show the loading, empty and error states of the main lists. */
@@ -33,6 +36,9 @@ type AppState = {
   setUnits: (value: Units) => void
   appearance: Appearance
   setAppearance: (value: Appearance) => void
+  /** The id of the chosen theme (`lib/themes.ts`). Remembered on this device. */
+  themeId: string
+  setThemeId: (value: string) => void
   /** The chosen language, or "system" to follow the device. Remembered on this device. */
   language: string
   setLanguage: (value: string) => void
@@ -60,6 +66,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [units, setUnitsState] = useState<Units>("metric")
   const [appearance, setAppearance] = useState<Appearance>("system")
   const [language, setLanguageState] = useState("system")
+  const [themeId, setThemeIdState] = useState(DEFAULT_THEME_ID)
   const [householdId, setHouseholdIdState] = useState<string | null>(null)
   const [listState, setListState] = useState<ListState>("ready")
   const [offline, setOffline] = useState(false)
@@ -78,6 +85,17 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const setUnits = useCallback((value: Units) => {
     setUnitsState(value)
     void saveUnits(value)
+  }, [])
+
+  // So does the theme. An unknown id (a theme that was removed) is ignored.
+  useEffect(() => {
+    loadTheme().then((saved) => {
+      if (isThemeId(saved)) setThemeIdState(saved)
+    })
+  }, [])
+  const setThemeId = useCallback((value: string) => {
+    setThemeIdState(value)
+    void saveTheme(value)
   }, [])
 
   // So does the language. "system" follows the device, and English is the fallback.
@@ -121,6 +139,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       setUnits,
       appearance,
       setAppearance,
+      themeId,
+      setThemeId,
       language,
       setLanguage,
       householdId,
@@ -137,6 +157,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       units,
       setUnits,
       appearance,
+      themeId,
+      setThemeId,
       language,
       setLanguage,
       householdId,

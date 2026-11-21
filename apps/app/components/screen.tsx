@@ -7,6 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 
 import { Button } from "@/components/ui/button"
 import { useIsWide } from "@/lib/layout"
+import { useTheme } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 
 type ScreenProps = {
@@ -45,6 +46,7 @@ export function Screen({
 }: ScreenProps) {
   const { t } = useTranslation("common")
   const wide = useIsWide()
+  const { headingStyle } = useTheme()
   const width = cn("w-full self-center", narrow ? "max-w-2xl" : "max-w-6xl")
 
   const content = (
@@ -77,6 +79,7 @@ export function Screen({
             <Text
               role="heading"
               numberOfLines={2}
+              style={headingStyle}
               className={cn(
                 "font-bold text-foreground",
                 back ? "text-xl md:text-2xl" : "text-3xl"

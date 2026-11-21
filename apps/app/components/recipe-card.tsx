@@ -15,9 +15,11 @@ import type { Recipe } from "@workspace/schemas"
 
 import { TagBadge } from "@/components/tag-badge"
 import { cardTags } from "@/lib/recipe-filters"
+import { categoryIcons } from "@/components/ui/cozy-icons"
 import { Icon } from "@/components/ui/icon"
 import { formatMinutes } from "@/lib/format"
 import i18n from "@/lib/i18n"
+import { useTheme } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 
 export const sourceIcons: Record<string, LucideIcon> = {
@@ -40,13 +42,13 @@ export const sourceName = (recipe: Recipe) =>
 
 // Written out in full so Tailwind finds every class.
 const covers = [
-  "bg-amber-200 dark:bg-amber-900",
-  "bg-yellow-200 dark:bg-yellow-900",
-  "bg-lime-200 dark:bg-lime-900",
-  "bg-emerald-200 dark:bg-emerald-900",
-  "bg-sky-200 dark:bg-sky-900",
-  "bg-rose-200 dark:bg-rose-900",
-  "bg-orange-200 dark:bg-orange-900",
+  "bg-tone-peach",
+  "bg-tone-butter",
+  "bg-tone-sage",
+  "bg-tone-sage",
+  "bg-tone-sky",
+  "bg-tone-rose",
+  "bg-tone-peach",
 ]
 
 function coverFor(id: string) {
@@ -66,22 +68,37 @@ export function RecipeCover({
   recipe,
   className,
 }: {
-  recipe: Pick<Recipe, "id" | "title">
+  recipe: Pick<Recipe, "id" | "title"> & Partial<Pick<Recipe, "tags">>
   className?: string
 }) {
+  const { theme } = useTheme()
+  // With the cozy icons, a recipe of a known kind (soup, pasta, ...) gets its illustration.
+  const category =
+    theme.icons === "cozy"
+      ? recipe.tags?.find((tag) => categoryIcons[tag])
+      : undefined
   return (
     <View
       className={cn("items-center justify-center", coverFor(recipe.id), className)}
     >
-      <Text className="text-4xl font-bold text-foreground/30">
-        {recipe.title.charAt(0).toUpperCase()}
-      </Text>
+      {category ? (
+        <Icon
+          as={categoryIcons[category]!}
+          size={40}
+          className="text-foreground/60"
+        />
+      ) : (
+        <Text className="text-4xl font-bold text-foreground/30">
+          {recipe.title.charAt(0).toUpperCase()}
+        </Text>
+      )}
     </View>
   )
 }
 
 export function RecipeCard({ recipe }: { recipe: Recipe }) {
   useTranslation()
+  const { cardStyle } = useTheme()
   const total = totalMinutes(recipe)
   const { shown, more } = cardTags(recipe.tags)
   return (
@@ -89,6 +106,7 @@ export function RecipeCard({ recipe }: { recipe: Recipe }) {
       role="link"
       accessibilityLabel={recipe.title}
       onPress={() => router.push(`/recipe/${recipe.id}`)}
+      style={cardStyle}
       className="flex-1 flex-row overflow-hidden rounded-lg border border-border bg-card active:opacity-80 web:hover:border-ring"
     >
       <RecipeCover recipe={recipe} className="w-24" />

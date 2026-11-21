@@ -29,6 +29,7 @@ import {
   type WizardDay,
   type WizardGoals,
 } from "@/lib/planner-wizard"
+import { Heading } from "@/components/ui/heading"
 
 const steps = ["goals", "days", "result"] as const
 const timeChoices = ["", "15", "30", "45", "60"]
@@ -339,11 +340,11 @@ function ResultStep({ result }: { result: GenerateResult }) {
   const { unfilled, notes } = result
   return (
     <View className="gap-4">
-      <Text role="heading" className="text-xl font-semibold text-foreground">
+      <Heading className="text-xl font-semibold text-foreground">
         {unfilled.length === 0
           ? t("planner:wizard.result.filled")
           : t("planner:wizard.result.partly")}
-      </Text>
+      </Heading>
       <Text className="text-foreground">
         {unfilled.length === 0
           ? t("planner:wizard.result.filledMessage")

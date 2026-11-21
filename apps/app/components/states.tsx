@@ -4,6 +4,7 @@ import { ActivityIndicator, Text, View } from "react-native"
 
 import { Button } from "@/components/ui/button"
 import { Icon } from "@/components/ui/icon"
+import { useTheme } from "@/lib/theme"
 import { cn } from "@/lib/utils"
 
 /** Grey placeholder blocks shown while a list loads. */
@@ -42,19 +43,22 @@ export function EmptyState({
   onAction?: () => void
   className?: string
 }) {
+  const { headingStyle, cardStyle } = useTheme()
   return (
     <View
+      style={cardStyle}
       className={cn(
         "items-center gap-3 rounded-lg border border-dashed border-border px-6 py-12",
         className
       )}
     >
-      <View className="h-16 w-16 items-center justify-center rounded-full bg-muted">
-        <Icon as={icon} size={28} className="text-muted-foreground" />
+      <View className="h-20 w-20 items-center justify-center rounded-full bg-tone-peach">
+        <Icon as={icon} size={34} className="text-tone-peach-foreground" />
       </View>
       <Text
         role="heading"
-        className="text-center text-lg font-semibold text-foreground"
+        style={headingStyle}
+        className="text-center text-xl font-semibold text-foreground"
       >
         {title}
       </Text>

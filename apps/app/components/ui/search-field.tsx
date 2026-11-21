@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next"
 import { Pressable, TextInput, View } from "react-native"
 
 import { Icon } from "@/components/ui/icon"
+import { useTheme } from "@/lib/theme"
 
 export function SearchField({
   value,
@@ -13,6 +14,8 @@ export function SearchField({
   onChangeText: (text: string) => void
   placeholder: string
 }) {
+  const { color } = useTheme()
+  const placeholderColor = color("muted-foreground")
   const { t } = useTranslation("common")
   return (
     <View className="h-12 flex-row items-center gap-2 rounded-md border border-input bg-background pl-3">
@@ -23,7 +26,7 @@ export function SearchField({
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor="#737373"
+        placeholderTextColor={placeholderColor}
         returnKeyType="search"
         className="h-full min-w-0 flex-1 text-base text-foreground web:outline-none"
       />

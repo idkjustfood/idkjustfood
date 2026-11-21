@@ -14,6 +14,7 @@ import { useAppState } from "@/lib/app-state"
 import { authClient } from "@/lib/auth-client"
 import { useAnswerInvite, useInvitePreview } from "@/lib/households"
 import { setPendingInvite } from "@/lib/pending-invite"
+import { Heading } from "@/components/ui/heading"
 
 /**
  * Where an invite link lands: <app>/invite/<id> on the web, or
@@ -113,12 +114,12 @@ function Answer({ inviteId }: { inviteId: string }) {
       <View className="h-14 w-14 items-center justify-center rounded-full bg-muted">
         <Icon as={House} size={26} className="text-foreground" />
       </View>
-      <Text role="heading" className="text-xl font-semibold text-foreground">
+      <Heading className="text-xl font-semibold text-foreground">
         {t("invite.joinTitle", {
           inviter: invite.inviterName,
           household: invite.householdName,
         })}
-      </Text>
+      </Heading>
       <Text className="text-base text-muted-foreground">
         {t("invite.joinMessage")}
       </Text>

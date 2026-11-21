@@ -107,7 +107,7 @@ export const recipes: Recipe[] = [
     ],
     nutrition: { kcal: 780, protein: 48, carbs: 82, fat: 28 },
     space: "personal",
-    cover: "bg-amber-200 dark:bg-amber-900",
+    cover: "bg-tone-peach",
   },
   {
     id: "smashed-potatoes",
@@ -146,7 +146,7 @@ export const recipes: Recipe[] = [
     ],
     nutrition: { kcal: 340, protein: 6, carbs: 48, fat: 14 },
     space: "household",
-    cover: "bg-yellow-200 dark:bg-yellow-900",
+    cover: "bg-tone-butter",
   },
   {
     id: "lentil-dal",
@@ -189,7 +189,7 @@ export const recipes: Recipe[] = [
     ],
     nutrition: { kcal: 460, protein: 19, carbs: 46, fat: 22 },
     space: "household",
-    cover: "bg-orange-200 dark:bg-orange-900",
+    cover: "bg-tone-peach",
   },
   {
     id: "banana-pancakes",
@@ -222,7 +222,7 @@ export const recipes: Recipe[] = [
     ],
     nutrition: { kcal: 390, protein: 14, carbs: 58, fat: 11 },
     space: "personal",
-    cover: "bg-lime-200 dark:bg-lime-900",
+    cover: "bg-tone-sage",
   },
   {
     id: "chili-noodles",
@@ -262,7 +262,7 @@ export const recipes: Recipe[] = [
     ],
     nutrition: { kcal: 610, protein: 13, carbs: 74, fat: 30 },
     space: "personal",
-    cover: "bg-red-200 dark:bg-red-900",
+    cover: "bg-tone-rose",
   },
   {
     id: "greek-salad",
@@ -289,7 +289,7 @@ export const recipes: Recipe[] = [
     ],
     nutrition: { kcal: 420, protein: 15, carbs: 14, fat: 34 },
     space: "household",
-    cover: "bg-sky-200 dark:bg-sky-900",
+    cover: "bg-tone-sky",
   },
 ]
 
@@ -330,7 +330,7 @@ export const importedRecipe: Recipe = {
   ],
   nutrition: { kcal: 450, protein: 36, carbs: 9, fat: 29 },
   space: "personal",
-  cover: "bg-rose-200 dark:bg-rose-900",
+  cover: "bg-tone-rose",
 }
 
 export type ShoppingItem = {

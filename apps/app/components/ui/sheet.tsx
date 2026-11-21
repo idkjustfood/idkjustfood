@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { useIsWide } from "@/lib/layout"
 import { cn } from "@/lib/utils"
+import { Heading } from "@/components/ui/heading"
 
 /**
  * A panel that slides up from the bottom on phones and shows as a centred dialog on wide screens.
@@ -40,7 +41,7 @@ export function Sheet({
         <Pressable
           accessibilityLabel={t("close")}
           onPress={onClose}
-          className="absolute inset-0 bg-black/50"
+          className="absolute inset-0 bg-foreground/50"
         />
         <View
           role="dialog"
@@ -54,12 +55,12 @@ export function Sheet({
           {!wide && (
             <View className="h-1.5 w-10 self-center rounded-full bg-muted" />
           )}
-          <Text
-            role="heading"
+          <Heading
+           
             className="text-lg font-semibold text-foreground"
           >
             {title}
-          </Text>
+          </Heading>
           {children}
         </View>
       </View>

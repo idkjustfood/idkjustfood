@@ -116,3 +116,27 @@ export async function saveSupermarket(id: string) {
     // Not saved this time.
   }
 }
+
+const THEME_KEY = "idkjustfood.theme"
+
+/** The id of the chosen theme, or null for the default one. */
+export async function loadTheme(): Promise<string | null> {
+  try {
+    const value =
+      Platform.OS === "web"
+        ? globalThis.localStorage?.getItem(THEME_KEY)
+        : await SecureStore.getItemAsync(THEME_KEY)
+    return value || null
+  } catch {
+    return null
+  }
+}
+
+export async function saveTheme(id: string) {
+  try {
+    if (Platform.OS === "web") globalThis.localStorage?.setItem(THEME_KEY, id)
+    else await SecureStore.setItemAsync(THEME_KEY, id)
+  } catch {
+    // Not saved this time.
+  }
+}
