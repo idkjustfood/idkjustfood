@@ -1,15 +1,16 @@
 import { todayString, weekStart } from "@workspace/schemas"
 
 import { useAppState } from "@/lib/app-state"
+import { useChoreState, useToday } from "@/lib/chores"
 import { useHousehold } from "@/lib/households"
 import { usePlans, useWeek } from "@/lib/planner"
 import { useShoppingState } from "@/lib/shopping"
 import { inSpace } from "@/lib/space"
-import { mealItems, shoppingItems, timeline } from "@/lib/today"
+import { choreItems, mealItems, shoppingItems, timeline } from "@/lib/today"
 
 /**
- * What is on today, from every enabled module that provides items (the meal planner and
- * shopping for now). To add a module, add its items here; see `docs/adding-a-module.md`.
+ * What is on today, from every enabled module that provides items (the meal planner,
+ * shopping and chores for now). To add a module, add its items here; see `docs/adding-a-module.md`.
  */
 export function useTodayItems() {
   const { demo, disabledModules } = useAppState()
@@ -21,11 +22,14 @@ export function useTodayItems() {
   const plan = inSpace(plans.data ?? [], space)[0]
   const week = useWeek(plan?.id, weekStart(today))
   const { lists } = useShoppingState()
+  const { chores } = useChoreState()
+  const choreDay = useToday()
 
   const items = timeline(
     [
       ...mealItems(week.data?.meals ?? [], today),
       ...shoppingItems(inSpace(lists, space)),
+      ...choreItems(inSpace(chores, space), choreDay),
     ],
     disabledModules
   )

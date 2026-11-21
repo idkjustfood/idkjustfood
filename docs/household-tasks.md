@@ -30,6 +30,11 @@ The rules live in `packages/schemas/src/chores.ts` (`choreDueDay`, `isChoreDue`,
 - **To do** lists the chores that are due. Tap one to check it off. It moves to **Later**, where it
   says when it comes back ("Back tomorrow", "Back in 2 days").
 - Tap a checked chore in **Later** to take the check back by mistake. It is due again.
+- **Today** shows the chores that are due or overdue in a "Tasks" section. Overdue ones say how
+  many days late they are and come first. Tap the box to check a chore off, or tap the row to open
+  the chores screen. Chores that are waiting for their day are not shown. Both screens use the same
+  chores, so a check on one shows on the other, offline too. It follows the space chosen at the top
+  (personal or one household) and disappears when the Chores module is switched off.
 - The pencil edits the name and the interval, or deletes the chore.
 - The list updates by itself at 00:00 while the app is open, and when you come back to the app.
 - **Offline:** chores are kept on the phone and changes are sent when there is a connection again,

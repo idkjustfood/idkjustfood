@@ -29,17 +29,20 @@
     "error": "Impossibile caricare oggi",
     "errorMessage": "Controlla la connessione e riprova.",
     "emptyTitle": "Niente in programma per oggi",
-    "emptyMessage": "Qui compaiono i pasti del tuo planner e le liste della spesa aperte.",
+    "emptyMessage": "I pasti del tuo planner, le liste della spesa aperte e le faccende da fare compaiono qui.",
     "more": "Altri moduli aggiungeranno i loro elementi a questa cronologia.",
     "sections": {
       "meals": "Pasti",
-      "shopping": "Spesa"
+      "shopping": "Spesa",
+      "tasks": "Faccende"
     },
     "slots": {
       "breakfast": "Colazione",
       "midday": "Mezzogiorno",
       "afternoon": "Pomeriggio"
     },
+    "overdue_one": "{{count}} giorno di ritardo",
+    "overdue_other": "{{count}} giorni di ritardo",
     "servings_one": "{{count}} porzione",
     "servings_other": "{{count}} porzioni",
     "toBuy_one": "{{count}} articolo da comprare",
