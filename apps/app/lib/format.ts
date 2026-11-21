@@ -1,9 +1,6 @@
-import {
-  amountParts,
-  type UnitKey,
-  type UnitSystem,
-} from "@workspace/schemas"
+import { amountParts, type UnitKey, type UnitSystem } from "@workspace/schemas"
 
+import { sizeParts } from "@/lib/document-view"
 import i18n from "@/lib/i18n"
 
 /** Metric (g, ml) or imperial (oz, cups). */
@@ -20,7 +17,10 @@ export function formatMinutes(minutes: number) {
 }
 
 /** A number written the way the current language writes it ("1,5" or "1.5"). */
-export function formatNumber(value: number, options?: Intl.NumberFormatOptions) {
+export function formatNumber(
+  value: number,
+  options?: Intl.NumberFormatOptions
+) {
   return new Intl.NumberFormat(i18n.language, options).format(value)
 }
 
@@ -44,4 +44,10 @@ export function formatAmount(
   const decimal = formatNumber(1.5).charAt(1)
   const number = parts.number.replace(".", decimal)
   return parts.unit ? `${number} ${unitName(parts.unit, parts.count)}` : number
+}
+
+/** A file size as text ("1,5 MB"), written the way the current language writes it. */
+export function formatFileSize(bytes: number) {
+  const { value, unit } = sizeParts(bytes)
+  return i18n.t(`documents:size.${unit}`, { value: formatNumber(value) })
 }

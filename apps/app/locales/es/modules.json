@@ -103,7 +103,8 @@
   "documents": {
     "name": "Documentos y garantías",
     "description": "Papeles y garantías en un solo lugar.",
-    "soon": "Guarda documentos y garantías y encuéntralos cuando algo se estropee."
+    "soon": "Guarda documentos y garantías y encuéntralos cuando algo se estropee.",
+    "quickAction": "Subir un documento"
   },
   "inventory": {
     "name": "Inventario del hogar",

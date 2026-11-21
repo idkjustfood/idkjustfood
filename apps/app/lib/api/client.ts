@@ -89,17 +89,35 @@ export type PickedImage = {
  * Sends a picture and fields as a multipart form (openapi-fetch cannot send files).
  * Answers like `call` does: the JSON data, or an `ApiError` with the server's message.
  */
-export async function uploadImage<T>(
+export function uploadImage<T>(
   path: string,
   image: PickedImage,
   fields: Record<string, string | undefined> = {}
 ): Promise<T> {
+  return uploadForm<T>(path, "image", image, fields)
+}
+
+/** Same as `uploadImage`, for any file the server accepts (documents). The form field is `file`. */
+export function uploadDocument<T>(
+  path: string,
+  file: PickedImage,
+  fields: Record<string, string | undefined> = {}
+): Promise<T> {
+  return uploadForm<T>(path, "file", file, fields)
+}
+
+async function uploadForm<T>(
+  path: string,
+  fieldName: string,
+  image: PickedImage,
+  fields: Record<string, string | undefined>
+): Promise<T> {
   const form = new FormData()
   if (Platform.OS === "web") {
     const blob = image.file ?? (await (await fetch(image.uri)).blob())
-    form.append("image", blob, image.name)
+    form.append(fieldName, blob, image.name)
   } else {
-    form.append("image", {
+    form.append(fieldName, {
       uri: image.uri,
       name: image.name,
       type: image.mimeType,

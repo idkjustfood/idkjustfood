@@ -1,0 +1,28 @@
+{
+  "title": "Dokumente",
+  "ownDocuments": "Deine eigenen Dokumente",
+  "sharedWith": "Geteilt mit {{name}}",
+  "upload": "Dokument hochladen",
+  "uploading": "Wird hochgeladen…",
+  "loading": "Dokumente werden geladen",
+  "visiblePersonal": "Nur du kannst diese Dokumente sehen. Sie liegen auf deinem Server.",
+  "visibleHousehold": "Alle in {{name}} können diese Dokumente sehen. Sie liegen auf deinem Server.",
+  "delete": "Löschen",
+  "open": "Öffnen",
+  "openDetails": "Details zu {{name}}",
+  "openError": "Das Dokument konnte nicht geöffnet werden. Prüfe deine Verbindung und versuche es erneut.",
+  "loadError": {
+    "title": "Deine Dokumente konnten nicht geladen werden",
+    "message": "Dokumente liegen auf dem Server, du brauchst also eine Verbindung. Versuche es erneut."
+  },
+  "empty": {
+    "title": "Noch keine Dokumente",
+    "message": "Lade eine Garantie, einen Vertrag oder einen Scan hoch, um alles an einem Ort zu haben."
+  },
+  "size": {
+    "bytes": "{{value}} B",
+    "kb": "{{value}} KB",
+    "mb": "{{value}} MB",
+    "gb": "{{value}} GB"
+  }
+}

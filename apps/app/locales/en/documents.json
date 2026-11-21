@@ -1,0 +1,28 @@
+{
+  "title": "Documents",
+  "ownDocuments": "Your own documents",
+  "sharedWith": "Shared with {{name}}",
+  "upload": "Upload document",
+  "uploading": "Uploading…",
+  "loading": "Loading documents",
+  "visiblePersonal": "Only you can see these documents. They are stored on your server.",
+  "visibleHousehold": "Everyone in {{name}} can see these documents. They are stored on your server.",
+  "delete": "Delete",
+  "open": "Open",
+  "openDetails": "Details of {{name}}",
+  "openError": "Could not open the document. Check your connection and try again.",
+  "loadError": {
+    "title": "Could not load your documents",
+    "message": "Documents are stored on the server, so you need a connection. Try again."
+  },
+  "empty": {
+    "title": "No documents yet",
+    "message": "Upload a warranty, a contract or a scan to keep it in one place."
+  },
+  "size": {
+    "bytes": "{{value}} B",
+    "kb": "{{value}} KB",
+    "mb": "{{value}} MB",
+    "gb": "{{value}} GB"
+  }
+}
