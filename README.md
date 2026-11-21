@@ -96,6 +96,9 @@ automatically from your saved recipes and goals (plain code, no AI). Personal or
 Cooking mode keeps the screen on and can be controlled by voice ("next", "start timer"). See
 [cooking mode](docs/cooking-mode.md).
 
+Documents (warranties, contracts, scans) are uploaded to the server and kept on its own disk,
+personal or shared with a household. See [files and documents](docs/files.md).
+
 ## Self-hosting
 
 One Compose file (`docker-compose.yml`) runs everything: `postgres`, `api`, `worker` and `web` (the

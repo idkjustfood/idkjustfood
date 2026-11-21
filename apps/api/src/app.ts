@@ -13,6 +13,8 @@ import { silentLogger, type Logger } from "@workspace/logger"
 import { createAuth, socialProvidersFromEnv, type AuthEnv } from "./auth.js"
 import { choreRoutes } from "./chores/routes.js"
 import { completeRoutes } from "./recipes/complete.js"
+import { fileRoutes } from "./files/routes.js"
+import type { FileStorage } from "./files/storage.js"
 import { extractionRoutes } from "./extractions/routes.js"
 import { householdRoutes } from "./households/routes.js"
 import {
@@ -46,6 +48,8 @@ export type AppDeps = {
   modules?: InputModule[]
   /** The AI used to complete recipes. Defaults to the one the settings describe; tests pass a fake. */
   ai?: Ai
+  /** Where the bytes of uploaded files are kept. Defaults to a folder on this server's disk (`FILES_DIR`). */
+  storage?: FileStorage
   /** Where requests and errors are logged. Defaults to a logger that writes nothing. */
   logger?: Logger
 }
@@ -103,6 +107,9 @@ export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
 
   // Household chores: tasks that come back after a number of days.
   app.route("/api", choreRoutes(db, auth))
+
+  // Files (documents): kept on this server's disk, personal or shared with a household.
+  app.route("/api", fileRoutes(db, auth, env, deps.storage))
 
   // Pantry staples: what a person or household always has at home.
   app.route("/api", pantryRoutes(db, auth))
