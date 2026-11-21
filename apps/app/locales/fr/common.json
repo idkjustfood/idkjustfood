@@ -64,15 +64,6 @@
     "pending_one": "{{count}} modification en attente.",
     "pending_other": "{{count}} modifications en attente."
   },
-  "tabs": {
-    "recipes": "Recettes",
-    "shopping": "Courses",
-    "add": "Ajouter",
-    "planner": "Planning",
-    "settings": "Réglages",
-    "addRecipe": "Ajouter une recette",
-    "addRecipeButton": "Ajouter une recette"
-  },
   "space": {
     "personal": "Personnel",
     "onlyYou": "Vous seul",

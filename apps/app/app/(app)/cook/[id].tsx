@@ -62,7 +62,7 @@ export default function CookingMode() {
         <Button
           variant="ghost"
           label={t("recipes:cook.close")}
-          onPress={() => router.replace("/")}
+          onPress={() => router.replace("/recipes")}
         />
       </SafeAreaView>
     )

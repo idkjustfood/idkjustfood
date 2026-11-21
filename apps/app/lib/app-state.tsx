@@ -12,11 +12,14 @@ import {
 import type { Units } from "@/lib/format"
 import type { Space } from "@/lib/mock-data"
 import i18n, { deviceLanguage, supportedLanguages } from "@/lib/i18n"
+import { parseDisabled, toggleModule } from "@/lib/modules"
 import {
+  loadDisabledModules,
   loadLanguage,
   loadSpace,
   loadTheme,
   loadUnits,
+  saveDisabledModules,
   saveLanguage,
   saveSpace,
   saveTheme,
@@ -50,6 +53,9 @@ type AppState = {
   setHouseholdId: (value: string | null) => void
   /** Falls back to the personal space for now, without forgetting the saved choice. */
   fallBackToPersonal: () => void
+  /** Ids of the modules switched off. Remembered on this device (see `lib/modules.ts`). */
+  disabledModules: string[]
+  setModuleEnabled: (id: string, on: boolean) => void
   listState: ListState
   setListState: (value: ListState) => void
   offline: boolean
@@ -68,6 +74,7 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState("system")
   const [themeId, setThemeIdState] = useState(DEFAULT_THEME_ID)
   const [householdId, setHouseholdIdState] = useState<string | null>(null)
+  const [disabledModules, setDisabledModules] = useState<string[]>([])
   const [listState, setListState] = useState<ListState>("ready")
   const [offline, setOffline] = useState(false)
   const space: Space = householdId ? "household" : "personal"
@@ -114,6 +121,22 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
     void saveLanguage(value === "system" ? null : value)
   }, [])
 
+  // So do the modules that are switched off.
+  useEffect(() => {
+    loadDisabledModules().then((saved) => {
+      const ids = parseDisabled(saved)
+      // A switch made before the saved value arrived is kept.
+      if (ids.length) setDisabledModules((now) => [...new Set([...ids, ...now])])
+    })
+  }, [])
+  const setModuleEnabled = useCallback((id: string, on: boolean) => {
+    setDisabledModules((now) => {
+      const next = toggleModule(now, id, on)
+      void saveDisabledModules(next)
+      return next
+    })
+  }, [])
+
   // So does the selected space. A choice made before it has loaded wins.
   const touched = useRef(false)
   useEffect(() => {
@@ -147,6 +170,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       space,
       setHouseholdId,
       fallBackToPersonal,
+      disabledModules,
+      setModuleEnabled,
       listState,
       setListState,
       offline,
@@ -165,6 +190,8 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       space,
       setHouseholdId,
       fallBackToPersonal,
+      disabledModules,
+      setModuleEnabled,
       listState,
       offline,
     ]

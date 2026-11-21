@@ -1,0 +1,190 @@
+{
+  "comingSoon": "Próximamente",
+  "areas": {
+    "today": "Hoy",
+    "plan": "Planificar",
+    "food": "Comida",
+    "money": "Dinero",
+    "more": "Más"
+  },
+  "areaSubtitles": {
+    "today": "Lo que hay hoy",
+    "plan": "Calendario, tareas, labores y hogar",
+    "food": "Recetas, compras y despensa",
+    "money": "Presupuesto, gastos y facturas",
+    "more": "Hogar, familia y ajustes"
+  },
+  "groups": {
+    "home": "Hogar",
+    "family": "Familia"
+  },
+  "area": {
+    "emptyTitle": "Todos los módulos están desactivados",
+    "emptyMessage": "Activa módulos en los ajustes para verlos aquí.",
+    "manage": "Gestionar módulos"
+  },
+  "today": {
+    "loading": "Cargando hoy",
+    "error": "No se pudo cargar hoy",
+    "errorMessage": "Comprueba tu conexión e inténtalo de nuevo.",
+    "emptyTitle": "Nada planificado para hoy",
+    "emptyMessage": "Aquí aparecen las comidas de tu planificador y las listas de la compra abiertas.",
+    "more": "Más módulos añadirán sus elementos a esta cronología.",
+    "slots": {
+      "breakfast": "Desayuno",
+      "midday": "Mediodía",
+      "afternoon": "Tarde"
+    },
+    "servings_one": "{{count}} ración",
+    "servings_other": "{{count}} raciones",
+    "toBuy_one": "{{count}} artículo por comprar",
+    "toBuy_other": "{{count}} artículos por comprar"
+  },
+  "quickAdd": {
+    "title": "Añadir rápido",
+    "open": "Añadir rápido",
+    "button": "Añadir rápido",
+    "empty": "Ningún módulo tiene una acción rápida. Activa módulos en los ajustes."
+  },
+  "search": {
+    "title": "Buscar",
+    "open": "Buscar",
+    "placeholder": "Buscar módulos",
+    "hint": "Escribe para encontrar un módulo.",
+    "none": "No se encontró nada para «{{query}}».",
+    "contentSoon": "La búsqueda dentro de recetas, tareas y otros contenidos llegará más adelante.",
+    "sidebar": "Buscar",
+    "shortcut": "Ctrl K"
+  },
+  "settings": {
+    "name": "Ajustes",
+    "description": "Cuenta, unidades, tema e idioma."
+  },
+  "calendar": {
+    "name": "Calendario",
+    "description": "Calendario compartido y eventos del hogar.",
+    "soon": "Planificad citas y eventos juntos, con un calendario para todos.",
+    "quickAction": "Añadir evento"
+  },
+  "tasks": {
+    "name": "Tareas",
+    "description": "Pendientes, personales y compartidos.",
+    "soon": "Lleva listas de pendientes para ti y para el hogar y márcalos como hechos.",
+    "quickAction": "Añadir tarea"
+  },
+  "chores": {
+    "name": "Labores",
+    "description": "Labores por turnos, con quién toca.",
+    "soon": "Repartid las tareas del hogar con justicia: las labores rotan y muestran a quién le toca.",
+    "quickAction": "Añadir labor"
+  },
+  "routines": {
+    "name": "Rutinas",
+    "description": "Hábitos de mañana, tarde y semana.",
+    "soon": "Crea rutinas y hábitos y márcalos cada día."
+  },
+  "reminders": {
+    "name": "Recordatorios",
+    "description": "Recibe un aviso en el momento justo.",
+    "soon": "Crea recordatorios para ti o para el hogar.",
+    "quickAction": "Añadir recordatorio"
+  },
+  "planner": {
+    "name": "Planificador de comidas",
+    "description": "Planifica desayuno, mediodía y tarde.",
+    "quickAction": "Planificar una comida"
+  },
+  "maintenance": {
+    "name": "Mantenimiento del hogar",
+    "description": "Tareas periódicas como filtros y detectores de humo.",
+    "soon": "No olvides ninguna tarea periódica de la casa: filtros, detectores de humo y más."
+  },
+  "documents": {
+    "name": "Documentos y garantías",
+    "description": "Papeles y garantías en un solo lugar.",
+    "soon": "Guarda documentos y garantías y encuéntralos cuando algo se estropee."
+  },
+  "inventory": {
+    "name": "Inventario del hogar",
+    "description": "Lo que tienes y dónde está.",
+    "soon": "Anota lo que tienes y dónde se guarda."
+  },
+  "contacts": {
+    "name": "Contactos",
+    "description": "Profesionales, médicos, colegio.",
+    "soon": "Ten a mano los teléfonos de profesionales, médicos y el colegio."
+  },
+  "plantsPets": {
+    "name": "Plantas y mascotas",
+    "description": "Cuidado de plantas y mascotas.",
+    "soon": "Recuerda cuándo regar las plantas y cuándo cuidar a la mascota."
+  },
+  "recipes": {
+    "name": "Recetas",
+    "description": "Guarda y lee recetas. Añade desde un enlace, una foto o un texto.",
+    "quickAction": "Añadir una receta"
+  },
+  "cooking": {
+    "name": "Modo cocina y temporizadores",
+    "description": "Cocina paso a paso con temporizadores."
+  },
+  "shopping": {
+    "name": "Listas de la compra",
+    "description": "Listas personales y compartidas, también sin conexión.",
+    "quickAction": "Añadir a la lista de la compra"
+  },
+  "pantry": {
+    "name": "Despensa",
+    "description": "Básicos que siempre tienes en casa."
+  },
+  "budget": {
+    "name": "Presupuesto",
+    "description": "Gastos por categoría.",
+    "soon": "Mira cuánto gastas por categoría y mantente dentro del presupuesto."
+  },
+  "expenses": {
+    "name": "Gastos",
+    "description": "Personales y compartidos, quién debe a quién.",
+    "soon": "Registra gastos y mira quién debe a quién en el hogar.",
+    "quickAction": "Añadir gasto"
+  },
+  "bills": {
+    "name": "Facturas y suscripciones",
+    "description": "Vencimientos de facturas y suscripciones.",
+    "soon": "Guarda facturas y suscripciones con sus fechas de vencimiento."
+  },
+  "savings": {
+    "name": "Metas de ahorro",
+    "description": "Ahorrar juntos para algo.",
+    "soon": "Fija metas de ahorro y sigue tu progreso."
+  },
+  "receipts": {
+    "name": "Tickets",
+    "description": "Tickets y gasto en comestibles.",
+    "soon": "Escanea tickets y mira cuánto gastas en comida.",
+    "quickAction": "Añadir ticket"
+  },
+  "notes": {
+    "name": "Notas y tablón familiar",
+    "description": "Notas compartidas para la familia.",
+    "soon": "Deja notas y mensajes en un tablón para toda la familia.",
+    "quickAction": "Añadir nota"
+  },
+  "wishlists": {
+    "name": "Listas de deseos",
+    "description": "Listas de deseos e ideas de regalo.",
+    "soon": "Reúne deseos e ideas de regalo para que nadie tenga que adivinar."
+  },
+  "household": {
+    "name": "Hogar",
+    "description": "Miembros y roles."
+  },
+  "modules": {
+    "name": "Módulos",
+    "description": "Activa o desactiva partes de la app."
+  },
+  "exportImport": {
+    "name": "Exportar e importar",
+    "description": "Llévate tus recetas o tráelas."
+  }
+}

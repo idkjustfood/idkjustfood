@@ -72,7 +72,7 @@ export default function RecipeDetail() {
             title={t("recipes:missing.title")}
             message={t("recipes:missing.message")}
             action={t("recipes:missing.action")}
-            onAction={() => router.replace("/")}
+            onAction={() => router.replace("/recipes")}
           />
         ) : (
           <ErrorState

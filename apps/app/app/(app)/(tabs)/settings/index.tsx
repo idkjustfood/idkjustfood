@@ -1,6 +1,7 @@
 import { router } from "expo-router"
 import {
   AudioLines,
+  Blocks,
   Check,
   CreditCard,
   Download,
@@ -112,6 +113,12 @@ export default function Settings() {
       </ListGroup>
 
       <ListGroup title={t("settings:preferences.title")}>
+        <ListRow
+          icon={Blocks}
+          title={t("modules:settings.title")}
+          detail={t("modules:settings.rowDetail")}
+          onPress={() => router.push("/settings/modules")}
+        />
         <View className="gap-2 px-4 py-3">
           <Text className="text-base text-foreground">
             {t("settings:preferences.units")}

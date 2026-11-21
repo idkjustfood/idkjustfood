@@ -140,3 +140,26 @@ export async function saveTheme(id: string) {
     // Not saved this time.
   }
 }
+
+const MODULES_KEY = "idkjustfood.disabled-modules"
+
+/** The ids of the modules switched off in settings, as saved text (see `parseDisabled`). */
+export async function loadDisabledModules(): Promise<string | null> {
+  try {
+    return Platform.OS === "web"
+      ? (globalThis.localStorage?.getItem(MODULES_KEY) ?? null)
+      : await SecureStore.getItemAsync(MODULES_KEY)
+  } catch {
+    return null
+  }
+}
+
+export async function saveDisabledModules(ids: readonly string[]) {
+  try {
+    const value = JSON.stringify(ids)
+    if (Platform.OS === "web") globalThis.localStorage?.setItem(MODULES_KEY, value)
+    else await SecureStore.setItemAsync(MODULES_KEY, value)
+  } catch {
+    // Not saved this time.
+  }
+}

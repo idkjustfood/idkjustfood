@@ -1,25 +1,27 @@
 import { Tabs } from "expo-router/js-tabs"
-import { useTranslation } from "react-i18next"
 
 import { AppNavigation } from "@/components/app-navigation"
+import { ShellSheets } from "@/components/shell-sheets"
 import { useIsWide } from "@/lib/layout"
+import { ShellProvider } from "@/lib/shell"
 
+/**
+ * Five areas: Today, Plan, Food, Money, More. The other screens in this folder (recipes,
+ * shopping, planner, settings, add, module placeholders) are tabs too, so the bar stays in
+ * place, but the navigation only shows the five areas.
+ */
 export default function TabsLayout() {
-  const { t } = useTranslation("common")
   const wide = useIsWide()
   return (
-    <Tabs
-      tabBar={(props) => <AppNavigation {...props} wide={wide} />}
-      screenOptions={{
-        headerShown: false,
-        tabBarPosition: wide ? "left" : "bottom",
-      }}
-    >
-      <Tabs.Screen name="(recipes)" options={{ title: t("tabs.recipes") }} />
-      <Tabs.Screen name="shopping" options={{ title: t("tabs.shopping") }} />
-      <Tabs.Screen name="add" options={{ title: t("tabs.addRecipe") }} />
-      <Tabs.Screen name="planner" options={{ title: t("tabs.planner") }} />
-      <Tabs.Screen name="settings" options={{ title: t("tabs.settings") }} />
-    </Tabs>
+    <ShellProvider>
+      <Tabs
+        tabBar={(props) => <AppNavigation {...props} wide={wide} />}
+        screenOptions={{
+          headerShown: false,
+          tabBarPosition: wide ? "left" : "bottom",
+        }}
+      />
+      <ShellSheets />
+    </ShellProvider>
   )
 }
