@@ -3,19 +3,20 @@
   "areas": {
     "today": "Heute",
     "plan": "Planen",
+    "home": "Zuhause",
     "food": "Essen",
     "money": "Geld",
     "more": "Mehr"
   },
   "areaSubtitles": {
     "today": "Was heute ansteht",
-    "plan": "Kalender, Aufgaben, Haushalt und Zuhause",
+    "plan": "Kalender, Aufgaben und Essensplaner",
+    "home": "Haushalt, Instandhaltung, Dokumente und Pflanzen",
     "food": "Rezepte, Einkauf und Vorrat",
     "money": "Budget, Ausgaben und Rechnungen",
     "more": "Haushalt, Familie und Einstellungen"
   },
   "groups": {
-    "home": "Zuhause",
     "family": "Familie"
   },
   "area": {

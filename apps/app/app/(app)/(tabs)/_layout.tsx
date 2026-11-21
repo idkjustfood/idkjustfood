@@ -6,9 +6,9 @@ import { useIsWide } from "@/lib/layout"
 import { ShellProvider } from "@/lib/shell"
 
 /**
- * Five areas: Today, Plan, Food, Money, More. The other screens in this folder (recipes,
+ * Six areas: Today, Plan, Home, Food, Money, More. The other screens in this folder (recipes,
  * shopping, planner, settings, add, module placeholders) are tabs too, so the bar stays in
- * place, but the navigation only shows the five areas.
+ * place, but the navigation only shows the six areas.
  */
 export default function TabsLayout() {
   const wide = useIsWide()
@@ -24,6 +24,7 @@ export default function TabsLayout() {
         {/* Expo Router renders only declared screens, so every route in this folder is listed. */}
         <Tabs.Screen name="index" />
         <Tabs.Screen name="plan" />
+        <Tabs.Screen name="home" />
         <Tabs.Screen name="food" />
         <Tabs.Screen name="money" />
         <Tabs.Screen name="more" />

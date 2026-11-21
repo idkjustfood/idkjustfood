@@ -17,9 +17,9 @@ import {
   type ModuleGroup,
 } from "@/lib/modules"
 
-const groupOrder: (ModuleGroup | undefined)[] = [undefined, "home", "family"]
+const groupOrder: (ModuleGroup | undefined)[] = [undefined, "family"]
 
-/** The home screen of an area (Plan, Food, Money, More): its enabled modules as a list. */
+/** The home screen of an area (Plan, Home, Food, Money, More): its enabled modules as a list. */
 export function AreaScreen({ area }: { area: ModuleArea }) {
   const { t } = useTranslation("modules")
   const wide = useIsWide()

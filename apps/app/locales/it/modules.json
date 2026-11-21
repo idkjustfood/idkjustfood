@@ -3,19 +3,20 @@
   "areas": {
     "today": "Oggi",
     "plan": "Pianifica",
+    "home": "Casa",
     "food": "Cibo",
     "money": "Soldi",
     "more": "Altro"
   },
   "areaSubtitles": {
     "today": "Cosa c’è oggi",
-    "plan": "Calendario, attività, faccende e casa",
+    "plan": "Calendario, attività e pianificatore dei pasti",
+    "home": "Faccende, manutenzione, documenti e piante",
     "food": "Ricette, spesa e dispensa",
     "money": "Budget, spese e bollette",
     "more": "Famiglia, casa e impostazioni"
   },
   "groups": {
-    "home": "Casa",
     "family": "Famiglia"
   },
   "area": {

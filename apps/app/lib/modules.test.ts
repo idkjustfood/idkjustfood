@@ -22,8 +22,20 @@ describe("module registry", () => {
     expect(new Set(moduleIds).size).toBe(moduleIds.length)
   })
 
-  test("the bottom bar has at most five areas", () => {
-    expect(areas.length).toBeLessThanOrEqual(5)
+  test("the bottom bar has a balanced number of areas around the quick-add button", () => {
+    expect(areas.length).toBe(6)
+    expect(areas.length % 2).toBe(0)
+  })
+
+  test("household modules are in the home area, plan keeps the calendar side", () => {
+    const ids = (area: "plan" | "home") =>
+      modulesInArea(area, []).map((m) => m.id)
+    expect(ids("home").sort()).toEqual(
+      ["chores", "contacts", "documents", "inventory", "maintenance", "plantsPets"].sort()
+    )
+    expect(ids("plan").sort()).toEqual(
+      ["calendar", "planner", "reminders", "routines", "tasks"].sort()
+    )
   })
 
   test("every module is in an area and has a route", () => {
@@ -89,6 +101,8 @@ describe("areaOfRoute", () => {
   test("a placeholder belongs to the area of its module", () => {
     expect(areaOfRoute("m/[id]", { id: "budget" })).toBe("money")
     expect(areaOfRoute("m/[id]", { id: "tasks" })).toBe("plan")
+    expect(areaOfRoute("m/[id]", { id: "chores" })).toBe("home")
+    expect(areaOfRoute("home")).toBe("home")
     expect(areaOfRoute("m/[id]", { id: "nope" })).toBe("more")
   })
 })

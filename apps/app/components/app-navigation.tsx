@@ -22,6 +22,7 @@ import { cn } from "@/lib/utils"
 const tabRoute: Record<Area, string> = {
   today: "index",
   plan: "plan",
+  home: "home",
   food: "food",
   money: "money",
   more: "more",
@@ -99,6 +100,7 @@ function BottomBar(props: BottomTabBarProps) {
     >
       {tab("today")}
       {tab("plan")}
+      {tab("home")}
       {/* The quick-add button is not a tab: it opens a sheet. */}
       <View className="flex-1 items-center justify-center">
         <Pressable

@@ -12,6 +12,7 @@ import {
   FileText,
   Gift,
   Hammer,
+  House,
   Landmark,
   Package,
   PiggyBank,
@@ -65,6 +66,7 @@ export const moduleIcons: Record<string, LucideIcon> = {
 export const areaIcons: Record<Area, LucideIcon> = {
   today: CalendarCheck,
   plan: CalendarDays,
+  home: House,
   food: UtensilsCrossed,
   money: Wallet,
   more: Ellipsis,
