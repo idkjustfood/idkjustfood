@@ -31,6 +31,10 @@
     "emptyTitle": "Für heute ist nichts geplant",
     "emptyMessage": "Mahlzeiten aus deinem Essensplan und offene Einkaufslisten erscheinen hier.",
     "more": "Weitere Module fügen ihre Einträge zu dieser Zeitleiste hinzu.",
+    "sections": {
+      "meals": "Mahlzeiten",
+      "shopping": "Einkaufen"
+    },
     "slots": {
       "breakfast": "Frühstück",
       "midday": "Mittag",

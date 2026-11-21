@@ -69,3 +69,23 @@ export function timeline(
     .filter((item) => !disabled.includes(item.moduleId))
     .sort((a, b) => rank(a) - rank(b))
 }
+
+/** The sections of the Today screen, in the order they are shown. */
+export const todaySectionIds = ["meals", "shopping"] as const
+export type TodaySectionId = (typeof todaySectionIds)[number]
+
+const sectionOf = (item: TodayItem): TodaySectionId =>
+  item.kind === "meal" ? "meals" : "shopping"
+
+/**
+ * Items grouped into sections. The order of sections is fixed, the order inside a section is kept,
+ * and a section without items is left out. A new module adds its section id to `todaySectionIds`.
+ */
+export function todaySections(items: readonly TodayItem[]): {
+  id: TodaySectionId
+  items: TodayItem[]
+}[] {
+  return todaySectionIds
+    .map((id) => ({ id, items: items.filter((item) => sectionOf(item) === id) }))
+    .filter((section) => section.items.length > 0)
+}

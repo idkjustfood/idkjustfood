@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test"
 
 import type { Meal } from "@workspace/schemas"
 
-import { mealItems, shoppingItems, timeline } from "./today"
+import { mealItems, shoppingItems, timeline, todaySections } from "./today"
 
 const meal = (id: string, date: string, slot: Meal["slot"]): Meal => ({
   id,
@@ -62,5 +62,32 @@ describe("today timeline", () => {
       ["shopping"]
     )
     expect(all.map((i) => i.kind)).toEqual(["meal"])
+  })
+
+  test("items are grouped into sections, in a fixed order", () => {
+    const sections = todaySections(
+      timeline(
+        [
+          ...shoppingItems([
+            { id: "1", name: "L", items: [{ checked: false }] },
+          ]),
+          ...mealItems(
+            [meal("a", "2026-01-01", "midday"), meal("b", "2026-01-01", "breakfast")],
+            "2026-01-01"
+          ),
+        ],
+        []
+      )
+    )
+    expect(sections.map((s) => s.id)).toEqual(["meals", "shopping"])
+    expect(sections[0].items.map((i) => i.id)).toEqual(["b", "a"])
+  })
+
+  test("a section without items is not shown", () => {
+    const sections = todaySections(
+      shoppingItems([{ id: "1", name: "L", items: [{ checked: false }] }])
+    )
+    expect(sections.map((s) => s.id)).toEqual(["shopping"])
+    expect(todaySections([])).toEqual([])
   })
 })

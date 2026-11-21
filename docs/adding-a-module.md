@@ -42,7 +42,10 @@ registry entry. No navigation code changes.
    so the right tab stays highlighted.
 5. **Today items (optional).** If the module has something for today, add a kind to `TodayItem`
    in `lib/today.ts`, a function that builds the items, and call it from `useTodayItems` in
-   `lib/use-today.ts`. Items of switched-off modules are dropped for you (`timeline`).
+   `lib/use-today.ts`. Items of switched-off modules are dropped for you (`timeline`). The Today
+   screen shows items in sections: add a section id to `todaySectionIds` and map your kind to it
+   in `sectionOf` (both in `lib/today.ts`), and add its title under `today.sections` in every
+   language file of `locales/*/modules.json`. A section without items is not shown.
 6. **Search results (optional).** Search finds modules by name and description today. Results from
    inside a module (a recipe, a task) come later; see `components/shell-sheets.tsx`.
 
