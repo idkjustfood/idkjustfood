@@ -110,6 +110,8 @@ TypeScript everywhere, in one monorepo.
   optimizer on top of it is not built yet.
 - Household chores work end to end: tasks that come back after a number of days, personal or
   shared with a household, offline on the phone. See `docs/household-tasks.md`.
+- Documents (warranties, contracts, scans) can be uploaded, personal or shared with a household.
+  Files are stored on the server's own disk, never in a cloud. See `docs/files.md`.
 - The app has a theme system (cozy hand-drawn look by default, chosen in settings). See
   `docs/themes.md`. Screens use design tokens only, never hardcoded colours.
 - The app is built from a module registry with five areas (Today, Plan, Food, Money, More), a

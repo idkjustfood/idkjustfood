@@ -70,6 +70,7 @@ export function client(app: App) {
   }
 
   return {
+    app,
     request,
     signUp,
     get: (path: string, cookie?: string) => request("GET", path, cookie),

@@ -103,7 +103,8 @@
   "documents": {
     "name": "Documenti e garanzie",
     "description": "Carte e garanzie in un posto solo.",
-    "soon": "Conserva documenti e garanzie e ritrovali quando qualcosa si rompe."
+    "soon": "Conserva documenti e garanzie e ritrovali quando qualcosa si rompe.",
+    "quickAction": "Carica un documento"
   },
   "inventory": {
     "name": "Inventario della casa",

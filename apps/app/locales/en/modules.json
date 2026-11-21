@@ -103,7 +103,8 @@
   "documents": {
     "name": "Documents and warranties",
     "description": "Keep papers and warranties in one place.",
-    "soon": "Store documents and warranties and find them when something breaks."
+    "soon": "Store documents and warranties and find them when something breaks.",
+    "quickAction": "Upload a document"
   },
   "inventory": {
     "name": "Home inventory",

@@ -87,8 +87,9 @@ export const modules: readonly AppModule[] = [
   {
     id: "documents",
     area: "home",
-    route: placeholder("documents"),
-    built: false,
+    route: "/documents",
+    built: true,
+    quickAction: { route: "/documents" },
   },
   {
     id: "inventory",
@@ -228,7 +229,8 @@ export function parseDisabled(raw: string | null): string[] {
     const value: unknown = JSON.parse(raw)
     if (!Array.isArray(value)) return []
     return value.filter(
-      (id): id is string => typeof id === "string" && !!getModule(id) && !getModule(id)!.required
+      (id): id is string =>
+        typeof id === "string" && !!getModule(id) && !getModule(id)!.required
     )
   } catch {
     return []
@@ -297,6 +299,7 @@ export function areaOfRoute(
     case "planner":
       return "plan"
     case "chores":
+    case "documents":
       return "home"
     case "settings":
       return "more"

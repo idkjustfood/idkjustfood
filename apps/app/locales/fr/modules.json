@@ -103,7 +103,8 @@
   "documents": {
     "name": "Documents et garanties",
     "description": "Papiers et garanties au même endroit.",
-    "soon": "Gardez documents et garanties et retrouvez-les quand quelque chose tombe en panne."
+    "soon": "Gardez documents et garanties et retrouvez-les quand quelque chose tombe en panne.",
+    "quickAction": "Ajouter un document"
   },
   "inventory": {
     "name": "Inventaire de la maison",

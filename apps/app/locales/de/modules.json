@@ -103,7 +103,8 @@
   "documents": {
     "name": "Dokumente und Garantien",
     "description": "Unterlagen und Garantien an einem Ort.",
-    "soon": "Bewahre Dokumente und Garantien auf und finde sie, wenn etwas kaputtgeht."
+    "soon": "Bewahre Dokumente und Garantien auf und finde sie, wenn etwas kaputtgeht.",
+    "quickAction": "Dokument hochladen"
   },
   "inventory": {
     "name": "Hausinventar",

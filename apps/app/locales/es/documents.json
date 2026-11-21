@@ -1,0 +1,28 @@
+{
+  "title": "Documentos",
+  "ownDocuments": "Tus propios documentos",
+  "sharedWith": "Compartido con {{name}}",
+  "upload": "Subir documento",
+  "uploading": "Subiendo…",
+  "loading": "Cargando documentos",
+  "visiblePersonal": "Solo tú puedes ver estos documentos. Se guardan en tu servidor.",
+  "visibleHousehold": "Todos en {{name}} pueden ver estos documentos. Se guardan en tu servidor.",
+  "delete": "Eliminar",
+  "open": "Abrir",
+  "openDetails": "Detalles de {{name}}",
+  "openError": "No se pudo abrir el documento. Revisa tu conexión e inténtalo de nuevo.",
+  "loadError": {
+    "title": "No se pudieron cargar tus documentos",
+    "message": "Los documentos se guardan en el servidor, así que necesitas conexión. Inténtalo de nuevo."
+  },
+  "empty": {
+    "title": "Aún no hay documentos",
+    "message": "Sube una garantía, un contrato o un escaneo para tenerlo todo en un solo sitio."
+  },
+  "size": {
+    "bytes": "{{value}} B",
+    "kb": "{{value}} KB",
+    "mb": "{{value}} MB",
+    "gb": "{{value}} GB"
+  }
+}

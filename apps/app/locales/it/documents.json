@@ -1,0 +1,28 @@
+{
+  "title": "Documenti",
+  "ownDocuments": "I tuoi documenti",
+  "sharedWith": "Condiviso con {{name}}",
+  "upload": "Carica documento",
+  "uploading": "Caricamento…",
+  "loading": "Caricamento dei documenti",
+  "visiblePersonal": "Solo tu puoi vedere questi documenti. Sono salvati sul tuo server.",
+  "visibleHousehold": "Tutti in {{name}} possono vedere questi documenti. Sono salvati sul tuo server.",
+  "delete": "Elimina",
+  "open": "Apri",
+  "openDetails": "Dettagli di {{name}}",
+  "openError": "Impossibile aprire il documento. Controlla la connessione e riprova.",
+  "loadError": {
+    "title": "Impossibile caricare i tuoi documenti",
+    "message": "I documenti sono salvati sul server, quindi serve una connessione. Riprova."
+  },
+  "empty": {
+    "title": "Ancora nessun documento",
+    "message": "Carica una garanzia, un contratto o una scansione per tenere tutto in un posto solo."
+  },
+  "size": {
+    "bytes": "{{value}} B",
+    "kb": "{{value}} KB",
+    "mb": "{{value}} MB",
+    "gb": "{{value}} GB"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Documents",
+  "ownDocuments": "Vos propres documents",
+  "sharedWith": "Partagé avec {{name}}",
+  "upload": "Ajouter un document",
+  "uploading": "Envoi en cours…",
+  "loading": "Chargement des documents",
+  "visiblePersonal": "Vous seul pouvez voir ces documents. Ils sont stockés sur votre serveur.",
+  "visibleHousehold": "Tout le monde dans {{name}} peut voir ces documents. Ils sont stockés sur votre serveur.",
+  "delete": "Supprimer",
+  "open": "Ouvrir",
+  "openDetails": "Détails de {{name}}",
+  "openError": "Impossible d'ouvrir le document. Vérifiez votre connexion et réessayez.",
+  "loadError": {
+    "title": "Impossible de charger vos documents",
+    "message": "Les documents sont stockés sur le serveur, il faut donc une connexion. Réessayez."
+  },
+  "empty": {
+    "title": "Pas encore de documents",
+    "message": "Ajoutez une garantie, un contrat ou un scan pour tout garder au même endroit."
+  },
+  "size": {
+    "bytes": "{{value}} o",
+    "kb": "{{value}} Ko",
+    "mb": "{{value}} Mo",
+    "gb": "{{value}} Go"
+  }
+}

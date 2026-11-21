@@ -37,6 +37,8 @@ services:
       dockerfile: docker/server.Dockerfile
     restart: unless-stopped
     command: ["bun", "apps/api/src/index.ts"]
+    volumes:
+      - files-data:/data/files
     environment: &server-env
       DATABASE_URL: postgres://${POSTGRES_USER:-idkjustfood}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-idkjustfood}
       PORT: 3001
@@ -45,6 +47,10 @@ services:
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Set BETTER_AUTH_SECRET}
       SIGNUP_MODE: ${SIGNUP_MODE:-first-user-only}
       LOG_LEVEL: ${LOG_LEVEL:-info}
+      # Uploaded documents stay on this server, in the `files-data` volume (docs/files.md).
+      FILES_DIR: /data/files
+      FILES_MAX_MB: ${FILES_MAX_MB:-}
+      FILES_ALLOWED_TYPES: ${FILES_ALLOWED_TYPES:-}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
       GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID:-}
@@ -108,3 +114,4 @@ services:
 
 volumes:
   postgres-data:
+  files-data:
