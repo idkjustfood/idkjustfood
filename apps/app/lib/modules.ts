@@ -8,14 +8,14 @@
  */
 
 /** The bottom tabs. Today has no modules of its own: it collects items from the others. */
-export const areas = ["today", "plan", "food", "money", "more"] as const
+export const areas = ["today", "plan", "home", "food", "money", "more"] as const
 export type Area = (typeof areas)[number]
 
 /** Areas that hold modules. */
 export type ModuleArea = Exclude<Area, "today">
 
-/** A heading inside an area, for areas with many modules (Plan has Home, More has Family). */
-export type ModuleGroup = "home" | "family"
+/** A heading inside an area, for areas with many modules (More has Family). */
+export type ModuleGroup = "family"
 
 export type AppModule = {
   id: string
@@ -51,13 +51,6 @@ export const modules: readonly AppModule[] = [
     quickAction: { route: placeholder("tasks") },
   },
   {
-    id: "chores",
-    area: "plan",
-    route: placeholder("chores"),
-    built: false,
-    quickAction: { route: placeholder("chores") },
-  },
-  {
     id: "routines",
     area: "plan",
     route: placeholder("routines"),
@@ -77,39 +70,41 @@ export const modules: readonly AppModule[] = [
     built: true,
     quickAction: { route: "/planner" },
   },
-  // Plan, Home
+  // Home
+  {
+    id: "chores",
+    area: "home",
+    route: placeholder("chores"),
+    built: false,
+    quickAction: { route: placeholder("chores") },
+  },
   {
     id: "maintenance",
-    area: "plan",
-    group: "home",
+    area: "home",
     route: placeholder("maintenance"),
     built: false,
   },
   {
     id: "documents",
-    area: "plan",
-    group: "home",
+    area: "home",
     route: placeholder("documents"),
     built: false,
   },
   {
     id: "inventory",
-    area: "plan",
-    group: "home",
+    area: "home",
     route: placeholder("inventory"),
     built: false,
   },
   {
     id: "contacts",
-    area: "plan",
-    group: "home",
+    area: "home",
     route: placeholder("contacts"),
     built: false,
   },
   {
     id: "plantsPets",
-    area: "plan",
-    group: "home",
+    area: "home",
     route: placeholder("plantsPets"),
     built: false,
   },
@@ -286,6 +281,7 @@ export function areaOfRoute(
     case "index":
       return "today"
     case "plan":
+    case "home":
     case "food":
     case "money":
     case "more":

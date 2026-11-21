@@ -7,7 +7,7 @@ import { useAppState } from "@/lib/app-state"
 import { moduleIcon } from "@/lib/module-icons"
 import { isEnabled, modules, type ModuleArea } from "@/lib/modules"
 
-const areas: ModuleArea[] = ["plan", "food", "money", "more"]
+const areas: ModuleArea[] = ["plan", "home", "food", "money", "more"]
 
 /** Switch modules on or off. A module that is off is gone from navigation, Today, "+" and search. */
 export default function ModulesSettings() {

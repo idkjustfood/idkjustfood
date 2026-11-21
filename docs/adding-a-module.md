@@ -7,10 +7,11 @@ registry entry. No navigation code changes.
 
 ## The structure
 
-- **Areas** are the bottom tabs (the side bar on wide screens): Today, Plan, Food, Money, More. The
-  phone never shows more than five.
-- **Modules** sit in an area. Inside an area they are a list. Home modules sit under Plan, Family
-  modules under More; `group` puts them under their own heading.
+- **Areas** are the bottom tabs (the side bar on wide screens): Today, Plan, Home, Food, Money, More.
+  The phone shows six, three on each side of the "+" button. Keep the number even, or the "+" ends
+  up off-centre.
+- **Modules** sit in an area. Inside an area they are a list. Family
+  modules sit under More in their own group; `group` puts modules under a heading.
 - A module that is not built yet points to `/m/<id>`, a placeholder screen that shows its name and
   what it will do. When the real screen exists, change `route` and set `built: true`.
 - Switching a module off (Settings → Modules) removes it from the navigation, Today, "+" and search.
@@ -24,7 +25,7 @@ registry entry. No navigation code changes.
    ```ts
    {
      id: "tasks",            // unique, also the translation key
-     area: "plan",           // plan | food | money | more
+     area: "plan",           // plan | home | food | money | more
      route: "/m/tasks",      // where it lives
      built: false,           // true once the real screen exists
      quickAction: { route: "/m/tasks" }, // optional: shows in the "+" sheet

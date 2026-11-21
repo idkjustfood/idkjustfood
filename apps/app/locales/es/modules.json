@@ -3,19 +3,20 @@
   "areas": {
     "today": "Hoy",
     "plan": "Planificar",
+    "home": "Hogar",
     "food": "Comida",
     "money": "Dinero",
     "more": "Más"
   },
   "areaSubtitles": {
     "today": "Lo que hay hoy",
-    "plan": "Calendario, tareas, labores y hogar",
+    "plan": "Calendario, tareas y planificador de comidas",
+    "home": "Labores, mantenimiento, documentos y plantas",
     "food": "Recetas, compras y despensa",
     "money": "Presupuesto, gastos y facturas",
     "more": "Hogar, familia y ajustes"
   },
   "groups": {
-    "home": "Hogar",
     "family": "Familia"
   },
   "area": {
