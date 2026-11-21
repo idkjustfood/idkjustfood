@@ -31,6 +31,10 @@
     "emptyTitle": "Nada planificado para hoy",
     "emptyMessage": "Aquí aparecen las comidas de tu planificador y las listas de la compra abiertas.",
     "more": "Más módulos añadirán sus elementos a esta cronología.",
+    "sections": {
+      "meals": "Comidas",
+      "shopping": "Compras"
+    },
     "slots": {
       "breakfast": "Desayuno",
       "midday": "Mediodía",

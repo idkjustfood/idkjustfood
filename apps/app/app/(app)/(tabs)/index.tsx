@@ -12,7 +12,7 @@ import { SearchButton } from "@/components/search-button"
 import { SpaceSwitcher } from "@/components/space-switcher"
 import { EmptyState, ErrorState, LoadingState } from "@/components/states"
 import { useIsWide } from "@/lib/layout"
-import type { TodayItem } from "@/lib/today"
+import { todaySections, type TodayItem } from "@/lib/today"
 import { useTodayItems } from "@/lib/use-today"
 
 /** Today: a timeline that collects what is on from the modules that provide items. */
@@ -20,6 +20,7 @@ export default function Today() {
   const { t } = useTranslation("modules")
   const wide = useIsWide()
   const { items, loading, error, retry } = useTodayItems()
+  const sections = todaySections(items)
 
   return (
     <Screen
@@ -44,13 +45,13 @@ export default function Today() {
           message={t("today.emptyMessage")}
         />
       )}
-      {items.length > 0 && (
-        <ListGroup>
-          {items.map((item) => (
+      {sections.map((section) => (
+        <ListGroup key={section.id} title={t(`today.sections.${section.id}`)}>
+          {section.items.map((item) => (
             <TimelineRow key={`${item.kind}-${item.id}`} item={item} />
           ))}
         </ListGroup>
-      )}
+      ))}
       {items.length > 0 && (
         <View className="px-1">
           <Text className="text-sm text-muted-foreground">

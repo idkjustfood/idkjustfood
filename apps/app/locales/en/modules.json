@@ -31,6 +31,10 @@
     "emptyTitle": "Nothing planned for today",
     "emptyMessage": "Meals from your meal planner and open shopping lists show up here.",
     "more": "More modules will add their items to this timeline.",
+    "sections": {
+      "meals": "Meals",
+      "shopping": "Shopping"
+    },
     "slots": {
       "breakfast": "Breakfast",
       "midday": "Midday",

@@ -31,6 +31,10 @@
     "emptyTitle": "Niente in programma per oggi",
     "emptyMessage": "Qui compaiono i pasti del tuo planner e le liste della spesa aperte.",
     "more": "Altri moduli aggiungeranno i loro elementi a questa cronologia.",
+    "sections": {
+      "meals": "Pasti",
+      "shopping": "Spesa"
+    },
     "slots": {
       "breakfast": "Colazione",
       "midday": "Mezzogiorno",

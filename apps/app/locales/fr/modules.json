@@ -31,6 +31,10 @@
     "emptyTitle": "Rien de prévu aujourd’hui",
     "emptyMessage": "Les repas de votre planificateur et les listes de courses ouvertes apparaissent ici.",
     "more": "D’autres modules ajouteront leurs éléments à cette chronologie.",
+    "sections": {
+      "meals": "Repas",
+      "shopping": "Courses"
+    },
     "slots": {
       "breakfast": "Petit-déjeuner",
       "midday": "Midi",
