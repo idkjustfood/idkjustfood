@@ -39,7 +39,7 @@ export default function EditRecipe() {
             title={t("recipes:missing.title")}
             message={t("recipes:missing.message")}
             action={t("recipes:missing.action")}
-            onAction={() => router.replace("/")}
+            onAction={() => router.replace("/recipes")}
           />
         ) : (
           <ErrorState
@@ -76,7 +76,7 @@ function EditForm({ recipe }: { recipe: Recipe }) {
       onSuccess: () => {
         setConfirmDelete(false)
         router.dismissAll()
-        router.replace("/")
+        router.replace("/recipes")
       },
     })
   }

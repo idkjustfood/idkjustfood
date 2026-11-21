@@ -1,7 +1,7 @@
 import { Stack } from "expo-router"
 
 // A deep link to a recipe still gets the list underneath, so "back" works.
-export const unstable_settings = { initialRouteName: "index" }
+export const unstable_settings = { initialRouteName: "recipes" }
 
 export default function RecipesLayout() {
   return <Stack screenOptions={{ headerShown: false }} />

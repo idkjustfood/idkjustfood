@@ -1,0 +1,73 @@
+import {
+  Bell,
+  Blocks,
+  BookOpen,
+  Broom,
+  CalendarCheck,
+  CalendarDays,
+  ChefHat,
+  Contact,
+  Download,
+  Ellipsis,
+  FileText,
+  Gift,
+  Hammer,
+  Landmark,
+  Package,
+  PiggyBank,
+  Receipt,
+  Repeat,
+  Settings,
+  ShoppingCart,
+  Sparkles,
+  Sprout,
+  SquareCheck,
+  StickyNote,
+  Users,
+  UtensilsCrossed,
+  Wallet,
+  Warehouse,
+  type LucideIcon,
+} from "lucide-react-native"
+
+import type { Area } from "@/lib/modules"
+
+/** The icon of each module and each bottom tab. Kept apart from the registry so that stays testable. */
+export const moduleIcons: Record<string, LucideIcon> = {
+  calendar: CalendarDays,
+  tasks: SquareCheck,
+  chores: Broom,
+  routines: Repeat,
+  reminders: Bell,
+  planner: CalendarDays,
+  maintenance: Hammer,
+  documents: FileText,
+  inventory: Warehouse,
+  contacts: Contact,
+  plantsPets: Sprout,
+  recipes: BookOpen,
+  cooking: ChefHat,
+  shopping: ShoppingCart,
+  pantry: Package,
+  budget: Wallet,
+  expenses: Landmark,
+  bills: Receipt,
+  savings: PiggyBank,
+  receipts: Sparkles,
+  notes: StickyNote,
+  wishlists: Gift,
+  household: Users,
+  settings: Settings,
+  modules: Blocks,
+  exportImport: Download,
+}
+
+export const areaIcons: Record<Area, LucideIcon> = {
+  today: CalendarCheck,
+  plan: CalendarDays,
+  food: UtensilsCrossed,
+  money: Wallet,
+  more: Ellipsis,
+}
+
+export const moduleIcon = (id: string): LucideIcon => moduleIcons[id] ?? Ellipsis

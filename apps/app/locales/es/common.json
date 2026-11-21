@@ -64,15 +64,6 @@
     "pending_one": "Hay {{count}} cambio pendiente.",
     "pending_other": "Hay {{count}} cambios pendientes."
   },
-  "tabs": {
-    "recipes": "Recetas",
-    "shopping": "Compras",
-    "add": "Añadir",
-    "planner": "Planificador",
-    "settings": "Ajustes",
-    "addRecipe": "Añadir una receta",
-    "addRecipeButton": "Añadir receta"
-  },
   "space": {
     "personal": "Personal",
     "onlyYou": "Solo tú",

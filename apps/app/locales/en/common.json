@@ -64,15 +64,6 @@
     "pending_one": "{{count}} change is waiting.",
     "pending_other": "{{count}} changes are waiting."
   },
-  "tabs": {
-    "recipes": "Recipes",
-    "shopping": "Shopping",
-    "add": "Add",
-    "planner": "Planner",
-    "settings": "Settings",
-    "addRecipe": "Add a recipe",
-    "addRecipeButton": "Add recipe"
-  },
   "space": {
     "personal": "Personal",
     "onlyYou": "Only you",

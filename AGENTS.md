@@ -110,6 +110,9 @@ TypeScript everywhere, in one monorepo.
   optimizer on top of it is not built yet.
 - The app has a theme system (cozy hand-drawn look by default, chosen in settings). See
   `docs/themes.md`. Screens use design tokens only, never hardcoded colours.
+- The app is built from a module registry with five areas (Today, Plan, Food, Money, More), a
+  "+" quick add, search and a Modules switch in settings. Planned modules without a feature yet show
+  a placeholder. See `docs/adding-a-module.md`.
 - The app has all its screens; adding a recipe from a link, photo or text is not connected to the
   extraction endpoints yet.
 

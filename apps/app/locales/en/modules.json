@@ -1,0 +1,190 @@
+{
+  "comingSoon": "Coming soon",
+  "areas": {
+    "today": "Today",
+    "plan": "Plan",
+    "food": "Food",
+    "money": "Money",
+    "more": "More"
+  },
+  "areaSubtitles": {
+    "today": "What is on today",
+    "plan": "Calendar, tasks, chores and home",
+    "food": "Recipes, shopping and the pantry",
+    "money": "Budget, expenses and bills",
+    "more": "Household, family and settings"
+  },
+  "groups": {
+    "home": "Home",
+    "family": "Family"
+  },
+  "area": {
+    "emptyTitle": "All modules are switched off",
+    "emptyMessage": "Switch modules on in the settings to see them here.",
+    "manage": "Manage modules"
+  },
+  "today": {
+    "loading": "Loading today",
+    "error": "Could not load today",
+    "errorMessage": "Check your connection and try again.",
+    "emptyTitle": "Nothing planned for today",
+    "emptyMessage": "Meals from your meal planner and open shopping lists show up here.",
+    "more": "More modules will add their items to this timeline.",
+    "slots": {
+      "breakfast": "Breakfast",
+      "midday": "Midday",
+      "afternoon": "Afternoon"
+    },
+    "servings_one": "{{count}} serving",
+    "servings_other": "{{count}} servings",
+    "toBuy_one": "{{count}} item to buy",
+    "toBuy_other": "{{count}} items to buy"
+  },
+  "quickAdd": {
+    "title": "Quick add",
+    "open": "Quick add",
+    "button": "Quick add",
+    "empty": "No module has a quick action. Switch modules on in the settings."
+  },
+  "search": {
+    "title": "Search",
+    "open": "Search",
+    "placeholder": "Search modules",
+    "hint": "Type to find a module.",
+    "none": "Nothing found for “{{query}}”.",
+    "contentSoon": "Searching inside recipes, tasks and other content is coming later.",
+    "sidebar": "Search",
+    "shortcut": "Ctrl K"
+  },
+  "settings": {
+    "name": "Settings",
+    "description": "Account, units, theme and language."
+  },
+  "calendar": {
+    "name": "Calendar",
+    "description": "Shared calendar and events for the household.",
+    "soon": "Plan appointments and events together, with one calendar for everyone.",
+    "quickAction": "Add event"
+  },
+  "tasks": {
+    "name": "Tasks",
+    "description": "To-dos, personal and shared.",
+    "soon": "Keep to-do lists for yourself and for the household, and tick them off.",
+    "quickAction": "Add task"
+  },
+  "chores": {
+    "name": "Chores",
+    "description": "Chores with rotation and who is next.",
+    "soon": "Share the housework fairly: chores rotate and show who is next.",
+    "quickAction": "Add chore"
+  },
+  "routines": {
+    "name": "Routines",
+    "description": "Morning, evening and weekly habits.",
+    "soon": "Build routines and habits and check them off every day."
+  },
+  "reminders": {
+    "name": "Reminders",
+    "description": "Get reminded at the right time.",
+    "soon": "Set reminders for yourself or the household.",
+    "quickAction": "Add reminder"
+  },
+  "planner": {
+    "name": "Meal planner",
+    "description": "Plan breakfast, midday and afternoon meals.",
+    "quickAction": "Plan a meal"
+  },
+  "maintenance": {
+    "name": "Home maintenance",
+    "description": "Recurring jobs like filters and smoke detectors.",
+    "soon": "Never forget a recurring job in the house: filters, smoke detectors and more."
+  },
+  "documents": {
+    "name": "Documents and warranties",
+    "description": "Keep papers and warranties in one place.",
+    "soon": "Store documents and warranties and find them when something breaks."
+  },
+  "inventory": {
+    "name": "Home inventory",
+    "description": "What you own and where it is.",
+    "soon": "List what you own and where it is kept."
+  },
+  "contacts": {
+    "name": "Contacts",
+    "description": "Craftspeople, doctors, school.",
+    "soon": "Keep the numbers of craftspeople, doctors and school at hand."
+  },
+  "plantsPets": {
+    "name": "Plants and pets",
+    "description": "Care for plants and pets.",
+    "soon": "Remember when to water the plants and when the pet needs care."
+  },
+  "recipes": {
+    "name": "Recipes",
+    "description": "Save and read recipes. Add from a link, photo or text.",
+    "quickAction": "Add a recipe"
+  },
+  "cooking": {
+    "name": "Cooking mode and timers",
+    "description": "Cook step by step with timers."
+  },
+  "shopping": {
+    "name": "Shopping lists",
+    "description": "Personal and shared lists, also offline.",
+    "quickAction": "Add to shopping list"
+  },
+  "pantry": {
+    "name": "Pantry",
+    "description": "Staples you always have at home."
+  },
+  "budget": {
+    "name": "Budget",
+    "description": "Spending by category.",
+    "soon": "See what you spend by category and stay within your budget."
+  },
+  "expenses": {
+    "name": "Expenses",
+    "description": "Personal and shared, who owes whom.",
+    "soon": "Track expenses and see who owes whom in the household.",
+    "quickAction": "Add expense"
+  },
+  "bills": {
+    "name": "Bills and subscriptions",
+    "description": "Due dates for bills and subscriptions.",
+    "soon": "Keep bills and subscriptions with their due dates."
+  },
+  "savings": {
+    "name": "Savings goals",
+    "description": "Save towards something together.",
+    "soon": "Set savings goals and follow your progress."
+  },
+  "receipts": {
+    "name": "Receipts",
+    "description": "Receipts and grocery spending.",
+    "soon": "Scan receipts and see what you spend on groceries.",
+    "quickAction": "Add receipt"
+  },
+  "notes": {
+    "name": "Notes and family board",
+    "description": "Shared notes for the family.",
+    "soon": "Leave notes and messages on a board for the whole family.",
+    "quickAction": "Add note"
+  },
+  "wishlists": {
+    "name": "Wishlists",
+    "description": "Wishlists and gift ideas.",
+    "soon": "Collect wishes and gift ideas so nobody guesses."
+  },
+  "household": {
+    "name": "Household",
+    "description": "Members and roles."
+  },
+  "modules": {
+    "name": "Modules",
+    "description": "Switch parts of the app on or off."
+  },
+  "exportImport": {
+    "name": "Export and import",
+    "description": "Take your recipes with you, or bring them in."
+  }
+}

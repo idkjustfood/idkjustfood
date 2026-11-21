@@ -61,15 +61,6 @@
     "pending_one": "{{count}} Änderung wartet.",
     "pending_other": "{{count}} Änderungen warten."
   },
-  "tabs": {
-    "recipes": "Rezepte",
-    "shopping": "Einkauf",
-    "add": "Neu",
-    "planner": "Planer",
-    "settings": "Einstellungen",
-    "addRecipe": "Rezept hinzufügen",
-    "addRecipeButton": "Rezept hinzufügen"
-  },
   "space": {
     "personal": "Persönlich",
     "onlyYou": "Nur du",
