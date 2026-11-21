@@ -48,3 +48,57 @@ export function mayDeleteDocument(
     !!role && role.split(",").some((r) => ["owner", "admin"].includes(r.trim()))
   )
 }
+
+export type FolderColor =
+  "rose" | "sage" | "peach" | "lavender" | "butter" | "sky"
+
+/** The colours a folder can have, in the order they are offered. */
+export const folderColors: FolderColor[] = [
+  "rose",
+  "sage",
+  "peach",
+  "lavender",
+  "butter",
+  "sky",
+]
+
+/** Theme token classes per folder colour. Written out in full so Tailwind finds them. */
+export const folderToneClasses: Record<
+  FolderColor,
+  { background: string; icon: string }
+> = {
+  rose: { background: "bg-tone-rose", icon: "text-tone-rose-foreground" },
+  sage: { background: "bg-tone-sage", icon: "text-tone-sage-foreground" },
+  peach: { background: "bg-tone-peach", icon: "text-tone-peach-foreground" },
+  lavender: {
+    background: "bg-tone-lavender",
+    icon: "text-tone-lavender-foreground",
+  },
+  butter: { background: "bg-tone-butter", icon: "text-tone-butter-foreground" },
+  sky: { background: "bg-tone-sky", icon: "text-tone-sky-foreground" },
+}
+
+/** The name offered in the upload dialog: the file's own name, which keeps its extension. */
+export function suggestedName(fileName: string) {
+  return fileName.trim()
+}
+
+/** Whether a name can be saved: it needs at least one character that is not a space. */
+export function isValidName(name: string) {
+  return name.trim().length > 0
+}
+
+/** Folders by name, ignoring case, so the list does not jump around. */
+export function sortFolders<T extends { name: string }>(folders: T[]) {
+  return [...folders].sort((a, b) =>
+    a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
+  )
+}
+
+/** The files that are directly in a folder, or in the root when `folderId` is null. */
+export function filesInFolder<T extends { folderId: string | null }>(
+  files: T[],
+  folderId: string | null
+) {
+  return files.filter((file) => file.folderId === folderId)
+}

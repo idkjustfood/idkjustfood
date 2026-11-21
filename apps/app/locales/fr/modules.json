@@ -108,9 +108,9 @@
     "soon": "N’oubliez aucun travail récurrent dans la maison : filtres, détecteurs de fumée et plus."
   },
   "documents": {
-    "name": "Documents et garanties",
-    "description": "Papiers et garanties au même endroit.",
-    "soon": "Gardez documents et garanties et retrouvez-les quand quelque chose tombe en panne.",
+    "name": "Documents",
+    "description": "Vos papiers au même endroit.",
+    "soon": "Rangez vos documents dans des dossiers et retrouvez-les quand vous en avez besoin.",
     "quickAction": "Ajouter un document"
   },
   "inventory": {

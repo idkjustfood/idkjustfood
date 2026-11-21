@@ -17,12 +17,43 @@
   },
   "empty": {
     "title": "Pas encore de documents",
-    "message": "Ajoutez une garantie, un contrat ou un scan pour tout garder au même endroit."
+    "message": "Ajoutez un contrat, un reçu ou un scan pour tout garder au même endroit."
   },
   "size": {
     "bytes": "{{value}} o",
     "kb": "{{value}} Ko",
     "mb": "{{value}} Mo",
     "gb": "{{value}} Go"
+  },
+  "newFolder": "Nouveau dossier",
+  "editFolder": "Modifier le dossier",
+  "allDocuments": "Tous les documents",
+  "uploadTitle": "Ajouter un document",
+  "nameLabel": "Nom",
+  "folderLabel": "Dossier",
+  "noFolder": "Aucun dossier",
+  "cancel": "Annuler",
+  "save": "Enregistrer",
+  "rename": "Renommer",
+  "folderName": "Nom du dossier",
+  "colorLabel": "Couleur",
+  "deleteFolder": "Supprimer le dossier",
+  "deleteFolderConfirm": "Supprimer « {{name}} » et tous les documents qu'il contient ? Cette action est irréversible.",
+  "folderNotAllowed": "Seule la personne qui a créé ce dossier ou un administrateur du foyer peut le modifier.",
+  "openFolder": "Ouvrir le dossier {{name}}",
+  "fileCount_one": "{{count}} document",
+  "fileCount_other": "{{count}} documents",
+  "emptyFolder": {
+    "title": "Ce dossier est vide",
+    "message": "Ajoutez un document pour le ranger dans ce dossier."
+  },
+  "color": {
+    "none": "Aucune couleur",
+    "rose": "Rose",
+    "sage": "Sauge",
+    "peach": "Pêche",
+    "lavender": "Lavande",
+    "butter": "Beurre",
+    "sky": "Ciel"
   }
 }

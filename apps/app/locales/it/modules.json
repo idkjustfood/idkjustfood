@@ -108,9 +108,9 @@
     "soon": "Non dimenticare nessun lavoro ricorrente in casa: filtri, rilevatori di fumo e altro."
   },
   "documents": {
-    "name": "Documenti e garanzie",
-    "description": "Carte e garanzie in un posto solo.",
-    "soon": "Conserva documenti e garanzie e ritrovali quando qualcosa si rompe.",
+    "name": "Documenti",
+    "description": "I tuoi documenti in un unico posto.",
+    "soon": "Conserva i documenti in cartelle e trovali quando ti servono.",
     "quickAction": "Carica un documento"
   },
   "inventory": {

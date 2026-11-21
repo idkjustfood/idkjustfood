@@ -108,9 +108,9 @@
     "soon": "No olvides ninguna tarea periódica de la casa: filtros, detectores de humo y más."
   },
   "documents": {
-    "name": "Documentos y garantías",
-    "description": "Papeles y garantías en un solo lugar.",
-    "soon": "Guarda documentos y garantías y encuéntralos cuando algo se estropee.",
+    "name": "Documentos",
+    "description": "Tus papeles en un solo lugar.",
+    "soon": "Guarda documentos en carpetas y encuéntralos cuando los necesites.",
     "quickAction": "Subir un documento"
   },
   "inventory": {

@@ -108,9 +108,9 @@
     "soon": "Never forget a recurring job in the house: filters, smoke detectors and more."
   },
   "documents": {
-    "name": "Documents and warranties",
-    "description": "Keep papers and warranties in one place.",
-    "soon": "Store documents and warranties and find them when something breaks.",
+    "name": "Documents",
+    "description": "Keep your papers in one place.",
+    "soon": "Store documents in folders and find them when you need them.",
     "quickAction": "Upload a document"
   },
   "inventory": {

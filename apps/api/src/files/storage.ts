@@ -1,4 +1,3 @@
-import { mkdir, rm } from "node:fs/promises"
 import { join, resolve } from "node:path"
 
 /**
@@ -32,7 +31,7 @@ export function localDiskStorage(directory: string): FileStorage {
   return {
     async put(key, data) {
       const path = pathOf(key)
-      await mkdir(root, { recursive: true })
+      // Bun.write creates the folder when it is missing.
       await Bun.write(path, data)
     },
     async read(key) {
@@ -40,7 +39,8 @@ export function localDiskStorage(directory: string): FileStorage {
       return (await file.exists()) ? file : undefined
     },
     async remove(key) {
-      await rm(pathOf(key), { force: true })
+      const file = Bun.file(pathOf(key))
+      if (await file.exists()) await file.delete()
     },
   }
 }

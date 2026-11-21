@@ -17,12 +17,43 @@
   },
   "empty": {
     "title": "Noch keine Dokumente",
-    "message": "Lade eine Garantie, einen Vertrag oder einen Scan hoch, um alles an einem Ort zu haben."
+    "message": "Lade einen Vertrag, einen Beleg oder einen Scan hoch, um alles an einem Ort zu haben."
   },
   "size": {
     "bytes": "{{value}} B",
     "kb": "{{value}} KB",
     "mb": "{{value}} MB",
     "gb": "{{value}} GB"
+  },
+  "newFolder": "Neuer Ordner",
+  "editFolder": "Ordner bearbeiten",
+  "allDocuments": "Alle Dokumente",
+  "uploadTitle": "Dokument hochladen",
+  "nameLabel": "Name",
+  "folderLabel": "Ordner",
+  "noFolder": "Kein Ordner",
+  "cancel": "Abbrechen",
+  "save": "Speichern",
+  "rename": "Umbenennen",
+  "folderName": "Ordnername",
+  "colorLabel": "Farbe",
+  "deleteFolder": "Ordner löschen",
+  "deleteFolderConfirm": "„{{name}}“ und alle Dokumente darin löschen? Das kann nicht rückgängig gemacht werden.",
+  "folderNotAllowed": "Nur die Person, die den Ordner angelegt hat, oder ein Haushalts-Admin kann ihn ändern.",
+  "openFolder": "Ordner {{name}} öffnen",
+  "fileCount_one": "{{count}} Dokument",
+  "fileCount_other": "{{count}} Dokumente",
+  "emptyFolder": {
+    "title": "Dieser Ordner ist leer",
+    "message": "Lade ein Dokument hoch, um es in diesen Ordner zu legen."
+  },
+  "color": {
+    "none": "Keine Farbe",
+    "rose": "Rosa",
+    "sage": "Salbei",
+    "peach": "Pfirsich",
+    "lavender": "Lavendel",
+    "butter": "Butter",
+    "sky": "Himmel"
   }
 }
