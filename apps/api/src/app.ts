@@ -11,6 +11,7 @@ import {
 import { silentLogger, type Logger } from "@workspace/logger"
 
 import { createAuth, socialProvidersFromEnv, type AuthEnv } from "./auth.js"
+import { choreRoutes } from "./chores/routes.js"
 import { completeRoutes } from "./recipes/complete.js"
 import { extractionRoutes } from "./extractions/routes.js"
 import { householdRoutes } from "./households/routes.js"
@@ -99,6 +100,9 @@ export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
 
   // Shopping lists: personal or household, with items and recipe ingredients.
   app.route("/api", shoppingRoutes(db, auth))
+
+  // Household chores: tasks that come back after a number of days.
+  app.route("/api", choreRoutes(db, auth))
 
   // Pantry staples: what a person or household always has at home.
   app.route("/api", pantryRoutes(db, auth))

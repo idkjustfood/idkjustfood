@@ -1567,6 +1567,247 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/chores": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List chores
+         * @description Your own chores and the chores of your households. With `householdId`, only the chores of that household. Every chore has `lastDoneOn` and `intervalDays`; a chore is due again on `lastDoneOn` + `intervalDays` days, from 00:00. The app works that out on the device, in the time zone of the person.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    householdId?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description The chores */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            chores: components["schemas"]["Chore"][];
+                        };
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Add a chore
+         * @description `householdId` shares the chore with a household; without it the chore is personal. You may choose the `id`. Sending an id that already exists returns that chore and changes nothing. A new chore is due right away.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ChoreInput"];
+                };
+            };
+            responses: {
+                /** @description Added, or already there */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            chore: components["schemas"]["Chore"];
+                        };
+                    };
+                };
+                /** @description Invalid chore */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description That id is already used by someone else's chore */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/chores/{choreId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete a chore
+         * @description Everyone who can see the chore can delete it.
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    choreId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The chore doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /**
+         * Change a chore, check it off or undo a check
+         * @description Everyone who can see the chore can change it. To check a chore off, send `lastDoneOn` with the day it was done (`YYYY-MM-DD`, the person's local date). To undo it, send the earlier day, or `null` when it was never done.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    choreId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ChoreUpdate"];
+                };
+            };
+            responses: {
+                /** @description The changed chore */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            chore: components["schemas"]["Chore"];
+                        };
+                    };
+                };
+                /** @description Invalid change */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The chore doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
     "/api/pantry": {
         parameters: {
             query?: never;
@@ -3290,6 +3531,25 @@ export interface components {
             servings?: number;
             /** @enum {string} */
             language?: "en" | "de" | "es" | "fr" | "it";
+        };
+        Chore: {
+            id: string;
+            name: string;
+            intervalDays: number;
+            lastDoneOn: string | null;
+            householdId: string | null;
+            createdAt: string;
+        };
+        ChoreInput: {
+            id?: string;
+            name: string;
+            intervalDays: number;
+            householdId?: string | null;
+        };
+        ChoreUpdate: {
+            name?: string;
+            intervalDays?: number;
+            lastDoneOn?: string | null;
         };
         Pantry: {
             householdId: string | null;
