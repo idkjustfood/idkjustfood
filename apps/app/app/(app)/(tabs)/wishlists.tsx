@@ -106,14 +106,14 @@ export default function Wishlists() {
       actions={
         <View className="flex-row gap-2">
           <Button
-            size="sm"
+            size={wide ? "sm" : "icon"}
             variant="outline"
             icon={UserRound}
             label={t("addPerson")}
             onPress={() => setForm({ kind: "person", person: null })}
           />
           <Button
-            size="sm"
+            size={wide ? "sm" : "icon"}
             icon={Plus}
             label={t("addWish")}
             onPress={() => setForm({ kind: "wish", wish: null, personId: null })}
