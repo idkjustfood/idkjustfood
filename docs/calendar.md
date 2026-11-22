@@ -7,7 +7,7 @@ self-hosted installs have it too.
 
 ## In the app
 
-- **Plan → Calendar** (also in the "+" sheet as "Add event"). It shows one month. Days with entries
+- **Life → Calendar** (also in the "+" sheet as "Add event"). It shows one month. Days with entries
   have a dot in the colour of each entry (up to three). The arrows move between months, "Go to
   today" comes back.
 - Tap a day to see its entries under the month, and to add a new one for that day. Tap an entry to

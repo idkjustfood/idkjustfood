@@ -6,7 +6,7 @@ wishes under them. A wish can also sit at the **root**, without a person. People
 
 ## In the app
 
-- **More → Family → Wishlists.** The dropdown at the top switches between your own wishlists and
+- **Life → Wishlists.** The dropdown at the top switches between your own wishlists and
   those of a household.
 - Wishes without a person are shown first, under "Not for anyone in particular". Every person is a
   section below it, with a pencil (rename or delete) and a "+" (add a wish for them).

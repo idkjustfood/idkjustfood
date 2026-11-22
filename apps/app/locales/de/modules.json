@@ -2,7 +2,7 @@
   "comingSoon": "Kommt bald",
   "areas": {
     "today": "Heute",
-    "plan": "Planen",
+    "life": "Leben",
     "home": "Zuhause",
     "food": "Essen",
     "money": "Geld",
@@ -10,11 +10,11 @@
   },
   "areaSubtitles": {
     "today": "Was heute ansteht",
-    "plan": "Kalender, Aufgaben und Essensplaner",
-    "home": "Haushalt, Instandhaltung, Dokumente und Pflanzen",
-    "food": "Rezepte, Einkauf und Vorrat",
+    "life": "Kalender, Notizen und Wunschlisten",
+    "home": "Aufgaben, Haushaltsarbeiten, Wartung, Dokumente und Pflanzen",
+    "food": "Rezepte, Essensplaner, Einkauf und Vorrat",
     "money": "Budget, Ausgaben und Rechnungen",
-    "more": "Haushalt, Familie und Einstellungen"
+    "more": "Haushalt und Einstellungen"
   },
   "groups": {
     "family": "Familie"
@@ -88,17 +88,6 @@
     "description": "Haushaltsaufgaben, die nach einigen Tagen wiederkommen.",
     "soon": "Teilt die Hausarbeit fair: Aufgaben wechseln und zeigen, wer als Nächstes dran ist.",
     "quickAction": "Haushaltsaufgabe hinzufügen"
-  },
-  "routines": {
-    "name": "Routinen",
-    "description": "Gewohnheiten für morgens, abends und die Woche.",
-    "soon": "Baue Routinen und Gewohnheiten auf und hake sie jeden Tag ab."
-  },
-  "reminders": {
-    "name": "Erinnerungen",
-    "description": "Zur richtigen Zeit erinnert werden.",
-    "soon": "Lege Erinnerungen für dich oder den Haushalt fest.",
-    "quickAction": "Erinnerung hinzufügen"
   },
   "planner": {
     "name": "Essensplan",

@@ -1,5 +1,4 @@
 import {
-  Bell,
   Blocks,
   BookOpen,
   Broom,
@@ -18,7 +17,6 @@ import {
   PawPrint,
   PiggyBank,
   Receipt,
-  Repeat,
   Settings,
   ShoppingCart,
   Sparkles,
@@ -39,8 +37,6 @@ export const moduleIcons: Record<string, LucideIcon> = {
   calendar: CalendarDays,
   tasks: SquareCheck,
   chores: Broom,
-  routines: Repeat,
-  reminders: Bell,
   planner: CalendarDays,
   maintenance: Hammer,
   documents: FileText,
@@ -67,7 +63,7 @@ export const moduleIcons: Record<string, LucideIcon> = {
 
 export const areaIcons: Record<Area, LucideIcon> = {
   today: CalendarCheck,
-  plan: CalendarDays,
+  life: CalendarDays,
   home: House,
   food: UtensilsCrossed,
   money: Wallet,

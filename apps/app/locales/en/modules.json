@@ -2,7 +2,7 @@
   "comingSoon": "Coming soon",
   "areas": {
     "today": "Today",
-    "plan": "Plan",
+    "life": "Life",
     "home": "Home",
     "food": "Food",
     "money": "Money",
@@ -10,11 +10,11 @@
   },
   "areaSubtitles": {
     "today": "What is on today",
-    "plan": "Calendar, tasks and the meal planner",
-    "home": "Chores, upkeep, documents and plants",
-    "food": "Recipes, shopping and the pantry",
+    "life": "Calendar, notes and wishlists",
+    "home": "Tasks, chores, upkeep, documents and plants",
+    "food": "Recipes, meal planner, shopping and the pantry",
     "money": "Budget, expenses and bills",
-    "more": "Household, family and settings"
+    "more": "Household and settings"
   },
   "groups": {
     "family": "Family"
@@ -88,17 +88,6 @@
     "description": "Chores that come back after a number of days.",
     "soon": "Share the housework fairly: chores rotate and show who is next.",
     "quickAction": "Add chore"
-  },
-  "routines": {
-    "name": "Routines",
-    "description": "Morning, evening and weekly habits.",
-    "soon": "Build routines and habits and check them off every day."
-  },
-  "reminders": {
-    "name": "Reminders",
-    "description": "Get reminded at the right time.",
-    "soon": "Set reminders for yourself or the household.",
-    "quickAction": "Add reminder"
   },
   "planner": {
     "name": "Meal planner",

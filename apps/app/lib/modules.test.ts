@@ -27,15 +27,14 @@ describe("module registry", () => {
     expect(areas.length % 2).toBe(0)
   })
 
-  test("household modules are in the home area, plan keeps the calendar side", () => {
-    const ids = (area: "plan" | "home") =>
+  test("tasks are in home, the meal planner in food, life keeps calendar, notes and wishlists", () => {
+    const ids = (area: "life" | "home" | "food") =>
       modulesInArea(area, []).map((m) => m.id)
     expect(ids("home").sort()).toEqual(
-      ["chores", "contacts", "documents", "inventory", "maintenance", "pets", "plants"].sort()
+      ["chores", "contacts", "documents", "inventory", "maintenance", "pets", "plants", "tasks"].sort()
     )
-    expect(ids("plan").sort()).toEqual(
-      ["calendar", "planner", "reminders", "routines", "tasks"].sort()
-    )
+    expect(ids("life").sort()).toEqual(["calendar", "notes", "wishlists"])
+    expect(ids("food")).toContain("planner")
   })
 
   test("every module is in an area and has a route", () => {
@@ -94,15 +93,15 @@ describe("areaOfRoute", () => {
     expect(areaOfRoute("index")).toBe("today")
     expect(areaOfRoute("shopping")).toBe("food")
     expect(areaOfRoute("(recipes)")).toBe("food")
-    expect(areaOfRoute("planner")).toBe("plan")
-    expect(areaOfRoute("calendar")).toBe("plan")
-    expect(areaOfRoute("tasks")).toBe("plan")
+    expect(areaOfRoute("planner")).toBe("food")
+    expect(areaOfRoute("calendar")).toBe("life")
+    expect(areaOfRoute("tasks")).toBe("home")
     expect(areaOfRoute("settings")).toBe("more")
   })
 
   test("a placeholder belongs to the area of its module", () => {
     expect(areaOfRoute("m/[id]", { id: "budget" })).toBe("money")
-    expect(areaOfRoute("m/[id]", { id: "tasks" })).toBe("plan")
+    expect(areaOfRoute("m/[id]", { id: "tasks" })).toBe("home")
     expect(areaOfRoute("m/[id]", { id: "chores" })).toBe("home")
     expect(areaOfRoute("home")).toBe("home")
     expect(areaOfRoute("m/[id]", { id: "nope" })).toBe("more")

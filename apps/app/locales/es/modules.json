@@ -2,7 +2,7 @@
   "comingSoon": "Próximamente",
   "areas": {
     "today": "Hoy",
-    "plan": "Planificar",
+    "life": "Vida",
     "home": "Hogar",
     "food": "Comida",
     "money": "Dinero",
@@ -10,11 +10,11 @@
   },
   "areaSubtitles": {
     "today": "Lo que hay hoy",
-    "plan": "Calendario, tareas y planificador de comidas",
-    "home": "Labores, mantenimiento, documentos y plantas",
-    "food": "Recetas, compras y despensa",
+    "life": "Calendario, notas y listas de deseos",
+    "home": "Tareas, labores, mantenimiento, documentos y plantas",
+    "food": "Recetas, planificador de comidas, compras y despensa",
     "money": "Presupuesto, gastos y facturas",
-    "more": "Hogar, familia y ajustes"
+    "more": "Hogar y ajustes"
   },
   "groups": {
     "family": "Familia"
@@ -88,17 +88,6 @@
     "description": "Tareas del hogar que vuelven pasados unos días.",
     "soon": "Repartid las tareas del hogar con justicia: las labores rotan y muestran a quién le toca.",
     "quickAction": "Añadir labor"
-  },
-  "routines": {
-    "name": "Rutinas",
-    "description": "Hábitos de mañana, tarde y semana.",
-    "soon": "Crea rutinas y hábitos y márcalos cada día."
-  },
-  "reminders": {
-    "name": "Recordatorios",
-    "description": "Recibe un aviso en el momento justo.",
-    "soon": "Crea recordatorios para ti o para el hogar.",
-    "quickAction": "Añadir recordatorio"
   },
   "planner": {
     "name": "Planificador de comidas",
