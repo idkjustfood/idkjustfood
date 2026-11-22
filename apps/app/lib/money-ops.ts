@@ -6,6 +6,7 @@ import {
   type Budget,
   type Currency,
   type Expense,
+  type ExpenseSplit,
   type ExpenseUpdate,
   type MoneyCategory,
   type MoneySettings,
@@ -59,6 +60,7 @@ export type MoneyOp =
       date: string
       note: string
       paidBy: string
+      split?: ExpenseSplit | null
       householdId: string | null
     }
   | { type: "updateExpense"; id: string; change: ExpenseUpdate }
@@ -83,6 +85,7 @@ export type MoneyOp =
       expenseId: string
       date: string
       paidBy: string
+      split?: ExpenseSplit | null
     }
   | {
       type: "addGoal"
@@ -120,6 +123,7 @@ export type MoneyOp =
       expenseId: string
       categoryId: string | null
       paidBy: string
+      split?: ExpenseSplit | null
       /** Used when the receipt has no date of its own. */
       date: string | null
     }
@@ -195,6 +199,7 @@ export function applyMoneyOp(
           date: op.date,
           note: op.note,
           paidBy: op.paidBy,
+          split: op.split ?? null,
           billId: null,
           receiptId: null,
           householdId: op.householdId,
@@ -277,6 +282,7 @@ export function applyMoneyOp(
             date: op.date,
             note: bill.title,
             paidBy: op.paidBy,
+            split: op.split ?? null,
             billId: bill.id,
             receiptId: null,
             householdId: bill.householdId,
@@ -378,6 +384,7 @@ export function applyMoneyOp(
             date,
             note: receipt.shop ?? "",
             paidBy: op.paidBy,
+            split: op.split ?? null,
             billId: null,
             receiptId: receipt.id,
             householdId: receipt.householdId,

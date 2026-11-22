@@ -13,6 +13,7 @@ import {
   todayString,
   type BillRepeat,
   type Currency,
+  type ExpenseSplit,
   type ExpenseUpdate,
   type ReceiptItem,
   type SavingsGoalUpdate,
@@ -75,6 +76,7 @@ async function send(op: MoneyOp) {
             date: op.date,
             note: op.note,
             paidBy: op.paidBy,
+            split: op.split ?? null,
             householdId: op.householdId,
           },
         })
@@ -148,7 +150,12 @@ async function send(op: MoneyOp) {
       await call(
         api.POST("/api/money/bills/{billId}/pay", {
           params: { path: { billId: op.billId } },
-          body: { expenseId: op.expenseId, date: op.date, paidBy: op.paidBy },
+          body: {
+            expenseId: op.expenseId,
+            date: op.date,
+            paidBy: op.paidBy,
+            split: op.split ?? null,
+          },
         })
       )
       return
@@ -264,6 +271,7 @@ function demoDeps(): MoneyDeps {
     date: addDays(today, -daysAgo),
     note,
     paidBy: me,
+    split: null,
     billId: null,
     receiptId: null,
     householdId: null,
@@ -374,7 +382,14 @@ export function useMoneyActions() {
     return {
       /** The person who adds something is the one who paid, unless another member is chosen. */
       addExpense: (
-        e: { amountCents: number; categoryId: string | null; date: string; note: string; paidBy?: string },
+        e: {
+          amountCents: number
+          categoryId: string | null
+          date: string
+          note: string
+          paidBy?: string
+          split?: ExpenseSplit | null
+        },
         householdId: string | null
       ) =>
         d({ type: "addExpense", id: newId(), ...e, paidBy: e.paidBy ?? me, householdId }),
@@ -413,8 +428,20 @@ export function useMoneyActions() {
       ) => d({ type: "addBill", id: newId(), ...bill, householdId }),
       editBill: (id: string, change: BillUpdate) => d({ type: "updateBill", id, change }),
       removeBill: (id: string) => d({ type: "removeBill", id }),
-      payBill: (billId: string, date: string) =>
-        d({ type: "payBill", billId, expenseId: newId(), date, paidBy: me }),
+      /** Pays a bill. In a household the payer and how it is shared can be chosen. */
+      payBill: (
+        billId: string,
+        date: string,
+        options: { paidBy?: string; split?: ExpenseSplit | null } = {}
+      ) =>
+        d({
+          type: "payBill",
+          billId,
+          expenseId: newId(),
+          date,
+          paidBy: options.paidBy ?? me,
+          split: options.split ?? null,
+        }),
 
       addGoal: (
         goal: { name: string; targetCents: number; targetDate: string | null },

@@ -1640,6 +1640,17 @@
           "paidBy": {
             "type": "string"
           },
+          "split": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
           "billId": {
             "type": [
               "string",
@@ -1669,6 +1680,7 @@
           "date",
           "note",
           "paidBy",
+          "split",
           "billId",
           "receiptId",
           "householdId",
@@ -2050,6 +2062,17 @@
           "paidBy": {
             "type": "string"
           },
+          "split": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
           "receiptId": {
             "type": [
               "string",
@@ -2092,6 +2115,17 @@
           },
           "paidBy": {
             "type": "string"
+          },
+          "split": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
           }
         }
       },
@@ -2227,6 +2261,17 @@
           },
           "paidBy": {
             "type": "string"
+          },
+          "split": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
           }
         },
         "required": [
@@ -3829,6 +3874,17 @@
           },
           "paidBy": {
             "type": "string"
+          },
+          "split": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
           },
           "date": {
             "type": "string",

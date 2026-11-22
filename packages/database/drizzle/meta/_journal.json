@@ -169,6 +169,13 @@
       "when": 1795372949066,
       "tag": "0023_slimy_wilson_fisk",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1795373580733,
+      "tag": "0024_loving_gorilla_man",
+      "breakpoints": true
     }
   ]
 }

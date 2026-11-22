@@ -83,6 +83,19 @@ export function moneyStore(db: Database) {
       return !!(await households.membership(householdId, userId))
     },
 
+    /** Whether everyone in a split is a member of the space (or the person themselves, when personal). */
+    async mayShare(
+      householdId: string | null,
+      userId: string,
+      split: Record<string, number> | null | undefined
+    ) {
+      if (!split) return true
+      for (const person of Object.keys(split)) {
+        if (!(await this.mayPay(householdId, userId, person))) return false
+      }
+      return true
+    },
+
     /** Whether `paidBy` can have paid in this space: the person themselves, or a household member. */
     async mayPay(householdId: string | null, userId: string, paidBy: string) {
       if (!householdId) return paidBy === userId
@@ -268,6 +281,7 @@ export function moneyStore(db: Database) {
           date: input.date,
           note: input.note ?? "",
           paidBy: input.paidBy ?? userId,
+          split: input.split ?? null,
           receiptId: input.receiptId ?? null,
         })
         .onConflictDoNothing()
@@ -286,6 +300,7 @@ export function moneyStore(db: Database) {
           ...(change.date !== undefined && { date: change.date }),
           ...(change.note !== undefined && { note: change.note }),
           ...(change.paidBy !== undefined && { paidBy: change.paidBy }),
+          ...(change.split !== undefined && { split: change.split }),
         })
         .where(eq(moneyExpense.id, expenseId))
         .returning()
@@ -446,6 +461,7 @@ export function moneyStore(db: Database) {
             date: pay.date,
             note: bill.title,
             paidBy: pay.paidBy ?? userId,
+            split: pay.split ?? null,
             billId: bill.id,
           })
           .onConflictDoNothing()
@@ -675,6 +691,7 @@ export function moneyStore(db: Database) {
         parts: { id: string; categoryId: string | null; amountCents: number }[]
         date: string
         paidBy: string
+        split: Record<string, number> | null
       }
     ) {
       return db.transaction(async (tx) => {
@@ -691,6 +708,7 @@ export function moneyStore(db: Database) {
               date: input.date,
               note: receipt.shop ?? "",
               paidBy: input.paidBy,
+              split: input.split,
               receiptId: receipt.id,
             })
             .onConflictDoNothing()

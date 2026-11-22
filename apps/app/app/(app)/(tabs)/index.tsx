@@ -1,13 +1,15 @@
 import { router, type Href } from "expo-router"
 import { ChefHat, ShoppingCart, Sun } from "lucide-react-native"
+import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
 
 import { dayLabel } from "@/lib/planner-format"
-import { todayString } from "@workspace/schemas"
+import { todayString, type Bill } from "@workspace/schemas"
 
 import { ListGroup, ListRow } from "@/components/list-row"
 import { Screen } from "@/components/screen"
+import { PayBillSheet } from "@/components/pay-bill-sheet"
 import { SearchButton } from "@/components/search-button"
 import { SpaceSwitcher } from "@/components/space-switcher"
 import { EmptyState, ErrorState, LoadingState } from "@/components/states"
@@ -27,7 +29,13 @@ import { useTodayItems } from "@/lib/use-today"
 
 /** Today: a timeline that collects what is on from the modules that provide items. */
 export default function Today() {
-  const { t } = useTranslation(["modules", "chores", "calendar", "money", "tasks"])
+  const { t } = useTranslation([
+    "modules",
+    "chores",
+    "calendar",
+    "money",
+    "tasks",
+  ])
   const wide = useIsWide()
   const { items, loading, error, retry } = useTodayItems()
   const sections = todaySections(items)
@@ -81,32 +89,42 @@ function TimelineRow({ item }: { item: TodayItem }) {
   const { households } = useHouseholds()
   const money = useMoneyActions()
   const moneyData = useMoneyState().data
+  const [paying, setPaying] = useState<Bill | null>(null)
   if (item.kind === "bill") {
     const bill = moneyData.bills.find((b) => b.id === item.id)
     const currency = moneyOfSpace(moneyData, bill?.householdId ?? null).currency
     return (
-      <ListRow
-        icon={moduleIcons.bills}
-        title={item.title}
-        detail={`${formatMoney(item.amountCents, currency)} · ${
-          item.overdueDays > 0
-            ? t("money:bills.overdue", { count: item.overdueDays })
-            : t("money:bills.dueToday")
-        }`}
-        onPress={() => router.push("/bills" as Href)}
-        right={
-          <Pressable
-            role="checkbox"
-            aria-checked={false}
-            accessibilityLabel={t("money:bills.markPaidFor", { name: item.title })}
-            onPress={() => money.payBill(item.id, today)}
-            hitSlop={8}
-            className="-my-3 -mr-4 min-h-14 min-w-14 items-center justify-center"
-          >
-            <CheckboxBox checked={false} />
-          </Pressable>
-        }
-      />
+      <>
+        <ListRow
+          icon={moduleIcons.bills}
+          title={item.title}
+          detail={`${formatMoney(item.amountCents, currency)} · ${
+            item.overdueDays > 0
+              ? t("money:bills.overdue", { count: item.overdueDays })
+              : t("money:bills.dueToday")
+          }`}
+          onPress={() => router.push("/bills" as Href)}
+          right={
+            <Pressable
+              role="checkbox"
+              aria-checked={false}
+              accessibilityLabel={t("money:bills.markPaidFor", {
+                name: item.title,
+              })}
+              onPress={() =>
+                bill?.householdId
+                  ? setPaying(bill)
+                  : money.payBill(item.id, today)
+              }
+              hitSlop={8}
+              className="-my-3 -mr-4 min-h-14 min-w-14 items-center justify-center"
+            >
+              <CheckboxBox checked={false} />
+            </Pressable>
+          }
+        />
+        <PayBillSheet bill={paying} onClose={() => setPaying(null)} />
+      </>
     )
   }
   if (item.kind === "calendar") {

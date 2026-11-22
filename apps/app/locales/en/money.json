@@ -52,7 +52,7 @@
     "whoOwes": "Who owes whom",
     "allEven": "Everyone is even.",
     "owes": "{{from}} owes {{to}} {{amount}}",
-    "splitNote": "Every expense is shared equally between all members of the household.",
+    "splitNote": "Expenses are shared equally unless you choose another split.",
     "search": "Search expenses",
     "allCategories": "All",
     "empty": {
@@ -67,8 +67,24 @@
       "note": "Note",
       "notePlaceholder": "For example: Weekly shop",
       "paidBy": "Paid by",
-      "create": "Add expense"
-    }
+      "create": "Add expense",
+      "sharing": "Shared between",
+      "mode": {
+        "equal": "Equally",
+        "alone": "Not shared",
+        "others": "For the others",
+        "custom": "Percentages"
+      },
+      "modeHint": {
+        "equal": "Split equally between all members.",
+        "alone": "Only for the person who paid. Nobody owes anything.",
+        "others": "Everyone but the person who paid owes their part.",
+        "custom": "Choose how much each person carries."
+      },
+      "percentFor": "Share of {{name}} (%)",
+      "percentTotal": "Total: {{total}} of 100 %"
+    },
+    "sharedList": "Shared: {{names}}"
   },
   "budget": {
     "title": "Budget",
@@ -131,6 +147,10 @@
       "nextDue": "Next due day",
       "firstDue": "First due day",
       "create": "Add bill"
+    },
+    "pay": {
+      "title": "Pay bill",
+      "confirm": "Mark as paid"
     }
   },
   "savings": {

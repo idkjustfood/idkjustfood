@@ -75,6 +75,8 @@ export const moneyExpense = pgTable(
     paidBy: text("paid_by")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
+    /** Percent per person, adding up to 100. Null means equally between all members. */
+    split: jsonb("split").$type<Record<string, number>>(),
     billId: text("bill_id").references(() => moneyBill.id, {
       onDelete: "set null",
     }),

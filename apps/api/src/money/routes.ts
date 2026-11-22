@@ -401,6 +401,7 @@ export const toExpense = (row: ExpenseRow): Expense => ({
   date: row.date,
   note: row.note,
   paidBy: row.paidBy,
+  split: row.split,
   billId: row.billId,
   receiptId: row.receiptId,
   householdId: row.organizationId,
@@ -559,7 +560,8 @@ export function moneyRoutes(db: Database, auth: Auth) {
     }
     if (
       !(await categoryOk(input.categoryId, userId, householdId)) ||
-      !(await store.mayPay(householdId, userId, input.paidBy ?? userId))
+      !(await store.mayPay(householdId, userId, input.paidBy ?? userId)) ||
+      !(await store.mayShare(householdId, userId, input.split))
     ) {
       return c.json({ error: "Category or payer not found" }, 400)
     }
@@ -577,7 +579,8 @@ export function moneyRoutes(db: Database, auth: Auth) {
     if (
       !(await categoryOk(change.categoryId, userId, current.organizationId)) ||
       (change.paidBy !== undefined &&
-        !(await store.mayPay(current.organizationId, userId, change.paidBy)))
+        !(await store.mayPay(current.organizationId, userId, change.paidBy))) ||
+      !(await store.mayShare(current.organizationId, userId, change.split))
     ) {
       return c.json({ error: "Category or payer not found" }, 400)
     }
@@ -666,7 +669,10 @@ export function moneyRoutes(db: Database, auth: Auth) {
     const bill = await store.bill(billId, userId)
     if (!bill) return c.json({ error: "Bill not found" }, 404)
     const pay = c.req.valid("json")
-    if (!(await store.mayPay(bill.organizationId, userId, pay.paidBy ?? userId))) {
+    if (
+      !(await store.mayPay(bill.organizationId, userId, pay.paidBy ?? userId)) ||
+      !(await store.mayShare(bill.organizationId, userId, pay.split))
+    ) {
       return c.json({ error: "Payer not found" }, 400)
     }
     const result = await store.payBill(userId, bill, pay)

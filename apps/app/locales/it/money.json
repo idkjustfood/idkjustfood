@@ -52,7 +52,7 @@
     "whoOwes": "Chi deve a chi",
     "allEven": "Tutti sono pari.",
     "owes": "{{from}} deve {{amount}} a {{to}}",
-    "splitNote": "Ogni spesa è divisa in parti uguali tra tutti i membri della casa.",
+    "splitNote": "Le spese sono divise in parti uguali, a meno che tu scelga un'altra divisione.",
     "search": "Cerca spese",
     "allCategories": "Tutte",
     "empty": {
@@ -67,8 +67,24 @@
       "note": "Nota",
       "notePlaceholder": "Per esempio: Spesa settimanale",
       "paidBy": "Pagato da",
-      "create": "Aggiungi spesa"
-    }
+      "create": "Aggiungi spesa",
+      "sharing": "Diviso tra",
+      "mode": {
+        "equal": "In parti uguali",
+        "alone": "Non condiviso",
+        "others": "Per gli altri",
+        "custom": "Percentuali"
+      },
+      "modeHint": {
+        "equal": "Diviso in parti uguali tra tutti i membri.",
+        "alone": "Solo per chi ha pagato. Nessuno deve niente.",
+        "others": "Tutti tranne chi ha pagato devono la loro parte.",
+        "custom": "Scegli quanto sostiene ogni persona."
+      },
+      "percentFor": "Quota di {{name}} (%)",
+      "percentTotal": "Totale: {{total}} su 100 %"
+    },
+    "sharedList": "Condiviso: {{names}}"
   },
   "budget": {
     "title": "Budget",
@@ -131,6 +147,10 @@
       "nextDue": "Prossima scadenza",
       "firstDue": "Prima scadenza",
       "create": "Aggiungi bolletta"
+    },
+    "pay": {
+      "title": "Paga la bolletta",
+      "confirm": "Segna come pagata"
     }
   },
   "savings": {

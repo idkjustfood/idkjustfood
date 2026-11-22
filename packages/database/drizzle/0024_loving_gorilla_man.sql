@@ -1,0 +1,1 @@
+ALTER TABLE "money_expense" ADD COLUMN "split" jsonb;
