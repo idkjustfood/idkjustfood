@@ -12,6 +12,7 @@ import { silentLogger, type Logger } from "@workspace/logger"
 
 import { createAuth, socialProvidersFromEnv, type AuthEnv } from "./auth.js"
 import { calendarRoutes } from "./calendar/routes.js"
+import { moneyRoutes } from "./money/routes.js"
 import { contactRoutes } from "./contacts/routes.js"
 import { inventoryRoutes } from "./inventory/routes.js"
 import { choreRoutes } from "./chores/routes.js"
@@ -112,6 +113,7 @@ export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
   app.route("/api", choreRoutes(db, auth))
   // Calendar entries: a title and a colour on a day, personal or for a household.
   app.route("/api", calendarRoutes(db, auth))
+  app.route("/api", moneyRoutes(db, auth))
 
   // Home inventory and contacts: personal or shared with a household.
   app.route("/api", inventoryRoutes(db, auth))
