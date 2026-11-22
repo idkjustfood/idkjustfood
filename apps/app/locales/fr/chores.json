@@ -1,14 +1,9 @@
 {
-  "title": "Tâches ménagères",
-  "ownChores": "Vos propres tâches",
   "sharedWith": "Partagées avec {{name}}",
-  "add": "Ajouter une tâche",
-  "loading": "Chargement des tâches",
   "todo": "À faire · {{count}}",
   "later": "Plus tard · {{count}}",
   "allDone": {
-    "title": "Tout est fait pour aujourd'hui",
-    "message": "Les tâches cochées reviennent le jour prévu, à 00:00."
+    "title": "Tout est fait pour aujourd'hui"
   },
   "every_one": "Tous les jours",
   "every_other": "Tous les {{count}} jours",
@@ -20,26 +15,106 @@
   "markDone": "Marquer {{name}} comme faite",
   "undo": "Annuler {{name}}, elle n'est pas faite",
   "edit": "Modifier {{name}}",
-  "loadError": {
-    "title": "Impossible de charger vos tâches",
-    "message": "Vos tâches sont enregistrées sur ce téléphone une fois chargées. Réessayez quand vous êtes en ligne."
-  },
-  "empty": {
-    "title": "Pas encore de tâches",
-    "message": "Ajoutez une tâche et sa fréquence, par exemple changer les serviettes tous les 3 jours. Cochez-la et elle revient le jour prévu."
-  },
   "form": {
-    "newTitle": "Nouvelle tâche",
-    "editTitle": "Modifier la tâche",
     "name": "Nom",
-    "placeholder": "Par exemple : Changer les serviettes",
     "interval": "Répéter tous les",
     "days": "Jours",
     "hint": "Uniquement des jours entiers. Une tâche cochée revient à 00:00, après ce nombre de jours.",
-    "visiblePersonal": "Vous seul voyez cette tâche.",
-    "visibleHousehold": "Tous les membres de {{name}} peuvent voir et cocher cette tâche.",
-    "create": "Ajouter la tâche",
     "save": "Enregistrer",
     "delete": "Supprimer"
+  },
+  "kinds": {
+    "chore": {
+      "title": "Tâches ménagères",
+      "ownTasks": "Vos propres tâches",
+      "add": "Ajouter une tâche",
+      "loading": "Chargement des tâches",
+      "allDoneMessage": "Les tâches cochées reviennent le jour prévu, à 00:00.",
+      "loadError": {
+        "title": "Impossible de charger vos tâches",
+        "message": "Vos tâches sont enregistrées sur ce téléphone une fois chargées. Réessayez quand vous êtes en ligne."
+      },
+      "empty": {
+        "title": "Pas encore de tâches",
+        "message": "Ajoutez une tâche et sa fréquence, par exemple changer les serviettes tous les 3 jours. Cochez-la et elle revient le jour prévu."
+      },
+      "form": {
+        "newTitle": "Nouvelle tâche",
+        "editTitle": "Modifier la tâche",
+        "placeholder": "Par exemple : Changer les serviettes",
+        "visiblePersonal": "Vous seul voyez cette tâche.",
+        "visibleHousehold": "Tous les membres de {{name}} peuvent voir et cocher cette tâche.",
+        "create": "Ajouter la tâche"
+      }
+    },
+    "maintenance": {
+      "title": "Entretien de la maison",
+      "ownTasks": "Vos propres travaux d'entretien",
+      "add": "Ajouter un travail",
+      "loading": "Chargement des travaux",
+      "allDoneMessage": "Les travaux cochés reviennent le jour prévu, à 00:00.",
+      "loadError": {
+        "title": "Impossible de charger vos travaux",
+        "message": "Vos travaux sont enregistrés sur ce téléphone une fois chargés. Réessayez quand vous êtes en ligne."
+      },
+      "empty": {
+        "title": "Pas encore de travaux d'entretien",
+        "message": "Ajoutez un travail et sa fréquence, par exemple nettoyer le filtre tous les 90 jours. Cochez-le et il revient le jour prévu."
+      },
+      "form": {
+        "newTitle": "Nouveau travail",
+        "editTitle": "Modifier le travail",
+        "placeholder": "Par exemple : Nettoyer le filtre du sèche-linge",
+        "visiblePersonal": "Vous seul voyez ce travail.",
+        "visibleHousehold": "Tous les membres de {{name}} peuvent voir et cocher ce travail.",
+        "create": "Ajouter le travail"
+      }
+    },
+    "plant": {
+      "title": "Plantes",
+      "ownTasks": "Vos propres plantes",
+      "add": "Ajouter une tâche pour les plantes",
+      "loading": "Chargement de l'entretien des plantes",
+      "allDoneMessage": "Les tâches cochées reviennent le jour prévu, à 00:00.",
+      "loadError": {
+        "title": "Impossible de charger l'entretien de vos plantes",
+        "message": "L'entretien de vos plantes est enregistré sur ce téléphone une fois chargé. Réessayez quand vous êtes en ligne."
+      },
+      "empty": {
+        "title": "Pas encore d'entretien des plantes",
+        "message": "Ajoutez une tâche et sa fréquence, par exemple arroser le ficus tous les 3 jours. Cochez-la et elle revient le jour prévu."
+      },
+      "form": {
+        "newTitle": "Nouvelle tâche pour les plantes",
+        "editTitle": "Modifier la tâche",
+        "placeholder": "Par exemple : Arroser le ficus",
+        "visiblePersonal": "Vous seul voyez cette tâche.",
+        "visibleHousehold": "Tous les membres de {{name}} peuvent voir et cocher cette tâche.",
+        "create": "Ajouter la tâche"
+      }
+    },
+    "pet": {
+      "title": "Animaux",
+      "ownTasks": "Les soins de vos animaux",
+      "add": "Ajouter une tâche pour les animaux",
+      "loading": "Chargement des soins des animaux",
+      "allDoneMessage": "Les tâches cochées reviennent le jour prévu, à 00:00.",
+      "loadError": {
+        "title": "Impossible de charger les soins de vos animaux",
+        "message": "Les soins de vos animaux sont enregistrés sur ce téléphone une fois chargés. Réessayez quand vous êtes en ligne."
+      },
+      "empty": {
+        "title": "Pas encore de soins pour les animaux",
+        "message": "Ajoutez une tâche et sa fréquence, par exemple vermifuger le chien tous les 90 jours. Cochez-la et elle revient le jour prévu."
+      },
+      "form": {
+        "newTitle": "Nouvelle tâche pour les animaux",
+        "editTitle": "Modifier la tâche",
+        "placeholder": "Par exemple : Nettoyer la litière",
+        "visiblePersonal": "Vous seul voyez cette tâche.",
+        "visibleHousehold": "Tous les membres de {{name}} peuvent voir et cocher cette tâche.",
+        "create": "Ajouter la tâche"
+      }
+    }
   }
 }

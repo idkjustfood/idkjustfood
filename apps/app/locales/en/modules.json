@@ -124,10 +124,15 @@
     "description": "Craftspeople, doctors, school.",
     "soon": "Keep the numbers of craftspeople, doctors and school at hand."
   },
-  "plantsPets": {
-    "name": "Plants and pets",
-    "description": "Care for plants and pets.",
-    "soon": "Remember when to water the plants and when the pet needs care."
+  "plants": {
+    "name": "Plants",
+    "description": "Water and care for your plants.",
+    "soon": "Remember when to water the plants."
+  },
+  "pets": {
+    "name": "Pets",
+    "description": "Care for your pets.",
+    "soon": "Remember when the pet needs care."
   },
   "recipes": {
     "name": "Recipes",

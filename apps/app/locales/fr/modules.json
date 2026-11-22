@@ -124,10 +124,15 @@
     "description": "Artisans, médecins, école.",
     "soon": "Gardez sous la main les numéros des artisans, des médecins et de l’école."
   },
-  "plantsPets": {
-    "name": "Plantes et animaux",
-    "description": "Soins des plantes et des animaux.",
-    "soon": "Rappelez-vous quand arroser les plantes et quand soigner l’animal."
+  "plants": {
+    "name": "Plantes",
+    "description": "Arrosez et entretenez vos plantes.",
+    "soon": "Sachez quand arroser les plantes."
+  },
+  "pets": {
+    "name": "Animaux",
+    "description": "Prenez soin de vos animaux.",
+    "soon": "Sachez quand l'animal a besoin de soins."
   },
   "recipes": {
     "name": "Recettes",

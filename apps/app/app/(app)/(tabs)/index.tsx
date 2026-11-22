@@ -1,5 +1,5 @@
 import { router, type Href } from "expo-router"
-import { ChefHat, Repeat, ShoppingCart, Sun } from "lucide-react-native"
+import { ChefHat, ShoppingCart, Sun } from "lucide-react-native"
 import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
 
@@ -16,6 +16,8 @@ import { CheckboxBox } from "@/components/ui/checkbox"
 import { useChoreActions, useToday } from "@/lib/chores"
 import { useHouseholds } from "@/lib/households"
 import { useIsWide } from "@/lib/layout"
+import { moduleIcons } from "@/lib/module-icons"
+import { taskKinds } from "@/lib/task-kinds"
 import { todaySections, type TodayItem } from "@/lib/today"
 import { useTodayItems } from "@/lib/use-today"
 
@@ -99,14 +101,14 @@ function TimelineRow({ item }: { item: TodayItem }) {
   if (item.kind === "chore")
     return (
       <ListRow
-        icon={Repeat}
+        icon={moduleIcons[taskKinds[item.taskKind].moduleId]}
         title={item.name}
         detail={
           item.overdueDays > 0
             ? t("today.overdue", { count: item.overdueDays })
             : t("chores:every", { count: item.intervalDays })
         }
-        onPress={() => router.push("/chores" as Href)}
+        onPress={() => router.push(taskKinds[item.taskKind].route as Href)}
         right={
           <Pressable
             role="checkbox"

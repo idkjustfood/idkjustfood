@@ -1,14 +1,9 @@
 {
-  "title": "Haushaltsaufgaben",
-  "ownChores": "Deine eigenen Aufgaben",
   "sharedWith": "Geteilt mit {{name}}",
-  "add": "Aufgabe hinzufügen",
-  "loading": "Aufgaben werden geladen",
   "todo": "Zu erledigen · {{count}}",
   "later": "Später · {{count}}",
   "allDone": {
-    "title": "Für heute alles erledigt",
-    "message": "Abgehakte Aufgaben kommen an ihrem Tag um 00:00 Uhr zurück."
+    "title": "Für heute alles erledigt"
   },
   "every_one": "Jeden Tag",
   "every_other": "Alle {{count}} Tage",
@@ -20,26 +15,106 @@
   "markDone": "{{name}} als erledigt markieren",
   "undo": "{{name}} zurücknehmen, nicht erledigt",
   "edit": "{{name}} bearbeiten",
-  "loadError": {
-    "title": "Aufgaben konnten nicht geladen werden",
-    "message": "Deine Aufgaben werden auf diesem Handy gespeichert, sobald sie geladen sind. Versuche es erneut, wenn du online bist."
-  },
-  "empty": {
-    "title": "Noch keine Aufgaben",
-    "message": "Lege eine Aufgabe an und wie oft sie wiederkommt, zum Beispiel Handtücher wechseln alle 3 Tage. Hake sie ab, und sie kommt an ihrem Tag zurück."
-  },
   "form": {
-    "newTitle": "Neue Aufgabe",
-    "editTitle": "Aufgabe bearbeiten",
     "name": "Name",
-    "placeholder": "Zum Beispiel: Handtücher wechseln",
     "interval": "Wiederholen alle",
     "days": "Tage",
     "hint": "Nur ganze Tage. Eine abgehakte Aufgabe kommt nach so vielen Tagen um 00:00 Uhr zurück.",
-    "visiblePersonal": "Nur du siehst diese Aufgabe.",
-    "visibleHousehold": "Alle in {{name}} können diese Aufgabe sehen und abhaken.",
-    "create": "Aufgabe hinzufügen",
     "save": "Speichern",
     "delete": "Löschen"
+  },
+  "kinds": {
+    "chore": {
+      "title": "Haushaltsaufgaben",
+      "ownTasks": "Deine eigenen Aufgaben",
+      "add": "Aufgabe hinzufügen",
+      "loading": "Aufgaben werden geladen",
+      "allDoneMessage": "Abgehakte Aufgaben kommen an ihrem Tag um 00:00 Uhr zurück.",
+      "loadError": {
+        "title": "Aufgaben konnten nicht geladen werden",
+        "message": "Deine Aufgaben werden auf diesem Handy gespeichert, sobald sie geladen sind. Versuche es erneut, wenn du online bist."
+      },
+      "empty": {
+        "title": "Noch keine Aufgaben",
+        "message": "Lege eine Aufgabe an und wie oft sie wiederkommt, zum Beispiel Handtücher wechseln alle 3 Tage. Hake sie ab, und sie kommt an ihrem Tag zurück."
+      },
+      "form": {
+        "newTitle": "Neue Aufgabe",
+        "editTitle": "Aufgabe bearbeiten",
+        "placeholder": "Zum Beispiel: Handtücher wechseln",
+        "visiblePersonal": "Nur du siehst diese Aufgabe.",
+        "visibleHousehold": "Alle in {{name}} können diese Aufgabe sehen und abhaken.",
+        "create": "Aufgabe hinzufügen"
+      }
+    },
+    "maintenance": {
+      "title": "Instandhaltung",
+      "ownTasks": "Deine eigenen Wartungsarbeiten",
+      "add": "Arbeit hinzufügen",
+      "loading": "Wartungsarbeiten werden geladen",
+      "allDoneMessage": "Abgehakte Arbeiten kommen an ihrem Tag um 00:00 Uhr zurück.",
+      "loadError": {
+        "title": "Wartungsarbeiten konnten nicht geladen werden",
+        "message": "Deine Wartungsarbeiten werden auf diesem Handy gespeichert, sobald sie geladen sind. Versuche es erneut, wenn du online bist."
+      },
+      "empty": {
+        "title": "Noch keine Wartungsarbeiten",
+        "message": "Lege eine Arbeit an und wie oft sie wiederkommt, zum Beispiel den Filter alle 90 Tage reinigen. Hake sie ab, und sie kommt an ihrem Tag zurück."
+      },
+      "form": {
+        "newTitle": "Neue Arbeit",
+        "editTitle": "Arbeit bearbeiten",
+        "placeholder": "Zum Beispiel: Trocknerfilter reinigen",
+        "visiblePersonal": "Nur du siehst diese Arbeit.",
+        "visibleHousehold": "Alle in {{name}} können diese Arbeit sehen und abhaken.",
+        "create": "Arbeit hinzufügen"
+      }
+    },
+    "plant": {
+      "title": "Pflanzen",
+      "ownTasks": "Deine eigenen Pflanzen",
+      "add": "Pflanzenaufgabe hinzufügen",
+      "loading": "Pflanzenpflege wird geladen",
+      "allDoneMessage": "Abgehakte Aufgaben kommen an ihrem Tag um 00:00 Uhr zurück.",
+      "loadError": {
+        "title": "Pflanzenpflege konnte nicht geladen werden",
+        "message": "Deine Pflanzenpflege wird auf diesem Handy gespeichert, sobald sie geladen ist. Versuche es erneut, wenn du online bist."
+      },
+      "empty": {
+        "title": "Noch keine Pflanzenpflege",
+        "message": "Lege eine Aufgabe an und wie oft sie wiederkommt, zum Beispiel den Ficus alle 3 Tage gießen. Hake sie ab, und sie kommt an ihrem Tag zurück."
+      },
+      "form": {
+        "newTitle": "Neue Pflanzenaufgabe",
+        "editTitle": "Pflanzenaufgabe bearbeiten",
+        "placeholder": "Zum Beispiel: Ficus gießen",
+        "visiblePersonal": "Nur du siehst diese Aufgabe.",
+        "visibleHousehold": "Alle in {{name}} können diese Aufgabe sehen und abhaken.",
+        "create": "Aufgabe hinzufügen"
+      }
+    },
+    "pet": {
+      "title": "Haustiere",
+      "ownTasks": "Deine eigene Tierpflege",
+      "add": "Tieraufgabe hinzufügen",
+      "loading": "Tierpflege wird geladen",
+      "allDoneMessage": "Abgehakte Aufgaben kommen an ihrem Tag um 00:00 Uhr zurück.",
+      "loadError": {
+        "title": "Tierpflege konnte nicht geladen werden",
+        "message": "Deine Tierpflege wird auf diesem Handy gespeichert, sobald sie geladen ist. Versuche es erneut, wenn du online bist."
+      },
+      "empty": {
+        "title": "Noch keine Tierpflege",
+        "message": "Lege eine Aufgabe an und wie oft sie wiederkommt, zum Beispiel den Hund alle 90 Tage entwurmen. Hake sie ab, und sie kommt an ihrem Tag zurück."
+      },
+      "form": {
+        "newTitle": "Neue Tieraufgabe",
+        "editTitle": "Tieraufgabe bearbeiten",
+        "placeholder": "Zum Beispiel: Katzenklo reinigen",
+        "visiblePersonal": "Nur du siehst diese Aufgabe.",
+        "visibleHousehold": "Alle in {{name}} können diese Aufgabe sehen und abhaken.",
+        "create": "Aufgabe hinzufügen"
+      }
+    }
   }
 }

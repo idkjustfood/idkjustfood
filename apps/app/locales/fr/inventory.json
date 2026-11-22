@@ -1,0 +1,36 @@
+{
+  "title": "Inventaire de la maison",
+  "ownItems": "Vos propres objets",
+  "sharedWith": "Partagé avec {{name}}",
+  "add": "Ajouter un objet",
+  "loading": "Chargement de l'inventaire",
+  "search": "Rechercher des objets",
+  "quantity": "Quantité : {{count}}",
+  "noMatch": {
+    "title": "Rien trouvé",
+    "message": "Aucun objet ne correspond à votre recherche."
+  },
+  "loadError": {
+    "title": "Impossible de charger votre inventaire",
+    "message": "Votre inventaire est enregistré sur ce téléphone une fois chargé. Réessayez quand vous êtes en ligne."
+  },
+  "empty": {
+    "title": "Pas encore d'objets",
+    "message": "Notez ce que vous possédez et où c'est rangé, par exemple les bougies dans le tiroir de la cuisine."
+  },
+  "form": {
+    "newTitle": "Nouvel objet",
+    "editTitle": "Modifier l'objet",
+    "name": "Nom",
+    "placeholder": "Par exemple : Bougies",
+    "place": "Où est-ce rangé ?",
+    "placePlaceholder": "Par exemple : Tiroir de la cuisine",
+    "quantity": "Combien",
+    "note": "Note",
+    "visiblePersonal": "Vous seul voyez cet objet.",
+    "visibleHousehold": "Tous les membres de {{name}} peuvent voir et modifier cet objet.",
+    "create": "Ajouter l'objet",
+    "save": "Enregistrer",
+    "delete": "Supprimer"
+  }
+}

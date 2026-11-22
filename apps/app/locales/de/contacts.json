@@ -1,0 +1,40 @@
+{
+  "title": "Kontakte",
+  "ownContacts": "Deine eigenen Kontakte",
+  "sharedWith": "Geteilt mit {{name}}",
+  "add": "Kontakt hinzufügen",
+  "loading": "Kontakte werden geladen",
+  "search": "Kontakte suchen",
+  "edit": "{{name}} bearbeiten",
+  "call": "{{name}} anrufen",
+  "write": "{{name}} schreiben",
+  "noMatch": {
+    "title": "Nichts gefunden",
+    "message": "Kein Kontakt passt zu deiner Suche."
+  },
+  "loadError": {
+    "title": "Kontakte konnten nicht geladen werden",
+    "message": "Deine Kontakte werden auf diesem Handy gespeichert, sobald sie geladen sind. Versuche es erneut, wenn du online bist."
+  },
+  "empty": {
+    "title": "Noch keine Kontakte",
+    "message": "Halte die Nummern von Handwerkern, Ärzten und Schule griffbereit."
+  },
+  "form": {
+    "newTitle": "Neuer Kontakt",
+    "editTitle": "Kontakt bearbeiten",
+    "name": "Name",
+    "namePlaceholder": "Zum Beispiel: Max Müller",
+    "role": "Was die Person macht",
+    "rolePlaceholder": "Zum Beispiel: Klempner",
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "emailInvalid": "Das ist keine E-Mail-Adresse.",
+    "note": "Notiz",
+    "visiblePersonal": "Nur du siehst diesen Kontakt.",
+    "visibleHousehold": "Alle in {{name}} können diesen Kontakt sehen und ändern.",
+    "create": "Kontakt hinzufügen",
+    "save": "Speichern",
+    "delete": "Löschen"
+  }
+}

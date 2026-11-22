@@ -31,7 +31,7 @@ describe("module registry", () => {
     const ids = (area: "plan" | "home") =>
       modulesInArea(area, []).map((m) => m.id)
     expect(ids("home").sort()).toEqual(
-      ["chores", "contacts", "documents", "inventory", "maintenance", "plantsPets"].sort()
+      ["chores", "contacts", "documents", "inventory", "maintenance", "pets", "plants"].sort()
     )
     expect(ids("plan").sort()).toEqual(
       ["calendar", "planner", "reminders", "routines", "tasks"].sort()

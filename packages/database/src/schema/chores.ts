@@ -22,6 +22,8 @@ export const chore = pgTable(
       onDelete: "cascade",
     }),
     name: text("name").notNull(),
+    /** `chore`, `maintenance`, `plant` or `pet`: the module the task belongs to. */
+    kind: text("kind").notNull().default("chore"),
     intervalDays: integer("interval_days").notNull(),
     lastDoneOn: text("last_done_on"),
     createdAt: timestamp("created_at").defaultNow().notNull(),

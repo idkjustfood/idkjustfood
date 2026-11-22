@@ -12,6 +12,15 @@ import { z } from "zod"
 
 export const MAX_CHORE_INTERVAL_DAYS = 365
 
+/**
+ * What a recurring task is for. Chores, home maintenance, plants and pets all work the same
+ * way (a task that comes back after a number of days), so they share one table and one set of
+ * rules. The kind decides which module shows the task.
+ */
+export const choreKinds = ["chore", "maintenance", "plant", "pet"] as const
+export const ChoreKindSchema = z.enum(choreKinds)
+export type ChoreKind = z.infer<typeof ChoreKindSchema>
+
 const name = z.string().trim().min(1).max(200)
 
 /** A calendar day, written `YYYY-MM-DD`. */
@@ -26,6 +35,8 @@ const intervalDays = z.number().int().min(1).max(MAX_CHORE_INTERVAL_DAYS)
 export const ChoreSchema = z.object({
   id: z.string(),
   name,
+  /** Which module the task belongs to. Tasks made before kinds existed are chores. */
+  kind: ChoreKindSchema,
   /** The chore comes back this many days after it was checked. */
   intervalDays,
   /** The day it was last checked, or null when it never was (then it is due right away). */
@@ -40,6 +51,8 @@ export type Chore = z.infer<typeof ChoreSchema>
 export const ChoreInputSchema = z.object({
   id: z.string().min(1).max(100).optional(),
   name,
+  /** Left out means a chore. */
+  kind: ChoreKindSchema.optional(),
   intervalDays,
   /** Empty (null) means a personal chore. */
   householdId: z.string().nullable().optional(),

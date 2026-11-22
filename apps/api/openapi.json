@@ -1148,6 +1148,15 @@
             "minLength": 1,
             "maxLength": 200
           },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "chore",
+              "maintenance",
+              "plant",
+              "pet"
+            ]
+          },
           "intervalDays": {
             "type": "integer",
             "minimum": 1,
@@ -1173,6 +1182,7 @@
         "required": [
           "id",
           "name",
+          "kind",
           "intervalDays",
           "lastDoneOn",
           "householdId",
@@ -1191,6 +1201,15 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 200
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "chore",
+              "maintenance",
+              "plant",
+              "pet"
+            ]
           },
           "intervalDays": {
             "type": "integer",
@@ -1339,6 +1358,224 @@
           "date": {
             "type": "string",
             "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        }
+      },
+      "InventoryItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "place": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9999
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "place",
+          "quantity",
+          "note",
+          "householdId",
+          "createdAt"
+        ]
+      },
+      "InventoryItemInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "place": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9999
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "InventoryItemUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "place": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9999
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "role": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "role",
+          "phone",
+          "email",
+          "note",
+          "householdId",
+          "createdAt"
+        ]
+      },
+      "ContactInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "role": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ContactUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "role": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "phone": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "email": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 2000
           }
         }
       },
@@ -4679,7 +4916,7 @@
           }
         ],
         "summary": "List chores",
-        "description": "Your own chores and the chores of your households. With `householdId`, only the chores of that household. Every chore has `lastDoneOn` and `intervalDays`; a chore is due again on `lastDoneOn` + `intervalDays` days, from 00:00. The app works that out on the device, in the time zone of the person.",
+        "description": "Your own chores and the chores of your households. With `householdId`, only the chores of that household, and `kind` only tasks of one module (chores, maintenance, plants or pets, which all work the same way). Every chore has `lastDoneOn` and `intervalDays`; a chore is due again on `lastDoneOn` + `intervalDays` days, from 00:00. The app works that out on the device, in the time zone of the person.",
         "parameters": [
           {
             "schema": {
@@ -4687,6 +4924,20 @@
             },
             "required": false,
             "name": "householdId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "chore",
+                "maintenance",
+                "plant",
+                "pet"
+              ]
+            },
+            "required": false,
+            "name": "kind",
             "in": "query"
           }
         ],
@@ -5217,6 +5468,566 @@
           },
           "404": {
             "description": "The entry doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/inventory": {
+      "get": {
+        "tags": [
+          "Inventory"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "List items",
+        "description": "Your own items and the items of your households. With `householdId`, only the items of that household.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "householdId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/InventoryItem"
+                      }
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Inventory"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add an item",
+        "description": "`householdId` shares the item with a household; without it the item is personal. You may choose the `id`. Sending an id that already exists returns that item and changes nothing.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryItemInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added, or already there",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "item": {
+                      "$ref": "#/components/schemas/InventoryItem"
+                    }
+                  },
+                  "required": [
+                    "item"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id is already used by someone else's item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/inventory/{itemId}": {
+      "patch": {
+        "tags": [
+          "Inventory"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Change an item",
+        "description": "Everyone who can see the item can change it.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "itemId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InventoryItemUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The changed item",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "item": {
+                      "$ref": "#/components/schemas/InventoryItem"
+                    }
+                  },
+                  "required": [
+                    "item"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The item doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Inventory"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete an item",
+        "description": "Everyone who can see the item can delete it.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "itemId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The item doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/contacts": {
+      "get": {
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "List contacts",
+        "description": "Your own contacts and the contacts of your households. With `householdId`, only the contacts of that household.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "householdId",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The contacts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contacts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Contact"
+                      }
+                    }
+                  },
+                  "required": [
+                    "contacts"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add a contact",
+        "description": "`householdId` shares the contact with a household; without it the contact is personal. You may choose the `id`. Sending an id that already exists returns that contact and changes nothing.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added, or already there",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contact": {
+                      "$ref": "#/components/schemas/Contact"
+                    }
+                  },
+                  "required": [
+                    "contact"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id is already used by someone else's contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/contacts/{contactId}": {
+      "patch": {
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Change a contact",
+        "description": "Everyone who can see the contact can change it.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "contactId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ContactUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The changed contact",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "contact": {
+                      "$ref": "#/components/schemas/Contact"
+                    }
+                  },
+                  "required": [
+                    "contact"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The contact doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Contacts"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a contact",
+        "description": "Everyone who can see the contact can delete it.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "contactId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The contact doesn't exist, or you can't see it",
             "content": {
               "application/json": {
                 "schema": {

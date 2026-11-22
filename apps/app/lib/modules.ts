@@ -81,8 +81,8 @@ export const modules: readonly AppModule[] = [
   {
     id: "maintenance",
     area: "home",
-    route: placeholder("maintenance"),
-    built: false,
+    route: "/maintenance",
+    built: true,
   },
   {
     id: "documents",
@@ -94,20 +94,26 @@ export const modules: readonly AppModule[] = [
   {
     id: "inventory",
     area: "home",
-    route: placeholder("inventory"),
-    built: false,
+    route: "/inventory",
+    built: true,
   },
   {
     id: "contacts",
     area: "home",
-    route: placeholder("contacts"),
-    built: false,
+    route: "/contacts",
+    built: true,
   },
   {
-    id: "plantsPets",
+    id: "plants",
     area: "home",
-    route: placeholder("plantsPets"),
-    built: false,
+    route: "/plants",
+    built: true,
+  },
+  {
+    id: "pets",
+    area: "home",
+    route: "/pets",
+    built: true,
   },
   // Food
   {
@@ -300,6 +306,11 @@ export function areaOfRoute(
     case "calendar":
       return "plan"
     case "chores":
+    case "maintenance":
+    case "plants":
+    case "pets":
+    case "inventory":
+    case "contacts":
     case "documents":
       return "home"
     case "settings":

@@ -124,10 +124,15 @@
     "description": "Handwerker, Ärzte, Schule.",
     "soon": "Halte die Nummern von Handwerkern, Ärzten und Schule bereit."
   },
-  "plantsPets": {
-    "name": "Pflanzen und Haustiere",
-    "description": "Pflanzen und Haustiere versorgen.",
-    "soon": "Merke dir, wann die Pflanzen Wasser brauchen und wann das Haustier Pflege braucht."
+  "plants": {
+    "name": "Pflanzen",
+    "description": "Pflanzen gießen und pflegen.",
+    "soon": "Merke dir, wann die Pflanzen Wasser brauchen."
+  },
+  "pets": {
+    "name": "Haustiere",
+    "description": "Haustiere versorgen.",
+    "soon": "Merke dir, wann das Haustier Pflege braucht."
   },
   "recipes": {
     "name": "Rezepte",

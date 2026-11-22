@@ -1,4 +1,4 @@
-import type { Chore, ChoreUpdate } from "@workspace/schemas"
+import type { Chore, ChoreKind, ChoreUpdate } from "@workspace/schemas"
 
 /**
  * A change to the chores, made on this device. Changes are kept in a queue and sent to the
@@ -11,6 +11,8 @@ export type ChoreOp =
       type: "add"
       id: string
       name: string
+      /** Left out in changes saved before kinds existed: that means a chore. */
+      kind?: ChoreKind
       intervalDays: number
       householdId: string | null
     }
@@ -31,6 +33,7 @@ export function applyChoreOp(
         {
           id: op.id,
           name: op.name,
+          kind: op.kind ?? "chore",
           intervalDays: op.intervalDays,
           lastDoneOn: null,
           householdId: op.householdId,

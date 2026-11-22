@@ -11,6 +11,7 @@ const towels: Chore = {
   intervalDays: 3,
   lastDoneOn: null,
   householdId: null,
+  kind: "chore" as const,
   createdAt: "2026-01-01T00:00:00.000Z",
 }
 
@@ -102,6 +103,15 @@ describe("ChoreStore", () => {
     expect(second.store.getState().loaded).toBe(true)
     expect(second.store.getState().pending).toBe(1)
     expect(second.store.getState().chores[0]?.lastDoneOn).toBe("2026-11-21")
+  })
+
+  test("chores saved on the device before kinds existed are chores", async () => {
+    const { kind: _kind, ...old } = towels
+    const saved = JSON.stringify({ chores: [old], queue: [] })
+    const { store, server } = setup(saved)
+    server.reachable = false
+    await store.start()
+    expect(store.getState().chores[0]?.kind).toBe("chore")
   })
 
   test("a change the server will never accept is dropped", async () => {

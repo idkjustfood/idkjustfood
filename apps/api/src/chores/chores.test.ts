@@ -199,3 +199,47 @@ describe("who can see a chore", () => {
     expect(await listChores("", home.member)).toHaveLength(0)
   })
 })
+
+describe("kinds of tasks", () => {
+  test("a task without a kind is a chore", async () => {
+    expect((await addChore()).kind).toBe("chore")
+  })
+
+  test("maintenance, plants and pets work like chores", async () => {
+    for (const kind of ["maintenance", "plant", "pet"] as const) {
+      const task = await addChore({ kind, name: `A ${kind} task` })
+      expect(task.kind).toBe(kind)
+      expect(isChoreDue(task, "2026-11-21")).toBe(true)
+      const res = await patch(task.id, { lastDoneOn: "2026-11-21" })
+      const { chore } = await body<{ chore: Chore }>(res)
+      expect(chore.kind).toBe(kind)
+      expect(isChoreDue(chore, "2026-11-22")).toBe(false)
+    }
+  })
+
+  test("the list can be limited to one kind", async () => {
+    await addChore({ name: "Towels" })
+    await addChore({ kind: "maintenance", name: "Boiler" })
+    await addChore({ kind: "plant", name: "Water the ficus" })
+    expect(await listChores()).toHaveLength(3)
+    const plants = await listChores("?kind=plant")
+    expect(plants.map((c) => c.name)).toEqual(["Water the ficus"])
+  })
+
+  test("an unknown kind is refused", async () => {
+    const res = await api.post("/api/chores", olivia, {
+      name: "X",
+      intervalDays: 1,
+      kind: "garden",
+    })
+    expect(res.status).toBe(400)
+  })
+
+  test("household maintenance is shared like household chores", async () => {
+    const { id, member } = await household(olivia)
+    await addChore({ kind: "maintenance", householdId: id })
+    const seen = await listChores("?kind=maintenance", member)
+    expect(seen).toHaveLength(1)
+    expect(await listChores("?kind=maintenance")).toHaveLength(1)
+  })
+})

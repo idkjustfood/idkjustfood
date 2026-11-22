@@ -1,0 +1,36 @@
+{
+  "title": "Inventario di casa",
+  "ownItems": "I tuoi oggetti",
+  "sharedWith": "Condiviso con {{name}}",
+  "add": "Aggiungi oggetto",
+  "loading": "Caricamento dell'inventario",
+  "search": "Cerca oggetti",
+  "quantity": "Quantità: {{count}}",
+  "noMatch": {
+    "title": "Nessun risultato",
+    "message": "Nessun oggetto corrisponde alla ricerca."
+  },
+  "loadError": {
+    "title": "Impossibile caricare l'inventario",
+    "message": "Il tuo inventario viene salvato su questo telefono dopo il caricamento. Riprova quando sei online."
+  },
+  "empty": {
+    "title": "Ancora nessun oggetto",
+    "message": "Scrivi cosa possiedi e dove si trova, per esempio le candele nel cassetto della cucina."
+  },
+  "form": {
+    "newTitle": "Nuovo oggetto",
+    "editTitle": "Modifica oggetto",
+    "name": "Nome",
+    "placeholder": "Per esempio: Candele",
+    "place": "Dove si trova?",
+    "placePlaceholder": "Per esempio: Cassetto della cucina",
+    "quantity": "Quanti",
+    "note": "Nota",
+    "visiblePersonal": "Solo tu vedi questo oggetto.",
+    "visibleHousehold": "Tutti in {{name}} possono vedere e modificare questo oggetto.",
+    "create": "Aggiungi oggetto",
+    "save": "Salva",
+    "delete": "Elimina"
+  }
+}

@@ -34,6 +34,11 @@ export default function TabsLayout() {
         <Tabs.Screen name="planner" />
         <Tabs.Screen name="calendar" />
         <Tabs.Screen name="chores" />
+        <Tabs.Screen name="maintenance" />
+        <Tabs.Screen name="plants" />
+        <Tabs.Screen name="pets" />
+        <Tabs.Screen name="inventory" />
+        <Tabs.Screen name="contacts" />
         <Tabs.Screen name="documents" />
         <Tabs.Screen name="settings" />
         <Tabs.Screen name="m/[id]" />

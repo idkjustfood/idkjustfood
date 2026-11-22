@@ -113,6 +113,10 @@ TypeScript everywhere, in one monorepo.
   `docs/calendar.md`.
 - Household chores work end to end: tasks that come back after a number of days, personal or
   shared with a household, offline on the phone. See `docs/household-tasks.md`.
+- Every Home module works. Home maintenance, Plants and Pets work like chores (tasks that come
+  back after a number of days, one shared engine with a `kind`), and the due ones show on Today.
+  Home inventory and Contacts are lists, personal or for a household, offline on the phone. See
+  `docs/household-tasks.md`, `docs/home-inventory.md` and `docs/contacts.md`.
 - Documents (warranties, contracts, scans) can be uploaded, personal or shared with a household.
   Files are stored on the server's own disk, never in a cloud. See `docs/files.md`.
 - The app has a theme system (cozy hand-drawn look by default, chosen in settings). See

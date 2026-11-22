@@ -1,0 +1,40 @@
+{
+  "title": "Contacts",
+  "ownContacts": "Your own contacts",
+  "sharedWith": "Shared with {{name}}",
+  "add": "Add contact",
+  "loading": "Loading contacts",
+  "search": "Search contacts",
+  "edit": "Edit {{name}}",
+  "call": "Call {{name}}",
+  "write": "Write to {{name}}",
+  "noMatch": {
+    "title": "Nothing found",
+    "message": "No contact matches your search."
+  },
+  "loadError": {
+    "title": "Could not load your contacts",
+    "message": "Your contacts are saved on this phone once they have loaded. Try again when you are online."
+  },
+  "empty": {
+    "title": "No contacts yet",
+    "message": "Keep the numbers of craftspeople, doctors and school at hand."
+  },
+  "form": {
+    "newTitle": "New contact",
+    "editTitle": "Edit contact",
+    "name": "Name",
+    "namePlaceholder": "For example: Max Miller",
+    "role": "What they do",
+    "rolePlaceholder": "For example: Plumber",
+    "phone": "Phone",
+    "email": "Email",
+    "emailInvalid": "This is not an email address.",
+    "note": "Note",
+    "visiblePersonal": "Only you can see this contact.",
+    "visibleHousehold": "Everyone in {{name}} can see and change this contact.",
+    "create": "Add contact",
+    "save": "Save",
+    "delete": "Delete"
+  }
+}

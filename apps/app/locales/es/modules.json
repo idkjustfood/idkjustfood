@@ -124,10 +124,15 @@
     "description": "Profesionales, médicos, colegio.",
     "soon": "Ten a mano los teléfonos de profesionales, médicos y el colegio."
   },
-  "plantsPets": {
-    "name": "Plantas y mascotas",
-    "description": "Cuidado de plantas y mascotas.",
-    "soon": "Recuerda cuándo regar las plantas y cuándo cuidar a la mascota."
+  "plants": {
+    "name": "Plantas",
+    "description": "Riega y cuida tus plantas.",
+    "soon": "Recuerda cuándo regar las plantas."
+  },
+  "pets": {
+    "name": "Mascotas",
+    "description": "Cuida a tus mascotas.",
+    "soon": "Recuerda cuándo necesita cuidados la mascota."
   },
   "recipes": {
     "name": "Recetas",

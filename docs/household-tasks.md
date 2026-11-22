@@ -5,6 +5,27 @@ it off, it disappears from the list, and it returns at 00:00 on its day. Chores 
 **shared with a household** (every member sees and checks the same chores). Nothing here needs the
 cloud edition, so self-hosted installs have it too.
 
+## Maintenance, plants and pets
+
+Home maintenance ("clean the dryer filter, every 90 days"), plants ("water the ficus, every
+3 days") and pets ("clean the litter box, every 2 days") are the same thing as a chore: a task that
+comes back after a number of days. They share the table, the API, the rules and the screen, and
+only the `kind` differs (`chore`, `maintenance`, `plant` or `pet`, see `choreKinds` in
+`packages/schemas/src/chores.ts`). Everything below holds for all four.
+
+- **Home → Chores, Home maintenance, Plants, Pets** are four modules, each with its own screen
+  (`components/task-screen.tsx`, one component with a `kind`). Plants and Pets are separate
+  modules, so each can be switched off in Settings → Modules. A task only shows in the module of
+  its kind.
+- **Today** shows the due tasks of every kind in the one "Tasks" section. The row shows the icon
+  of its module, and tapping it opens that module. Switching a module off hides its tasks there.
+- **API:** `POST /api/chores` takes an optional `kind` (a missing kind means `chore`), and
+  `GET /api/chores?kind=plant` lists one kind only. The list without `kind` returns all of them.
+- Tasks saved on a phone before kinds existed are read as chores.
+- To add another kind: add it to `choreKinds`, to `taskKinds` in `apps/app/lib/task-kinds.ts`,
+  add a module (see [adding-a-module.md](adding-a-module.md)) and the texts under `kinds` in
+  `locales/*/chores.json`.
+
 ## How a chore comes back
 
 - The repeat interval is **whole days** (1 to 365). There are no hours.
@@ -25,7 +46,7 @@ The rules live in `packages/schemas/src/chores.ts` (`choreDueDay`, `isChoreDue`,
 
 ## In the app
 
-- **Home → Chores** (also in the "+" sheet as "Add chore"). The dropdown at the top switches between
+- **Home → Chores** (also in the "+" sheet as "Add chore"; the other kinds work the same). The dropdown at the top switches between
   your own chores and the chores of a household, like shopping lists.
 - **To do** lists the chores that are due. Tap one to check it off. It moves to **Later**, where it
   says when it comes back ("Back tomorrow", "Back in 2 days").

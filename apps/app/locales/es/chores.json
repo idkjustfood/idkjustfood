@@ -1,14 +1,9 @@
 {
-  "title": "Tareas del hogar",
-  "ownChores": "Tus propias tareas",
   "sharedWith": "Compartidas con {{name}}",
-  "add": "Añadir tarea",
-  "loading": "Cargando tareas",
   "todo": "Por hacer · {{count}}",
   "later": "Más tarde · {{count}}",
   "allDone": {
-    "title": "Todo hecho por hoy",
-    "message": "Las tareas marcadas vuelven en su día, a las 00:00."
+    "title": "Todo hecho por hoy"
   },
   "every_one": "Cada día",
   "every_other": "Cada {{count}} días",
@@ -20,26 +15,106 @@
   "markDone": "Marcar {{name}} como hecha",
   "undo": "Deshacer {{name}}, no está hecha",
   "edit": "Editar {{name}}",
-  "loadError": {
-    "title": "No se pudieron cargar tus tareas",
-    "message": "Tus tareas se guardan en este teléfono cuando se han cargado. Inténtalo de nuevo cuando tengas conexión."
-  },
-  "empty": {
-    "title": "Aún no hay tareas",
-    "message": "Añade una tarea y cada cuánto vuelve, por ejemplo cambiar las toallas cada 3 días. Márcala y volverá en su día."
-  },
   "form": {
-    "newTitle": "Nueva tarea",
-    "editTitle": "Editar tarea",
     "name": "Nombre",
-    "placeholder": "Por ejemplo: Cambiar las toallas",
     "interval": "Repetir cada",
     "days": "Días",
     "hint": "Solo días enteros. Una tarea marcada vuelve a las 00:00, pasados estos días.",
-    "visiblePersonal": "Solo tú ves esta tarea.",
-    "visibleHousehold": "Todos en {{name}} pueden ver y marcar esta tarea.",
-    "create": "Añadir tarea",
     "save": "Guardar",
     "delete": "Eliminar"
+  },
+  "kinds": {
+    "chore": {
+      "title": "Tareas del hogar",
+      "ownTasks": "Tus propias tareas",
+      "add": "Añadir tarea",
+      "loading": "Cargando tareas",
+      "allDoneMessage": "Las tareas marcadas vuelven en su día, a las 00:00.",
+      "loadError": {
+        "title": "No se pudieron cargar tus tareas",
+        "message": "Tus tareas se guardan en este teléfono cuando se han cargado. Inténtalo de nuevo cuando tengas conexión."
+      },
+      "empty": {
+        "title": "Aún no hay tareas",
+        "message": "Añade una tarea y cada cuánto vuelve, por ejemplo cambiar las toallas cada 3 días. Márcala y volverá en su día."
+      },
+      "form": {
+        "newTitle": "Nueva tarea",
+        "editTitle": "Editar tarea",
+        "placeholder": "Por ejemplo: Cambiar las toallas",
+        "visiblePersonal": "Solo tú ves esta tarea.",
+        "visibleHousehold": "Todos en {{name}} pueden ver y marcar esta tarea.",
+        "create": "Añadir tarea"
+      }
+    },
+    "maintenance": {
+      "title": "Mantenimiento del hogar",
+      "ownTasks": "Tus propios trabajos de mantenimiento",
+      "add": "Añadir trabajo",
+      "loading": "Cargando trabajos",
+      "allDoneMessage": "Los trabajos marcados vuelven en su día, a las 00:00.",
+      "loadError": {
+        "title": "No se pudieron cargar tus trabajos",
+        "message": "Tus trabajos se guardan en este teléfono cuando se han cargado. Inténtalo de nuevo cuando tengas conexión."
+      },
+      "empty": {
+        "title": "Aún no hay trabajos de mantenimiento",
+        "message": "Añade un trabajo y cada cuánto vuelve, por ejemplo limpiar el filtro cada 90 días. Márcalo y volverá en su día."
+      },
+      "form": {
+        "newTitle": "Nuevo trabajo",
+        "editTitle": "Editar trabajo",
+        "placeholder": "Por ejemplo: Limpiar el filtro de la secadora",
+        "visiblePersonal": "Solo tú ves este trabajo.",
+        "visibleHousehold": "Todos en {{name}} pueden ver y marcar este trabajo.",
+        "create": "Añadir trabajo"
+      }
+    },
+    "plant": {
+      "title": "Plantas",
+      "ownTasks": "Tus propias plantas",
+      "add": "Añadir tarea de plantas",
+      "loading": "Cargando el cuidado de las plantas",
+      "allDoneMessage": "Las tareas marcadas vuelven en su día, a las 00:00.",
+      "loadError": {
+        "title": "No se pudo cargar el cuidado de tus plantas",
+        "message": "El cuidado de tus plantas se guarda en este teléfono cuando se ha cargado. Inténtalo de nuevo cuando tengas conexión."
+      },
+      "empty": {
+        "title": "Aún no hay cuidado de plantas",
+        "message": "Añade una tarea y cada cuánto vuelve, por ejemplo regar el ficus cada 3 días. Márcala y volverá en su día."
+      },
+      "form": {
+        "newTitle": "Nueva tarea de plantas",
+        "editTitle": "Editar tarea de plantas",
+        "placeholder": "Por ejemplo: Regar el ficus",
+        "visiblePersonal": "Solo tú ves esta tarea.",
+        "visibleHousehold": "Todos en {{name}} pueden ver y marcar esta tarea.",
+        "create": "Añadir tarea"
+      }
+    },
+    "pet": {
+      "title": "Mascotas",
+      "ownTasks": "El cuidado de tus mascotas",
+      "add": "Añadir tarea de mascotas",
+      "loading": "Cargando el cuidado de las mascotas",
+      "allDoneMessage": "Las tareas marcadas vuelven en su día, a las 00:00.",
+      "loadError": {
+        "title": "No se pudo cargar el cuidado de tus mascotas",
+        "message": "El cuidado de tus mascotas se guarda en este teléfono cuando se ha cargado. Inténtalo de nuevo cuando tengas conexión."
+      },
+      "empty": {
+        "title": "Aún no hay cuidado de mascotas",
+        "message": "Añade una tarea y cada cuánto vuelve, por ejemplo desparasitar al perro cada 90 días. Márcala y volverá en su día."
+      },
+      "form": {
+        "newTitle": "Nueva tarea de mascotas",
+        "editTitle": "Editar tarea de mascotas",
+        "placeholder": "Por ejemplo: Limpiar el arenero",
+        "visiblePersonal": "Solo tú ves esta tarea.",
+        "visibleHousehold": "Todos en {{name}} pueden ver y marcar esta tarea.",
+        "create": "Añadir tarea"
+      }
+    }
   }
 }

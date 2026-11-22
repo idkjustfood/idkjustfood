@@ -103,7 +103,11 @@ export class ChoreStore {
         const text = await storage.read()
         const saved = text ? (JSON.parse(text) as Partial<Saved>) : null
         if (saved && Array.isArray(saved.chores) && Array.isArray(saved.queue)) {
-          this.snapshot = saved.chores
+          // Chores saved before kinds existed have no kind: they are chores.
+          this.snapshot = saved.chores.map((chore) => ({
+            ...chore,
+            kind: chore.kind ?? "chore",
+          }))
           this.queue = saved.queue
           this.loaded = true
           this.emit()
