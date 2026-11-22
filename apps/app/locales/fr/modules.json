@@ -183,5 +183,15 @@
   "exportImport": {
     "name": "Export et import",
     "description": "Emportez vos recettes ou importez-les."
+  },
+  "areaSettings": {
+    "open": "Réglages",
+    "foodTitle": "Réglages de cuisine",
+    "units": "Unités",
+    "metric": "Métrique (g, ml)",
+    "imperial": "Impérial (oz, tasses)",
+    "pantry": "Basiques du garde-manger",
+    "pantryDetail": "Ce que vous avez toujours à la maison",
+    "close": "Fermer"
   }
 }

@@ -183,5 +183,15 @@
   "exportImport": {
     "name": "Export und Import",
     "description": "Nimm deine Rezepte mit oder hole sie herein."
+  },
+  "areaSettings": {
+    "open": "Einstellungen",
+    "foodTitle": "Essen-Einstellungen",
+    "units": "Einheiten",
+    "metric": "Metrisch (g, ml)",
+    "imperial": "Imperial (oz, cups)",
+    "pantry": "Vorratsliste",
+    "pantryDetail": "Was du immer zu Hause hast",
+    "close": "Schließen"
   }
 }

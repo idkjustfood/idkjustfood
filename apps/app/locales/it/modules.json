@@ -183,5 +183,15 @@
   "exportImport": {
     "name": "Esporta e importa",
     "description": "Porta con te le tue ricette o portale dentro."
+  },
+  "areaSettings": {
+    "open": "Impostazioni",
+    "foodTitle": "Impostazioni cibo",
+    "units": "Unità",
+    "metric": "Metrico (g, ml)",
+    "imperial": "Imperiale (oz, tazze)",
+    "pantry": "Dispensa di base",
+    "pantryDetail": "Quello che hai sempre in casa",
+    "close": "Chiudi"
   }
 }
