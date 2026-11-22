@@ -130,10 +130,6 @@
     "description": "Save and read recipes. Add from a link, photo or text.",
     "quickAction": "Add a recipe"
   },
-  "cooking": {
-    "name": "Cooking mode and timers",
-    "description": "Cook step by step with timers."
-  },
   "shopping": {
     "name": "Shopping lists",
     "description": "Personal and shared lists, also offline.",

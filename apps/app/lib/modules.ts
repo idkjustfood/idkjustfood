@@ -124,13 +124,6 @@ export const modules: readonly AppModule[] = [
     quickAction: { route: "/planner" },
   },
   {
-    id: "cooking",
-    area: "food",
-    // Cooking mode starts from a recipe, so this opens the recipes.
-    route: "/recipes",
-    built: true,
-  },
-  {
     id: "shopping",
     area: "food",
     route: "/shopping",

@@ -130,10 +130,6 @@
     "description": "Salva e leggi ricette. Aggiungi da link, foto o testo.",
     "quickAction": "Aggiungi una ricetta"
   },
-  "cooking": {
-    "name": "Modalità cucina e timer",
-    "description": "Cucina passo dopo passo con i timer."
-  },
   "shopping": {
     "name": "Liste della spesa",
     "description": "Liste personali e condivise, anche offline.",

@@ -130,10 +130,6 @@
     "description": "Rezepte speichern und lesen. Per Link, Foto oder Text hinzufügen.",
     "quickAction": "Rezept hinzufügen"
   },
-  "cooking": {
-    "name": "Kochmodus und Timer",
-    "description": "Schritt für Schritt kochen, mit Timern."
-  },
   "shopping": {
     "name": "Einkaufslisten",
     "description": "Persönliche und geteilte Listen, auch offline.",

@@ -130,10 +130,6 @@
     "description": "Guarda y lee recetas. Añade desde un enlace, una foto o un texto.",
     "quickAction": "Añadir una receta"
   },
-  "cooking": {
-    "name": "Modo cocina y temporizadores",
-    "description": "Cocina paso a paso con temporizadores."
-  },
   "shopping": {
     "name": "Listas de la compra",
     "description": "Listas personales y compartidas, también sin conexión.",

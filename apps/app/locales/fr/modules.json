@@ -130,10 +130,6 @@
     "description": "Enregistrez et lisez des recettes. Ajout par lien, photo ou texte.",
     "quickAction": "Ajouter une recette"
   },
-  "cooking": {
-    "name": "Mode cuisine et minuteurs",
-    "description": "Cuisinez pas à pas avec des minuteurs."
-  },
   "shopping": {
     "name": "Listes de courses",
     "description": "Listes perso et partagées, même hors ligne.",
