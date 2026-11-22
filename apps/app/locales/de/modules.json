@@ -58,16 +58,6 @@
     "button": "Schnell hinzufügen",
     "empty": "Kein Modul hat eine Schnellaktion. Schalte Module in den Einstellungen ein."
   },
-  "search": {
-    "title": "Suche",
-    "open": "Suche",
-    "placeholder": "Module durchsuchen",
-    "hint": "Tippe, um ein Modul zu finden.",
-    "none": "Nichts gefunden für „{{query}}“.",
-    "contentSoon": "Die Suche in Rezepten, Aufgaben und anderen Inhalten kommt später.",
-    "sidebar": "Suche",
-    "shortcut": "Strg K"
-  },
   "settings": {
     "name": "Einstellungen",
     "description": "Konto, Einheiten, Design und Sprache."

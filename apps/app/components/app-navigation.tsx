@@ -1,6 +1,6 @@
 import { router, usePathname, type Href } from "expo-router"
 import type { BottomTabBarProps } from "expo-router/js-tabs"
-import { Plus, Search } from "lucide-react-native"
+import { Plus } from "lucide-react-native"
 import { useTranslation } from "react-i18next"
 import { Pressable, ScrollView, Text, View } from "react-native"
 
@@ -126,7 +126,7 @@ function SideBar(props: BottomTabBarProps) {
   const active = useActiveArea(props)
   const pathname = usePathname()
   const { disabledModules } = useAppState()
-  const { setQuickAddOpen, setSearchOpen } = useShell()
+  const { setQuickAddOpen } = useShell()
 
   return (
     <View
@@ -151,20 +151,6 @@ function SideBar(props: BottomTabBarProps) {
         <Icon as={Plus} className="text-primary-foreground" />
         <Text className="text-base font-medium text-primary-foreground">
           {t("quickAdd.button")}
-        </Text>
-      </Pressable>
-      <Pressable
-        role="button"
-        accessibilityLabel={t("search.open")}
-        onPress={() => setSearchOpen(true)}
-        className="h-10 flex-row items-center gap-3 rounded-md border border-border px-3 active:bg-accent web:hover:bg-accent"
-      >
-        <Icon as={Search} size={18} className="text-muted-foreground" />
-        <Text className="flex-1 text-sm text-muted-foreground">
-          {t("search.sidebar")}
-        </Text>
-        <Text className="text-xs text-muted-foreground">
-          {t("search.shortcut")}
         </Text>
       </Pressable>
       <ScrollView role="tablist" contentContainerClassName="gap-4">

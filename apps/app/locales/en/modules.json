@@ -58,16 +58,6 @@
     "button": "Quick add",
     "empty": "No module has a quick action. Switch modules on in the settings."
   },
-  "search": {
-    "title": "Search",
-    "open": "Search",
-    "placeholder": "Search modules",
-    "hint": "Type to find a module.",
-    "none": "Nothing found for “{{query}}”.",
-    "contentSoon": "Searching inside recipes, tasks and other content is coming later.",
-    "sidebar": "Search",
-    "shortcut": "Ctrl K"
-  },
   "settings": {
     "name": "Settings",
     "description": "Account, units, theme and language."

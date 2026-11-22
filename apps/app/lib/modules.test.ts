@@ -13,7 +13,6 @@ import {
   modulesInArea,
   parseDisabled,
   quickActions,
-  searchModules,
   toggleModule,
 } from "./modules"
 
@@ -105,19 +104,6 @@ describe("areaOfRoute", () => {
     expect(areaOfRoute("m/[id]", { id: "chores" })).toBe("home")
     expect(areaOfRoute("home")).toBe("home")
     expect(areaOfRoute("m/[id]", { id: "nope" })).toBe("more")
-  })
-})
-
-describe("searchModules", () => {
-  const text = (m: { id: string }) => m.id
-  test("needs every word and ignores case", () => {
-    expect(searchModules(modules, "SHOP", text).map((m) => m.id)).toEqual([
-      "shopping",
-    ])
-    expect(searchModules(modules, "shop zzz", text)).toEqual([])
-  })
-  test("an empty query finds nothing", () => {
-    expect(searchModules(modules, "  ", text)).toEqual([])
   })
 })
 

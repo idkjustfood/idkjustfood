@@ -58,16 +58,6 @@
     "button": "Aggiunta rapida",
     "empty": "Nessun modulo ha un’azione rapida. Attiva i moduli nelle impostazioni."
   },
-  "search": {
-    "title": "Cerca",
-    "open": "Cerca",
-    "placeholder": "Cerca moduli",
-    "hint": "Scrivi per trovare un modulo.",
-    "none": "Nessun risultato per «{{query}}».",
-    "contentSoon": "La ricerca dentro ricette, attività e altri contenuti arriverà più avanti.",
-    "sidebar": "Cerca",
-    "shortcut": "Ctrl K"
-  },
   "settings": {
     "name": "Impostazioni",
     "description": "Account, unità, tema e lingua."

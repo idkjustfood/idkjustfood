@@ -58,16 +58,6 @@
     "button": "Ajout rapide",
     "empty": "Aucun module n’a d’action rapide. Activez des modules dans les réglages."
   },
-  "search": {
-    "title": "Recherche",
-    "open": "Rechercher",
-    "placeholder": "Rechercher des modules",
-    "hint": "Tapez pour trouver un module.",
-    "none": "Aucun résultat pour « {{query}} ».",
-    "contentSoon": "La recherche dans les recettes, les tâches et les autres contenus viendra plus tard.",
-    "sidebar": "Rechercher",
-    "shortcut": "Ctrl K"
-  },
   "settings": {
     "name": "Réglages",
     "description": "Compte, unités, thème et langue."

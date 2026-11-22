@@ -10,7 +10,6 @@ import { todayString, type Bill } from "@workspace/schemas"
 import { ListGroup, ListRow } from "@/components/list-row"
 import { Screen } from "@/components/screen"
 import { PayBillSheet } from "@/components/pay-bill-sheet"
-import { SearchButton } from "@/components/search-button"
 import { SpaceSwitcher } from "@/components/space-switcher"
 import { EmptyState, ErrorState, LoadingState } from "@/components/states"
 import { CalendarSwatch } from "@/components/calendar-swatch"
@@ -44,7 +43,6 @@ export default function Today() {
     <Screen
       title={t("areas.today")}
       subtitle={dayLabel(todayString())}
-      actions={<SearchButton />}
       toolbar={!wide ? <SpaceSwitcher /> : undefined}
       narrow
     >
