@@ -20,6 +20,7 @@
     "fun": "Freizeit",
     "clothing": "Kleidung",
     "gifts": "Geschenke",
+    "snacks": "Snacks",
     "other": "Sonstiges"
   },
   "amountIn": "Betrag ({{currency}})",
@@ -169,7 +170,7 @@
   },
   "receipts": {
     "title": "Belege",
-    "subtitle": "Fotos von Belegen, zu Ausgaben gemacht",
+    "subtitle": "Fotos von Belegen oder selbst eingetippt, als Ausgaben",
     "cameraDenied": "Erlaube die Kamera in den Einstellungen, um ein Foto zu machen, oder wähle stattdessen eins aus.",
     "photoFailed": "Das Foto konnte nicht verwendet werden. Probiere ein anderes.",
     "takePhoto": "Foto aufnehmen",
@@ -178,7 +179,7 @@
     "needsConnection": "Die KI liest den Beleg auf dem Server, deshalb brauchst du zum Hinzufügen eine Verbindung. Was sie nicht lesen kann, bleibt leer. Prüfe die Werte, bevor du sie verwendest.",
     "empty": {
       "title": "Noch keine Belege",
-      "message": "Fotografiere einen Beleg und mach daraus eine Ausgabe."
+      "message": "Mach ein Foto von einem Beleg oder tippe ihn ein und mach daraus Ausgaben."
     },
     "open": "Beleg von {{name}} öffnen",
     "unknownShop": "Unbekanntes Geschäft",
@@ -195,7 +196,19 @@
       "addDate": "Datum hinzufügen",
       "date": "Datum",
       "alreadyAdded": "Dieser Beleg ist schon eine Ausgabe.",
-      "addExpense": "Als Ausgabe hinzufügen"
-    }
+      "addExpense": "Als Ausgabe hinzufügen",
+      "items": "Positionen",
+      "itemsHint": "Jede Position kann eine eigene Kategorie haben, damit Snacks und Lebensmittel eines Einkaufs getrennt gezählt werden. Mit einem Minus gibst du einen Rabatt ein.",
+      "itemName": "Position",
+      "itemAmount": "Preis ({{currency}})",
+      "itemCategory": "Kategorie dieser Position",
+      "removeItem": "Position entfernen",
+      "addItem": "Position hinzufügen",
+      "itemsSum": "Die Positionen ergeben {{amount}}",
+      "itemsMismatch": "Die Positionen ergeben nicht die Summe.",
+      "useItemsTotal": "Summe der Positionen als Gesamtbetrag nehmen",
+      "defaultCategory": "Kategorie für Positionen ohne eigene"
+    },
+    "addWithoutPhoto": "Ohne Foto hinzufügen"
   }
 }

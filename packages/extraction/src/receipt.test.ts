@@ -21,7 +21,7 @@ describe("readReceipt", () => {
       ai({ shop: " Lidl ", date: "2026-11-20", totalCents: 1799 }),
       { data: png }
     )
-    expect(result).toEqual({ shop: "Lidl", date: "2026-11-20", totalCents: 1799 })
+    expect(result).toEqual({ shop: "Lidl", date: "2026-11-20", totalCents: 1799, items: [] })
   })
 
   test("what is not clearly there stays empty", async () => {
@@ -29,7 +29,41 @@ describe("readReceipt", () => {
       ai({ shop: null, date: "2026-02-30", totalCents: -5 }),
       { data: png }
     )
-    expect(result).toEqual({ shop: null, date: null, totalCents: null })
+    expect(result).toEqual({ shop: null, date: null, totalCents: null, items: [] })
+  })
+
+  test("puts each line in one of the offered categories, never in an invented one", async () => {
+    const categories = [
+      { id: "c-food", label: "groceries" },
+      { id: "c-snack", label: "snacks" },
+    ]
+    let instruction: string | undefined
+    const fake = fakeAi({
+      readImages: async () => receiptText,
+      parseRecipe: async (_text, options) => {
+        instruction = options?.instruction
+        return {
+          shop: "Lidl",
+          date: null,
+          totalCents: 1500,
+          items: [
+            { name: "Milk", amountCents: 109, categoryId: "c-food" },
+            { name: "Chocolate", amountCents: 191, categoryId: "c-snack" },
+            { name: "Mystery", amountCents: 200, categoryId: "made-up" },
+            { name: "", amountCents: 100, categoryId: null },
+            { name: "Free", amountCents: 0, categoryId: null },
+          ],
+        }
+      },
+    })
+    const result = await readReceipt(fake, { data: png }, categories)
+    expect(result.items.map(({ name, amountCents, categoryId }) => ({ name, amountCents, categoryId }))).toEqual([
+      { name: "Milk", amountCents: 109, categoryId: "c-food" },
+      { name: "Chocolate", amountCents: 191, categoryId: "c-snack" },
+      { name: "Mystery", amountCents: 200, categoryId: null },
+    ])
+    expect(instruction).toContain("c-snack")
+    expect(instruction).toContain("snacks")
   })
 
   test("gives the vision model the receipt instruction and the parser the receipt text", async () => {

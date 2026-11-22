@@ -10,6 +10,8 @@ import {
   type MoneyCategory,
   type MoneySettings,
   type Receipt,
+  type ReceiptItem,
+  splitReceipt,
   type ReceiptUpdate,
   type SavingsEntry,
   type SavingsGoal,
@@ -100,6 +102,15 @@ export type MoneyOp =
       date: string
     }
   | { type: "removeSavings"; id: string }
+  | {
+      type: "addReceipt"
+      id: string
+      householdId: string | null
+      shop: string | null
+      date: string | null
+      totalCents: number | null
+      items: ReceiptItem[]
+    }
   | { type: "updateReceipt"; id: string; change: ReceiptUpdate }
   | { type: "removeReceipt"; id: string }
   | {
@@ -312,6 +323,27 @@ export function applyMoneyOp(
         ...data,
         savingsEntries: data.savingsEntries.filter((e) => e.id !== op.id),
       }
+    case "addReceipt":
+      if (data.receipts.some((r) => r.id === op.id)) return data
+      return {
+        ...data,
+        receipts: [
+          ...data.receipts,
+          {
+            id: op.id,
+            fileId: null,
+            status: "ready",
+            shop: op.shop,
+            date: op.date,
+            totalCents: op.totalCents,
+            items: op.items,
+            expenseId: null,
+            error: null,
+            householdId: op.householdId,
+            createdAt: now,
+          },
+        ],
+      }
     case "updateReceipt":
       return { ...data, receipts: patch(data.receipts, op.id, op.change) }
     case "removeReceipt":
@@ -325,17 +357,24 @@ export function applyMoneyOp(
     case "receiptToExpense": {
       const receipt = data.receipts.find((r) => r.id === op.id)
       const date = receipt?.date ?? op.date
-      // Like the server: the receipt needs a total and a date, and the expense id is used once.
+      // Like the server: the receipt needs a total and a date, the lines must add up to the
+      // total, and the expense ids are used once. One expense per category.
       if (!receipt || !receipt.totalCents || !date) return data
-      if (data.expenses.some((e) => e.id === op.expenseId)) return data
+      // Data saved on the phone before receipts had lines has no `items`.
+      const parts = splitReceipt(
+        { totalCents: receipt.totalCents, items: receipt.items ?? [] },
+        op.categoryId,
+        op.expenseId
+      )
+      if (!parts || data.expenses.some((e) => e.id === op.expenseId)) return data
       return {
         ...data,
         expenses: [
           ...data.expenses,
-          {
-            id: op.expenseId,
-            amountCents: receipt.totalCents,
-            categoryId: op.categoryId,
+          ...parts.map((part) => ({
+            id: part.id,
+            amountCents: part.amountCents,
+            categoryId: part.categoryId,
             date,
             note: receipt.shop ?? "",
             paidBy: op.paidBy,
@@ -343,7 +382,7 @@ export function applyMoneyOp(
             receiptId: receipt.id,
             householdId: receipt.householdId,
             createdAt: now,
-          },
+          })),
         ],
         receipts: patch(data.receipts, receipt.id, { expenseId: op.expenseId }),
       }

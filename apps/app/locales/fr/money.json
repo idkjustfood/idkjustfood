@@ -20,6 +20,7 @@
     "fun": "Loisirs",
     "clothing": "Vêtements",
     "gifts": "Cadeaux",
+    "snacks": "Snacks",
     "other": "Autre"
   },
   "amountIn": "Montant ({{currency}})",
@@ -169,7 +170,7 @@
   },
   "receipts": {
     "title": "Tickets",
-    "subtitle": "Des photos de tickets, transformées en dépenses",
+    "subtitle": "Photos de tickets ou saisis à la main, transformés en dépenses",
     "cameraDenied": "Autorisez l’appareil photo dans les réglages pour prendre une photo, ou choisissez-en une.",
     "photoFailed": "Impossible d’utiliser cette photo. Essayez-en une autre.",
     "takePhoto": "Prendre une photo",
@@ -178,7 +179,7 @@
     "needsConnection": "L’IA lit le ticket sur le serveur, il faut donc une connexion pour en ajouter un. Ce qu’elle ne peut pas lire reste vide. Vérifiez les valeurs avant de les utiliser.",
     "empty": {
       "title": "Pas encore de tickets",
-      "message": "Prenez un ticket en photo et transformez-le en dépense."
+      "message": "Prends un ticket en photo, ou saisis-le, et transforme-le en dépenses."
     },
     "open": "Ouvrir le ticket de {{name}}",
     "unknownShop": "Magasin inconnu",
@@ -195,7 +196,19 @@
       "addDate": "Ajouter une date",
       "date": "Date",
       "alreadyAdded": "Ce ticket est déjà une dépense.",
-      "addExpense": "Ajouter comme dépense"
-    }
+      "addExpense": "Ajouter comme dépense",
+      "items": "Articles",
+      "itemsHint": "Chaque article peut avoir sa propre catégorie, pour que les snacks et les courses d'un même passage en magasin soient comptés séparément. Utilise un moins pour une remise.",
+      "itemName": "Article",
+      "itemAmount": "Prix ({{currency}})",
+      "itemCategory": "Catégorie de cet article",
+      "removeItem": "Retirer l'article",
+      "addItem": "Ajouter un article",
+      "itemsSum": "Les articles font {{amount}}",
+      "itemsMismatch": "Les articles ne font pas le total.",
+      "useItemsTotal": "Utiliser la somme des articles comme total",
+      "defaultCategory": "Catégorie des articles sans catégorie"
+    },
+    "addWithoutPhoto": "Ajouter sans photo"
   }
 }

@@ -20,6 +20,7 @@
     "fun": "Fun",
     "clothing": "Clothing",
     "gifts": "Gifts",
+    "snacks": "Snacks",
     "other": "Other"
   },
   "amountIn": "Amount ({{currency}})",
@@ -169,7 +170,7 @@
   },
   "receipts": {
     "title": "Receipts",
-    "subtitle": "Photos of receipts, turned into expenses",
+    "subtitle": "Photos of receipts or typed in, turned into expenses",
     "cameraDenied": "Allow the camera in your settings to take a photo, or choose one instead.",
     "photoFailed": "Could not use that photo. Try another one.",
     "takePhoto": "Take photo",
@@ -178,7 +179,7 @@
     "needsConnection": "The AI reads the receipt on the server, so adding one needs a connection. What it cannot read stays empty. Check the values before you use them.",
     "empty": {
       "title": "No receipts yet",
-      "message": "Take a photo of a receipt and turn it into an expense."
+      "message": "Take a photo of a receipt, or type one in, and turn it into expenses."
     },
     "open": "Open receipt from {{name}}",
     "unknownShop": "Unknown shop",
@@ -195,7 +196,19 @@
       "addDate": "Add a date",
       "date": "Date",
       "alreadyAdded": "This receipt is already an expense.",
-      "addExpense": "Add as expense"
-    }
+      "addExpense": "Add as expense",
+      "items": "Items",
+      "itemsHint": "Each item can have its own category, so snacks and groceries from one shop trip are counted apart. Use a minus for a discount.",
+      "itemName": "Item",
+      "itemAmount": "Price ({{currency}})",
+      "itemCategory": "Category of this item",
+      "removeItem": "Remove item",
+      "addItem": "Add item",
+      "itemsSum": "Items add up to {{amount}}",
+      "itemsMismatch": "The items do not add up to the total.",
+      "useItemsTotal": "Use the sum of the items as total",
+      "defaultCategory": "Category for items without one"
+    },
+    "addWithoutPhoto": "Add without photo"
   }
 }

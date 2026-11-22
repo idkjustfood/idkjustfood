@@ -13,8 +13,10 @@ import {
 import {
   DateSchema,
   ExpenseSchema,
+  ReceiptCreateSchema,
   ReceiptSchema,
   ReceiptUpdateSchema,
+  splitReceipt,
 } from "@workspace/schemas"
 
 import type { Auth, AuthEnv } from "../auth.js"
@@ -99,13 +101,35 @@ const uploadReceipt = createRoute({
   },
 })
 
+const createManualReceipt = createRoute({
+  method: "post",
+  path: "/money/receipts/manual",
+  tags,
+  security,
+  summary: "Add a receipt without a photo",
+  description:
+    "Adds a receipt that is typed in. Everything but the id is optional: the shop, the date, " +
+    "the total and the lines (each with an optional category of the same space). Nothing is read " +
+    "by the AI, so this works on a server without AI. You may choose the id: sending an id that " +
+    "already exists returns that receipt and changes nothing.",
+  request: { body: body(ReceiptCreateSchema.openapi("ReceiptCreate")) },
+  responses: {
+    201: json(z.object({ receipt: Receipt }), "Saved"),
+    400: error("A category is not valid"),
+    404: error("Household not found, or you are not a member"),
+    409: error("That id is already used by someone else's receipt"),
+    ...signedIn,
+  },
+})
+
 const updateReceipt = createRoute({
   method: "patch",
   path: "/money/receipts/{receiptId}",
   tags,
   security,
   summary: "Correct a receipt",
-  description: "Change what was read. Send `null` to clear a value.",
+  description:
+    "Change what was read or typed. Send `null` to clear a value. `items` replaces all the lines.",
   request: {
     params: receiptId,
     body: body(ReceiptUpdateSchema.openapi("ReceiptUpdate")),
@@ -148,13 +172,24 @@ const toExpenseRoute = createRoute({
   security,
   summary: "Turn a receipt into an expense",
   description:
-    "Adds an expense with the receipt's total and date, with the shop as its note. The receipt " +
-    "needs a total, and a date (its own or `date`). You choose the expense's `id`: sending it " +
-    "again returns that expense and changes nothing.",
+    "Adds the expenses of a receipt, with the shop as their note. The receipt needs a total, " +
+    "and a date (its own or `date`). Without lines it is one expense with the total. With lines " +
+    "it is one expense per category, the sum of its lines; lines without a category use " +
+    "`categoryId`. The lines must add up to the total. You choose the first expense's `expenseId`, " +
+    "the others get `<expenseId>-2`, `<expenseId>-3` and so on: sending it again returns the " +
+    "same expenses and changes nothing.",
   request: { params: receiptId, body: body(ToExpense) },
   responses: {
-    201: json(z.object({ expense: ExpenseBody }), "The expense"),
-    400: error("The receipt has no total or date yet, or the category or payer is not valid"),
+    201: json(
+      z.object({
+        expense: ExpenseBody.openapi({ description: "The first expense." }),
+        expenses: z.array(ExpenseBody),
+      }),
+      "The expenses"
+    ),
+    400: error(
+      "The receipt has no total or date yet, its lines do not add up to the total, or a category or payer is not valid"
+    ),
     404: notFound,
     409: error("That expense id is already used for something else"),
     ...signedIn,
@@ -188,6 +223,28 @@ export function receiptRoutes(
       }
     },
   })
+
+  /** The categories of a space, as the AI is offered them. */
+  async function spaceCategories(userId: string, householdId: string | null) {
+    await store.ensureCategories(userId)
+    return (await store.categories(userId))
+      .filter((c) => c.organizationId === householdId)
+      .map((c) => ({ id: c.id, label: c.name ?? c.key ?? "" }))
+      .filter((c) => c.label)
+  }
+
+  /** Whether every category used by the lines belongs to the space. */
+  async function itemsValid(
+    userId: string,
+    householdId: string | null,
+    items: { categoryId: string | null }[]
+  ) {
+    const ids = new Set(items.flatMap((i) => (i.categoryId ? [i.categoryId] : [])))
+    for (const categoryId of ids) {
+      if (!(await store.categoryInSpace(categoryId, userId, householdId))) return false
+    }
+    return true
+  }
 
   for (const path of ["/money/receipts", "/money/receipts/*"]) {
     app.use(path, requireSession(auth))
@@ -262,7 +319,11 @@ export function receiptRoutes(
       }
     } else {
       try {
-        const details = await readReceipt(ai, { data })
+        const details = await readReceipt(
+          ai,
+          { data },
+          await spaceCategories(userId, householdId)
+        )
         reading = { status: "ready", error: null, ...details }
       } catch (cause) {
         if (cause instanceof ExtractionError) {
@@ -281,12 +342,48 @@ export function receiptRoutes(
     return c.json({ receipt: toReceipt(row ?? created.row) }, 201)
   })
 
+  app.openapi(createManualReceipt, async (c) => {
+    const input = c.req.valid("json")
+    const userId = c.get("user").id
+    const householdId = input.householdId || null
+    if (!(await store.mayUse(userId, householdId))) {
+      return c.json({ error: "Household not found" }, 404)
+    }
+    if (input.id) {
+      const existing = await store.receipt(input.id, userId)
+      if (existing) return c.json({ receipt: toReceipt(existing) }, 201)
+    }
+    const items = input.items ?? []
+    if (!(await itemsValid(userId, householdId, items))) {
+      return c.json({ error: "Category not found" }, 400)
+    }
+    const created = await store.createReceipt(userId, {
+      id: input.id,
+      householdId,
+      fileId: null,
+      status: "ready",
+      shop: input.shop || null,
+      date: input.date ?? null,
+      totalCents: input.totalCents ?? null,
+      items,
+    })
+    if ("conflict" in created) {
+      return c.json({ error: "That id is already in use" }, 409)
+    }
+    return c.json({ receipt: toReceipt(created.row) }, 201)
+  })
+
   app.openapi(updateReceipt, async (c) => {
     const { receiptId: idParam } = c.req.valid("param")
-    if (!(await store.receipt(idParam, c.get("user").id))) {
-      return c.json({ error: "Receipt not found" }, 404)
-    }
+    const current = await store.receipt(idParam, c.get("user").id)
+    if (!current) return c.json({ error: "Receipt not found" }, 404)
     const change = c.req.valid("json")
+    if (
+      change.items &&
+      !(await itemsValid(c.get("user").id, current.organizationId, change.items))
+    ) {
+      return c.json({ error: "Category not found" }, 400)
+    }
     const row = await store.updateReceipt(idParam, {
       ...change,
       // A person who corrected the values has looked at them: they are no longer "failed".
@@ -331,17 +428,24 @@ export function receiptRoutes(
     ) {
       return c.json({ error: "Category or payer not found" }, 400)
     }
-    const result = await store.receiptToExpense(userId, receipt, {
-      expenseId: input.expenseId,
-      amountCents: receipt.totalCents,
+    // A retry: the first expense is there already, so return what was made.
+    const parts = splitReceipt(receipt, input.categoryId ?? null, input.expenseId)
+    if (!parts) {
+      return c.json(
+        { error: "The lines of the receipt do not add up to its total." },
+        400
+      )
+    }
+    const result = await store.receiptToExpenses(userId, receipt, {
+      parts,
       date,
-      categoryId: input.categoryId ?? null,
       paidBy,
     })
-    if (result.conflict || !result.expense) {
+    if (result.conflict) {
       return c.json({ error: "That id is already in use" }, 409)
     }
-    return c.json({ expense: toExpense(result.expense) }, 201)
+    const expenses = result.expenses.map(toExpense)
+    return c.json({ expense: expenses[0]!, expenses }, 201)
   })
 
   return app

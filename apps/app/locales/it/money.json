@@ -20,6 +20,7 @@
     "fun": "Svago",
     "clothing": "Abbigliamento",
     "gifts": "Regali",
+    "snacks": "Snack",
     "other": "Altro"
   },
   "amountIn": "Importo ({{currency}})",
@@ -169,7 +170,7 @@
   },
   "receipts": {
     "title": "Scontrini",
-    "subtitle": "Foto di scontrini, trasformate in spese",
+    "subtitle": "Foto di scontrini o scritti a mano, trasformati in spese",
     "cameraDenied": "Consenti la fotocamera nelle impostazioni per scattare una foto, oppure scegline una.",
     "photoFailed": "Non è stato possibile usare quella foto. Prova con un’altra.",
     "takePhoto": "Scatta foto",
@@ -178,7 +179,7 @@
     "needsConnection": "L’IA legge lo scontrino sul server, quindi per aggiungerne uno serve una connessione. Quello che non riesce a leggere resta vuoto. Controlla i valori prima di usarli.",
     "empty": {
       "title": "Ancora nessuno scontrino",
-      "message": "Fotografa uno scontrino e trasformalo in una spesa."
+      "message": "Fotografa uno scontrino, o scrivilo, e trasformalo in spese."
     },
     "open": "Apri lo scontrino di {{name}}",
     "unknownShop": "Negozio sconosciuto",
@@ -195,7 +196,19 @@
       "addDate": "Aggiungi una data",
       "date": "Data",
       "alreadyAdded": "Questo scontrino è già una spesa.",
-      "addExpense": "Aggiungi come spesa"
-    }
+      "addExpense": "Aggiungi come spesa",
+      "items": "Articoli",
+      "itemsHint": "Ogni articolo può avere la sua categoria, così snack e spesa dello stesso giro si contano separati. Usa un meno per uno sconto.",
+      "itemName": "Articolo",
+      "itemAmount": "Prezzo ({{currency}})",
+      "itemCategory": "Categoria di questo articolo",
+      "removeItem": "Rimuovi articolo",
+      "addItem": "Aggiungi articolo",
+      "itemsSum": "Gli articoli sommano {{amount}}",
+      "itemsMismatch": "Gli articoli non sommano il totale.",
+      "useItemsTotal": "Usa la somma degli articoli come totale",
+      "defaultCategory": "Categoria per gli articoli senza una"
+    },
+    "addWithoutPhoto": "Aggiungi senza foto"
   }
 }

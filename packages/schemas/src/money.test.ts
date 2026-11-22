@@ -12,6 +12,7 @@ import {
   savingsProgress,
   settleUp,
   splitCents,
+  splitReceipt,
   spendingByCategory,
   sumCents,
 } from "./money.js"
@@ -206,12 +207,51 @@ describe("receipt readings", () => {
       shop: "Lidl",
       date: "2026-11-20",
       totalCents: 1799,
+      items: [],
     })
     expect(cleanReading({ shop: " ", date: "2026-02-30", totalCents: -5 })).toEqual({
       shop: null,
       date: null,
       totalCents: null,
+      items: [],
     })
     expect(cleanReading({ shop: null, date: null, totalCents: 0 }).totalCents).toBeNull()
+  })
+})
+
+describe("splitReceipt", () => {
+  const item = (id: string, amountCents: number, categoryId: string | null) => ({
+    id,
+    name: id,
+    amountCents,
+    categoryId,
+  })
+
+  test("without lines it is one expense with the total", () => {
+    expect(splitReceipt({ totalCents: 1500, items: [] }, "food", "e")).toEqual([
+      { id: "e", categoryId: "food", amountCents: 1500 },
+    ])
+  })
+
+  test("groceries and snacks become two expenses, uncategorized lines use the default", () => {
+    const items = [item("a", 1000, null), item("b", 300, "snack"), item("c", 200, "snack")]
+    expect(splitReceipt({ totalCents: 1500, items }, "food", "e")).toEqual([
+      { id: "e", categoryId: "food", amountCents: 1000 },
+      { id: "e-2", categoryId: "snack", amountCents: 500 },
+    ])
+  })
+
+  test("a discount lowers its category", () => {
+    const items = [item("a", 1000, "food"), item("b", -100, "food")]
+    expect(splitReceipt({ totalCents: 900, items }, null, "e")).toEqual([
+      { id: "e", categoryId: "food", amountCents: 900 },
+    ])
+  })
+
+  test("lines that do not add up to the total are refused, not guessed", () => {
+    expect(splitReceipt({ totalCents: 1600, items: [item("a", 1500, "food")] }, null, "e")).toBeNull()
+    expect(splitReceipt({ totalCents: null, items: [] }, null, "e")).toBeNull()
+    const negative = [item("a", 1000, "food"), item("b", -50, "snack"), item("c", 50, "food")]
+    expect(splitReceipt({ totalCents: 1000, items: negative }, null, "e")).toBeNull()
   })
 })
