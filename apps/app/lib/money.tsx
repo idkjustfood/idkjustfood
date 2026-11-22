@@ -14,6 +14,7 @@ import {
   type BillRepeat,
   type Currency,
   type ExpenseUpdate,
+  type ReceiptItem,
   type SavingsGoalUpdate,
   type BillUpdate,
 } from "@workspace/schemas"
@@ -191,6 +192,20 @@ async function send(op: MoneyOp) {
       await call(
         api.DELETE("/api/money/savings/entries/{entryId}", {
           params: { path: { entryId: op.id } },
+        })
+      )
+      return
+    case "addReceipt":
+      await call(
+        api.POST("/api/money/receipts/manual", {
+          body: {
+            id: op.id,
+            householdId: op.householdId,
+            shop: op.shop,
+            date: op.date,
+            totalCents: op.totalCents,
+            items: op.items,
+          },
         })
       )
       return
@@ -413,12 +428,39 @@ export function useMoneyActions() {
         d({ type: "addSavings", id: newId(), goalId, amountCents, date }),
       removeSavings: (id: string) => d({ type: "removeSavings", id }),
 
+      /** Adds a receipt without a photo. Works offline. Returns its id. */
+      addReceipt: (
+        householdId: string | null,
+        receipt: {
+          shop?: string | null
+          date?: string | null
+          totalCents?: number | null
+          items?: ReceiptItem[]
+        } = {}
+      ) => {
+        const id = newId()
+        d({
+          type: "addReceipt",
+          id,
+          householdId,
+          shop: receipt.shop ?? null,
+          date: receipt.date ?? null,
+          totalCents: receipt.totalCents ?? null,
+          items: receipt.items ?? [],
+        })
+        return id
+      },
       editReceipt: (
         id: string,
-        change: { shop?: string | null; date?: string | null; totalCents?: number | null }
+        change: {
+          shop?: string | null
+          date?: string | null
+          totalCents?: number | null
+          items?: ReceiptItem[]
+        }
       ) => d({ type: "updateReceipt", id, change }),
       removeReceipt: (id: string) => d({ type: "removeReceipt", id }),
-      /** Adds an expense with the receipt's total and date. Needs both (the date may be given here). */
+      /** Adds the expenses of a receipt, one per category. Needs a total and a date (the date may be given here). */
       receiptToExpense: (
         id: string,
         options: { categoryId: string | null; date: string | null }

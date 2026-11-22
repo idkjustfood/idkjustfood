@@ -444,6 +444,7 @@ export const toReceipt = (row: ReceiptRow): Receipt => ({
   shop: row.shop,
   date: row.date,
   totalCents: row.totalCents,
+  items: row.items,
   expenseId: row.expenseId,
   error: row.error,
   householdId: row.organizationId,

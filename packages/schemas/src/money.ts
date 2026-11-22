@@ -86,6 +86,14 @@ export function parseCents(text: string): number | null {
   return Number.isSafeInteger(cents) && cents <= MAX_CENTS ? cents : null
 }
 
+/** Like `parseCents`, but a leading "-" makes it negative (a discount on a receipt). */
+export function parseSignedCents(text: string): number | null {
+  const trimmed = text.trim()
+  if (!trimmed.startsWith("-")) return parseCents(trimmed)
+  const cents = parseCents(trimmed.slice(1))
+  return cents === null ? null : -cents
+}
+
 /**
  * Splits an amount into equal parts in whole cents. The first parts get the extra cents, so
  * the parts always add up to the amount exactly (100 cents in 3 is 34 + 33 + 33).
@@ -114,6 +122,7 @@ export const defaultCategoryKeys = [
   "fun",
   "clothing",
   "gifts",
+  "snacks",
   "other",
 ] as const
 export type DefaultCategoryKey = (typeof defaultCategoryKeys)[number]
@@ -583,19 +592,39 @@ export const receiptStatuses = ["reading", "ready", "failed"] as const
 export type ReceiptStatus = (typeof receiptStatuses)[number]
 
 /**
- * A photographed receipt. The AI fills `shop`, `date` and `totalCents` when it can read them;
- * what it cannot read stays null and is never guessed. The person checks and corrects the
- * values before turning the receipt into an expense.
+ * One line of a receipt. The amount is in cents and may be negative (a discount or a deposit
+ * refund). `categoryId` is the expense category of this line, or null when it has none: so one
+ * shopping trip can be groceries and snacks at the same time.
+ */
+export const ReceiptItemSchema = z.object({
+  id,
+  name,
+  amountCents: z.number().int().min(-MAX_CENTS).max(MAX_CENTS).refine((n) => n !== 0, {
+    message: "An item needs an amount",
+  }),
+  categoryId: z.string().nullable(),
+})
+export type ReceiptItem = z.infer<typeof ReceiptItemSchema>
+
+const ReceiptItemsSchema = z.array(ReceiptItemSchema).max(200)
+
+/**
+ * A receipt, from a photo or typed in by hand. With a photo, the AI fills `shop`, `date`,
+ * `totalCents` and the `items` (each with a category it chose from the space's own categories)
+ * when it can read them; what it cannot read stays null or is left out, and is never guessed.
+ * The person checks and corrects the values before turning the receipt into expenses.
  */
 export const ReceiptSchema = z.object({
   id: z.string(),
-  /** The stored photo (see files). */
+  /** The stored photo (see files). Null for a receipt that was typed in. */
   fileId: z.string().nullable(),
   status: z.enum(receiptStatuses),
   shop: z.string().nullable(),
   date: DateSchema.nullable(),
   totalCents: PositiveCentsSchema.nullable(),
-  /** The expense made from this receipt, or null. */
+  /** The lines of the receipt. Empty when none were read or typed. */
+  items: ReceiptItemsSchema,
+  /** The (first) expense made from this receipt, or null. */
   expenseId: z.string().nullable(),
   /** Why reading failed, when it did. */
   error: z.string().nullable(),
@@ -608,8 +637,21 @@ export const ReceiptUpdateSchema = z.object({
   shop: z.string().trim().max(200).nullable().optional(),
   date: DateSchema.nullable().optional(),
   totalCents: PositiveCentsSchema.nullable().optional(),
+  /** Replaces all the lines. */
+  items: ReceiptItemsSchema.optional(),
 })
 export type ReceiptUpdate = z.infer<typeof ReceiptUpdateSchema>
+
+/** A receipt typed in without a photo. Everything but the id may be left out. */
+export const ReceiptCreateSchema = z.object({
+  id: id.optional(),
+  householdId: householdId.optional(),
+  shop: z.string().trim().max(200).nullable().optional(),
+  date: DateSchema.nullable().optional(),
+  totalCents: PositiveCentsSchema.nullable().optional(),
+  items: ReceiptItemsSchema.optional(),
+})
+export type ReceiptCreate = z.infer<typeof ReceiptCreateSchema>
 
 /** What the AI reads from a receipt photo. Every field may be null: it never has to guess. */
 export const ReceiptReadingSchema = z.object({
@@ -617,24 +659,100 @@ export const ReceiptReadingSchema = z.object({
   date: z.string().nullable(),
   /** The total as printed, in cents. Null when unreadable. */
   totalCents: z.number().int().nullable(),
+  /** The lines as printed. Each has the id of one of the offered categories, or null. */
+  items: z
+    .array(
+      z.object({
+        name: z.string(),
+        amountCents: z.number().int(),
+        categoryId: z.string().nullable().optional(),
+      })
+    )
+    .nullish(),
 })
 export type ReceiptReading = z.infer<typeof ReceiptReadingSchema>
 
 /**
  * Cleans what the AI returned: keeps a date only when it is a real day, a total only when it is
- * a sensible amount, and trims the shop name. Anything else becomes null.
+ * a sensible amount, and trims the shop name. Anything else becomes null. A line is kept when it
+ * has a name and an amount; its category only when it is one of `categoryIds` (the ones the
+ * space has), so the AI can never invent a category. `newId` makes the ids of the lines.
  */
-export function cleanReading(reading: ReceiptReading): {
+export function cleanReading(
+  reading: ReceiptReading,
+  categoryIds: readonly string[] = [],
+  newId: () => string = () => crypto.randomUUID()
+): {
   shop: string | null
   date: string | null
   totalCents: number | null
+  items: ReceiptItem[]
 } {
   const date = DateSchema.safeParse(reading.date)
   const total = PositiveCentsSchema.safeParse(reading.totalCents)
   const shop = reading.shop?.trim().slice(0, 200)
+  const items: ReceiptItem[] = []
+  for (const raw of reading.items ?? []) {
+    const item = ReceiptItemSchema.safeParse({
+      id: newId(),
+      name: raw.name,
+      amountCents: raw.amountCents,
+      categoryId:
+        raw.categoryId && categoryIds.includes(raw.categoryId) ? raw.categoryId : null,
+    })
+    if (item.success) items.push(item.data)
+  }
   return {
     shop: shop ? shop : null,
     date: date.success ? date.data : null,
     totalCents: total.success ? total.data : null,
+    items: items.slice(0, 200),
   }
 }
+
+/** One expense made from a receipt. */
+export type ReceiptExpensePart = {
+  id: string
+  categoryId: string | null
+  amountCents: number
+}
+
+/**
+ * Splits a receipt into expenses, one per category. Lines without a category go to
+ * `defaultCategoryId`. Without lines the receipt is one expense with its total. The ids are
+ * made from `baseId` (the first expense gets it as it is), so the server and a phone that is
+ * offline choose the same ids, and a retry never adds an expense twice.
+ *
+ * Returns null when the lines do not add up to the total, or a category's lines add up to
+ * nothing or less: the person has to fix that first, nothing is guessed.
+ */
+export function splitReceipt(
+  receipt: { totalCents: number | null; items: readonly ReceiptItem[] },
+  defaultCategoryId: string | null,
+  baseId: string
+): ReceiptExpensePart[] | null {
+  if (!receipt.totalCents) return null
+  if (receipt.items.length === 0) {
+    return [{ id: baseId, categoryId: defaultCategoryId, amountCents: receipt.totalCents }]
+  }
+  const sums = new Map<string | null, number>()
+  for (const item of receipt.items) {
+    const key = item.categoryId ?? defaultCategoryId
+    sums.set(key, (sums.get(key) ?? 0) + item.amountCents)
+  }
+  let sum = 0
+  for (const cents of sums.values()) {
+    if (cents <= 0) return null
+    sum += cents
+  }
+  if (sum !== receipt.totalCents) return null
+  return [...sums.entries()].map(([categoryId, amountCents], index) => ({
+    id: index === 0 ? baseId : `${baseId}-${index + 1}`,
+    categoryId,
+    amountCents,
+  }))
+}
+
+/** The sum of the lines of a receipt, in cents. */
+export const itemsTotal = (items: readonly Pick<ReceiptItem, "amountCents">[]) =>
+  items.reduce((sum, item) => sum + item.amountCents, 0)

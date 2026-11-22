@@ -589,7 +589,17 @@ export function moneyStore(db: Database) {
     /** Adds a receipt that is still being read. Sending an id that exists returns that receipt. */
     async createReceipt(
       userId: string,
-      input: { id?: string; householdId: string | null; fileId: string | null }
+      input: {
+        id?: string
+        householdId: string | null
+        fileId: string | null
+        /** A receipt typed in by hand is `ready` at once. */
+        status?: string
+        shop?: string | null
+        date?: string | null
+        totalCents?: number | null
+        items?: ReceiptRow["items"]
+      }
     ) {
       const id = input.id ?? randomUUID()
       const [created] = await db
@@ -599,7 +609,11 @@ export function moneyStore(db: Database) {
           userId,
           organizationId: input.householdId,
           fileId: input.fileId,
-          status: "reading",
+          status: input.status ?? "reading",
+          shop: input.shop ?? null,
+          date: input.date ?? null,
+          totalCents: input.totalCents ?? null,
+          items: input.items ?? [],
         })
         .onConflictDoNothing()
         .returning()
@@ -617,12 +631,14 @@ export function moneyStore(db: Database) {
         shop?: string | null
         date?: string | null
         totalCents?: number | null
+        items?: ReceiptRow["items"]
         error?: string | null
       }
     ) {
       const [row] = await db
         .update(moneyReceipt)
         .set({
+          ...(change.items !== undefined && { items: change.items }),
           ...(change.status !== undefined && { status: change.status }),
           ...(change.shop !== undefined && { shop: change.shop }),
           ...(change.date !== undefined && { date: change.date }),
@@ -648,48 +664,55 @@ export function moneyStore(db: Database) {
     },
 
     /**
-     * Turns a receipt into an expense and links the two. The client chooses the expense's id:
-     * when that expense is already there, nothing changes (a retry).
+     * Turns a receipt into its expenses (one per category, see `splitReceipt`) and links them.
+     * The client chooses the ids: when the first expense is already there, nothing is added
+     * again (a retry) and the existing expenses are returned.
      */
-    async receiptToExpense(
+    async receiptToExpenses(
       userId: string,
       receipt: ReceiptRow,
       input: {
-        expenseId: string
-        amountCents: number
+        parts: { id: string; categoryId: string | null; amountCents: number }[]
         date: string
-        categoryId: string | null
         paidBy: string
       }
     ) {
       return db.transaction(async (tx) => {
-        const [created] = await tx
-          .insert(moneyExpense)
-          .values({
-            id: input.expenseId,
-            userId,
-            organizationId: receipt.organizationId,
-            amountCents: input.amountCents,
-            categoryId: input.categoryId,
-            date: input.date,
-            note: receipt.shop ?? "",
-            paidBy: input.paidBy,
-            receiptId: receipt.id,
-          })
-          .onConflictDoNothing()
-          .returning()
-        if (!created) {
+        const expenses: (typeof moneyExpense.$inferSelect)[] = []
+        for (const part of input.parts) {
+          const [created] = await tx
+            .insert(moneyExpense)
+            .values({
+              id: part.id,
+              userId,
+              organizationId: receipt.organizationId,
+              amountCents: part.amountCents,
+              categoryId: part.categoryId,
+              date: input.date,
+              note: receipt.shop ?? "",
+              paidBy: input.paidBy,
+              receiptId: receipt.id,
+            })
+            .onConflictDoNothing()
+            .returning()
+          if (created) {
+            expenses.push(created)
+            continue
+          }
           const [existing] = await tx
             .select()
             .from(moneyExpense)
-            .where(eq(moneyExpense.id, input.expenseId))
-          return { conflict: existing?.receiptId !== receipt.id, expense: existing }
+            .where(eq(moneyExpense.id, part.id))
+          if (existing?.receiptId !== receipt.id) {
+            return { conflict: true as const, expenses: [] }
+          }
+          expenses.push(existing)
         }
         await tx
           .update(moneyReceipt)
-          .set({ expenseId: created.id })
+          .set({ expenseId: input.parts[0]!.id })
           .where(eq(moneyReceipt.id, receipt.id))
-        return { conflict: false, expense: created }
+        return { conflict: false as const, expenses }
       })
     },
   }

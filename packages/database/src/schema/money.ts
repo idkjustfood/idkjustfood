@@ -2,6 +2,7 @@ import {
   boolean,
   index,
   integer,
+  jsonb,
   pgTable,
   text,
   timestamp,
@@ -162,7 +163,7 @@ export const moneySavingsEntry = pgTable(
   (table) => [index("money_savings_entry_goalId_idx").on(table.goalId)]
 )
 
-/** A photographed receipt. The values are what the AI read, corrected by the person. */
+/** A receipt: photographed, or typed in (then `fileId` is null). The values are what the AI read, corrected by the person. */
 export const moneyReceipt = pgTable(
   "money_receipt",
   {
@@ -175,6 +176,11 @@ export const moneyReceipt = pgTable(
     shop: text("shop"),
     date: text("date"),
     totalCents: integer("total_cents"),
+    /** The lines of the receipt (`ReceiptItem[]` in the schemas package), each with a category. */
+    items: jsonb("items")
+      .$type<{ id: string; name: string; amountCents: number; categoryId: string | null }[]>()
+      .notNull()
+      .default([]),
     expenseId: text("expense_id"),
     error: text("error"),
     createdAt: timestamp("created_at").defaultNow().notNull(),

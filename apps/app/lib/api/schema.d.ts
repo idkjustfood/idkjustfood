@@ -6547,6 +6547,87 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/money/receipts/manual": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add a receipt without a photo
+         * @description Adds a receipt that is typed in. Everything but the id is optional: the shop, the date, the total and the lines (each with an optional category of the same space). Nothing is read by the AI, so this works on a server without AI. You may choose the id: sending an id that already exists returns that receipt and changes nothing.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ReceiptCreate"];
+                };
+            };
+            responses: {
+                /** @description Saved */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            receipt: components["schemas"]["Receipt"];
+                        };
+                    };
+                };
+                /** @description A category is not valid */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description That id is already used by someone else's receipt */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/money/receipts/{receiptId}": {
         parameters: {
             query?: never;
@@ -6603,7 +6684,7 @@ export interface paths {
         head?: never;
         /**
          * Correct a receipt
-         * @description Change what was read. Send `null` to clear a value.
+         * @description Change what was read or typed. Send `null` to clear a value. `items` replaces all the lines.
          */
         patch: {
             parameters: {
@@ -6673,7 +6754,7 @@ export interface paths {
         put?: never;
         /**
          * Turn a receipt into an expense
-         * @description Adds an expense with the receipt's total and date, with the shop as its note. The receipt needs a total, and a date (its own or `date`). You choose the expense's `id`: sending it again returns that expense and changes nothing.
+         * @description Adds the expenses of a receipt, with the shop as their note. The receipt needs a total, and a date (its own or `date`). Without lines it is one expense with the total. With lines it is one expense per category, the sum of its lines; lines without a category use `categoryId`. The lines must add up to the total. You choose the first expense's `expenseId`, the others get `<expenseId>-2`, `<expenseId>-3` and so on: sending it again returns the same expenses and changes nothing.
          */
         post: {
             parameters: {
@@ -6690,18 +6771,19 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description The expense */
+                /** @description The expenses */
                 201: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
                         "application/json": {
-                            expense: components["schemas"]["Expense"];
+                            expense: components["schemas"]["Expense"] & unknown;
+                            expenses: components["schemas"]["Expense"][];
                         };
                     };
                 };
-                /** @description The receipt has no total or date yet, or the category or payer is not valid */
+                /** @description The receipt has no total or date yet, its lines do not add up to the total, or a category or payer is not valid */
                 400: {
                     headers: {
                         [name: string]: unknown;
@@ -7462,6 +7544,12 @@ export interface components {
             shop: string | null;
             date: string | null;
             totalCents: number | null;
+            items: {
+                id: string;
+                name: string;
+                amountCents: number;
+                categoryId: string | null;
+            }[];
             expenseId: string | null;
             error: string | null;
             householdId: string | null;
@@ -7855,10 +7943,29 @@ export interface components {
             /** @description You may choose the receipt's id. Sending an id that already exists returns that receipt and reads nothing again. */
             id?: string;
         };
+        ReceiptCreate: {
+            id?: string;
+            householdId?: string | null;
+            shop?: string | null;
+            date?: string | null;
+            totalCents?: number | null;
+            items?: {
+                id: string;
+                name: string;
+                amountCents: number;
+                categoryId: string | null;
+            }[];
+        };
         ReceiptUpdate: {
             shop?: string | null;
             date?: string | null;
             totalCents?: number | null;
+            items?: {
+                id: string;
+                name: string;
+                amountCents: number;
+                categoryId: string | null;
+            }[];
         };
         ReceiptToExpense: {
             expenseId: string;

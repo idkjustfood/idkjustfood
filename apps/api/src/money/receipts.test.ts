@@ -13,7 +13,14 @@ const png = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0
 let api: ReturnType<typeof client>
 let olivia: string
 let stored: Map<string, Uint8Array>
-let reading: { shop: string | null; date: string | null; totalCents: number | null } | "fail"
+let reading:
+  | {
+      shop: string | null
+      date: string | null
+      totalCents: number | null
+      items?: { name: string; amountCents: number; categoryId: string | null }[]
+    }
+  | "fail"
 let readCount: number
 
 function memoryStorage(): FileStorage {
@@ -197,6 +204,99 @@ describe("receipts", () => {
     expect(
       (await api.post(`/api/money/receipts/${noTotal.id}/expense`, olivia, { expenseId: "e2" })).status
     ).toBe(400)
+  })
+
+  test("can be added without a photo, offline-safe with its own id", async () => {
+    const make = () =>
+      api.post("/api/money/receipts/manual", olivia, {
+        id: "r-manual",
+        shop: "Corner shop",
+        date: "2026-11-21",
+        totalCents: 450,
+      })
+    const res = await make()
+    expect(res.status).toBe(201)
+    const { receipt } = await body<{ receipt: Receipt }>(res)
+    expect(receipt).toMatchObject({
+      id: "r-manual",
+      fileId: null,
+      status: "ready",
+      shop: "Corner shop",
+      totalCents: 450,
+      items: [],
+    })
+    expect((await make()).status).toBe(201)
+    expect(readCount).toBe(0)
+    const data = await body<{ receipts: Receipt[] }>(await api.get("/api/money", olivia))
+    expect(data.receipts).toHaveLength(1)
+    // An empty receipt is fine too, and so is deleting one without a photo.
+    const empty = await body<{ receipt: Receipt }>(
+      await api.post("/api/money/receipts/manual", olivia, {})
+    )
+    expect(empty.receipt).toMatchObject({ shop: null, totalCents: null, items: [] })
+    expect(
+      (await api.request("DELETE", `/api/money/receipts/${empty.receipt.id}`, olivia)).status
+    ).toBe(204)
+  })
+
+  test("the AI puts each line in one of the space's categories, and groceries and snacks become two expenses", async () => {
+    const categories = (await body<{ categories: { id: string; key: string | null }[] }>(
+      await api.get("/api/money", olivia)
+    )).categories
+    const food = categories.find((c) => c.key === "groceries")!.id
+    const snack = categories.find((c) => c.key === "snacks")!.id
+    reading = {
+      shop: "Lidl",
+      date: "2026-11-20",
+      totalCents: 1500,
+      items: [
+        { name: "Pasta", amountCents: 1000, categoryId: food },
+        { name: "Crisps", amountCents: 300, categoryId: snack },
+        { name: "Chocolate", amountCents: 200, categoryId: "someone-elses" },
+      ],
+    }
+    const receipt = await addReceipt()
+    expect(receipt.items.map((i) => i.categoryId)).toEqual([food, snack, null])
+    const res = await api.post(`/api/money/receipts/${receipt.id}/expense`, olivia, {
+      expenseId: "e1",
+      categoryId: snack,
+    })
+    expect(res.status).toBe(201)
+    const { expenses } = await body<{ expenses: Expense[] }>(res)
+    expect(expenses.map((e) => [e.id, e.categoryId, e.amountCents])).toEqual([
+      ["e1", food, 1000],
+      ["e1-2", snack, 500],
+    ])
+    // A retry adds nothing.
+    const again = await api.post(`/api/money/receipts/${receipt.id}/expense`, olivia, {
+      expenseId: "e1",
+      categoryId: snack,
+    })
+    expect((await body<{ expenses: Expense[] }>(again)).expenses).toHaveLength(2)
+    const data = await body<{ expenses: Expense[] }>(await api.get("/api/money", olivia))
+    expect(data.expenses).toHaveLength(2)
+  })
+
+  test("lines that do not add up to the total cannot become expenses, and categories must be the space's own", async () => {
+    const receipt = await addReceipt()
+    const fixed = await patch(receipt.id, {
+      items: [{ id: "i1", name: "Milk", amountCents: 100, categoryId: null }],
+    })
+    expect(fixed.status).toBe(200)
+    expect(
+      (await api.post(`/api/money/receipts/${receipt.id}/expense`, olivia, { expenseId: "e1" })).status
+    ).toBe(400)
+    const wrong = await patch(receipt.id, {
+      items: [{ id: "i1", name: "Milk", amountCents: 1799, categoryId: "not-mine" }],
+    })
+    expect(wrong.status).toBe(400)
+    const ok = await patch(receipt.id, {
+      items: [{ id: "i1", name: "Milk", amountCents: 1799, categoryId: null }],
+    })
+    expect(ok.status).toBe(200)
+    expect(
+      (await api.post(`/api/money/receipts/${receipt.id}/expense`, olivia, { expenseId: "e1" })).status
+    ).toBe(201)
   })
 
   test("deleting a receipt deletes its photo and keeps the expense", async () => {

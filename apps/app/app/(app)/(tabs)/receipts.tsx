@@ -1,13 +1,24 @@
 import * as ImagePicker from "expo-image-picker"
-import { Camera, Image as ImageIcon, ReceiptText } from "lucide-react-native"
+import {
+  Camera,
+  Image as ImageIcon,
+  PencilLine,
+  Plus,
+  ReceiptText,
+  Trash2,
+} from "lucide-react-native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActivityIndicator, Platform, Pressable, Text, View } from "react-native"
 
 import {
+  itemsTotal,
   parseCents,
+  parseSignedCents,
+  splitReceipt,
   todayString,
   type Receipt,
+  type ReceiptItem,
 } from "@workspace/schemas"
 
 import {
@@ -23,12 +34,14 @@ import { Input } from "@/components/ui/input"
 import { Sheet } from "@/components/ui/sheet"
 import type { PickedImage } from "@/lib/api/client"
 import { amountInputText, formatMoney, shortDay } from "@/lib/money-format"
+import { newId } from "@/lib/shopping-ops"
 import { useUploadReceipt } from "@/lib/money-receipts"
 
 /**
- * Receipts: take or choose a photo of a receipt. The server stores it and the AI reads the shop,
- * the date and the total. What it cannot read stays empty. The person checks the values, fixes
- * them, and turns the receipt into an expense with one tap.
+ * Receipts: take or choose a photo of a receipt, or type one in without a photo. With a photo the
+ * server stores it and the AI reads the shop, the date, the total and the lines, and puts every line
+ * in one of the person's categories. What it cannot read stays empty. The person checks the values,
+ * fixes them, and turns the receipt into expenses (one per category) with one tap.
  */
 export default function Receipts() {
   const { t } = useTranslation("money")
@@ -112,6 +125,12 @@ function ReceiptsBody({ context }: { context: MoneyContext }) {
           onPress={() => void choose("library")}
         />
       </View>
+      <Button
+        icon={PencilLine}
+        variant="outline"
+        label={t("receipts.addWithoutPhoto")}
+        onPress={() => setOpenId(context.actions.addReceipt(householdId))}
+      />
       {upload.isPending && (
         <View role="status" className="flex-row items-center gap-3 rounded-lg bg-tone-butter p-3">
           <ActivityIndicator />
@@ -179,6 +198,12 @@ function ReceiptsBody({ context }: { context: MoneyContext }) {
 }
 
 /** One receipt: the values the AI read, to check and correct, and what to do with it. */
+/** A line of a receipt while it is edited: the amount is still the text the person typed. */
+type Line = { id: string; name: string; amount: string; categoryId: string | null }
+
+const signedInputText = (cents: number) =>
+  cents < 0 ? `-${amountInputText(-cents)}` : amountInputText(cents)
+
 function ReceiptSheet({
   receipt,
   context,
@@ -198,10 +223,36 @@ function ReceiptSheet({
   const [categoryId, setCategoryId] = useState<string | null>(
     money.categories.find((c) => c.key === "groceries")?.id ?? null
   )
+  const [lines, setLines] = useState<Line[]>(
+    (receipt?.items ?? []).map((item) => ({
+      id: item.id,
+      name: item.name,
+      amount: signedInputText(item.amountCents),
+      categoryId: item.categoryId,
+    }))
+  )
   const cents = parseCents(total)
   const totalOk = total.trim() === "" || (cents !== null && cents > 0)
   const done = !!receipt?.expenseId
-  const canAdd = !done && totalOk && cents !== null && cents > 0 && date !== null
+
+  // Lines that are not filled in (no name, or no amount) are dropped when saving.
+  const items: ReceiptItem[] = lines.flatMap((line) => {
+    const amountCents = parseSignedCents(line.amount)
+    return line.name.trim() && amountCents
+      ? [{ id: line.id, name: line.name.trim(), amountCents, categoryId: line.categoryId }]
+      : []
+  })
+  const linesOk = lines.every(
+    (line) => line.amount.trim() === "" || parseSignedCents(line.amount) !== null
+  )
+  const sum = itemsTotal(items)
+  const split =
+    cents !== null && cents > 0 ? splitReceipt({ totalCents: cents, items }, categoryId, "x") : null
+  const canAdd =
+    !done && totalOk && linesOk && cents !== null && cents > 0 && date !== null && split !== null
+
+  const setLine = (id: string, change: Partial<Line>) =>
+    setLines((all) => all.map((line) => (line.id === id ? { ...line, ...change } : line)))
 
   /** Saves what is typed over what was read. Empty fields are cleared, never guessed. */
   const saveValues = () => {
@@ -210,6 +261,7 @@ function ReceiptSheet({
       shop: shop.trim() || null,
       date,
       totalCents: cents !== null && cents > 0 ? cents : null,
+      items,
     })
   }
 
@@ -247,8 +299,88 @@ function ReceiptSheet({
           ) : (
             <DayField label={t("receipts.form.date")} date={date} onChange={setDate} />
           )}
+          <View className="gap-3">
+            <Text className="text-base font-semibold text-foreground">
+              {t("receipts.form.items")}
+            </Text>
+            <Text className="text-sm text-muted-foreground">
+              {t("receipts.form.itemsHint")}
+            </Text>
+            {lines.map((line) => (
+              <View
+                key={line.id}
+                className="gap-2 rounded-lg border border-border bg-card p-3"
+              >
+                <Input
+                  label={t("receipts.form.itemName")}
+                  value={line.name}
+                  onChangeText={(name) => setLine(line.id, { name })}
+                  maxLength={200}
+                  editable={!done}
+                />
+                <Input
+                  label={t("receipts.form.itemAmount", { currency: money.currency })}
+                  value={line.amount}
+                  onChangeText={(amount) => setLine(line.id, { amount })}
+                  inputMode="decimal"
+                  placeholder="0.00"
+                  editable={!done}
+                  aria-invalid={
+                    line.amount.trim() !== "" && parseSignedCents(line.amount) === null
+                  }
+                />
+                {!done && (
+                  <CategoryField
+                    label={t("receipts.form.itemCategory")}
+                    categories={money.categories}
+                    value={line.categoryId}
+                    onChange={(id) => setLine(line.id, { categoryId: id })}
+                  />
+                )}
+                {!done && (
+                  <Button
+                    variant="outline"
+                    icon={Trash2}
+                    label={t("receipts.form.removeItem")}
+                    onPress={() => setLines((all) => all.filter((l) => l.id !== line.id))}
+                  />
+                )}
+              </View>
+            ))}
+            {!done && (
+              <Button
+                variant="outline"
+                icon={Plus}
+                label={t("receipts.form.addItem")}
+                onPress={() =>
+                  setLines((all) => [
+                    ...all,
+                    { id: newId(), name: "", amount: "", categoryId: null },
+                  ])
+                }
+              />
+            )}
+            {items.length > 0 && (
+              <Text className="text-sm text-muted-foreground">
+                {t("receipts.form.itemsSum", { amount: formatMoney(sum, money.currency) })}
+              </Text>
+            )}
+            {!done && items.length > 0 && sum > 0 && sum !== cents && (
+              <View className="gap-2 rounded-lg bg-tone-butter p-3">
+                <Text role="alert" className="text-tone-butter-foreground">
+                  {t("receipts.form.itemsMismatch")}
+                </Text>
+                <Button
+                  variant="outline"
+                  label={t("receipts.form.useItemsTotal")}
+                  onPress={() => setTotal(amountInputText(sum))}
+                />
+              </View>
+            )}
+          </View>
           {!done && (
             <CategoryField
+              label={t("receipts.form.defaultCategory")}
               categories={money.categories}
               value={categoryId}
               onChange={setCategoryId}
@@ -274,7 +406,7 @@ function ReceiptSheet({
                 variant="outline"
                 label={t("form.save")}
                 className="flex-1"
-                disabled={!totalOk}
+                disabled={!totalOk || !linesOk}
                 onPress={() => {
                   saveValues()
                   onClose()

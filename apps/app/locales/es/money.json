@@ -20,6 +20,7 @@
     "fun": "Ocio",
     "clothing": "Ropa",
     "gifts": "Regalos",
+    "snacks": "Snacks",
     "other": "Otros"
   },
   "amountIn": "Importe ({{currency}})",
@@ -169,7 +170,7 @@
   },
   "receipts": {
     "title": "Tickets",
-    "subtitle": "Fotos de tickets, convertidas en gastos",
+    "subtitle": "Fotos de tickets o escritos a mano, convertidos en gastos",
     "cameraDenied": "Permite la cámara en los ajustes para hacer una foto, o elige una.",
     "photoFailed": "No se pudo usar esa foto. Prueba con otra.",
     "takePhoto": "Hacer foto",
@@ -178,7 +179,7 @@
     "needsConnection": "La IA lee el ticket en el servidor, así que añadir uno necesita conexión. Lo que no pueda leer se queda vacío. Revisa los valores antes de usarlos.",
     "empty": {
       "title": "Aún no hay tickets",
-      "message": "Haz una foto de un ticket y conviértela en un gasto."
+      "message": "Haz una foto de un ticket o escríbelo y conviértelo en gastos."
     },
     "open": "Abrir ticket de {{name}}",
     "unknownShop": "Tienda desconocida",
@@ -195,7 +196,19 @@
       "addDate": "Añadir una fecha",
       "date": "Fecha",
       "alreadyAdded": "Este ticket ya es un gasto.",
-      "addExpense": "Añadir como gasto"
-    }
+      "addExpense": "Añadir como gasto",
+      "items": "Artículos",
+      "itemsHint": "Cada artículo puede tener su propia categoría, así los snacks y la compra de una misma visita se cuentan por separado. Usa un menos para un descuento.",
+      "itemName": "Artículo",
+      "itemAmount": "Precio ({{currency}})",
+      "itemCategory": "Categoría de este artículo",
+      "removeItem": "Quitar artículo",
+      "addItem": "Añadir artículo",
+      "itemsSum": "Los artículos suman {{amount}}",
+      "itemsMismatch": "Los artículos no suman el total.",
+      "useItemsTotal": "Usar la suma de los artículos como total",
+      "defaultCategory": "Categoría de los artículos sin una"
+    },
+    "addWithoutPhoto": "Añadir sin foto"
   }
 }

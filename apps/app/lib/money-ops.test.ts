@@ -135,6 +135,7 @@ describe("receipts", () => {
     shop: "Lidl",
     date: "2026-11-20" as string | null,
     totalCents: 1799 as number | null,
+    items: [] as { id: string; name: string; amountCents: number; categoryId: string | null }[],
     expenseId: null,
     error: null,
     householdId: null,
@@ -150,6 +151,31 @@ describe("receipts", () => {
     expect(data.expenses[0]).toMatchObject({ id: "e1", amountCents: 1799, date: "2026-11-20", note: "Lidl", receiptId: "r" })
     expect(data.receipts[0]!.expenseId).toBe("e1")
     expect(applyMoneyOp(data, toExpense)).toBe(data)
+  })
+
+  test("lines in different categories become one expense each, with the same ids as the server", () => {
+    const items = [
+      { id: "i1", name: "Pasta", amountCents: 1499, categoryId: "food" },
+      { id: "i2", name: "Crisps", amountCents: 300, categoryId: "snacks" },
+    ]
+    const data = applyMoneyOp(withReceipt({ items }), toExpense)
+    expect(data.expenses.map((e) => [e.id, e.categoryId, e.amountCents])).toEqual([
+      ["e1", "food", 1499],
+      ["e1-2", "snacks", 300],
+    ])
+    expect(data.receipts[0]!.expenseId).toBe("e1")
+    // Lines that do not add up to the total add nothing.
+    const off = withReceipt({ items: [items[0]!] })
+    expect(applyMoneyOp(off, toExpense)).toBe(off)
+  })
+
+  test("a receipt can be added without a photo, once", () => {
+    const op: MoneyOp = {
+      type: "addReceipt", id: "r2", householdId: null, shop: "Kiosk", date: null, totalCents: null, items: [],
+    }
+    const data = applyMoneyOp(base, op)
+    expect(data.receipts[0]).toMatchObject({ id: "r2", fileId: null, status: "ready", shop: "Kiosk" })
+    expect(applyMoneyOp(data, op)).toBe(data)
   })
 
   test("without a total, or without any date, nothing is added", () => {

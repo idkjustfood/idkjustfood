@@ -162,6 +162,13 @@
       "when": 1795371984879,
       "tag": "0022_sticky_kulan_gath",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1795372949066,
+      "tag": "0023_slimy_wilson_fisk",
+      "breakpoints": true
     }
   ]
 }

@@ -1881,6 +1881,42 @@
             "minimum": 1,
             "maximum": 10000000000
           },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "amountCents": {
+                  "type": "integer",
+                  "minimum": -10000000000,
+                  "maximum": 10000000000
+                },
+                "categoryId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "amountCents",
+                "categoryId"
+              ]
+            },
+            "maxItems": 200
+          },
           "expenseId": {
             "type": [
               "string",
@@ -1910,6 +1946,7 @@
           "shop",
           "date",
           "totalCents",
+          "items",
           "expenseId",
           "error",
           "householdId",
@@ -3639,6 +3676,80 @@
           "file"
         ]
       },
+      "ReceiptCreate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "shop": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 200
+          },
+          "date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "totalCents": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "amountCents": {
+                  "type": "integer",
+                  "minimum": -10000000000,
+                  "maximum": 10000000000
+                },
+                "categoryId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "amountCents",
+                "categoryId"
+              ]
+            },
+            "maxItems": 200
+          }
+        }
+      },
       "ReceiptUpdate": {
         "type": "object",
         "properties": {
@@ -3663,6 +3774,42 @@
             ],
             "minimum": 1,
             "maximum": 10000000000
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "amountCents": {
+                  "type": "integer",
+                  "minimum": -10000000000,
+                  "maximum": 10000000000
+                },
+                "categoryId": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "amountCents",
+                "categoryId"
+              ]
+            },
+            "maxItems": 200
           }
         }
       },
@@ -11973,6 +12120,90 @@
         }
       }
     },
+    "/api/money/receipts/manual": {
+      "post": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add a receipt without a photo",
+        "description": "Adds a receipt that is typed in. Everything but the id is optional: the shop, the date, the total and the lines (each with an optional category of the same space). Nothing is read by the AI, so this works on a server without AI. You may choose the id: sending an id that already exists returns that receipt and changes nothing.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "receipt": {
+                      "$ref": "#/components/schemas/Receipt"
+                    }
+                  },
+                  "required": [
+                    "receipt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "A category is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id is already used by someone else's receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/money/receipts/{receiptId}": {
       "patch": {
         "tags": [
@@ -11984,7 +12215,7 @@
           }
         ],
         "summary": "Correct a receipt",
-        "description": "Change what was read. Send `null` to clear a value.",
+        "description": "Change what was read or typed. Send `null` to clear a value. `items` replaces all the lines.",
         "parameters": [
           {
             "schema": {
@@ -12115,7 +12346,7 @@
           }
         ],
         "summary": "Turn a receipt into an expense",
-        "description": "Adds an expense with the receipt's total and date, with the shop as its note. The receipt needs a total, and a date (its own or `date`). You choose the expense's `id`: sending it again returns that expense and changes nothing.",
+        "description": "Adds the expenses of a receipt, with the shop as their note. The receipt needs a total, and a date (its own or `date`). Without lines it is one expense with the total. With lines it is one expense per category, the sum of its lines; lines without a category use `categoryId`. The lines must add up to the total. You choose the first expense's `expenseId`, the others get `<expenseId>-2`, `<expenseId>-3` and so on: sending it again returns the same expenses and changes nothing.",
         "parameters": [
           {
             "schema": {
@@ -12138,25 +12369,39 @@
         },
         "responses": {
           "201": {
-            "description": "The expense",
+            "description": "The expenses",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "expense": {
-                      "$ref": "#/components/schemas/Expense"
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/Expense"
+                        },
+                        {
+                          "description": "The first expense."
+                        }
+                      ]
+                    },
+                    "expenses": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Expense"
+                      }
                     }
                   },
                   "required": [
-                    "expense"
+                    "expense",
+                    "expenses"
                   ]
                 }
               }
             }
           },
           "400": {
-            "description": "The receipt has no total or date yet, or the category or payer is not valid",
+            "description": "The receipt has no total or date yet, its lines do not add up to the total, or a category or payer is not valid",
             "content": {
               "application/json": {
                 "schema": {

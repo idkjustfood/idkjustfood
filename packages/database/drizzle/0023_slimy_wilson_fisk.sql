@@ -1,0 +1,1 @@
+ALTER TABLE "money_receipt" ADD COLUMN "items" jsonb DEFAULT '[]'::jsonb NOT NULL;
