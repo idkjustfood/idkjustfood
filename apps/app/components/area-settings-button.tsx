@@ -18,7 +18,7 @@ export function AreaSettingsButton({
   return (
     <>
       <Button
-        variant="outline"
+        variant="ghost"
         size="icon"
         icon={Settings}
         label={t("areaSettings.open")}
