@@ -95,7 +95,7 @@ export default function Calendar() {
       toolbar={!wide && <SpaceSwitcher />}
       actions={
         <Button
-          size="sm"
+          size="header"
           icon={Plus}
           label={t("add")}
           onPress={() => setForm("new")}

@@ -41,7 +41,7 @@ export default function Bills() {
       title={t("bills.title")}
       subtitle={t("bills.subtitle")}
       actions={
-        <Button size="sm" icon={Plus} label={t("bills.add")} onPress={() => setForm("new")} />
+        <Button size="header" icon={Plus} label={t("bills.add")} onPress={() => setForm("new")} />
       }
     >
       {(context) => <BillsBody context={context} form={form} setForm={setForm} />}

@@ -35,7 +35,7 @@ export default function Budget() {
       title={t("budget.title")}
       subtitle={t("budget.subtitle")}
       actions={
-        <Button size="sm" icon={Plus} label={t("budget.add")} onPress={() => setForm("new")} />
+        <Button size="header" icon={Plus} label={t("budget.add")} onPress={() => setForm("new")} />
       }
     >
       {(context) => <BudgetBody context={context} form={form} setForm={setForm} />}

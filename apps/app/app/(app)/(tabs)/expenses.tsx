@@ -50,7 +50,7 @@ export default function Expenses() {
       subtitle={t("expenses.subtitle")}
       actions={
         <Button
-          size="sm"
+          size="header"
           icon={Plus}
           label={t("expenses.add")}
           onPress={() => setForm("new")}

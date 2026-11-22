@@ -58,7 +58,7 @@ export default function Contacts() {
       }
       actions={
         <Button
-          size="sm"
+          size="header"
           icon={Plus}
           label={t("add")}
           onPress={() => setForm("new")}
