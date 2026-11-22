@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, type ReactNode } from "react"
+import { X } from "lucide-react-native"
 import { useTranslation } from "react-i18next"
 import {
   Animated,
@@ -14,6 +15,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useIsWide } from "@/lib/layout"
 import { cn } from "@/lib/utils"
 import { Heading } from "@/components/ui/heading"
+import { Icon } from "@/components/ui/icon"
 
 /**
  * A panel that slides up from the bottom on phones and shows as a centred dialog on wide screens.
@@ -101,9 +103,22 @@ export function Sheet({
             {!wide && (
               <View className="h-1.5 w-10 self-center rounded-full bg-muted" />
             )}
-            <Heading className="text-lg font-semibold text-foreground">
-              {title}
-            </Heading>
+            <View className="flex-row items-center justify-between gap-3">
+              <Heading className="shrink text-lg font-semibold text-foreground">
+                {title}
+              </Heading>
+              {wide && (
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={t("close")}
+                  onPress={onClose}
+                  hitSlop={8}
+                  className="rounded-full p-1"
+                >
+                  <Icon as={X} className="text-muted-foreground" />
+                </Pressable>
+              )}
+            </View>
           </View>
           <ScrollView
             className="shrink"
