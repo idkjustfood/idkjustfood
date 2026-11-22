@@ -166,5 +166,36 @@
       "noDay": "Nessun giorno obiettivo",
       "create": "Aggiungi obiettivo"
     }
+  },
+  "receipts": {
+    "title": "Scontrini",
+    "subtitle": "Foto di scontrini, trasformate in spese",
+    "cameraDenied": "Consenti la fotocamera nelle impostazioni per scattare una foto, oppure scegline una.",
+    "photoFailed": "Non è stato possibile usare quella foto. Prova con un’altra.",
+    "takePhoto": "Scatta foto",
+    "choosePhoto": "Scegli foto",
+    "reading": "Lettura dello scontrino. Ci vogliono pochi secondi.",
+    "needsConnection": "L’IA legge lo scontrino sul server, quindi per aggiungerne uno serve una connessione. Quello che non riesce a leggere resta vuoto. Controlla i valori prima di usarli.",
+    "empty": {
+      "title": "Ancora nessuno scontrino",
+      "message": "Fotografa uno scontrino e trasformalo in una spesa."
+    },
+    "open": "Apri lo scontrino di {{name}}",
+    "unknownShop": "Negozio sconosciuto",
+    "noDate": "Nessuna data",
+    "noTotal": "Nessun totale",
+    "status": {
+      "added": "Aggiunto come spesa",
+      "failed": "Controlla i valori"
+    },
+    "form": {
+      "title": "Scontrino",
+      "check": "Questi valori sono stati letti da un’IA e possono essere sbagliati. Controllali e correggi quello che non va.",
+      "shop": "Negozio",
+      "addDate": "Aggiungi una data",
+      "date": "Data",
+      "alreadyAdded": "Questo scontrino è già una spesa.",
+      "addExpense": "Aggiungi come spesa"
+    }
   }
 }

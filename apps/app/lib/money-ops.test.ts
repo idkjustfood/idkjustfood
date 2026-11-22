@@ -127,6 +127,49 @@ function setup() {
   return { store, server, device: () => device }
 }
 
+describe("receipts", () => {
+  const receipt = {
+    id: "r",
+    fileId: "f",
+    status: "ready" as const,
+    shop: "Lidl",
+    date: "2026-11-20" as string | null,
+    totalCents: 1799 as number | null,
+    expenseId: null,
+    error: null,
+    householdId: null,
+    createdAt: "2026-11-20T10:00:00.000Z",
+  }
+  const withReceipt = (over: object = {}): MoneyData => ({ ...base, receipts: [{ ...receipt, ...over }] })
+  const toExpense: MoneyOp = {
+    type: "receiptToExpense", id: "r", expenseId: "e1", categoryId: "food", paidBy: "me", date: null,
+  }
+
+  test("a receipt becomes an expense with its total, date and shop, once", () => {
+    const data = applyMoneyOp(withReceipt(), toExpense)
+    expect(data.expenses[0]).toMatchObject({ id: "e1", amountCents: 1799, date: "2026-11-20", note: "Lidl", receiptId: "r" })
+    expect(data.receipts[0]!.expenseId).toBe("e1")
+    expect(applyMoneyOp(data, toExpense)).toBe(data)
+  })
+
+  test("without a total, or without any date, nothing is added", () => {
+    const noTotal = withReceipt({ totalCents: null })
+    expect(applyMoneyOp(noTotal, toExpense)).toBe(noTotal)
+    const noDate = withReceipt({ date: null })
+    expect(applyMoneyOp(noDate, toExpense)).toBe(noDate)
+    expect(applyMoneyOp(noDate, { ...toExpense, date: "2026-11-18" } as MoneyOp).expenses[0]!.date).toBe("2026-11-18")
+  })
+
+  test("correcting changes only what is sent, deleting keeps the expense", () => {
+    let data = applyMoneyOp(withReceipt(), { type: "updateReceipt", id: "r", change: { totalCents: 500, shop: undefined } })
+    expect(data.receipts[0]).toMatchObject({ totalCents: 500, shop: "Lidl" })
+    data = applyMoneyOp(data, toExpense)
+    data = applyMoneyOp(data, { type: "removeReceipt", id: "r" })
+    expect(data.receipts).toHaveLength(0)
+    expect(data.expenses[0]!.receiptId).toBeNull()
+  })
+})
+
 describe("MoneyStore", () => {
   test("works without a connection and sends the changes when it is back", async () => {
     const { store, server } = setup()

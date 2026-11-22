@@ -172,9 +172,9 @@ export const modules: readonly AppModule[] = [
   {
     id: "receipts",
     area: "money",
-    route: placeholder("receipts"),
-    built: false,
-    quickAction: { route: placeholder("receipts") },
+    route: "/receipts",
+    built: true,
+    quickAction: { route: "/receipts" },
   },
   // More, Family
   {

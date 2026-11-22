@@ -194,8 +194,33 @@ async function send(op: MoneyOp) {
         })
       )
       return
-    // Receipts are sent in `lib/money-receipts.ts`, once that part of the API is there.
-    default:
+    case "updateReceipt":
+      await call(
+        api.PATCH("/api/money/receipts/{receiptId}", {
+          params: { path: { receiptId: op.id } },
+          body: op.change,
+        })
+      )
+      return
+    case "removeReceipt":
+      await call(
+        api.DELETE("/api/money/receipts/{receiptId}", {
+          params: { path: { receiptId: op.id } },
+        })
+      )
+      return
+    case "receiptToExpense":
+      await call(
+        api.POST("/api/money/receipts/{receiptId}/expense", {
+          params: { path: { receiptId: op.id } },
+          body: {
+            expenseId: op.expenseId,
+            categoryId: op.categoryId,
+            paidBy: op.paidBy,
+            ...(op.date ? { date: op.date } : {}),
+          },
+        })
+      )
       return
   }
 }
@@ -387,6 +412,25 @@ export function useMoneyActions() {
       saveToGoal: (goalId: string, amountCents: number, date: string) =>
         d({ type: "addSavings", id: newId(), goalId, amountCents, date }),
       removeSavings: (id: string) => d({ type: "removeSavings", id }),
+
+      editReceipt: (
+        id: string,
+        change: { shop?: string | null; date?: string | null; totalCents?: number | null }
+      ) => d({ type: "updateReceipt", id, change }),
+      removeReceipt: (id: string) => d({ type: "removeReceipt", id }),
+      /** Adds an expense with the receipt's total and date. Needs both (the date may be given here). */
+      receiptToExpense: (
+        id: string,
+        options: { categoryId: string | null; date: string | null }
+      ) =>
+        d({
+          type: "receiptToExpense",
+          id,
+          expenseId: newId(),
+          categoryId: options.categoryId,
+          paidBy: me,
+          date: options.date,
+        }),
 
       dispatch: d,
       sync: () => store.sync(),

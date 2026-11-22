@@ -166,5 +166,36 @@
       "noDay": "Kein Zieltag",
       "create": "Ziel hinzufügen"
     }
+  },
+  "receipts": {
+    "title": "Belege",
+    "subtitle": "Fotos von Belegen, zu Ausgaben gemacht",
+    "cameraDenied": "Erlaube die Kamera in den Einstellungen, um ein Foto zu machen, oder wähle stattdessen eins aus.",
+    "photoFailed": "Das Foto konnte nicht verwendet werden. Probiere ein anderes.",
+    "takePhoto": "Foto aufnehmen",
+    "choosePhoto": "Foto auswählen",
+    "reading": "Der Beleg wird gelesen. Das dauert ein paar Sekunden.",
+    "needsConnection": "Die KI liest den Beleg auf dem Server, deshalb brauchst du zum Hinzufügen eine Verbindung. Was sie nicht lesen kann, bleibt leer. Prüfe die Werte, bevor du sie verwendest.",
+    "empty": {
+      "title": "Noch keine Belege",
+      "message": "Fotografiere einen Beleg und mach daraus eine Ausgabe."
+    },
+    "open": "Beleg von {{name}} öffnen",
+    "unknownShop": "Unbekanntes Geschäft",
+    "noDate": "Kein Datum",
+    "noTotal": "Keine Summe",
+    "status": {
+      "added": "Als Ausgabe hinzugefügt",
+      "failed": "Werte prüfen"
+    },
+    "form": {
+      "title": "Beleg",
+      "check": "Diese Werte wurden von einer KI gelesen und können falsch sein. Prüfe sie und korrigiere, was nicht stimmt.",
+      "shop": "Geschäft",
+      "addDate": "Datum hinzufügen",
+      "date": "Datum",
+      "alreadyAdded": "Dieser Beleg ist schon eine Ausgabe.",
+      "addExpense": "Als Ausgabe hinzufügen"
+    }
   }
 }

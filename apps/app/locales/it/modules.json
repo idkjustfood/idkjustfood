@@ -36,6 +36,7 @@
       "meals": "Pasti",
       "shopping": "Spesa",
       "tasks": "Faccende",
+      "bills": "Bollette",
       "tomorrow": "Domani"
     },
     "slots": {
@@ -171,8 +172,7 @@
   },
   "receipts": {
     "name": "Scontrini",
-    "description": "Scontrini e spesa alimentare.",
-    "soon": "Scansiona gli scontrini e guarda quanto spendi per la spesa.",
+    "description": "Foto di scontrini, trasformate in spese.",
     "quickAction": "Aggiungi scontrino"
   },
   "notes": {

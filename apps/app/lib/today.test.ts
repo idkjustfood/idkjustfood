@@ -3,6 +3,7 @@ import { describe, expect, test } from "bun:test"
 import type { Meal } from "@workspace/schemas"
 
 import {
+  billItems,
   calendarItems,
   choreItems,
   mealItems,
@@ -275,5 +276,29 @@ describe("today timeline", () => {
         timeline(calendarItems([entry("n", today)], today), ["calendar"])
       ).toEqual([])
     })
+  })
+})
+
+describe("bills on today", () => {
+  const bill = (id: string, nextDue: string | null, amountCents = 1000) => ({
+    id,
+    title: `Bill ${id}`,
+    amountCents,
+    nextDue,
+  })
+
+  test("shows bills due today or overdue, the most overdue first", () => {
+    const items = billItems(
+      [bill("a", "2026-11-21"), bill("b", "2026-11-18"), bill("c", "2026-11-22"), bill("d", null)],
+      "2026-11-21"
+    )
+    expect(items.map((i) => i.id)).toEqual(["b", "a"])
+    expect(items.map((i) => (i.kind === "bill" ? i.overdueDays : -1))).toEqual([3, 0])
+  })
+
+  test("have their own section after tasks, and go away when Bills is switched off", () => {
+    const items = billItems([bill("a", "2026-11-21")], "2026-11-21")
+    expect(todaySections(items).map((s) => s.id)).toEqual(["bills"])
+    expect(timeline(items, ["bills"])).toEqual([])
   })
 })

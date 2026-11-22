@@ -36,6 +36,7 @@
       "meals": "Repas",
       "shopping": "Courses",
       "tasks": "Tâches",
+      "bills": "Factures",
       "tomorrow": "Demain"
     },
     "slots": {
@@ -171,8 +172,7 @@
   },
   "receipts": {
     "name": "Tickets de caisse",
-    "description": "Tickets et dépenses de courses.",
-    "soon": "Scannez les tickets et voyez ce que vous dépensez en courses.",
+    "description": "Photos de tickets, transformées en dépenses.",
     "quickAction": "Ajouter un ticket"
   },
   "notes": {

@@ -5508,6 +5508,285 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/money/receipts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Add a receipt from a photo
+         * @description Stores the photo on the server's own disk (it also shows in the documents) and has the AI read the shop, the date and the total. A value the AI cannot clearly read stays empty: it never guesses. When reading fails, the receipt is still saved with status `failed`, and the values can be typed in. Reading takes a few seconds.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "multipart/form-data": components["schemas"]["ReceiptUpload"];
+                };
+            };
+            responses: {
+                /** @description Saved, read or not */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            receipt: components["schemas"]["Receipt"];
+                        };
+                    };
+                };
+                /** @description Not an image, empty, or too large */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Household not found, or you are not a member */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description That id is already used by someone else's receipt */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/money/receipts/{receiptId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete a receipt
+         * @description Deletes the receipt and its photo. An expense made from it stays, without the link.
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    receiptId: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Deleted */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The receipt doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        /**
+         * Correct a receipt
+         * @description Change what was read. Send `null` to clear a value.
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    receiptId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ReceiptUpdate"];
+                };
+            };
+            responses: {
+                /** @description The corrected receipt */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            receipt: components["schemas"]["Receipt"];
+                        };
+                    };
+                };
+                /** @description Invalid change */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The receipt doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        trace?: never;
+    };
+    "/api/money/receipts/{receiptId}/expense": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Turn a receipt into an expense
+         * @description Adds an expense with the receipt's total and date, with the shop as its note. The receipt needs a total, and a date (its own or `date`). You choose the expense's `id`: sending it again returns that expense and changes nothing.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    receiptId: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ReceiptToExpense"];
+                };
+            };
+            responses: {
+                /** @description The expense */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            expense: components["schemas"]["Expense"];
+                        };
+                    };
+                };
+                /** @description The receipt has no total or date yet, or the category or payer is not valid */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description Not signed in */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description The receipt doesn't exist, or you can't see it */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+                /** @description That expense id is already used for something else */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/recipes/{recipeId}/complete": {
         parameters: {
             query?: never;
@@ -6524,6 +6803,29 @@ export interface components {
             listId: string;
             from?: string;
             to?: string;
+        };
+        ReceiptUpload: {
+            /**
+             * Format: binary
+             * @description A photo of the receipt: JPEG, PNG, WebP or GIF, up to 10 MB.
+             */
+            file: string;
+            /** @description Put the receipt in this household. Leave out to keep it personal. */
+            householdId?: string;
+            /** @description You may choose the receipt's id. Sending an id that already exists returns that receipt and reads nothing again. */
+            id?: string;
+        };
+        ReceiptUpdate: {
+            shop?: string | null;
+            date?: string | null;
+            totalCents?: number | null;
+        };
+        ReceiptToExpense: {
+            expenseId: string;
+            categoryId?: string | null;
+            paidBy?: string;
+            /** @description Used when the receipt has no date of its own. */
+            date?: string;
         };
         CompletedRecipe: {
             ingredients: {

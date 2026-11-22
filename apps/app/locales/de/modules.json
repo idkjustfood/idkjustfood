@@ -36,6 +36,7 @@
       "meals": "Mahlzeiten",
       "shopping": "Einkaufen",
       "tasks": "Aufgaben",
+      "bills": "Rechnungen",
       "tomorrow": "Morgen"
     },
     "slots": {
@@ -171,8 +172,7 @@
   },
   "receipts": {
     "name": "Belege",
-    "description": "Belege und Ausgaben für Lebensmittel.",
-    "soon": "Scanne Belege und sieh, was du für Lebensmittel ausgibst.",
+    "description": "Fotos von Belegen, zu Ausgaben gemacht.",
     "quickAction": "Beleg hinzufügen"
   },
   "notes": {

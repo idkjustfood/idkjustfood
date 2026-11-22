@@ -36,6 +36,7 @@
       "meals": "Meals",
       "shopping": "Shopping",
       "tasks": "Tasks",
+      "bills": "Bills",
       "tomorrow": "Tomorrow"
     },
     "slots": {
@@ -171,8 +172,7 @@
   },
   "receipts": {
     "name": "Receipts",
-    "description": "Receipts and grocery spending.",
-    "soon": "Scan receipts and see what you spend on groceries.",
+    "description": "Photos of receipts, turned into expenses.",
     "quickAction": "Add receipt"
   },
   "notes": {

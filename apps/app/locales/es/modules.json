@@ -36,6 +36,7 @@
       "meals": "Comidas",
       "shopping": "Compras",
       "tasks": "Tareas",
+      "bills": "Facturas",
       "tomorrow": "Mañana"
     },
     "slots": {
@@ -171,8 +172,7 @@
   },
   "receipts": {
     "name": "Tickets",
-    "description": "Tickets y gasto en comestibles.",
-    "soon": "Escanea tickets y mira cuánto gastas en comida.",
+    "description": "Fotos de tickets, convertidas en gastos.",
     "quickAction": "Añadir ticket"
   },
   "notes": {

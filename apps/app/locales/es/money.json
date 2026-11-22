@@ -166,5 +166,36 @@
       "noDay": "Sin día objetivo",
       "create": "Añadir meta"
     }
+  },
+  "receipts": {
+    "title": "Tickets",
+    "subtitle": "Fotos de tickets, convertidas en gastos",
+    "cameraDenied": "Permite la cámara en los ajustes para hacer una foto, o elige una.",
+    "photoFailed": "No se pudo usar esa foto. Prueba con otra.",
+    "takePhoto": "Hacer foto",
+    "choosePhoto": "Elegir foto",
+    "reading": "Leyendo el ticket. Tarda unos segundos.",
+    "needsConnection": "La IA lee el ticket en el servidor, así que añadir uno necesita conexión. Lo que no pueda leer se queda vacío. Revisa los valores antes de usarlos.",
+    "empty": {
+      "title": "Aún no hay tickets",
+      "message": "Haz una foto de un ticket y conviértela en un gasto."
+    },
+    "open": "Abrir ticket de {{name}}",
+    "unknownShop": "Tienda desconocida",
+    "noDate": "Sin fecha",
+    "noTotal": "Sin total",
+    "status": {
+      "added": "Añadido como gasto",
+      "failed": "Revisa los valores"
+    },
+    "form": {
+      "title": "Ticket",
+      "check": "Estos valores los leyó una IA y pueden ser incorrectos. Revísalos y corrige lo que no esté bien.",
+      "shop": "Tienda",
+      "addDate": "Añadir una fecha",
+      "date": "Fecha",
+      "alreadyAdded": "Este ticket ya es un gasto.",
+      "addExpense": "Añadir como gasto"
+    }
   }
 }

@@ -166,5 +166,36 @@
       "noDay": "Pas de date",
       "create": "Ajouter l’objectif"
     }
+  },
+  "receipts": {
+    "title": "Tickets",
+    "subtitle": "Des photos de tickets, transformées en dépenses",
+    "cameraDenied": "Autorisez l’appareil photo dans les réglages pour prendre une photo, ou choisissez-en une.",
+    "photoFailed": "Impossible d’utiliser cette photo. Essayez-en une autre.",
+    "takePhoto": "Prendre une photo",
+    "choosePhoto": "Choisir une photo",
+    "reading": "Lecture du ticket. Cela prend quelques secondes.",
+    "needsConnection": "L’IA lit le ticket sur le serveur, il faut donc une connexion pour en ajouter un. Ce qu’elle ne peut pas lire reste vide. Vérifiez les valeurs avant de les utiliser.",
+    "empty": {
+      "title": "Pas encore de tickets",
+      "message": "Prenez un ticket en photo et transformez-le en dépense."
+    },
+    "open": "Ouvrir le ticket de {{name}}",
+    "unknownShop": "Magasin inconnu",
+    "noDate": "Pas de date",
+    "noTotal": "Pas de total",
+    "status": {
+      "added": "Ajouté comme dépense",
+      "failed": "Vérifiez les valeurs"
+    },
+    "form": {
+      "title": "Ticket",
+      "check": "Ces valeurs ont été lues par une IA et peuvent être fausses. Vérifiez-les et corrigez ce qui ne va pas.",
+      "shop": "Magasin",
+      "addDate": "Ajouter une date",
+      "date": "Date",
+      "alreadyAdded": "Ce ticket est déjà une dépense.",
+      "addExpense": "Ajouter comme dépense"
+    }
   }
 }

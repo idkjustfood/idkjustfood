@@ -1,9 +1,12 @@
 import {
   addDays,
+  daysUntilBill,
   daysUntilDue,
+  dueBills,
   entriesOn,
   mealSlots,
   splitChores,
+  type Bill,
   type CalendarColor,
   type CalendarEntry,
   type Chore,
@@ -47,6 +50,15 @@ export type TodayItem =
       listId: string
       listName: string
       open: number
+    }
+  | {
+      kind: "bill"
+      id: string
+      moduleId: "bills"
+      title: string
+      amountCents: number
+      /** How many days ago the bill was due. 0 when it is due today. */
+      overdueDays: number
     }
   | {
       kind: "chore"
@@ -149,6 +161,24 @@ export function choreItems(
     .sort((a, b) => b.overdueDays - a.overdueDays)
 }
 
+/**
+ * Bills that are due today or overdue, the most overdue first. Bills that are not due yet, and
+ * one-off bills that were paid, are left out.
+ */
+export function billItems(
+  bills: readonly Pick<Bill, "id" | "title" | "amountCents" | "nextDue">[],
+  today: string
+): TodayItem[] {
+  return dueBills(bills, today).map((bill) => ({
+    kind: "bill" as const,
+    id: bill.id,
+    moduleId: "bills" as const,
+    title: bill.title,
+    amountCents: bill.amountCents,
+    overdueDays: Math.max(0, -(daysUntilBill(bill, today) ?? 0)),
+  }))
+}
+
 /** The timeline in the order of the sections. Items of switched-off modules are dropped. */
 export function timeline(
   items: readonly TodayItem[],
@@ -166,6 +196,7 @@ export const todaySectionIds = [
   "meals",
   "shopping",
   "tasks",
+  "bills",
   "tomorrow",
 ] as const
 export type TodaySectionId = (typeof todaySectionIds)[number]
@@ -180,6 +211,8 @@ const sectionOf = (item: TodayItem): TodaySectionId => {
       return "shopping"
     case "chore":
       return "tasks"
+    case "bill":
+      return "bills"
   }
 }
 

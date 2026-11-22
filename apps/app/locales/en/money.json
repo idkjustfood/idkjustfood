@@ -166,5 +166,36 @@
       "noDay": "No goal day",
       "create": "Add goal"
     }
+  },
+  "receipts": {
+    "title": "Receipts",
+    "subtitle": "Photos of receipts, turned into expenses",
+    "cameraDenied": "Allow the camera in your settings to take a photo, or choose one instead.",
+    "photoFailed": "Could not use that photo. Try another one.",
+    "takePhoto": "Take photo",
+    "choosePhoto": "Choose photo",
+    "reading": "Reading the receipt. This takes a few seconds.",
+    "needsConnection": "The AI reads the receipt on the server, so adding one needs a connection. What it cannot read stays empty. Check the values before you use them.",
+    "empty": {
+      "title": "No receipts yet",
+      "message": "Take a photo of a receipt and turn it into an expense."
+    },
+    "open": "Open receipt from {{name}}",
+    "unknownShop": "Unknown shop",
+    "noDate": "No date",
+    "noTotal": "No total",
+    "status": {
+      "added": "Added as expense",
+      "failed": "Check the values"
+    },
+    "form": {
+      "title": "Receipt",
+      "check": "These values were read by an AI and can be wrong. Check them and fix what is not right.",
+      "shop": "Shop",
+      "addDate": "Add a date",
+      "date": "Date",
+      "alreadyAdded": "This receipt is already an expense.",
+      "addExpense": "Add as expense"
+    }
   }
 }

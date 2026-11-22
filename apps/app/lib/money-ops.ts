@@ -102,7 +102,16 @@ export type MoneyOp =
   | { type: "removeSavings"; id: string }
   | { type: "updateReceipt"; id: string; change: ReceiptUpdate }
   | { type: "removeReceipt"; id: string }
-  | { type: "receiptToExpense"; id: string; expense: Expense }
+  | {
+      type: "receiptToExpense"
+      /** The receipt. */
+      id: string
+      expenseId: string
+      categoryId: string | null
+      paidBy: string
+      /** Used when the receipt has no date of its own. */
+      date: string | null
+    }
 
 /** A change without the fields that were not given. */
 function definedOnly<T extends object>(change: T): Partial<T> {
@@ -306,14 +315,39 @@ export function applyMoneyOp(
     case "updateReceipt":
       return { ...data, receipts: patch(data.receipts, op.id, op.change) }
     case "removeReceipt":
-      return { ...data, receipts: data.receipts.filter((r) => r.id !== op.id) }
-    case "receiptToExpense":
-      if (data.expenses.some((e) => e.id === op.expense.id)) return data
       return {
         ...data,
-        expenses: [...data.expenses, op.expense],
-        receipts: patch(data.receipts, op.id, { expenseId: op.expense.id }),
+        receipts: data.receipts.filter((r) => r.id !== op.id),
+        expenses: data.expenses.map((e) =>
+          e.receiptId === op.id ? { ...e, receiptId: null } : e
+        ),
       }
+    case "receiptToExpense": {
+      const receipt = data.receipts.find((r) => r.id === op.id)
+      const date = receipt?.date ?? op.date
+      // Like the server: the receipt needs a total and a date, and the expense id is used once.
+      if (!receipt || !receipt.totalCents || !date) return data
+      if (data.expenses.some((e) => e.id === op.expenseId)) return data
+      return {
+        ...data,
+        expenses: [
+          ...data.expenses,
+          {
+            id: op.expenseId,
+            amountCents: receipt.totalCents,
+            categoryId: op.categoryId,
+            date,
+            note: receipt.shop ?? "",
+            paidBy: op.paidBy,
+            billId: null,
+            receiptId: receipt.id,
+            householdId: receipt.householdId,
+            createdAt: now,
+          },
+        ],
+        receipts: patch(data.receipts, receipt.id, { expenseId: op.expenseId }),
+      }
+    }
   }
 }
 
