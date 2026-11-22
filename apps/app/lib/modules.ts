@@ -56,14 +56,20 @@ export const modules: readonly AppModule[] = [
     route: "/wishlists",
     built: true,
   },
-  // Home
   {
     id: "tasks",
-    area: "home",
+    area: "life",
     route: "/tasks",
     built: true,
     quickAction: { route: "/tasks" },
   },
+  {
+    id: "contacts",
+    area: "life",
+    route: "/contacts",
+    built: true,
+  },
+  // Home
   {
     id: "chores",
     area: "home",
@@ -88,12 +94,6 @@ export const modules: readonly AppModule[] = [
     id: "inventory",
     area: "home",
     route: "/inventory",
-    built: true,
-  },
-  {
-    id: "contacts",
-    area: "home",
-    route: "/contacts",
     built: true,
   },
   {
@@ -283,15 +283,15 @@ export function areaOfRoute(
     case "calendar":
     case "notes":
     case "wishlists":
+    case "tasks":
+    case "contacts":
       return "life"
     case "chores":
     case "maintenance":
     case "plants":
     case "pets":
     case "inventory":
-    case "contacts":
     case "documents":
-    case "tasks":
       return "home"
     case "expenses":
     case "budget":

@@ -111,7 +111,7 @@ TypeScript everywhere, in one monorepo.
 - The calendar works end to end: entries with a title and a colour, a month view, personal or for a
   household, offline on the phone. Today shows the entries of today and tomorrow. See
   `docs/calendar.md`.
-- To-do tasks work end to end (Home → Tasks): personal or shared with a household, optional due
+- To-do tasks work end to end (Life → Tasks): personal or shared with a household, optional due
   day and assignee, offline on the phone, due ones show on Today. See `docs/tasks.md`.
 - Household chores work end to end: tasks that come back after a number of days, personal or
   shared with a household, offline on the phone. See `docs/household-tasks.md`.
