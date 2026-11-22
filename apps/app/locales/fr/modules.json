@@ -2,7 +2,7 @@
   "comingSoon": "Bientôt disponible",
   "areas": {
     "today": "Aujourd’hui",
-    "plan": "Planifier",
+    "life": "Vie",
     "home": "Maison",
     "food": "Cuisine",
     "money": "Argent",
@@ -10,11 +10,11 @@
   },
   "areaSubtitles": {
     "today": "Ce qui est prévu aujourd’hui",
-    "plan": "Calendrier, tâches et planificateur de repas",
-    "home": "Corvées, entretien, documents et plantes",
-    "food": "Recettes, courses et garde-manger",
+    "life": "Calendrier, notes et listes d'envies",
+    "home": "Tâches, corvées, entretien, documents et plantes",
+    "food": "Recettes, planificateur de repas, courses et garde-manger",
     "money": "Budget, dépenses et factures",
-    "more": "Foyer, famille et réglages"
+    "more": "Foyer et réglages"
   },
   "groups": {
     "family": "Famille"
@@ -89,17 +89,6 @@
     "soon": "Partagez les tâches ménagères équitablement : les corvées tournent et montrent qui est le suivant.",
     "quickAction": "Ajouter une corvée"
   },
-  "routines": {
-    "name": "Routines",
-    "description": "Habitudes du matin, du soir et de la semaine.",
-    "soon": "Créez des routines et des habitudes et cochez-les chaque jour."
-  },
-  "reminders": {
-    "name": "Rappels",
-    "description": "Soyez prévenu au bon moment.",
-    "soon": "Créez des rappels pour vous ou pour le foyer.",
-    "quickAction": "Ajouter un rappel"
-  },
   "planner": {
     "name": "Planificateur de repas",
     "description": "Planifiez petit-déjeuner, midi et après-midi.",
@@ -140,10 +129,6 @@
     "name": "Recettes",
     "description": "Enregistrez et lisez des recettes. Ajout par lien, photo ou texte.",
     "quickAction": "Ajouter une recette"
-  },
-  "cooking": {
-    "name": "Mode cuisine et minuteurs",
-    "description": "Cuisinez pas à pas avec des minuteurs."
   },
   "shopping": {
     "name": "Listes de courses",

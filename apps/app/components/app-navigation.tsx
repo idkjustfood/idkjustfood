@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils"
 /** The route name of each bottom tab. The Today screen is the app's start page, "index". */
 const tabRoute: Record<Area, string> = {
   today: "index",
-  plan: "plan",
+  life: "life",
   home: "home",
   food: "food",
   money: "money",
@@ -99,7 +99,7 @@ function BottomBar(props: BottomTabBarProps) {
       className="flex-row border-t border-border bg-background px-2 pt-2"
     >
       {tab("today")}
-      {tab("plan")}
+      {tab("life")}
       {tab("home")}
       {/* The quick-add button is not a tab: it opens a sheet. */}
       <View className="flex-1 items-center justify-center">

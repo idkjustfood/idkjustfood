@@ -8,7 +8,7 @@
  */
 
 /** The bottom tabs. Today has no modules of its own: it collects items from the others. */
-export const areas = ["today", "plan", "home", "food", "money", "more"] as const
+export const areas = ["today", "life", "home", "food", "money", "more"] as const
 export type Area = (typeof areas)[number]
 
 /** Areas that hold modules. */
@@ -35,42 +35,35 @@ export type AppModule = {
 const placeholder = (id: string) => `/m/${id}`
 
 export const modules: readonly AppModule[] = [
-  // Plan
+  // Life
   {
     id: "calendar",
-    area: "plan",
+    area: "life",
     route: "/calendar",
     built: true,
     quickAction: { route: "/calendar" },
   },
   {
+    id: "notes",
+    area: "life",
+    route: "/notes",
+    built: true,
+    quickAction: { route: "/notes" },
+  },
+  {
+    id: "wishlists",
+    area: "life",
+    route: "/wishlists",
+    built: true,
+  },
+  // Home
+  {
     id: "tasks",
-    area: "plan",
+    area: "home",
     route: "/tasks",
     built: true,
     quickAction: { route: "/tasks" },
   },
-  {
-    id: "routines",
-    area: "plan",
-    route: placeholder("routines"),
-    built: false,
-  },
-  {
-    id: "reminders",
-    area: "plan",
-    route: placeholder("reminders"),
-    built: false,
-    quickAction: { route: placeholder("reminders") },
-  },
-  {
-    id: "planner",
-    area: "plan",
-    route: "/planner",
-    built: true,
-    quickAction: { route: "/planner" },
-  },
-  // Home
   {
     id: "chores",
     area: "home",
@@ -124,11 +117,11 @@ export const modules: readonly AppModule[] = [
     quickAction: { route: "/add" },
   },
   {
-    id: "cooking",
+    id: "planner",
     area: "food",
-    // Cooking mode starts from a recipe, so this opens the recipes.
-    route: "/recipes",
+    route: "/planner",
     built: true,
+    quickAction: { route: "/planner" },
   },
   {
     id: "shopping",
@@ -175,22 +168,6 @@ export const modules: readonly AppModule[] = [
     route: "/receipts",
     built: true,
     quickAction: { route: "/receipts" },
-  },
-  // More, Family
-  {
-    id: "notes",
-    area: "more",
-    group: "family",
-    route: "/notes",
-    built: true,
-    quickAction: { route: "/notes" },
-  },
-  {
-    id: "wishlists",
-    area: "more",
-    group: "family",
-    route: "/wishlists",
-    built: true,
   },
   // More
   {
@@ -288,7 +265,7 @@ export function areaOfRoute(
   switch (routeName) {
     case "index":
       return "today"
-    case "plan":
+    case "life":
     case "home":
     case "food":
     case "money":
@@ -301,11 +278,12 @@ export function areaOfRoute(
     case "(recipes)":
     case "shopping":
     case "add":
-      return "food"
     case "planner":
+      return "food"
     case "calendar":
-    case "tasks":
-      return "plan"
+    case "notes":
+    case "wishlists":
+      return "life"
     case "chores":
     case "maintenance":
     case "plants":
@@ -313,6 +291,7 @@ export function areaOfRoute(
     case "inventory":
     case "contacts":
     case "documents":
+    case "tasks":
       return "home"
     case "expenses":
     case "budget":
@@ -320,8 +299,6 @@ export function areaOfRoute(
     case "savings":
     case "receipts":
       return "money"
-    case "notes":
-    case "wishlists":
     case "settings":
       return "more"
     default:

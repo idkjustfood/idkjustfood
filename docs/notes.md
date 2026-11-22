@@ -6,7 +6,7 @@ installs have it too.
 
 ## In the app
 
-- **More → Family → Notes**, and "Add note" in the "+" sheet. The dropdown at the top switches
+- **Life → Notes**, and "Add note" in the "+" sheet. The dropdown at the top switches
   between your own notes and the notes of a household, like shopping lists.
 - A note has an optional title and a body. It needs at least one of them. Without a title, the first
   line of the text is shown as the heading.
