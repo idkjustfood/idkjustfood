@@ -1,0 +1,170 @@
+{
+  "loading": "Loading your money",
+  "loadError": {
+    "title": "Could not load your money",
+    "message": "Your money is saved on this phone once it has loaded. Try again when you are online."
+  },
+  "previousMonth": "Previous month",
+  "nextMonth": "Next month",
+  "dayBefore": "Day before",
+  "dayAfter": "Day after",
+  "day": "Day",
+  "category": "Category",
+  "uncategorized": "No category",
+  "categories": {
+    "groceries": "Groceries",
+    "eatingOut": "Eating out",
+    "home": "Home",
+    "transport": "Transport",
+    "health": "Health",
+    "fun": "Fun",
+    "clothing": "Clothing",
+    "gifts": "Gifts",
+    "other": "Other"
+  },
+  "amountIn": "Amount ({{currency}})",
+  "amountInvalid": "Enter an amount like 12.50",
+  "form": {
+    "save": "Save",
+    "delete": "Delete"
+  },
+  "settings": {
+    "title": "Money settings",
+    "forHousehold": "These settings are for {{name}}. Everyone in the household uses them.",
+    "forPersonal": "These settings are for your own money.",
+    "currency": "Currency",
+    "categories": "Categories",
+    "categoryName": "Category name",
+    "rename": "Rename {{name}}",
+    "deleteCategory": "Delete {{name}}",
+    "deleteHint": "Deleting a category keeps its expenses and bills, they just have no category.",
+    "newCategory": "New category",
+    "addCategory": "Add"
+  },
+  "expenses": {
+    "title": "Expenses",
+    "subtitle": "What you spend, month by month",
+    "add": "Add expense",
+    "spent": "Spent this month",
+    "spentTotal": "Spent this month: {{amount}}",
+    "someone": "Someone",
+    "whoOwes": "Who owes whom",
+    "allEven": "Everyone is even.",
+    "owes": "{{from}} owes {{to}} {{amount}}",
+    "splitNote": "Every expense is shared equally between all members of the household.",
+    "search": "Search expenses",
+    "allCategories": "All",
+    "empty": {
+      "title": "No expenses yet",
+      "message": "Add what you spend and see where your money goes.",
+      "filtered": "No expenses match. Try another month or category."
+    },
+    "edit": "Edit {{name}}",
+    "form": {
+      "newTitle": "New expense",
+      "editTitle": "Edit expense",
+      "note": "Note",
+      "notePlaceholder": "For example: Weekly shop",
+      "paidBy": "Paid by",
+      "create": "Add expense"
+    }
+  },
+  "budget": {
+    "title": "Budget",
+    "subtitle": "How much you want to spend each month",
+    "add": "Set budget",
+    "total": "Total",
+    "empty": {
+      "title": "No budget yet",
+      "message": "Set how much you want to spend each month, in total or for a category."
+    },
+    "edit": "Change budget for {{name}}",
+    "state": {
+      "ok": "On track",
+      "nearly": "Nearly used",
+      "over": "Over budget"
+    },
+    "percent": "{{percent}} percent spent",
+    "spentOf": "{{spent}} of {{budget}}",
+    "left": "{{amount}} left",
+    "overBy": "{{amount}} over",
+    "form": {
+      "newTitle": "Set budget",
+      "editTitle": "Change budget",
+      "for": "Budget for",
+      "alreadySet": "This budget is {{amount}} now. Saving changes it.",
+      "perMonth": "Amount per month ({{currency}})",
+      "hint": "The budget applies to every month. What you spend comes from your expenses."
+    }
+  },
+  "bills": {
+    "title": "Bills",
+    "subtitle": "What has to be paid, and when",
+    "add": "Add bill",
+    "empty": {
+      "title": "No bills yet",
+      "message": "Add rent, phone or insurance, and never miss a due day."
+    },
+    "edit": "Edit {{name}}",
+    "repeat": {
+      "weekly": "Every week",
+      "monthly": "Every month",
+      "quarterly": "Every 3 months",
+      "yearly": "Every year",
+      "never": "Once"
+    },
+    "paid": "Paid",
+    "overdue_one": "Overdue by {{count}} day",
+    "overdue_other": "Overdue by {{count}} days",
+    "dueToday": "Due today",
+    "dueIn_one": "Due in {{count}} day",
+    "dueIn_other": "Due in {{count}} days",
+    "markPaid": "Mark as paid",
+    "markPaidFor": "Mark {{name}} as paid",
+    "form": {
+      "newTitle": "New bill",
+      "editTitle": "Edit bill",
+      "title": "Name",
+      "placeholder": "For example: Rent",
+      "repeat": "Repeats",
+      "nextDue": "Next due day",
+      "firstDue": "First due day",
+      "create": "Add bill"
+    }
+  },
+  "savings": {
+    "title": "Savings",
+    "subtitle": "Save towards something",
+    "add": "Add goal",
+    "empty": {
+      "title": "No savings goals yet",
+      "message": "Pick something to save for, and see how close you are."
+    },
+    "open": "Open {{name}}",
+    "reached": "Reached",
+    "percent": "{{percent}} percent saved",
+    "savedOf": "{{saved}} saved of {{target}}",
+    "perMonth": "Put aside {{amount}} a month to reach it by {{day}}.",
+    "byDay": "Goal day: {{day}}",
+    "dayPassed": "The goal day, {{day}}, has passed.",
+    "putIn": "Put in",
+    "takeOut": "Take out",
+    "history": "History",
+    "noHistory": "Nothing put in yet.",
+    "putInEntry": "Put in {{amount}}",
+    "takeOutEntry": "Took out {{amount}}",
+    "deleteEntry": "Delete this entry",
+    "editGoal": "Edit goal",
+    "form": {
+      "newTitle": "New savings goal",
+      "editTitle": "Edit savings goal",
+      "name": "Name",
+      "placeholder": "For example: Summer trip",
+      "target": "Target amount ({{currency}})",
+      "addDay": "Add a goal day",
+      "day": "Goal day",
+      "noDay": "No goal day",
+      "create": "Add goal"
+    }
+  }
+}

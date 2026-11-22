@@ -154,24 +154,20 @@
   },
   "budget": {
     "name": "Presupuesto",
-    "description": "Gastos por categoría.",
-    "soon": "Mira cuánto gastas por categoría y mantente dentro del presupuesto."
+    "description": "Presupuestos mensuales, en total y por categoría."
   },
   "expenses": {
     "name": "Gastos",
-    "description": "Personales y compartidos, quién debe a quién.",
-    "soon": "Registra gastos y mira quién debe a quién en el hogar.",
+    "description": "Lo que gastas, personal o compartido con tu hogar.",
     "quickAction": "Añadir gasto"
   },
   "bills": {
     "name": "Facturas y suscripciones",
-    "description": "Vencimientos de facturas y suscripciones.",
-    "soon": "Guarda facturas y suscripciones con sus fechas de vencimiento."
+    "description": "Facturas que se repiten, con sus fechas de vencimiento."
   },
   "savings": {
     "name": "Metas de ahorro",
-    "description": "Ahorrar juntos para algo.",
-    "soon": "Fija metas de ahorro y sigue tu progreso."
+    "description": "Metas de ahorro y cuánto apartar cada mes."
   },
   "receipts": {
     "name": "Tickets",

@@ -154,24 +154,20 @@
   },
   "budget": {
     "name": "Budget",
-    "description": "Dépenses par catégorie.",
-    "soon": "Voyez ce que vous dépensez par catégorie et respectez votre budget."
+    "description": "Budgets mensuels, au total et par catégorie."
   },
   "expenses": {
     "name": "Dépenses",
-    "description": "Perso et partagées, qui doit quoi à qui.",
-    "soon": "Suivez les dépenses et voyez qui doit de l’argent à qui dans le foyer.",
+    "description": "Ce que vous dépensez, en personnel ou partagé avec votre foyer.",
     "quickAction": "Ajouter une dépense"
   },
   "bills": {
     "name": "Factures et abonnements",
-    "description": "Échéances des factures et abonnements.",
-    "soon": "Gardez factures et abonnements avec leurs dates d’échéance."
+    "description": "Factures récurrentes, avec leurs dates d’échéance."
   },
   "savings": {
     "name": "Objectifs d’épargne",
-    "description": "Épargner ensemble pour un projet.",
-    "soon": "Fixez des objectifs d’épargne et suivez votre progression."
+    "description": "Objectifs d’épargne et combien mettre de côté chaque mois."
   },
   "receipts": {
     "name": "Tickets de caisse",

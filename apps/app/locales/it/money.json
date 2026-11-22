@@ -1,0 +1,170 @@
+{
+  "loading": "Caricamento dei tuoi soldi",
+  "loadError": {
+    "title": "Impossibile caricare i tuoi soldi",
+    "message": "I tuoi soldi vengono salvati su questo telefono una volta caricati. Riprova quando sei online."
+  },
+  "previousMonth": "Mese precedente",
+  "nextMonth": "Mese successivo",
+  "dayBefore": "Giorno prima",
+  "dayAfter": "Giorno dopo",
+  "day": "Giorno",
+  "category": "Categoria",
+  "uncategorized": "Senza categoria",
+  "categories": {
+    "groceries": "Spesa",
+    "eatingOut": "Mangiare fuori",
+    "home": "Casa",
+    "transport": "Trasporti",
+    "health": "Salute",
+    "fun": "Svago",
+    "clothing": "Abbigliamento",
+    "gifts": "Regali",
+    "other": "Altro"
+  },
+  "amountIn": "Importo ({{currency}})",
+  "amountInvalid": "Inserisci un importo come 12,50",
+  "form": {
+    "save": "Salva",
+    "delete": "Elimina"
+  },
+  "settings": {
+    "title": "Impostazioni dei soldi",
+    "forHousehold": "Queste impostazioni sono per {{name}}. Le usano tutti in casa.",
+    "forPersonal": "Queste impostazioni sono per i tuoi soldi personali.",
+    "currency": "Valuta",
+    "categories": "Categorie",
+    "categoryName": "Nome della categoria",
+    "rename": "Rinomina {{name}}",
+    "deleteCategory": "Elimina {{name}}",
+    "deleteHint": "Eliminando una categoria le sue spese e bollette restano, ma senza categoria.",
+    "newCategory": "Nuova categoria",
+    "addCategory": "Aggiungi"
+  },
+  "expenses": {
+    "title": "Spese",
+    "subtitle": "Quanto spendi, mese per mese",
+    "add": "Aggiungi spesa",
+    "spent": "Speso questo mese",
+    "spentTotal": "Speso questo mese: {{amount}}",
+    "someone": "Qualcuno",
+    "whoOwes": "Chi deve a chi",
+    "allEven": "Tutti sono pari.",
+    "owes": "{{from}} deve {{amount}} a {{to}}",
+    "splitNote": "Ogni spesa è divisa in parti uguali tra tutti i membri della casa.",
+    "search": "Cerca spese",
+    "allCategories": "Tutte",
+    "empty": {
+      "title": "Ancora nessuna spesa",
+      "message": "Aggiungi quello che spendi e vedi dove vanno i tuoi soldi.",
+      "filtered": "Nessuna spesa corrisponde. Prova un altro mese o un’altra categoria."
+    },
+    "edit": "Modifica {{name}}",
+    "form": {
+      "newTitle": "Nuova spesa",
+      "editTitle": "Modifica spesa",
+      "note": "Nota",
+      "notePlaceholder": "Per esempio: Spesa settimanale",
+      "paidBy": "Pagato da",
+      "create": "Aggiungi spesa"
+    }
+  },
+  "budget": {
+    "title": "Budget",
+    "subtitle": "Quanto vuoi spendere ogni mese",
+    "add": "Imposta budget",
+    "total": "Totale",
+    "empty": {
+      "title": "Ancora nessun budget",
+      "message": "Imposta quanto vuoi spendere ogni mese, in totale o per categoria."
+    },
+    "edit": "Cambia il budget di {{name}}",
+    "state": {
+      "ok": "In linea",
+      "nearly": "Quasi esaurito",
+      "over": "Superato"
+    },
+    "percent": "{{percent}} per cento speso",
+    "spentOf": "{{spent}} su {{budget}}",
+    "left": "Restano {{amount}}",
+    "overBy": "{{amount}} in più",
+    "form": {
+      "newTitle": "Imposta budget",
+      "editTitle": "Cambia budget",
+      "for": "Budget per",
+      "alreadySet": "Questo budget ora è di {{amount}}. Salvando lo cambi.",
+      "perMonth": "Importo al mese ({{currency}})",
+      "hint": "Il budget vale per ogni mese. Quello che spendi viene dalle tue spese."
+    }
+  },
+  "bills": {
+    "title": "Bollette",
+    "subtitle": "Cosa c’è da pagare, e quando",
+    "add": "Aggiungi bolletta",
+    "empty": {
+      "title": "Ancora nessuna bolletta",
+      "message": "Aggiungi affitto, telefono o assicurazione e non perdere nessuna scadenza."
+    },
+    "edit": "Modifica {{name}}",
+    "repeat": {
+      "weekly": "Ogni settimana",
+      "monthly": "Ogni mese",
+      "quarterly": "Ogni 3 mesi",
+      "yearly": "Ogni anno",
+      "never": "Una volta"
+    },
+    "paid": "Pagata",
+    "overdue_one": "Scaduta da {{count}} giorno",
+    "overdue_other": "Scaduta da {{count}} giorni",
+    "dueToday": "Scade oggi",
+    "dueIn_one": "Scade tra {{count}} giorno",
+    "dueIn_other": "Scade tra {{count}} giorni",
+    "markPaid": "Segna come pagata",
+    "markPaidFor": "Segna {{name}} come pagata",
+    "form": {
+      "newTitle": "Nuova bolletta",
+      "editTitle": "Modifica bolletta",
+      "title": "Nome",
+      "placeholder": "Per esempio: Affitto",
+      "repeat": "Si ripete",
+      "nextDue": "Prossima scadenza",
+      "firstDue": "Prima scadenza",
+      "create": "Aggiungi bolletta"
+    }
+  },
+  "savings": {
+    "title": "Risparmi",
+    "subtitle": "Risparmia per qualcosa",
+    "add": "Aggiungi obiettivo",
+    "empty": {
+      "title": "Ancora nessun obiettivo di risparmio",
+      "message": "Scegli qualcosa per cui risparmiare e guarda quanto sei vicino."
+    },
+    "open": "Apri {{name}}",
+    "reached": "Raggiunto",
+    "percent": "{{percent}} per cento risparmiato",
+    "savedOf": "{{saved}} risparmiati su {{target}}",
+    "perMonth": "Metti da parte {{amount}} al mese per raggiungerlo entro il {{day}}.",
+    "byDay": "Giorno dell’obiettivo: {{day}}",
+    "dayPassed": "Il giorno dell’obiettivo, {{day}}, è passato.",
+    "putIn": "Versa",
+    "takeOut": "Preleva",
+    "history": "Cronologia",
+    "noHistory": "Ancora niente versato.",
+    "putInEntry": "Versati {{amount}}",
+    "takeOutEntry": "Prelevati {{amount}}",
+    "deleteEntry": "Elimina questa voce",
+    "editGoal": "Modifica obiettivo",
+    "form": {
+      "newTitle": "Nuovo obiettivo di risparmio",
+      "editTitle": "Modifica obiettivo di risparmio",
+      "name": "Nome",
+      "placeholder": "Per esempio: Viaggio estivo",
+      "target": "Importo da raggiungere ({{currency}})",
+      "addDay": "Aggiungi un giorno obiettivo",
+      "day": "Giorno obiettivo",
+      "noDay": "Nessun giorno obiettivo",
+      "create": "Aggiungi obiettivo"
+    }
+  }
+}

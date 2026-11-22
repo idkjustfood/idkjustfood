@@ -1,0 +1,170 @@
+{
+  "loading": "Cargando tu dinero",
+  "loadError": {
+    "title": "No se pudo cargar tu dinero",
+    "message": "Tu dinero se guarda en este teléfono una vez cargado. Inténtalo de nuevo cuando tengas conexión."
+  },
+  "previousMonth": "Mes anterior",
+  "nextMonth": "Mes siguiente",
+  "dayBefore": "Día anterior",
+  "dayAfter": "Día siguiente",
+  "day": "Día",
+  "category": "Categoría",
+  "uncategorized": "Sin categoría",
+  "categories": {
+    "groceries": "Supermercado",
+    "eatingOut": "Comer fuera",
+    "home": "Hogar",
+    "transport": "Transporte",
+    "health": "Salud",
+    "fun": "Ocio",
+    "clothing": "Ropa",
+    "gifts": "Regalos",
+    "other": "Otros"
+  },
+  "amountIn": "Importe ({{currency}})",
+  "amountInvalid": "Escribe un importe como 12,50",
+  "form": {
+    "save": "Guardar",
+    "delete": "Eliminar"
+  },
+  "settings": {
+    "title": "Ajustes del dinero",
+    "forHousehold": "Estos ajustes son para {{name}}. Todos en el hogar los usan.",
+    "forPersonal": "Estos ajustes son para tu dinero personal.",
+    "currency": "Moneda",
+    "categories": "Categorías",
+    "categoryName": "Nombre de la categoría",
+    "rename": "Renombrar {{name}}",
+    "deleteCategory": "Eliminar {{name}}",
+    "deleteHint": "Al eliminar una categoría se conservan sus gastos y facturas, solo se quedan sin categoría.",
+    "newCategory": "Nueva categoría",
+    "addCategory": "Añadir"
+  },
+  "expenses": {
+    "title": "Gastos",
+    "subtitle": "Lo que gastas, mes a mes",
+    "add": "Añadir gasto",
+    "spent": "Gastado este mes",
+    "spentTotal": "Gastado este mes: {{amount}}",
+    "someone": "Alguien",
+    "whoOwes": "Quién debe a quién",
+    "allEven": "Todos están en paz.",
+    "owes": "{{from}} debe {{amount}} a {{to}}",
+    "splitNote": "Cada gasto se reparte a partes iguales entre todos los miembros del hogar.",
+    "search": "Buscar gastos",
+    "allCategories": "Todas",
+    "empty": {
+      "title": "Aún no hay gastos",
+      "message": "Añade lo que gastas y mira adónde va tu dinero.",
+      "filtered": "Ningún gasto coincide. Prueba otro mes u otra categoría."
+    },
+    "edit": "Editar {{name}}",
+    "form": {
+      "newTitle": "Nuevo gasto",
+      "editTitle": "Editar gasto",
+      "note": "Nota",
+      "notePlaceholder": "Por ejemplo: Compra semanal",
+      "paidBy": "Pagado por",
+      "create": "Añadir gasto"
+    }
+  },
+  "budget": {
+    "title": "Presupuesto",
+    "subtitle": "Cuánto quieres gastar cada mes",
+    "add": "Fijar presupuesto",
+    "total": "Total",
+    "empty": {
+      "title": "Aún no hay presupuesto",
+      "message": "Fija cuánto quieres gastar cada mes, en total o por categoría."
+    },
+    "edit": "Cambiar el presupuesto de {{name}}",
+    "state": {
+      "ok": "Bien",
+      "nearly": "Casi agotado",
+      "over": "Superado"
+    },
+    "percent": "{{percent}} por ciento gastado",
+    "spentOf": "{{spent}} de {{budget}}",
+    "left": "Quedan {{amount}}",
+    "overBy": "{{amount}} de más",
+    "form": {
+      "newTitle": "Fijar presupuesto",
+      "editTitle": "Cambiar presupuesto",
+      "for": "Presupuesto para",
+      "alreadySet": "Este presupuesto es ahora de {{amount}}. Al guardar se cambia.",
+      "perMonth": "Importe al mes ({{currency}})",
+      "hint": "El presupuesto se aplica a todos los meses. Lo que gastas viene de tus gastos."
+    }
+  },
+  "bills": {
+    "title": "Facturas",
+    "subtitle": "Lo que hay que pagar, y cuándo",
+    "add": "Añadir factura",
+    "empty": {
+      "title": "Aún no hay facturas",
+      "message": "Añade el alquiler, el móvil o el seguro, y no te pierdas ningún vencimiento."
+    },
+    "edit": "Editar {{name}}",
+    "repeat": {
+      "weekly": "Cada semana",
+      "monthly": "Cada mes",
+      "quarterly": "Cada 3 meses",
+      "yearly": "Cada año",
+      "never": "Una vez"
+    },
+    "paid": "Pagada",
+    "overdue_one": "Vencida hace {{count}} día",
+    "overdue_other": "Vencida hace {{count}} días",
+    "dueToday": "Vence hoy",
+    "dueIn_one": "Vence en {{count}} día",
+    "dueIn_other": "Vence en {{count}} días",
+    "markPaid": "Marcar como pagada",
+    "markPaidFor": "Marcar {{name}} como pagada",
+    "form": {
+      "newTitle": "Nueva factura",
+      "editTitle": "Editar factura",
+      "title": "Nombre",
+      "placeholder": "Por ejemplo: Alquiler",
+      "repeat": "Se repite",
+      "nextDue": "Próximo vencimiento",
+      "firstDue": "Primer vencimiento",
+      "create": "Añadir factura"
+    }
+  },
+  "savings": {
+    "title": "Ahorros",
+    "subtitle": "Ahorra para algo",
+    "add": "Añadir meta",
+    "empty": {
+      "title": "Aún no hay metas de ahorro",
+      "message": "Elige algo para ahorrar y mira lo cerca que estás."
+    },
+    "open": "Abrir {{name}}",
+    "reached": "Conseguida",
+    "percent": "{{percent}} por ciento ahorrado",
+    "savedOf": "{{saved}} ahorrados de {{target}}",
+    "perMonth": "Aparta {{amount}} al mes para conseguirlo antes del {{day}}.",
+    "byDay": "Día de la meta: {{day}}",
+    "dayPassed": "El día de la meta, {{day}}, ya pasó.",
+    "putIn": "Ingresar",
+    "takeOut": "Retirar",
+    "history": "Historial",
+    "noHistory": "Aún no has ingresado nada.",
+    "putInEntry": "Ingresaste {{amount}}",
+    "takeOutEntry": "Retiraste {{amount}}",
+    "deleteEntry": "Eliminar este movimiento",
+    "editGoal": "Editar meta",
+    "form": {
+      "newTitle": "Nueva meta de ahorro",
+      "editTitle": "Editar meta de ahorro",
+      "name": "Nombre",
+      "placeholder": "Por ejemplo: Viaje de verano",
+      "target": "Importe objetivo ({{currency}})",
+      "addDay": "Añadir un día objetivo",
+      "day": "Día objetivo",
+      "noDay": "Sin día objetivo",
+      "create": "Añadir meta"
+    }
+  }
+}

@@ -147,27 +147,27 @@ export const modules: readonly AppModule[] = [
   {
     id: "budget",
     area: "money",
-    route: placeholder("budget"),
-    built: false,
+    route: "/budget",
+    built: true,
   },
   {
     id: "expenses",
     area: "money",
-    route: placeholder("expenses"),
-    built: false,
-    quickAction: { route: placeholder("expenses") },
+    route: "/expenses",
+    built: true,
+    quickAction: { route: "/expenses" },
   },
   {
     id: "bills",
     area: "money",
-    route: placeholder("bills"),
-    built: false,
+    route: "/bills",
+    built: true,
   },
   {
     id: "savings",
     area: "money",
-    route: placeholder("savings"),
-    built: false,
+    route: "/savings",
+    built: true,
   },
   {
     id: "receipts",
@@ -313,6 +313,12 @@ export function areaOfRoute(
     case "contacts":
     case "documents":
       return "home"
+    case "expenses":
+    case "budget":
+    case "bills":
+    case "savings":
+    case "receipts":
+      return "money"
     case "settings":
       return "more"
     default:
