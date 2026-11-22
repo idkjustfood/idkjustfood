@@ -22,7 +22,7 @@ const buttonVariants = cva(
         sm: "h-10 px-3",
         lg: "h-14 px-6",
         icon: "h-12 w-12 px-0",
-        header: "h-10 w-10 px-0 md:w-auto md:px-3",
+        header: "h-10 w-10 px-0",
       },
     },
     defaultVariants: { variant: "default", size: "default" },
@@ -51,8 +51,8 @@ const textVariants = cva("font-medium", {
 type ButtonProps = React.ComponentProps<typeof Pressable> &
   VariantProps<typeof buttonVariants> & {
     /**
-     * Visible text. With size "icon" it becomes the accessible name only; size
-     * "header" does that on phones and shows the text from the wide layout on.
+     * Visible text. With size "icon" or "header" it becomes the accessible name
+     * only. "header" is the smaller icon button for screen headers.
      */
     label: string
     icon?: LucideIcon
@@ -86,7 +86,7 @@ export function Button({
           className={textVariants({ variant })}
         />
       )}
-      {size !== "icon" && (
+      {size !== "icon" && size !== "header" && (
         <Text className={textVariants({ variant, size })}>{label}</Text>
       )}
     </Pressable>
