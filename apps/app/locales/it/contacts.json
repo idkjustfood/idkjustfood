@@ -1,0 +1,40 @@
+{
+  "title": "Contatti",
+  "ownContacts": "I tuoi contatti",
+  "sharedWith": "Condivisi con {{name}}",
+  "add": "Aggiungi contatto",
+  "loading": "Caricamento dei contatti",
+  "search": "Cerca contatti",
+  "edit": "Modifica {{name}}",
+  "call": "Chiama {{name}}",
+  "write": "Scrivi a {{name}}",
+  "noMatch": {
+    "title": "Nessun risultato",
+    "message": "Nessun contatto corrisponde alla ricerca."
+  },
+  "loadError": {
+    "title": "Impossibile caricare i contatti",
+    "message": "I tuoi contatti vengono salvati su questo telefono dopo il caricamento. Riprova quando sei online."
+  },
+  "empty": {
+    "title": "Ancora nessun contatto",
+    "message": "Tieni a portata di mano i numeri di artigiani, medici e scuola."
+  },
+  "form": {
+    "newTitle": "Nuovo contatto",
+    "editTitle": "Modifica contatto",
+    "name": "Nome",
+    "namePlaceholder": "Per esempio: Max Miller",
+    "role": "Che lavoro fa",
+    "rolePlaceholder": "Per esempio: Idraulico",
+    "phone": "Telefono",
+    "email": "E-mail",
+    "emailInvalid": "Questo non è un indirizzo e-mail.",
+    "note": "Nota",
+    "visiblePersonal": "Solo tu vedi questo contatto.",
+    "visibleHousehold": "Tutti in {{name}} possono vedere e modificare questo contatto.",
+    "create": "Aggiungi contatto",
+    "save": "Salva",
+    "delete": "Elimina"
+  }
+}

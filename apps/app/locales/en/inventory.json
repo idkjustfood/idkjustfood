@@ -1,0 +1,36 @@
+{
+  "title": "Home inventory",
+  "ownItems": "Your own items",
+  "sharedWith": "Shared with {{name}}",
+  "add": "Add item",
+  "loading": "Loading inventory",
+  "search": "Search items",
+  "quantity": "Quantity: {{count}}",
+  "noMatch": {
+    "title": "Nothing found",
+    "message": "No item matches your search."
+  },
+  "loadError": {
+    "title": "Could not load your inventory",
+    "message": "Your inventory is saved on this phone once it has loaded. Try again when you are online."
+  },
+  "empty": {
+    "title": "No items yet",
+    "message": "Write down what you own and where it is kept, like candles in the kitchen drawer."
+  },
+  "form": {
+    "newTitle": "New item",
+    "editTitle": "Edit item",
+    "name": "Name",
+    "placeholder": "For example: Candles",
+    "place": "Where is it kept?",
+    "placePlaceholder": "For example: Kitchen drawer",
+    "quantity": "How many",
+    "note": "Note",
+    "visiblePersonal": "Only you can see this item.",
+    "visibleHousehold": "Everyone in {{name}} can see and change this item.",
+    "create": "Add item",
+    "save": "Save",
+    "delete": "Delete"
+  }
+}

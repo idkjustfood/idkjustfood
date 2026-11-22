@@ -94,14 +94,14 @@ export const modules: readonly AppModule[] = [
   {
     id: "inventory",
     area: "home",
-    route: placeholder("inventory"),
-    built: false,
+    route: "/inventory",
+    built: true,
   },
   {
     id: "contacts",
     area: "home",
-    route: placeholder("contacts"),
-    built: false,
+    route: "/contacts",
+    built: true,
   },
   {
     id: "plants",
@@ -309,6 +309,8 @@ export function areaOfRoute(
     case "maintenance":
     case "plants":
     case "pets":
+    case "inventory":
+    case "contacts":
     case "documents":
       return "home"
     case "settings":

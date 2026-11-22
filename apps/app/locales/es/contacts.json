@@ -1,0 +1,40 @@
+{
+  "title": "Contactos",
+  "ownContacts": "Tus propios contactos",
+  "sharedWith": "Compartidos con {{name}}",
+  "add": "Añadir contacto",
+  "loading": "Cargando contactos",
+  "search": "Buscar contactos",
+  "edit": "Editar {{name}}",
+  "call": "Llamar a {{name}}",
+  "write": "Escribir a {{name}}",
+  "noMatch": {
+    "title": "No se encontró nada",
+    "message": "Ningún contacto coincide con tu búsqueda."
+  },
+  "loadError": {
+    "title": "No se pudieron cargar tus contactos",
+    "message": "Tus contactos se guardan en este teléfono cuando se han cargado. Inténtalo de nuevo cuando tengas conexión."
+  },
+  "empty": {
+    "title": "Aún no hay contactos",
+    "message": "Ten a mano los números de artesanos, médicos y el colegio."
+  },
+  "form": {
+    "newTitle": "Nuevo contacto",
+    "editTitle": "Editar contacto",
+    "name": "Nombre",
+    "namePlaceholder": "Por ejemplo: Max Miller",
+    "role": "A qué se dedica",
+    "rolePlaceholder": "Por ejemplo: Fontanero",
+    "phone": "Teléfono",
+    "email": "Correo electrónico",
+    "emailInvalid": "Esto no es una dirección de correo.",
+    "note": "Nota",
+    "visiblePersonal": "Solo tú ves este contacto.",
+    "visibleHousehold": "Todos en {{name}} pueden ver y cambiar este contacto.",
+    "create": "Añadir contacto",
+    "save": "Guardar",
+    "delete": "Eliminar"
+  }
+}

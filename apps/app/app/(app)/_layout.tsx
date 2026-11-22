@@ -3,7 +3,9 @@ import { useEffect } from "react"
 
 import { CalendarProvider } from "@/lib/calendar"
 import { ChoreProvider } from "@/lib/chores"
+import { ContactProvider } from "@/lib/contacts"
 import { isCloud } from "@/lib/edition"
+import { InventoryProvider } from "@/lib/inventory"
 import { takePendingInvite } from "@/lib/pending-invite"
 import { ShoppingProvider } from "@/lib/shopping"
 
@@ -18,6 +20,8 @@ export default function AppLayout() {
     <ShoppingProvider>
       <ChoreProvider>
       <CalendarProvider>
+      <InventoryProvider>
+      <ContactProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
         {/* Cooking mode covers the whole screen, without tab bar or side bar. */}
@@ -30,6 +34,8 @@ export default function AppLayout() {
           <Stack.Screen name="billing" />
         </Stack.Protected>
       </Stack>
+      </ContactProvider>
+      </InventoryProvider>
       </CalendarProvider>
       </ChoreProvider>
     </ShoppingProvider>

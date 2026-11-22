@@ -92,6 +92,10 @@ Tasks that come back after a number of days ("switch towels, every 3 days"). Che
 returns at 00:00 on its day. Personal or shared with a household, and they work offline on the
 phone. See [household chores](docs/household-tasks.md).
 
+Home maintenance, plants and pets work the same way (one task engine, a kind per module). Home
+inventory and contacts are lists for what you own and who to call, also personal or for a
+household. See [home inventory](docs/home-inventory.md) and [contacts](docs/contacts.md).
+
 ## Meal planner
 
 Plan breakfast, midday and afternoon meals for as many weeks as you like, by hand or filled

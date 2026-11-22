@@ -1,0 +1,36 @@
+{
+  "title": "Inventario del hogar",
+  "ownItems": "Tus propios objetos",
+  "sharedWith": "Compartido con {{name}}",
+  "add": "Añadir objeto",
+  "loading": "Cargando el inventario",
+  "search": "Buscar objetos",
+  "quantity": "Cantidad: {{count}}",
+  "noMatch": {
+    "title": "No se encontró nada",
+    "message": "Ningún objeto coincide con tu búsqueda."
+  },
+  "loadError": {
+    "title": "No se pudo cargar tu inventario",
+    "message": "Tu inventario se guarda en este teléfono cuando se ha cargado. Inténtalo de nuevo cuando tengas conexión."
+  },
+  "empty": {
+    "title": "Aún no hay objetos",
+    "message": "Apunta lo que tienes y dónde se guarda, por ejemplo las velas en el cajón de la cocina."
+  },
+  "form": {
+    "newTitle": "Nuevo objeto",
+    "editTitle": "Editar objeto",
+    "name": "Nombre",
+    "placeholder": "Por ejemplo: Velas",
+    "place": "¿Dónde se guarda?",
+    "placePlaceholder": "Por ejemplo: Cajón de la cocina",
+    "quantity": "Cuántos",
+    "note": "Nota",
+    "visiblePersonal": "Solo tú ves este objeto.",
+    "visibleHousehold": "Todos en {{name}} pueden ver y cambiar este objeto.",
+    "create": "Añadir objeto",
+    "save": "Guardar",
+    "delete": "Eliminar"
+  }
+}

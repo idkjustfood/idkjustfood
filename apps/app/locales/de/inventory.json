@@ -1,0 +1,36 @@
+{
+  "title": "Hausinventar",
+  "ownItems": "Deine eigenen Gegenstände",
+  "sharedWith": "Geteilt mit {{name}}",
+  "add": "Gegenstand hinzufügen",
+  "loading": "Inventar wird geladen",
+  "search": "Gegenstände suchen",
+  "quantity": "Anzahl: {{count}}",
+  "noMatch": {
+    "title": "Nichts gefunden",
+    "message": "Kein Gegenstand passt zu deiner Suche."
+  },
+  "loadError": {
+    "title": "Inventar konnte nicht geladen werden",
+    "message": "Dein Inventar wird auf diesem Handy gespeichert, sobald es geladen ist. Versuche es erneut, wenn du online bist."
+  },
+  "empty": {
+    "title": "Noch keine Gegenstände",
+    "message": "Schreibe auf, was du besitzt und wo es aufbewahrt wird, zum Beispiel Kerzen in der Küchenschublade."
+  },
+  "form": {
+    "newTitle": "Neuer Gegenstand",
+    "editTitle": "Gegenstand bearbeiten",
+    "name": "Name",
+    "placeholder": "Zum Beispiel: Kerzen",
+    "place": "Wo wird er aufbewahrt?",
+    "placePlaceholder": "Zum Beispiel: Küchenschublade",
+    "quantity": "Wie viele",
+    "note": "Notiz",
+    "visiblePersonal": "Nur du siehst diesen Gegenstand.",
+    "visibleHousehold": "Alle in {{name}} können diesen Gegenstand sehen und ändern.",
+    "create": "Gegenstand hinzufügen",
+    "save": "Speichern",
+    "delete": "Löschen"
+  }
+}
