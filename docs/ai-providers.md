@@ -6,7 +6,7 @@ The pipeline asks the AI for three jobs. It only knows the interfaces in
 | Job | Interface | Used for |
 | --- | --- | --- |
 | Transcription | `Transcriber` | Speech of a video to text. Needs a model that accepts audio. |
-| Vision | `ImageReader` | Photos and video frames to text. Needs a model that accepts images. |
+| Vision | `ImageReader` | Photos and video frames to text, and the text of receipt photos. Needs a model that accepts images. |
 | Parsing | `RecipeParser` | All the collected text to one recipe (JSON). Also completes a partial recipe, see below. |
 
 Only OpenRouter is built in (`ai/openrouter.ts`, on top of the Vercel AI SDK). It is the only file
@@ -98,7 +98,7 @@ a free-form message. In the app: open the recipe, tap "Complete with AI", write 
      defaultBaseUrl: "http://localhost:11434/v1",
      defaultModels: { transcription: "...", vision: "llava", parsing: "llama3.1" },
      transcriber: (options) => ({ async transcribe(audio) { /* return the text */ } }),
-     imageReader: (options) => ({ async readImages(images) { /* return the text */ } }),
+     imageReader: (options) => ({ async readImages(images, { instruction } = {}) { /* return the text; use `instruction` instead of the shared prompt when it is set */ } }),
      recipeParser: (options) => ({ async parseRecipe(material, { language }) { /* return the JSON */ } }),
    }
    ```

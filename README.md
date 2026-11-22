@@ -86,6 +86,12 @@ how offline works.
 Entries with a title and a colour on a day, in a month view. Personal or for a household, offline on
 the phone. Today shows the entries of today and tomorrow. See [calendar](docs/calendar.md).
 
+## Money
+
+Expenses, budgets, bills, savings goals and receipts, personal or for a household, offline on the
+phone. A receipt photo is read by the AI you choose (shop, date, total) and checked by you. Amounts are
+whole cents. See [money](docs/money.md).
+
 ## Household chores
 
 Tasks that come back after a number of days ("switch towels, every 3 days"). Check one off and it

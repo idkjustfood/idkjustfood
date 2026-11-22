@@ -23,7 +23,7 @@ function memoryStorage(): FileStorage {
     },
     async read(key) {
       const data = stored.get(key)
-      return data ? new Blob([data]) : undefined
+      return data ? new Blob([data as BlobPart]) : undefined
     },
     async remove(key) {
       stored.delete(key)
