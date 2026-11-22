@@ -177,15 +177,15 @@
     "quickAction": "Aggiungi scontrino"
   },
   "notes": {
-    "name": "Note e bacheca di famiglia",
-    "description": "Note condivise per la famiglia.",
-    "soon": "Lascia note e messaggi su una bacheca per tutta la famiglia.",
+    "name": "Note",
+    "description": "Note semplici, per te o per la famiglia.",
+    "soon": "Scrivi quello che vuoi conservare.",
     "quickAction": "Aggiungi nota"
   },
   "wishlists": {
     "name": "Liste dei desideri",
-    "description": "Liste dei desideri e idee regalo.",
-    "soon": "Raccogli desideri e idee regalo così nessuno deve indovinare."
+    "description": "Desideri per persona, o senza persona.",
+    "soon": "Raccogli desideri e idee regalo per persona, così nessuno deve indovinare."
   },
   "household": {
     "name": "Famiglia",

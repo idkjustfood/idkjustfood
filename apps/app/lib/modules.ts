@@ -181,16 +181,16 @@ export const modules: readonly AppModule[] = [
     id: "notes",
     area: "more",
     group: "family",
-    route: placeholder("notes"),
-    built: false,
-    quickAction: { route: placeholder("notes") },
+    route: "/notes",
+    built: true,
+    quickAction: { route: "/notes" },
   },
   {
     id: "wishlists",
     area: "more",
     group: "family",
-    route: placeholder("wishlists"),
-    built: false,
+    route: "/wishlists",
+    built: true,
   },
   // More
   {
@@ -320,6 +320,8 @@ export function areaOfRoute(
     case "savings":
     case "receipts":
       return "money"
+    case "notes":
+    case "wishlists":
     case "settings":
       return "more"
     default:

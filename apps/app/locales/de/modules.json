@@ -177,15 +177,15 @@
     "quickAction": "Beleg hinzufügen"
   },
   "notes": {
-    "name": "Notizen und Familientafel",
-    "description": "Gemeinsame Notizen für die Familie.",
-    "soon": "Hinterlasse Notizen und Nachrichten auf einer Tafel für die ganze Familie.",
+    "name": "Notizen",
+    "description": "Einfache Notizen für dich oder die Familie.",
+    "soon": "Schreibe auf, was du behalten möchtest.",
     "quickAction": "Notiz hinzufügen"
   },
   "wishlists": {
     "name": "Wunschlisten",
-    "description": "Wunschlisten und Geschenkideen.",
-    "soon": "Sammle Wünsche und Geschenkideen, damit niemand raten muss."
+    "description": "Wünsche pro Person oder ohne Person.",
+    "soon": "Sammle Wünsche und Geschenkideen pro Person, damit niemand raten muss."
   },
   "household": {
     "name": "Haushalt",

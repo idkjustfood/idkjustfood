@@ -1,0 +1,35 @@
+{
+  "title": "Notas",
+  "ownNotes": "Tus propias notas",
+  "sharedWith": "Compartidas con {{name}}",
+  "add": "Añadir nota",
+  "loading": "Cargando notas",
+  "search": "Buscar notas",
+  "untitled": "Nota sin título",
+  "edit": "Editar {{name}}",
+  "noMatch": {
+    "title": "No se encontró nada",
+    "message": "Ninguna nota coincide con tu búsqueda."
+  },
+  "loadError": {
+    "title": "No se pudieron cargar tus notas",
+    "message": "Tus notas se guardan en este teléfono cuando se han cargado. Inténtalo de nuevo cuando tengas conexión."
+  },
+  "empty": {
+    "title": "Aún no hay notas",
+    "message": "Anota lo que quieras guardar."
+  },
+  "form": {
+    "newTitle": "Nueva nota",
+    "editTitle": "Editar nota",
+    "title": "Título",
+    "titlePlaceholder": "Opcional",
+    "body": "Nota",
+    "bodyPlaceholder": "Escribe aquí",
+    "visiblePersonal": "Solo tú puedes ver esta nota.",
+    "visibleHousehold": "Todos en {{name}} pueden ver y cambiar esta nota.",
+    "create": "Añadir nota",
+    "save": "Guardar",
+    "delete": "Eliminar"
+  }
+}

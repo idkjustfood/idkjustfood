@@ -177,15 +177,15 @@
     "quickAction": "Add receipt"
   },
   "notes": {
-    "name": "Notes and family board",
-    "description": "Shared notes for the family.",
-    "soon": "Leave notes and messages on a board for the whole family.",
+    "name": "Notes",
+    "description": "Plain notes, for you or the family.",
+    "soon": "Write down anything you want to keep.",
     "quickAction": "Add note"
   },
   "wishlists": {
     "name": "Wishlists",
-    "description": "Wishlists and gift ideas.",
-    "soon": "Collect wishes and gift ideas so nobody guesses."
+    "description": "Wishes per person, or without one.",
+    "soon": "Collect wishes and gift ideas per person, so nobody guesses."
   },
   "household": {
     "name": "Household",

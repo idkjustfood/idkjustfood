@@ -103,6 +103,8 @@ phone. See [household chores](docs/household-tasks.md).
 Home maintenance, plants and pets work the same way (one task engine, a kind per module). Home
 inventory and contacts are lists for what you own and who to call, also personal or for a
 household. See [home inventory](docs/home-inventory.md) and [contacts](docs/contacts.md).
+Notes and wishlists (wishes per person or at the root) work the same way: see [notes](docs/notes.md)
+and [wishlists](docs/wishlists.md).
 
 ## Meal planner
 

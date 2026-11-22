@@ -7,9 +7,11 @@ import { ContactProvider } from "@/lib/contacts"
 import { isCloud } from "@/lib/edition"
 import { InventoryProvider } from "@/lib/inventory"
 import { MoneyProvider } from "@/lib/money"
+import { NoteProvider } from "@/lib/notes"
 import { takePendingInvite } from "@/lib/pending-invite"
 import { ShoppingProvider } from "@/lib/shopping"
 import { TodoProvider } from "@/lib/todos"
+import { WishPersonProvider, WishProvider } from "@/lib/wishlists"
 
 export default function AppLayout() {
   // Someone opened an invite link, then logged in: take them back to it.
@@ -26,6 +28,9 @@ export default function AppLayout() {
       <InventoryProvider>
       <ContactProvider>
       <MoneyProvider>
+      <NoteProvider>
+      <WishPersonProvider>
+      <WishProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
         {/* Cooking mode covers the whole screen, without tab bar or side bar. */}
@@ -38,6 +43,9 @@ export default function AppLayout() {
           <Stack.Screen name="billing" />
         </Stack.Protected>
       </Stack>
+      </WishProvider>
+      </WishPersonProvider>
+      </NoteProvider>
       </MoneyProvider>
       </ContactProvider>
       </InventoryProvider>

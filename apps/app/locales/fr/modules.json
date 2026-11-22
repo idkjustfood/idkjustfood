@@ -177,15 +177,15 @@
     "quickAction": "Ajouter un ticket"
   },
   "notes": {
-    "name": "Notes et tableau familial",
-    "description": "Notes partagées pour la famille.",
-    "soon": "Laissez des notes et des messages sur un tableau pour toute la famille.",
+    "name": "Notes",
+    "description": "Des notes simples, pour toi ou la famille.",
+    "soon": "Note tout ce que tu veux garder.",
     "quickAction": "Ajouter une note"
   },
   "wishlists": {
-    "name": "Listes d’envies",
-    "description": "Listes d’envies et idées de cadeaux.",
-    "soon": "Rassemblez envies et idées de cadeaux pour que personne n’ait à deviner."
+    "name": "Listes de souhaits",
+    "description": "Des souhaits par personne, ou sans personne.",
+    "soon": "Rassemble souhaits et idées cadeaux par personne, pour que personne ne devine."
   },
   "household": {
     "name": "Foyer",

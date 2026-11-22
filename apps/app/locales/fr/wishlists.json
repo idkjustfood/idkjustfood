@@ -1,0 +1,59 @@
+{
+  "title": "Listes de souhaits",
+  "ownWishes": "Tes propres listes de souhaits",
+  "sharedWith": "Partagées avec {{name}}",
+  "addWish": "Ajouter un souhait",
+  "addPerson": "Ajouter une personne",
+  "loading": "Chargement des listes de souhaits",
+  "search": "Rechercher des souhaits",
+  "general": "Pour personne en particulier",
+  "personEmpty": "Pas encore de souhaits.",
+  "editPerson": "Modifier {{name}}",
+  "addWishFor": "Ajouter un souhait pour {{name}}",
+  "markGot": "Marquer {{title}} comme reçu",
+  "markOpen": "Marquer {{title}} comme à nouveau en attente",
+  "openLink": "Ouvrir le lien de {{title}}",
+  "gotLabel": "Reçu",
+  "noMatch": {
+    "title": "Rien trouvé",
+    "message": "Aucun souhait ne correspond à ta recherche."
+  },
+  "loadError": {
+    "title": "Impossible de charger tes listes de souhaits",
+    "message": "Tes listes de souhaits sont enregistrées sur ce téléphone une fois chargées. Réessaie quand tu es en ligne."
+  },
+  "empty": {
+    "title": "Pas encore de souhaits",
+    "message": "Ajoute une personne et rassemble ses souhaits, ou ajoute un souhait sans personne."
+  },
+  "wish": {
+    "newTitle": "Nouveau souhait",
+    "editTitle": "Modifier le souhait",
+    "title": "Souhait",
+    "titlePlaceholder": "Par exemple : set Lego",
+    "note": "Note",
+    "link": "Lien",
+    "linkPlaceholder": "https://",
+    "linkInvalid": "Ce n'est pas un lien web.",
+    "for": "Pour",
+    "nobody": "Personne",
+    "visiblePersonal": "Toi seul peux voir ce souhait.",
+    "visibleHousehold": "Tous les membres de {{name}} peuvent voir et modifier ce souhait.",
+    "create": "Ajouter le souhait",
+    "save": "Enregistrer",
+    "delete": "Supprimer"
+  },
+  "person": {
+    "newTitle": "Nouvelle personne",
+    "editTitle": "Modifier la personne",
+    "name": "Nom",
+    "namePlaceholder": "Par exemple : Mia",
+    "deleteWarning_one": "Supprimer {{name}} supprime aussi {{count}} souhait.",
+    "deleteWarning_other": "Supprimer {{name}} supprime aussi {{count}} souhaits.",
+    "visiblePersonal": "Toi seul peux voir les souhaits de cette personne.",
+    "visibleHousehold": "Tous les membres de {{name}} peuvent voir cette personne et ses souhaits.",
+    "create": "Ajouter la personne",
+    "save": "Enregistrer",
+    "delete": "Supprimer la personne"
+  }
+}
