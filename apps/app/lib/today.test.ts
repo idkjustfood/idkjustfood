@@ -9,6 +9,7 @@ import {
   mealItems,
   shoppingItems,
   timeline,
+  todoItems,
   todaySections,
 } from "./today"
 
@@ -300,5 +301,41 @@ describe("bills on today", () => {
     const items = billItems([bill("a", "2026-11-21")], "2026-11-21")
     expect(todaySections(items).map((s) => s.id)).toEqual(["bills"])
     expect(timeline(items, ["bills"])).toEqual([])
+  })
+})
+
+describe("to-do tasks on today", () => {
+  const base = { note: "", doneAt: null, householdId: null }
+  test("open tasks due today or earlier show, the most overdue first", () => {
+    const items = todoItems(
+      [
+        { id: "a", title: "Today", dueDate: "2026-11-22", ...base },
+        { id: "b", title: "Late", dueDate: "2026-11-19", ...base },
+        { id: "c", title: "Later", dueDate: "2026-11-23", ...base },
+        { id: "d", title: "No day", dueDate: null, ...base },
+        { id: "e", title: "Done", dueDate: "2026-11-20", ...base, doneAt: "2026-11-20T10:00:00Z" },
+      ],
+      "2026-11-22"
+    )
+    expect(items.map((i) => i.id)).toEqual(["b", "a"])
+    expect(items[0]).toMatchObject({ kind: "todo", moduleId: "tasks", overdueDays: 3 })
+    expect(items[1]).toMatchObject({ overdueDays: 0 })
+  })
+
+  test("personal and household tasks come together and keep their household", () => {
+    const items = todoItems(
+      [
+        { id: "a", title: "Mine", dueDate: "2026-11-22", ...base },
+        { id: "b", title: "Ours", dueDate: "2026-11-22", ...base, householdId: "home" },
+      ],
+      "2026-11-22"
+    )
+    expect(items.map((i) => (i.kind === "todo" ? i.householdId : "x"))).toEqual([null, "home"])
+  })
+
+  test("they have their own section, and disappear when the module is switched off", () => {
+    const items = todoItems([{ id: "a", title: "x", dueDate: "2026-11-22", ...base }], "2026-11-22")
+    expect(todaySections(items).map((s) => s.id)).toEqual(["todos"])
+    expect(timeline(items, ["tasks"])).toEqual([])
   })
 })

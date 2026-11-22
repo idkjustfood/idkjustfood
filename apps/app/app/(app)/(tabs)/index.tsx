@@ -22,11 +22,12 @@ import { moneyOfSpace } from "@/lib/money-view"
 import { moduleIcons } from "@/lib/module-icons"
 import { taskKinds } from "@/lib/task-kinds"
 import { todaySections, type TodayItem } from "@/lib/today"
+import { useTodoActions } from "@/lib/todos"
 import { useTodayItems } from "@/lib/use-today"
 
 /** Today: a timeline that collects what is on from the modules that provide items. */
 export default function Today() {
-  const { t } = useTranslation(["modules", "chores", "calendar", "money"])
+  const { t } = useTranslation(["modules", "chores", "calendar", "money", "tasks"])
   const wide = useIsWide()
   const { items, loading, error, retry } = useTodayItems()
   const sections = todaySections(items)
@@ -75,6 +76,7 @@ export default function Today() {
 function TimelineRow({ item }: { item: TodayItem }) {
   const { t } = useTranslation("modules")
   const actions = useChoreActions()
+  const todos = useTodoActions()
   const today = useToday()
   const { households } = useHouseholds()
   const money = useMoneyActions()
@@ -119,6 +121,33 @@ function TimelineRow({ item }: { item: TodayItem }) {
         title={item.title}
         detail={owner}
         onPress={() => router.push("/calendar" as Href)}
+      />
+    )
+  }
+  if (item.kind === "todo") {
+    // Personal and household tasks come together here, so each says which one it is.
+    const owner = item.householdId
+      ? (households.find((h) => h.id === item.householdId)?.name ??
+        t("calendar:household"))
+      : t("calendar:personal")
+    return (
+      <ListRow
+        icon={moduleIcons.tasks}
+        title={item.title}
+        detail={`${owner}${item.overdueDays > 0 ? ` · ${t("today.overdue", { count: item.overdueDays })}` : ""}`}
+        onPress={() => router.push("/tasks" as Href)}
+        right={
+          <Pressable
+            role="checkbox"
+            aria-checked={false}
+            accessibilityLabel={t("tasks:markDone", { title: item.title })}
+            onPress={() => todos.setDone(item.id, true)}
+            hitSlop={8}
+            className="-my-3 -mr-4 min-h-14 min-w-14 items-center justify-center"
+          >
+            <CheckboxBox checked={false} />
+          </Pressable>
+        }
       />
     )
   }

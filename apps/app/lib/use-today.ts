@@ -8,6 +8,7 @@ import { useMoneyState } from "@/lib/money"
 import { moneyOfSpace } from "@/lib/money-view"
 import { usePlans, useWeek } from "@/lib/planner"
 import { useShoppingState } from "@/lib/shopping"
+import { useTodoState } from "@/lib/todos"
 import { inSpace } from "@/lib/space"
 import {
   billItems,
@@ -16,6 +17,7 @@ import {
   mealItems,
   shoppingItems,
   timeline,
+  todoItems,
 } from "@/lib/today"
 
 /**
@@ -35,6 +37,7 @@ export function useTodayItems() {
   const { lists } = useShoppingState()
   const { chores } = useChoreState()
   const { entries } = useCalendarState()
+  const { tasks } = useTodoState()
   const money = useMoneyState().data
   const choreDay = useToday()
 
@@ -43,6 +46,7 @@ export function useTodayItems() {
       ...calendarItems(entries, choreDay),
       ...mealItems(week.data?.meals ?? [], today),
       ...shoppingItems(inSpace(lists, space)),
+      ...todoItems(tasks, choreDay),
       ...choreItems(inSpace(chores, space), choreDay),
       ...billItems(moneyOfSpace(money, space).bills, choreDay),
     ],

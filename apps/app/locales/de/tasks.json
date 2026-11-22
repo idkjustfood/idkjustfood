@@ -1,0 +1,49 @@
+{
+  "title": "Aufgaben",
+  "ownTasks": "Deine eigenen Aufgaben",
+  "sharedWith": "Geteilt mit {{name}}",
+  "add": "Aufgabe hinzufügen",
+  "loading": "Aufgaben werden geladen",
+  "loadError": {
+    "title": "Aufgaben konnten nicht geladen werden",
+    "message": "Deine Aufgaben werden auf diesem Handy gespeichert, sobald sie geladen sind. Versuche es erneut, wenn du online bist."
+  },
+  "empty": {
+    "title": "Noch keine Aufgaben",
+    "message": "Füge Dinge hinzu, die du einmal erledigen willst, zum Beispiel den Klempner anrufen. Eine Aufgabe kann einen Tag haben."
+  },
+  "open_one": "Zu erledigen · {{count}}",
+  "open_other": "Zu erledigen · {{count}}",
+  "done_one": "Erledigt · {{count}}",
+  "done_other": "Erledigt · {{count}}",
+  "allDone": {
+    "title": "Nichts mehr zu tun",
+    "message": "Alle deine Aufgaben sind erledigt."
+  },
+  "dueToday": "Heute fällig",
+  "due": "Fällig {{day}}",
+  "overdue": "War fällig {{day}}",
+  "assignedTo": "Für {{name}}",
+  "markDone": "{{title}} als erledigt markieren",
+  "reopen": "{{title}} wieder öffnen, nicht erledigt",
+  "edit": "{{title}} bearbeiten",
+  "form": {
+    "newTitle": "Neue Aufgabe",
+    "editTitle": "Aufgabe bearbeiten",
+    "title": "Aufgabe",
+    "placeholder": "Zum Beispiel: Klempner anrufen",
+    "note": "Notiz",
+    "day": "Fälligkeitstag",
+    "addDay": "Tag hinzufügen",
+    "removeDay": "Kein Tag",
+    "dayBefore": "Tag davor",
+    "dayAfter": "Tag danach",
+    "assignee": "Zugewiesen an",
+    "nobody": "Niemand",
+    "visiblePersonal": "Nur du kannst diese Aufgabe sehen.",
+    "visibleHousehold": "Alle in {{name}} können diese Aufgabe sehen und ändern.",
+    "create": "Aufgabe hinzufügen",
+    "save": "Speichern",
+    "delete": "Löschen"
+  }
+}
