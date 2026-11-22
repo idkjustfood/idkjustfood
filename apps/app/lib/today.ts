@@ -8,9 +8,12 @@ import {
   type CalendarEntry,
   type Chore,
   type ChoreDay,
+  type ChoreKind,
   type Meal,
   type MealSlot,
 } from "@workspace/schemas"
+
+import { kindOf, taskKinds, type TaskModuleId } from "./task-kinds"
 
 /**
  * One entry on the Today timeline. Modules provide their own kind of entry; the screen decides
@@ -48,7 +51,9 @@ export type TodayItem =
   | {
       kind: "chore"
       id: string
-      moduleId: "chores"
+      /** The module the task belongs to: chores, maintenance, plants or pets. */
+      moduleId: TaskModuleId
+      taskKind: ChoreKind
       name: string
       intervalDays: number
       /** How many days ago the chore came back. 0 when it is due today or was never checked. */
@@ -120,21 +125,23 @@ export function shoppingItems(
 }
 
 /**
- * Chores that are due today or overdue. Chores that are waiting for their day are left out.
+ * Tasks (chores, maintenance, plants and pets) that are due today or overdue. Tasks that are
+ * waiting for their day are left out.
  * The most overdue chore comes first, then the others in the order of the chores screen.
  */
 export function choreItems(
-  chores: readonly Pick<
+  chores: readonly (Pick<
     Chore,
     "id" | "name" | "intervalDays" | "lastDoneOn"
-  >[],
+  > & { kind?: ChoreKind })[],
   today: ChoreDay
 ): TodayItem[] {
   return splitChores(chores, today)
     .due.map((chore) => ({
       kind: "chore" as const,
       id: chore.id,
-      moduleId: "chores" as const,
+      moduleId: taskKinds[kindOf(chore)].moduleId,
+      taskKind: kindOf(chore),
       name: chore.name,
       intervalDays: chore.intervalDays,
       overdueDays: Math.max(0, -(daysUntilDue(chore, today) ?? 0)),

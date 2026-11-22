@@ -127,6 +127,13 @@
       "when": 1795273684520,
       "tag": "0017_talented_iron_monger",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1795345191932,
+      "tag": "0018_lying_excalibur",
+      "breakpoints": true
     }
   ]
 }

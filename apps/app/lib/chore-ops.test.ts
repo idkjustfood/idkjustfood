@@ -10,6 +10,7 @@ const towels: Chore = {
   name: "Switch towels",
   intervalDays: 3,
   lastDoneOn: null,
+  kind: "chore",
   householdId: null,
   createdAt: "2026-01-01T00:00:00.000Z",
 }
@@ -30,6 +31,12 @@ describe("applyChoreOp", () => {
       lastDoneOn: null,
       householdId: "h",
     })
+  })
+
+  test("a task has the kind it was added with, and is a chore without one", () => {
+    const add = { type: "add" as const, name: "x", intervalDays: 1, householdId: null }
+    expect(applyChoreOp([], { ...add, id: "p", kind: "plant" })[0]?.kind).toBe("plant")
+    expect(applyChoreOp([], { ...add, id: "q" })[0]?.kind).toBe("chore")
   })
 
   test("adding the same id twice adds one chore", () => {

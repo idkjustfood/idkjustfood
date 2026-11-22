@@ -119,6 +119,36 @@ describe("today timeline", () => {
       expect(items.map((i) => i.id)).toEqual(["overdue", "never", "today"])
     })
 
+    test("maintenance, plants and pets show up as tasks of their own module", () => {
+      const items = choreItems(
+        [
+          { ...chore("a", null), kind: "maintenance" as const },
+          { ...chore("b", null), kind: "plant" as const },
+          { ...chore("c", null), kind: "pet" as const },
+          chore("d", null),
+        ],
+        "2026-01-01"
+      )
+      expect(items.map((i) => i.moduleId)).toEqual([
+        "maintenance",
+        "plants",
+        "pets",
+        "chores",
+      ])
+      expect(todaySections(items).map((s) => s.id)).toEqual(["tasks"])
+    })
+
+    test("switching off plants hides plant tasks only", () => {
+      const all = timeline(
+        choreItems(
+          [{ ...chore("a", null), kind: "plant" as const }, chore("b", null)],
+          "2026-01-01"
+        ),
+        ["plants"]
+      )
+      expect(all.map((i) => i.id)).toEqual(["b"])
+    })
+
     test("overdue chores say how many days late they are and come first", () => {
       const items = choreItems(
         [chore("a", "2026-01-01", 3, "A"), chore("b", "2025-12-30", 3, "B")],

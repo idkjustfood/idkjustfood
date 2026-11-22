@@ -78,6 +78,7 @@ export function choreStore(db: Database) {
           userId,
           organizationId: input.householdId ?? null,
           name: input.name,
+          kind: input.kind ?? "chore",
           intervalDays: input.intervalDays,
         })
         .onConflictDoNothing()

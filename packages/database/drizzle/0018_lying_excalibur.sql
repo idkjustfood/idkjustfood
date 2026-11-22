@@ -1,0 +1,1 @@
+ALTER TABLE "chore" ADD COLUMN "kind" text DEFAULT 'chore' NOT NULL;

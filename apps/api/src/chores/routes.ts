@@ -3,6 +3,7 @@ import { createRoute, OpenAPIHono, z } from "@hono/zod-openapi"
 import type { Database } from "@workspace/database"
 import {
   ChoreInputSchema,
+  ChoreKindSchema,
   ChoreSchema,
   ChoreUpdateSchema,
   type Chore,
@@ -47,10 +48,16 @@ const listChores = createRoute({
   summary: "List chores",
   description:
     "Your own chores and the chores of your households. With `householdId`, only the chores " +
-    "of that household. Every chore has `lastDoneOn` and `intervalDays`; a chore is due again " +
+    "of that household, and `kind` only tasks of one module (chores, maintenance, plants or " +
+    "pets, which all work the same way). Every chore has `lastDoneOn` and `intervalDays`; a chore is due again " +
     "on `lastDoneOn` + `intervalDays` days, from 00:00. The app works that out on the device, " +
     "in the time zone of the person.",
-  request: { query: z.object({ householdId: z.string().optional() }) },
+  request: {
+    query: z.object({
+      householdId: z.string().optional(),
+      kind: ChoreKindSchema.optional(),
+    }),
+  },
   responses: {
     200: json(z.object({ chores: z.array(ChoreBody) }), "The chores"),
     404: error("Household not found, or you are not a member"),
@@ -117,6 +124,7 @@ type Env = { Variables: AuthVariables }
 const toChore = (row: ChoreRow): Chore => ({
   id: row.id,
   name: row.name,
+  kind: ChoreKindSchema.catch("chore").parse(row.kind),
   intervalDays: row.intervalDays,
   lastDoneOn: row.lastDoneOn,
   householdId: row.organizationId,
@@ -145,13 +153,17 @@ export function choreRoutes(db: Database, auth: Auth) {
   }
 
   app.openapi(listChores, async (c) => {
-    const { householdId } = c.req.valid("query")
+    const { householdId, kind } = c.req.valid("query")
     const userId = c.get("user").id
     const rows = householdId
       ? await store.forSpace(userId, householdId)
       : await store.listForUser(userId)
     if (!rows) return c.json({ error: "Household not found" }, 404)
-    return c.json({ chores: rows.map(toChore) }, 200)
+    const chores = rows.map(toChore)
+    return c.json(
+      { chores: kind ? chores.filter((chore) => chore.kind === kind) : chores },
+      200
+    )
   })
 
   app.openapi(createChore, async (c) => {

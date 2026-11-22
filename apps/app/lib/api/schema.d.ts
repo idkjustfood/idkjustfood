@@ -1576,12 +1576,13 @@ export interface paths {
         };
         /**
          * List chores
-         * @description Your own chores and the chores of your households. With `householdId`, only the chores of that household. Every chore has `lastDoneOn` and `intervalDays`; a chore is due again on `lastDoneOn` + `intervalDays` days, from 00:00. The app works that out on the device, in the time zone of the person.
+         * @description Your own chores and the chores of your households. With `householdId`, only the chores of that household, and `kind` only tasks of one module (chores, maintenance, plants or pets, which all work the same way). Every chore has `lastDoneOn` and `intervalDays`; a chore is due again on `lastDoneOn` + `intervalDays` days, from 00:00. The app works that out on the device, in the time zone of the person.
          */
         get: {
             parameters: {
                 query?: {
                     householdId?: string;
+                    kind?: "chore" | "maintenance" | "plant" | "pet";
                 };
                 header?: never;
                 path?: never;
@@ -4368,6 +4369,8 @@ export interface components {
         Chore: {
             id: string;
             name: string;
+            /** @enum {string} */
+            kind: "chore" | "maintenance" | "plant" | "pet";
             intervalDays: number;
             lastDoneOn: string | null;
             householdId: string | null;
@@ -4376,6 +4379,8 @@ export interface components {
         ChoreInput: {
             id?: string;
             name: string;
+            /** @enum {string} */
+            kind?: "chore" | "maintenance" | "plant" | "pet";
             intervalDays: number;
             householdId?: string | null;
         };

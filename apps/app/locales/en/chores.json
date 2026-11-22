@@ -1,14 +1,9 @@
 {
-  "title": "Chores",
-  "ownChores": "Your own chores",
   "sharedWith": "Shared with {{name}}",
-  "add": "Add chore",
-  "loading": "Loading chores",
   "todo": "To do · {{count}}",
   "later": "Later · {{count}}",
   "allDone": {
-    "title": "All done for today",
-    "message": "Checked chores come back on their day, at 00:00."
+    "title": "All done for today"
   },
   "every_one": "Every day",
   "every_other": "Every {{count}} days",
@@ -20,26 +15,106 @@
   "markDone": "Mark {{name}} as done",
   "undo": "Undo {{name}}, it is not done",
   "edit": "Edit {{name}}",
-  "loadError": {
-    "title": "Could not load your chores",
-    "message": "Your chores are saved on this phone once they have loaded. Try again when you are online."
-  },
-  "empty": {
-    "title": "No chores yet",
-    "message": "Add a chore and how often it comes back, like switching the towels every 3 days. Check it off and it returns on its day."
-  },
   "form": {
-    "newTitle": "New chore",
-    "editTitle": "Edit chore",
     "name": "Name",
-    "placeholder": "For example: Switch towels",
     "interval": "Repeat every",
     "days": "Days",
-    "hint": "Only whole days. A checked chore comes back at 00:00, after this many days.",
-    "visiblePersonal": "Only you can see this chore.",
-    "visibleHousehold": "Everyone in {{name}} can see and check this chore.",
-    "create": "Add chore",
+    "hint": "Only whole days. A checked task comes back at 00:00, after this many days.",
     "save": "Save",
     "delete": "Delete"
+  },
+  "kinds": {
+    "chore": {
+      "title": "Chores",
+      "ownTasks": "Your own chores",
+      "add": "Add chore",
+      "loading": "Loading chores",
+      "allDoneMessage": "Checked chores come back on their day, at 00:00.",
+      "loadError": {
+        "title": "Could not load your chores",
+        "message": "Your chores are saved on this phone once they have loaded. Try again when you are online."
+      },
+      "empty": {
+        "title": "No chores yet",
+        "message": "Add a chore and how often it comes back, like switching the towels every 3 days. Check it off and it returns on its day."
+      },
+      "form": {
+        "newTitle": "New chore",
+        "editTitle": "Edit chore",
+        "placeholder": "For example: Switch towels",
+        "visiblePersonal": "Only you can see this chore.",
+        "visibleHousehold": "Everyone in {{name}} can see and check this chore.",
+        "create": "Add chore"
+      }
+    },
+    "maintenance": {
+      "title": "Home maintenance",
+      "ownTasks": "Your own maintenance jobs",
+      "add": "Add job",
+      "loading": "Loading jobs",
+      "allDoneMessage": "Checked jobs come back on their day, at 00:00.",
+      "loadError": {
+        "title": "Could not load your jobs",
+        "message": "Your jobs are saved on this phone once they have loaded. Try again when you are online."
+      },
+      "empty": {
+        "title": "No maintenance jobs yet",
+        "message": "Add a job and how often it comes back, like cleaning the filter every 90 days. Check it off and it returns on its day."
+      },
+      "form": {
+        "newTitle": "New job",
+        "editTitle": "Edit job",
+        "placeholder": "For example: Clean the dryer filter",
+        "visiblePersonal": "Only you can see this job.",
+        "visibleHousehold": "Everyone in {{name}} can see and check this job.",
+        "create": "Add job"
+      }
+    },
+    "plant": {
+      "title": "Plants",
+      "ownTasks": "Your own plants",
+      "add": "Add plant task",
+      "loading": "Loading plant care",
+      "allDoneMessage": "Checked tasks come back on their day, at 00:00.",
+      "loadError": {
+        "title": "Could not load your plant care",
+        "message": "Your plant care is saved on this phone once it has loaded. Try again when you are online."
+      },
+      "empty": {
+        "title": "No plant care yet",
+        "message": "Add a task and how often it comes back, like watering the ficus every 3 days. Check it off and it returns on its day."
+      },
+      "form": {
+        "newTitle": "New plant task",
+        "editTitle": "Edit plant task",
+        "placeholder": "For example: Water the ficus",
+        "visiblePersonal": "Only you can see this task.",
+        "visibleHousehold": "Everyone in {{name}} can see and check this task.",
+        "create": "Add task"
+      }
+    },
+    "pet": {
+      "title": "Pets",
+      "ownTasks": "Your own pet care",
+      "add": "Add pet task",
+      "loading": "Loading pet care",
+      "allDoneMessage": "Checked tasks come back on their day, at 00:00.",
+      "loadError": {
+        "title": "Could not load your pet care",
+        "message": "Your pet care is saved on this phone once it has loaded. Try again when you are online."
+      },
+      "empty": {
+        "title": "No pet care yet",
+        "message": "Add a task and how often it comes back, like worming the dog every 90 days. Check it off and it returns on its day."
+      },
+      "form": {
+        "newTitle": "New pet task",
+        "editTitle": "Edit pet task",
+        "placeholder": "For example: Clean the litter box",
+        "visiblePersonal": "Only you can see this task.",
+        "visibleHousehold": "Everyone in {{name}} can see and check this task.",
+        "create": "Add task"
+      }
+    }
   }
 }

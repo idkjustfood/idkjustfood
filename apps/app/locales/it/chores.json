@@ -1,14 +1,9 @@
 {
-  "title": "Faccende di casa",
-  "ownChores": "Le tue faccende",
   "sharedWith": "Condivise con {{name}}",
-  "add": "Aggiungi faccenda",
-  "loading": "Caricamento delle faccende",
   "todo": "Da fare · {{count}}",
   "later": "Più tardi · {{count}}",
   "allDone": {
-    "title": "Tutto fatto per oggi",
-    "message": "Le faccende spuntate tornano nel loro giorno, alle 00:00."
+    "title": "Tutto fatto per oggi"
   },
   "every_one": "Ogni giorno",
   "every_other": "Ogni {{count}} giorni",
@@ -20,26 +15,106 @@
   "markDone": "Segna {{name}} come fatta",
   "undo": "Annulla {{name}}, non è fatta",
   "edit": "Modifica {{name}}",
-  "loadError": {
-    "title": "Impossibile caricare le faccende",
-    "message": "Le tue faccende vengono salvate su questo telefono dopo il caricamento. Riprova quando sei online."
-  },
-  "empty": {
-    "title": "Ancora nessuna faccenda",
-    "message": "Aggiungi una faccenda e ogni quanto torna, per esempio cambiare gli asciugamani ogni 3 giorni. Spuntala e tornerà nel suo giorno."
-  },
   "form": {
-    "newTitle": "Nuova faccenda",
-    "editTitle": "Modifica faccenda",
     "name": "Nome",
-    "placeholder": "Per esempio: Cambiare gli asciugamani",
     "interval": "Ripeti ogni",
     "days": "Giorni",
-    "hint": "Solo giorni interi. Una faccenda spuntata torna alle 00:00, dopo questi giorni.",
-    "visiblePersonal": "Solo tu vedi questa faccenda.",
-    "visibleHousehold": "Tutti in {{name}} possono vedere e spuntare questa faccenda.",
-    "create": "Aggiungi faccenda",
+    "hint": "Solo giorni interi. Un'attività spuntata torna alle 00:00, dopo questi giorni.",
     "save": "Salva",
     "delete": "Elimina"
+  },
+  "kinds": {
+    "chore": {
+      "title": "Faccende di casa",
+      "ownTasks": "Le tue faccende",
+      "add": "Aggiungi faccenda",
+      "loading": "Caricamento delle faccende",
+      "allDoneMessage": "Le faccende spuntate tornano nel loro giorno, alle 00:00.",
+      "loadError": {
+        "title": "Impossibile caricare le faccende",
+        "message": "Le tue faccende vengono salvate su questo telefono dopo il caricamento. Riprova quando sei online."
+      },
+      "empty": {
+        "title": "Ancora nessuna faccenda",
+        "message": "Aggiungi una faccenda e ogni quanto torna, per esempio cambiare gli asciugamani ogni 3 giorni. Spuntala e tornerà nel suo giorno."
+      },
+      "form": {
+        "newTitle": "Nuova faccenda",
+        "editTitle": "Modifica faccenda",
+        "placeholder": "Per esempio: Cambiare gli asciugamani",
+        "visiblePersonal": "Solo tu vedi questa faccenda.",
+        "visibleHousehold": "Tutti in {{name}} possono vedere e spuntare questa faccenda.",
+        "create": "Aggiungi faccenda"
+      }
+    },
+    "maintenance": {
+      "title": "Manutenzione della casa",
+      "ownTasks": "I tuoi lavori di manutenzione",
+      "add": "Aggiungi lavoro",
+      "loading": "Caricamento dei lavori",
+      "allDoneMessage": "I lavori spuntati tornano nel loro giorno, alle 00:00.",
+      "loadError": {
+        "title": "Impossibile caricare i lavori",
+        "message": "I tuoi lavori vengono salvati su questo telefono dopo il caricamento. Riprova quando sei online."
+      },
+      "empty": {
+        "title": "Ancora nessun lavoro di manutenzione",
+        "message": "Aggiungi un lavoro e ogni quanto torna, per esempio pulire il filtro ogni 90 giorni. Spuntalo e tornerà nel suo giorno."
+      },
+      "form": {
+        "newTitle": "Nuovo lavoro",
+        "editTitle": "Modifica lavoro",
+        "placeholder": "Per esempio: Pulire il filtro dell'asciugatrice",
+        "visiblePersonal": "Solo tu vedi questo lavoro.",
+        "visibleHousehold": "Tutti in {{name}} possono vedere e spuntare questo lavoro.",
+        "create": "Aggiungi lavoro"
+      }
+    },
+    "plant": {
+      "title": "Piante",
+      "ownTasks": "Le tue piante",
+      "add": "Aggiungi attività per le piante",
+      "loading": "Caricamento della cura delle piante",
+      "allDoneMessage": "Le attività spuntate tornano nel loro giorno, alle 00:00.",
+      "loadError": {
+        "title": "Impossibile caricare la cura delle piante",
+        "message": "La cura delle tue piante viene salvata su questo telefono dopo il caricamento. Riprova quando sei online."
+      },
+      "empty": {
+        "title": "Ancora nessuna cura delle piante",
+        "message": "Aggiungi un'attività e ogni quanto torna, per esempio annaffiare il ficus ogni 3 giorni. Spuntala e tornerà nel suo giorno."
+      },
+      "form": {
+        "newTitle": "Nuova attività per le piante",
+        "editTitle": "Modifica attività",
+        "placeholder": "Per esempio: Annaffiare il ficus",
+        "visiblePersonal": "Solo tu vedi questa attività.",
+        "visibleHousehold": "Tutti in {{name}} possono vedere e spuntare questa attività.",
+        "create": "Aggiungi attività"
+      }
+    },
+    "pet": {
+      "title": "Animali",
+      "ownTasks": "La cura dei tuoi animali",
+      "add": "Aggiungi attività per gli animali",
+      "loading": "Caricamento della cura degli animali",
+      "allDoneMessage": "Le attività spuntate tornano nel loro giorno, alle 00:00.",
+      "loadError": {
+        "title": "Impossibile caricare la cura degli animali",
+        "message": "La cura dei tuoi animali viene salvata su questo telefono dopo il caricamento. Riprova quando sei online."
+      },
+      "empty": {
+        "title": "Ancora nessuna cura degli animali",
+        "message": "Aggiungi un'attività e ogni quanto torna, per esempio sverminare il cane ogni 90 giorni. Spuntala e tornerà nel suo giorno."
+      },
+      "form": {
+        "newTitle": "Nuova attività per gli animali",
+        "editTitle": "Modifica attività",
+        "placeholder": "Per esempio: Pulire la lettiera",
+        "visiblePersonal": "Solo tu vedi questa attività.",
+        "visibleHousehold": "Tutti in {{name}} possono vedere e spuntare questa attività.",
+        "create": "Aggiungi attività"
+      }
+    }
   }
 }

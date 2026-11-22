@@ -9,7 +9,12 @@ import {
 } from "react"
 import { AppState, Platform } from "react-native"
 
-import { localDay, type Chore, type ChoreDay } from "@workspace/schemas"
+import {
+  localDay,
+  type Chore,
+  type ChoreDay,
+  type ChoreKind,
+} from "@workspace/schemas"
 
 import { api, call } from "@/lib/api/client"
 import { useAppState } from "@/lib/app-state"
@@ -33,6 +38,7 @@ async function send(op: ChoreOp) {
           body: {
             id: op.id,
             name: op.name,
+            kind: op.kind,
             intervalDays: op.intervalDays,
             householdId: op.householdId,
           },
@@ -71,7 +77,11 @@ function serverDeps(userId: string | undefined): ChoreDeps {
 
 /** A few sample chores for the clickable demo, which has no server. */
 function demoDeps(): ChoreDeps {
-  const base = { householdId: null, createdAt: "2026-01-01T00:00:00.000Z" }
+  const base = {
+    kind: "chore" as const,
+    householdId: null,
+    createdAt: "2026-01-01T00:00:00.000Z",
+  }
   const daysAgo = (days: number) => {
     const date = new Date()
     date.setDate(date.getDate() - days)
@@ -82,6 +92,9 @@ function demoDeps(): ChoreDeps {
       { id: "demo-towels", name: "Switch towels", intervalDays: 3, lastDoneOn: daysAgo(3), ...base },
       { id: "demo-sheets", name: "Change bed sheets", intervalDays: 14, lastDoneOn: daysAgo(5), ...base },
       { id: "demo-bins", name: "Take out the bins", intervalDays: 7, lastDoneOn: null, ...base },
+      { id: "demo-filter", name: "Clean the dryer filter", intervalDays: 90, lastDoneOn: null, ...base, kind: "maintenance" },
+      { id: "demo-ficus", name: "Water the ficus", intervalDays: 3, lastDoneOn: daysAgo(3), ...base, kind: "plant" },
+      { id: "demo-litter", name: "Clean the litter box", intervalDays: 2, lastDoneOn: daysAgo(1), ...base, kind: "pet" },
     ],
     send: async () => {},
   }
@@ -143,11 +156,17 @@ export function useChoreActions() {
   const store = useStore()
   return useMemo(
     () => ({
-      add: (name: string, intervalDays: number, householdId: string | null) =>
+      add: (
+        name: string,
+        intervalDays: number,
+        householdId: string | null,
+        kind: ChoreKind = "chore"
+      ) =>
         store.dispatch({
           type: "add",
           id: newId(),
           name,
+          kind,
           intervalDays,
           householdId,
         }),

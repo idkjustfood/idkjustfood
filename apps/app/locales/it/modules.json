@@ -124,10 +124,15 @@
     "description": "Artigiani, medici, scuola.",
     "soon": "Tieni a portata di mano i numeri di artigiani, medici e scuola."
   },
-  "plantsPets": {
-    "name": "Piante e animali",
-    "description": "Cura di piante e animali.",
-    "soon": "Ricorda quando annaffiare le piante e quando curare l’animale."
+  "plants": {
+    "name": "Piante",
+    "description": "Annaffia e cura le tue piante.",
+    "soon": "Ricorda quando annaffiare le piante."
+  },
+  "pets": {
+    "name": "Animali",
+    "description": "Prenditi cura dei tuoi animali.",
+    "soon": "Ricorda quando l'animale ha bisogno di cure."
   },
   "recipes": {
     "name": "Ricette",
