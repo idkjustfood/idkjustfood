@@ -1,0 +1,59 @@
+{
+  "title": "Listas de deseos",
+  "ownWishes": "Tus propias listas de deseos",
+  "sharedWith": "Compartidas con {{name}}",
+  "addWish": "Añadir deseo",
+  "addPerson": "Añadir persona",
+  "loading": "Cargando listas de deseos",
+  "search": "Buscar deseos",
+  "general": "Para nadie en particular",
+  "personEmpty": "Aún no hay deseos.",
+  "editPerson": "Editar {{name}}",
+  "addWishFor": "Añadir un deseo para {{name}}",
+  "markGot": "Marcar {{title}} como conseguido",
+  "markOpen": "Marcar {{title}} como pendiente otra vez",
+  "openLink": "Abrir el enlace de {{title}}",
+  "gotLabel": "Conseguido",
+  "noMatch": {
+    "title": "No se encontró nada",
+    "message": "Ningún deseo coincide con tu búsqueda."
+  },
+  "loadError": {
+    "title": "No se pudieron cargar tus listas de deseos",
+    "message": "Tus listas de deseos se guardan en este teléfono cuando se han cargado. Inténtalo de nuevo cuando tengas conexión."
+  },
+  "empty": {
+    "title": "Aún no hay deseos",
+    "message": "Añade una persona y reúne sus deseos, o añade un deseo sin persona."
+  },
+  "wish": {
+    "newTitle": "Nuevo deseo",
+    "editTitle": "Editar deseo",
+    "title": "Deseo",
+    "titlePlaceholder": "Por ejemplo: set de Lego",
+    "note": "Nota",
+    "link": "Enlace",
+    "linkPlaceholder": "https://",
+    "linkInvalid": "Esto no es un enlace web.",
+    "for": "Para",
+    "nobody": "Nadie",
+    "visiblePersonal": "Solo tú puedes ver este deseo.",
+    "visibleHousehold": "Todos en {{name}} pueden ver y cambiar este deseo.",
+    "create": "Añadir deseo",
+    "save": "Guardar",
+    "delete": "Eliminar"
+  },
+  "person": {
+    "newTitle": "Nueva persona",
+    "editTitle": "Editar persona",
+    "name": "Nombre",
+    "namePlaceholder": "Por ejemplo: Mia",
+    "deleteWarning_one": "Al eliminar a {{name}} también se elimina {{count}} deseo.",
+    "deleteWarning_other": "Al eliminar a {{name}} también se eliminan {{count}} deseos.",
+    "visiblePersonal": "Solo tú puedes ver los deseos de esta persona.",
+    "visibleHousehold": "Todos en {{name}} pueden ver a esta persona y sus deseos.",
+    "create": "Añadir persona",
+    "save": "Guardar",
+    "delete": "Eliminar persona"
+  }
+}

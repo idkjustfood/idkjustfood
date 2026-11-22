@@ -125,6 +125,9 @@ TypeScript everywhere, in one monorepo.
   `docs/household-tasks.md`, `docs/home-inventory.md` and `docs/contacts.md`.
 - Documents (warranties, contracts, scans) can be uploaded, personal or shared with a household.
   Files are stored on the server's own disk, never in a cloud. See `docs/files.md`.
+- Notes and Wishlists work end to end (More → Family): plain notes, and wishes per person or at the
+  root, personal or for a household, offline on the phone. See `docs/notes.md` and
+  `docs/wishlists.md`.
 - The app has a theme system (cozy hand-drawn look by default, chosen in settings). See
   `docs/themes.md`. Screens use design tokens only, never hardcoded colours.
 - The app is built from a module registry with five areas (Today, Plan, Food, Money, More), a

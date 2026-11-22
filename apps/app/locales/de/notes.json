@@ -1,0 +1,35 @@
+{
+  "title": "Notizen",
+  "ownNotes": "Deine eigenen Notizen",
+  "sharedWith": "Geteilt mit {{name}}",
+  "add": "Notiz hinzufügen",
+  "loading": "Notizen werden geladen",
+  "search": "Notizen durchsuchen",
+  "untitled": "Notiz ohne Titel",
+  "edit": "{{name}} bearbeiten",
+  "noMatch": {
+    "title": "Nichts gefunden",
+    "message": "Keine Notiz passt zu deiner Suche."
+  },
+  "loadError": {
+    "title": "Notizen konnten nicht geladen werden",
+    "message": "Deine Notizen werden auf diesem Handy gespeichert, sobald sie geladen sind. Versuche es erneut, wenn du online bist."
+  },
+  "empty": {
+    "title": "Noch keine Notizen",
+    "message": "Schreibe auf, was du behalten möchtest."
+  },
+  "form": {
+    "newTitle": "Neue Notiz",
+    "editTitle": "Notiz bearbeiten",
+    "title": "Titel",
+    "titlePlaceholder": "Optional",
+    "body": "Notiz",
+    "bodyPlaceholder": "Hier schreiben",
+    "visiblePersonal": "Nur du kannst diese Notiz sehen.",
+    "visibleHousehold": "Alle in {{name}} können diese Notiz sehen und ändern.",
+    "create": "Notiz hinzufügen",
+    "save": "Speichern",
+    "delete": "Löschen"
+  }
+}

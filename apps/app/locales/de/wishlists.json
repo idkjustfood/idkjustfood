@@ -1,0 +1,59 @@
+{
+  "title": "Wunschlisten",
+  "ownWishes": "Deine eigenen Wunschlisten",
+  "sharedWith": "Geteilt mit {{name}}",
+  "addWish": "Wunsch hinzufügen",
+  "addPerson": "Person hinzufügen",
+  "loading": "Wunschlisten werden geladen",
+  "search": "Wünsche durchsuchen",
+  "general": "Für niemanden im Besonderen",
+  "personEmpty": "Noch keine Wünsche.",
+  "editPerson": "{{name}} bearbeiten",
+  "addWishFor": "Wunsch für {{name}} hinzufügen",
+  "markGot": "{{title}} als bekommen markieren",
+  "markOpen": "{{title}} wieder als offen markieren",
+  "openLink": "Link zu {{title}} öffnen",
+  "gotLabel": "Bekommen",
+  "noMatch": {
+    "title": "Nichts gefunden",
+    "message": "Kein Wunsch passt zu deiner Suche."
+  },
+  "loadError": {
+    "title": "Wunschlisten konnten nicht geladen werden",
+    "message": "Deine Wunschlisten werden auf diesem Handy gespeichert, sobald sie geladen sind. Versuche es erneut, wenn du online bist."
+  },
+  "empty": {
+    "title": "Noch keine Wünsche",
+    "message": "Füge eine Person hinzu und sammle ihre Wünsche, oder füge einen Wunsch ohne Person hinzu."
+  },
+  "wish": {
+    "newTitle": "Neuer Wunsch",
+    "editTitle": "Wunsch bearbeiten",
+    "title": "Wunsch",
+    "titlePlaceholder": "Zum Beispiel: Lego-Set",
+    "note": "Notiz",
+    "link": "Link",
+    "linkPlaceholder": "https://",
+    "linkInvalid": "Das ist kein Weblink.",
+    "for": "Für",
+    "nobody": "Niemand",
+    "visiblePersonal": "Nur du kannst diesen Wunsch sehen.",
+    "visibleHousehold": "Alle in {{name}} können diesen Wunsch sehen und ändern.",
+    "create": "Wunsch hinzufügen",
+    "save": "Speichern",
+    "delete": "Löschen"
+  },
+  "person": {
+    "newTitle": "Neue Person",
+    "editTitle": "Person bearbeiten",
+    "name": "Name",
+    "namePlaceholder": "Zum Beispiel: Mia",
+    "deleteWarning_one": "Beim Löschen von {{name}} wird auch {{count}} Wunsch gelöscht.",
+    "deleteWarning_other": "Beim Löschen von {{name}} werden auch {{count}} Wünsche gelöscht.",
+    "visiblePersonal": "Nur du kannst die Wünsche dieser Person sehen.",
+    "visibleHousehold": "Alle in {{name}} können diese Person und ihre Wünsche sehen.",
+    "create": "Person hinzufügen",
+    "save": "Speichern",
+    "delete": "Person löschen"
+  }
+}

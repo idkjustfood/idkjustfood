@@ -1,0 +1,35 @@
+{
+  "title": "Notes",
+  "ownNotes": "Your own notes",
+  "sharedWith": "Shared with {{name}}",
+  "add": "Add note",
+  "loading": "Loading notes",
+  "search": "Search notes",
+  "untitled": "Untitled note",
+  "edit": "Edit {{name}}",
+  "noMatch": {
+    "title": "Nothing found",
+    "message": "No note matches your search."
+  },
+  "loadError": {
+    "title": "Could not load your notes",
+    "message": "Your notes are saved on this phone once they have loaded. Try again when you are online."
+  },
+  "empty": {
+    "title": "No notes yet",
+    "message": "Write down anything you want to keep."
+  },
+  "form": {
+    "newTitle": "New note",
+    "editTitle": "Edit note",
+    "title": "Title",
+    "titlePlaceholder": "Optional",
+    "body": "Note",
+    "bodyPlaceholder": "Write here",
+    "visiblePersonal": "Only you can see this note.",
+    "visibleHousehold": "Everyone in {{name}} can see and change this note.",
+    "create": "Add note",
+    "save": "Save",
+    "delete": "Delete"
+  }
+}

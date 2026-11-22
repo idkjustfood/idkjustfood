@@ -1,0 +1,35 @@
+{
+  "title": "Notes",
+  "ownNotes": "Tes propres notes",
+  "sharedWith": "Partagées avec {{name}}",
+  "add": "Ajouter une note",
+  "loading": "Chargement des notes",
+  "search": "Rechercher des notes",
+  "untitled": "Note sans titre",
+  "edit": "Modifier {{name}}",
+  "noMatch": {
+    "title": "Rien trouvé",
+    "message": "Aucune note ne correspond à ta recherche."
+  },
+  "loadError": {
+    "title": "Impossible de charger tes notes",
+    "message": "Tes notes sont enregistrées sur ce téléphone une fois chargées. Réessaie quand tu es en ligne."
+  },
+  "empty": {
+    "title": "Pas encore de notes",
+    "message": "Note tout ce que tu veux garder."
+  },
+  "form": {
+    "newTitle": "Nouvelle note",
+    "editTitle": "Modifier la note",
+    "title": "Titre",
+    "titlePlaceholder": "Facultatif",
+    "body": "Note",
+    "bodyPlaceholder": "Écris ici",
+    "visiblePersonal": "Toi seul peux voir cette note.",
+    "visibleHousehold": "Tous les membres de {{name}} peuvent voir et modifier cette note.",
+    "create": "Ajouter la note",
+    "save": "Enregistrer",
+    "delete": "Supprimer"
+  }
+}

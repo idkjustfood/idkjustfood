@@ -1,0 +1,59 @@
+{
+  "title": "Wishlists",
+  "ownWishes": "Your own wishlists",
+  "sharedWith": "Shared with {{name}}",
+  "addWish": "Add wish",
+  "addPerson": "Add person",
+  "loading": "Loading wishlists",
+  "search": "Search wishes",
+  "general": "Not for anyone in particular",
+  "personEmpty": "No wishes yet.",
+  "editPerson": "Edit {{name}}",
+  "addWishFor": "Add a wish for {{name}}",
+  "markGot": "Mark {{title}} as got",
+  "markOpen": "Mark {{title}} as open again",
+  "openLink": "Open the link for {{title}}",
+  "gotLabel": "Got it",
+  "noMatch": {
+    "title": "Nothing found",
+    "message": "No wish matches your search."
+  },
+  "loadError": {
+    "title": "Could not load your wishlists",
+    "message": "Your wishlists are saved on this phone once they have loaded. Try again when you are online."
+  },
+  "empty": {
+    "title": "No wishes yet",
+    "message": "Add a person and collect their wishes, or add a wish without a person."
+  },
+  "wish": {
+    "newTitle": "New wish",
+    "editTitle": "Edit wish",
+    "title": "Wish",
+    "titlePlaceholder": "For example: Lego set",
+    "note": "Note",
+    "link": "Link",
+    "linkPlaceholder": "https://",
+    "linkInvalid": "This is not a web link.",
+    "for": "For",
+    "nobody": "No one",
+    "visiblePersonal": "Only you can see this wish.",
+    "visibleHousehold": "Everyone in {{name}} can see and change this wish.",
+    "create": "Add wish",
+    "save": "Save",
+    "delete": "Delete"
+  },
+  "person": {
+    "newTitle": "New person",
+    "editTitle": "Edit person",
+    "name": "Name",
+    "namePlaceholder": "For example: Mia",
+    "deleteWarning_one": "Deleting {{name}} also deletes {{count}} wish.",
+    "deleteWarning_other": "Deleting {{name}} also deletes {{count}} wishes.",
+    "visiblePersonal": "Only you can see this person's wishes.",
+    "visibleHousehold": "Everyone in {{name}} can see this person and their wishes.",
+    "create": "Add person",
+    "save": "Save",
+    "delete": "Delete person"
+  }
+}

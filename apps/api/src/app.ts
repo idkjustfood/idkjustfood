@@ -16,6 +16,8 @@ import { taskRoutes } from "./tasks/routes.js"
 import { receiptRoutes } from "./money/receipts.js"
 import { moneyRoutes } from "./money/routes.js"
 import { contactRoutes } from "./contacts/routes.js"
+import { noteRoutes } from "./notes/routes.js"
+import { wishlistRoutes } from "./wishlists/routes.js"
 import { inventoryRoutes } from "./inventory/routes.js"
 import { choreRoutes } from "./chores/routes.js"
 import { completeRoutes } from "./recipes/complete.js"
@@ -123,6 +125,9 @@ export function createApp(db: Database, env: AuthEnv, deps: AppDeps = {}) {
   // Home inventory and contacts: personal or shared with a household.
   app.route("/api", inventoryRoutes(db, auth))
   app.route("/api", contactRoutes(db, auth))
+  // Notes and wishlists (wishes per person, or at the root): personal or for a household.
+  app.route("/api", noteRoutes(db, auth))
+  app.route("/api", wishlistRoutes(db, auth))
 
   // Files (documents): kept on this server's disk, personal or shared with a household.
   app.route("/api", fileRoutes(db, auth, env, deps.storage))
