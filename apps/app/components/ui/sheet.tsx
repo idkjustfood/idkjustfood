@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, type ReactNode } from "react"
 import { X } from "lucide-react-native"
+import { cssInterop } from "nativewind"
 import { useTranslation } from "react-i18next"
 import {
   Animated,
@@ -16,6 +17,9 @@ import { useIsWide } from "@/lib/layout"
 import { cn } from "@/lib/utils"
 import { Heading } from "@/components/ui/heading"
 import { Icon } from "@/components/ui/icon"
+
+// Animated views ignore Tailwind classes unless they are registered.
+cssInterop(Animated.View, { className: "style" })
 
 /**
  * A panel that slides up from the bottom on phones and shows as a centred dialog on wide screens.
@@ -99,7 +103,7 @@ export function Sheet({
             wide ? "max-w-md rounded-lg border" : "rounded-t-2xl border-t"
           )}
         >
-          <View {...pan.panHandlers} className="gap-4">
+          <View {...pan.panHandlers} className="-mx-5 -mt-5 gap-4 px-5 pt-5 pb-2">
             {!wide && (
               <View className="h-1.5 w-10 self-center rounded-full bg-muted" />
             )}
