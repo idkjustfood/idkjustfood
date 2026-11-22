@@ -14,7 +14,6 @@ import {
   KeyRound,
   Languages,
   LogOut,
-  Package,
   Server,
   Sparkles,
   Upload,
@@ -104,12 +103,6 @@ export default function Settings() {
           }
           onPress={() => router.push("/settings/household")}
         />
-        <ListRow
-          icon={Package}
-          title={t("settings:pantry.title")}
-          detail={t("settings:pantry.rowDetail")}
-          onPress={() => router.push("/settings/pantry")}
-        />
       </ListGroup>
 
       <ListGroup title={t("settings:preferences.title")}>
@@ -119,20 +112,6 @@ export default function Settings() {
           detail={t("modules:settings.rowDetail")}
           onPress={() => router.push("/settings/modules")}
         />
-        <View className="gap-2 px-4 py-3">
-          <Text className="text-base text-foreground">
-            {t("settings:preferences.units")}
-          </Text>
-          <Segmented
-            label={t("settings:preferences.units")}
-            value={state.units}
-            onChange={state.setUnits}
-            options={[
-              { value: "metric", label: t("settings:preferences.metric") },
-              { value: "imperial", label: t("settings:preferences.imperial") },
-            ]}
-          />
-        </View>
         <View className="gap-2 px-4 py-3">
           <Text className="text-base text-foreground">
             {t("settings:preferences.theme")}

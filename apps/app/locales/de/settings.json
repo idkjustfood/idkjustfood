@@ -19,10 +19,7 @@
   },
   "preferences": {
     "title": "Präferenzen",
-    "units": "Einheiten",
     "theme": "Design",
-    "metric": "Metrisch (g, ml)",
-    "imperial": "Imperial (oz, Tassen)",
     "appearance": "Darstellung",
     "system": "System",
     "light": "Hell",

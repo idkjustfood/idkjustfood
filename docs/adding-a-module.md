@@ -61,3 +61,11 @@ registry entry. No navigation code changes.
 | Today items | `lib/today.ts`, `lib/use-today.ts` | optional |
 
 `bun test lib` in `apps/app` checks the registry and that every module has its texts.
+
+## Area settings
+
+An area can have a settings button (the gear next to search in its header). Money (currency and
+categories) and Food (units, pantry staples) have one. To add one, render an `AreaSettingsButton`
+(`components/area-settings-button.tsx`) for the area in `AreaSettings` in
+`components/area-screen.tsx`, with the area's sheet as its child. Settings that belong to one area
+live there, not in the global Settings screen.

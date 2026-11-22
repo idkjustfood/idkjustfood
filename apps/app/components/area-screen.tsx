@@ -2,8 +2,11 @@ import { router, type Href } from "expo-router"
 import { Blocks } from "lucide-react-native"
 import { useTranslation } from "react-i18next"
 
+import { AreaSettingsButton } from "@/components/area-settings-button"
+import { FoodSettingsSheet } from "@/components/food-settings-sheet"
 import { ListGroup, ListRow } from "@/components/list-row"
 import { Screen } from "@/components/screen"
+import { MoneySettingsButton } from "@/components/money-settings-button"
 import { SearchButton } from "@/components/search-button"
 import { SpaceSwitcher } from "@/components/space-switcher"
 import { EmptyState } from "@/components/states"
@@ -18,6 +21,18 @@ import {
 } from "@/lib/modules"
 
 const groupOrder: (ModuleGroup | undefined)[] = [undefined, "family"]
+
+/** The settings button of an area, for the areas that have settings. */
+function AreaSettings({ area }: { area: ModuleArea }) {
+  if (area === "money") return <MoneySettingsButton />
+  if (area === "food")
+    return (
+      <AreaSettingsButton>
+        {(sheet) => <FoodSettingsSheet {...sheet} />}
+      </AreaSettingsButton>
+    )
+  return null
+}
 
 /** The home screen of an area (Plan, Home, Food, Money, More): its enabled modules as a list. */
 export function AreaScreen({ area }: { area: ModuleArea }) {
@@ -44,7 +59,12 @@ export function AreaScreen({ area }: { area: ModuleArea }) {
     <Screen
       title={t(`areas.${area}`)}
       subtitle={t(`areaSubtitles.${area}`)}
-      actions={<SearchButton />}
+      actions={
+        <>
+          <AreaSettings area={area} />
+          <SearchButton />
+        </>
+      }
       toolbar={!wide ? <SpaceSwitcher /> : undefined}
       narrow
     >

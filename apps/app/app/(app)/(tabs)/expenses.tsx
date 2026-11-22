@@ -1,4 +1,4 @@
-import { Plus, Receipt, Settings } from "lucide-react-native"
+import { Plus, Receipt } from "lucide-react-native"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, Text, View } from "react-native"
@@ -24,12 +24,10 @@ import {
   MonthSwitcher,
 } from "@/components/money-parts"
 import { MoneyScreen, type MoneyContext } from "@/components/money-screen"
-import { MoneySettingsSheet } from "@/components/money-settings-sheet"
 import { ShareFields, useShare } from "@/components/share-fields"
 import { EmptyState } from "@/components/states"
 import { Button } from "@/components/ui/button"
 import { Chip } from "@/components/ui/chip"
-import { Icon } from "@/components/ui/icon"
 import { Input } from "@/components/ui/input"
 import { SearchField } from "@/components/ui/search-field"
 import { Sheet } from "@/components/ui/sheet"
@@ -45,39 +43,22 @@ import { cn } from "@/lib/utils"
 export default function Expenses() {
   const { t } = useTranslation("money")
   const [form, setForm] = useState<Expense | "new" | null>(null)
-  const [settingsOpen, setSettingsOpen] = useState(false)
 
   return (
     <MoneyScreen
       title={t("expenses.title")}
       subtitle={t("expenses.subtitle")}
       actions={
-        <View className="flex-row gap-2">
-          <Pressable
-            role="button"
-            accessibilityLabel={t("settings.title")}
-            onPress={() => setSettingsOpen(true)}
-            className="h-10 w-10 items-center justify-center rounded-md border border-border bg-card active:bg-accent"
-          >
-            <Icon as={Settings} className="text-foreground" />
-          </Pressable>
-          <Button
-            size="sm"
-            icon={Plus}
-            label={t("expenses.add")}
-            onPress={() => setForm("new")}
-          />
-        </View>
+        <Button
+          size="sm"
+          icon={Plus}
+          label={t("expenses.add")}
+          onPress={() => setForm("new")}
+        />
       }
     >
       {(context) => (
-        <ExpensesBody
-          context={context}
-          form={form}
-          setForm={setForm}
-          settingsOpen={settingsOpen}
-          setSettingsOpen={setSettingsOpen}
-        />
+        <ExpensesBody context={context} form={form} setForm={setForm} />
       )}
     </MoneyScreen>
   )
@@ -87,14 +68,10 @@ function ExpensesBody({
   context,
   form,
   setForm,
-  settingsOpen,
-  setSettingsOpen,
 }: {
   context: MoneyContext
   form: Expense | "new" | null
   setForm: (form: Expense | "new" | null) => void
-  settingsOpen: boolean
-  setSettingsOpen: (open: boolean) => void
 }) {
   const { t } = useTranslation("money")
   const { money, householdId, actions, today } = context
@@ -104,7 +81,8 @@ function ExpensesBody({
   const { data: members = [] } = useMembers(householdId ?? undefined)
 
   const inMonth = useMemo(
-    () => filterExpenses(money.expenses, { month, categoryId: null, search: "" }),
+    () =>
+      filterExpenses(money.expenses, { month, categoryId: null, search: "" }),
     [money.expenses, month]
   )
   const shown = useMemo(
@@ -113,21 +91,24 @@ function ExpensesBody({
   )
   const byCategory = spendingByCategory(inMonth)
   const nameOf = (id: string | null) =>
-    categoryName(t, money.categories.find((c) => c.id === id))
+    categoryName(
+      t,
+      money.categories.find((c) => c.id === id)
+    )
   const memberName = (userId: string) =>
     members.find((m) => m.userId === userId)?.name ?? t("expenses.someone")
 
   const memberIds = members.map((m) => m.userId)
-  const owes = householdId
-    ? settleUp(balances(money.expenses, memberIds))
-    : []
+  const owes = householdId ? settleUp(balances(money.expenses, memberIds)) : []
 
   return (
     <>
       <MonthSwitcher month={month} onChange={setMonth} />
 
       <View className="gap-3 rounded-lg border border-border bg-card p-4">
-        <Text className="text-sm text-muted-foreground">{t("expenses.spent")}</Text>
+        <Text className="text-sm text-muted-foreground">
+          {t("expenses.spent")}
+        </Text>
         <Text
           role="heading"
           className="text-3xl font-semibold text-foreground"
@@ -140,8 +121,13 @@ function ExpensesBody({
         {byCategory.length > 0 && (
           <View className="gap-1.5">
             {byCategory.map(({ categoryId: id, cents }) => (
-              <View key={id ?? "none"} className="flex-row justify-between gap-3">
-                <Text className="flex-1 text-sm text-foreground">{nameOf(id)}</Text>
+              <View
+                key={id ?? "none"}
+                className="flex-row justify-between gap-3"
+              >
+                <Text className="flex-1 text-sm text-foreground">
+                  {nameOf(id)}
+                </Text>
                 <Text className="text-sm text-muted-foreground">
                   {formatMoney(cents, money.currency)}
                 </Text>
@@ -157,7 +143,9 @@ function ExpensesBody({
             {t("expenses.whoOwes")}
           </Text>
           {owes.length === 0 ? (
-            <Text className="text-muted-foreground">{t("expenses.allEven")}</Text>
+            <Text className="text-muted-foreground">
+              {t("expenses.allEven")}
+            </Text>
           ) : (
             owes.map((payment) => (
               <Text
@@ -276,11 +264,6 @@ function ExpensesBody({
           setForm(null)
         }}
       />
-      <MoneySettingsSheet
-        open={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-        context={context}
-      />
     </>
   )
 }
@@ -346,7 +329,9 @@ function ExpenseForm({
     <Sheet
       open={open}
       onClose={onClose}
-      title={expense ? t("expenses.form.editTitle") : t("expenses.form.newTitle")}
+      title={
+        expense ? t("expenses.form.editTitle") : t("expenses.form.newTitle")
+      }
     >
       <AmountField
         label={t("amountIn", { currency: money.currency as Currency })}

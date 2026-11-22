@@ -15,7 +15,7 @@ screen says so instead of guessing. The app writes amounts with `formatMoney` (`
 which follows the language of the person. A hardcoded locale is never used.
 
 Every space (the person's own money, and each household) has **one currency**, chosen in the money
-settings (the gear on the Expenses screen). The default is euro. The money screens show one space at
+settings (the gear in the header of the Money tab). The default is euro. The money screens show one space at
 a time, the one selected at the top, because of this.
 
 ## In the app

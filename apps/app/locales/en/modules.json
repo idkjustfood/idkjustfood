@@ -183,5 +183,15 @@
   "exportImport": {
     "name": "Export and import",
     "description": "Take your recipes with you, or bring them in."
+  },
+  "areaSettings": {
+    "open": "Settings",
+    "foodTitle": "Food settings",
+    "units": "Units",
+    "metric": "Metric (g, ml)",
+    "imperial": "Imperial (oz, cups)",
+    "pantry": "Pantry staples",
+    "pantryDetail": "Things you always have at home",
+    "close": "Close"
   }
 }

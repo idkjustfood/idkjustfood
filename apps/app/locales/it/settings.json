@@ -19,10 +19,7 @@
   },
   "preferences": {
     "title": "Preferenze",
-    "units": "Unità",
     "theme": "Tema",
-    "metric": "Metrico (g, ml)",
-    "imperial": "Imperiale (oz, tazze)",
     "appearance": "Aspetto",
     "system": "Sistema",
     "light": "Chiaro",

@@ -19,10 +19,7 @@
   },
   "preferences": {
     "title": "Preferences",
-    "units": "Units",
     "theme": "Theme",
-    "metric": "Metric (g, ml)",
-    "imperial": "Imperial (oz, cups)",
     "appearance": "Appearance",
     "system": "System",
     "light": "Light",
