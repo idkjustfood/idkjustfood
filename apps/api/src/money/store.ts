@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto"
-import { and, asc, eq, inArray, isNull, or, sql } from "drizzle-orm"
+import { and, asc, eq, inArray, isNull, or } from "drizzle-orm"
 import type { AnyPgColumn } from "drizzle-orm/pg-core"
 
 import { schema, type Database } from "@workspace/database"
@@ -578,14 +578,119 @@ export function moneyStore(db: Database) {
         .orderBy(asc(moneyReceipt.createdAt), asc(moneyReceipt.id))
     },
 
-    /** Used for counting in tests and the overview. */
-    async count(table: "expense" | "bill", userId: string) {
-      const t = table === "expense" ? moneyExpense : moneyBill
+    async receipt(receiptId: string, userId: string) {
       const [row] = await db
-        .select({ n: sql<number>`count(*)::int` })
-        .from(t)
-        .where(await visibleTo(userId, t))
-      return row?.n ?? 0
+        .select()
+        .from(moneyReceipt)
+        .where(eq(moneyReceipt.id, receiptId))
+      return row && (await mayAccess(row, userId)) ? row : undefined
+    },
+
+    /** Adds a receipt that is still being read. Sending an id that exists returns that receipt. */
+    async createReceipt(
+      userId: string,
+      input: { id?: string; householdId: string | null; fileId: string | null }
+    ) {
+      const id = input.id ?? randomUUID()
+      const [created] = await db
+        .insert(moneyReceipt)
+        .values({
+          id,
+          userId,
+          organizationId: input.householdId,
+          fileId: input.fileId,
+          status: "reading",
+        })
+        .onConflictDoNothing()
+        .returning()
+      if (created) return { row: created, isNew: true as const }
+      const existing = await this.receipt(id, userId)
+      return existing
+        ? { row: existing, isNew: false as const }
+        : { conflict: true as const }
+    },
+
+    async updateReceipt(
+      receiptId: string,
+      change: {
+        status?: string
+        shop?: string | null
+        date?: string | null
+        totalCents?: number | null
+        error?: string | null
+      }
+    ) {
+      const [row] = await db
+        .update(moneyReceipt)
+        .set({
+          ...(change.status !== undefined && { status: change.status }),
+          ...(change.shop !== undefined && { shop: change.shop }),
+          ...(change.date !== undefined && { date: change.date }),
+          ...(change.totalCents !== undefined && { totalCents: change.totalCents }),
+          ...(change.error !== undefined && { error: change.error }),
+        })
+        .where(eq(moneyReceipt.id, receiptId))
+        .returning()
+      return row
+    },
+
+    /** Deletes the receipt. An expense made from it stays, without the link. */
+    async removeReceipt(receiptId: string) {
+      await db
+        .update(moneyExpense)
+        .set({ receiptId: null })
+        .where(eq(moneyExpense.receiptId, receiptId))
+      const rows = await db
+        .delete(moneyReceipt)
+        .where(eq(moneyReceipt.id, receiptId))
+        .returning({ id: moneyReceipt.id })
+      return rows.length > 0
+    },
+
+    /**
+     * Turns a receipt into an expense and links the two. The client chooses the expense's id:
+     * when that expense is already there, nothing changes (a retry).
+     */
+    async receiptToExpense(
+      userId: string,
+      receipt: ReceiptRow,
+      input: {
+        expenseId: string
+        amountCents: number
+        date: string
+        categoryId: string | null
+        paidBy: string
+      }
+    ) {
+      return db.transaction(async (tx) => {
+        const [created] = await tx
+          .insert(moneyExpense)
+          .values({
+            id: input.expenseId,
+            userId,
+            organizationId: receipt.organizationId,
+            amountCents: input.amountCents,
+            categoryId: input.categoryId,
+            date: input.date,
+            note: receipt.shop ?? "",
+            paidBy: input.paidBy,
+            receiptId: receipt.id,
+          })
+          .onConflictDoNothing()
+          .returning()
+        if (!created) {
+          const [existing] = await tx
+            .select()
+            .from(moneyExpense)
+            .where(eq(moneyExpense.id, input.expenseId))
+          return { conflict: existing?.receiptId !== receipt.id, expense: existing }
+        }
+        await tx
+          .update(moneyReceipt)
+          .set({ expenseId: created.id })
+          .where(eq(moneyReceipt.id, receipt.id))
+        return { conflict: false, expense: created }
+      })
     },
   }
 }

@@ -6,6 +6,15 @@
 import type { RecipeLanguage } from "@workspace/schemas"
 
 export type ImageInput = { data: Uint8Array; mediaType: string }
+
+export type ReadImagesOptions = {
+  /**
+   * Replaces the standard instruction (`readImagesPrompt`) with another one, for a job that
+   * reads something else than a recipe, such as a receipt. Every provider must use it as the
+   * instruction for the images when it is set.
+   */
+  instruction?: string
+}
 export type AudioInput = { data: Uint8Array; mediaType: string }
 
 /** Turns speech into text. */
@@ -21,7 +30,7 @@ export interface ImageReader {
    * ingredients, amounts, steps), as plain text. Empty when there is nothing.
    * Fails with `model_cannot_read_images` when the model does not accept images.
    */
-  readImages(images: ImageInput[]): Promise<string>
+  readImages(images: ImageInput[], options?: ReadImagesOptions): Promise<string>
 }
 
 export type ParseOptions = {
