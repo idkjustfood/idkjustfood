@@ -305,17 +305,3 @@ export function areaOfRoute(
       return null
   }
 }
-
-/** Search: modules whose name, description or keywords contain every word typed. */
-export function searchModules<T extends AppModule>(
-  list: readonly T[],
-  query: string,
-  textOf: (module: T) => string
-): T[] {
-  const words = query.toLowerCase().split(/\s+/).filter(Boolean)
-  if (words.length === 0) return []
-  return list.filter((m) => {
-    const text = textOf(m).toLowerCase()
-    return words.every((w) => text.includes(w))
-  })
-}

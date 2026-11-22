@@ -7,7 +7,6 @@ import { FoodSettingsSheet } from "@/components/food-settings-sheet"
 import { ListGroup, ListRow } from "@/components/list-row"
 import { Screen } from "@/components/screen"
 import { MoneySettingsButton } from "@/components/money-settings-button"
-import { SearchButton } from "@/components/search-button"
 import { SpaceSwitcher } from "@/components/space-switcher"
 import { EmptyState } from "@/components/states"
 import { useAppState } from "@/lib/app-state"
@@ -59,12 +58,7 @@ export function AreaScreen({ area }: { area: ModuleArea }) {
     <Screen
       title={t(`areas.${area}`)}
       subtitle={t(`areaSubtitles.${area}`)}
-      actions={
-        <>
-          <AreaSettings area={area} />
-          <SearchButton />
-        </>
-      }
+      actions={<AreaSettings area={area} />}
       toolbar={!wide ? <SpaceSwitcher /> : undefined}
       narrow
     >

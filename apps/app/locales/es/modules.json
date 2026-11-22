@@ -58,16 +58,6 @@
     "button": "Añadir rápido",
     "empty": "Ningún módulo tiene una acción rápida. Activa módulos en los ajustes."
   },
-  "search": {
-    "title": "Buscar",
-    "open": "Buscar",
-    "placeholder": "Buscar módulos",
-    "hint": "Escribe para encontrar un módulo.",
-    "none": "No se encontró nada para «{{query}}».",
-    "contentSoon": "La búsqueda dentro de recetas, tareas y otros contenidos llegará más adelante.",
-    "sidebar": "Buscar",
-    "shortcut": "Ctrl K"
-  },
   "settings": {
     "name": "Ajustes",
     "description": "Cuenta, unidades, tema e idioma."

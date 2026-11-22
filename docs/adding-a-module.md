@@ -2,7 +2,7 @@
 
 The app is built from a list of modules (`apps/app/lib/modules.ts`). A module is one part of the
 household app: recipes, shopping, a calendar, expenses. Navigation, the Today screen, the "+" sheet,
-search and the "Modules" settings page all read this list. Adding a module needs a screen and one
+and the "Modules" settings page all read this list. Adding a module needs a screen and one
 registry entry. No navigation code changes.
 
 ## The structure
@@ -14,7 +14,7 @@ registry entry. No navigation code changes.
   `group` puts modules under a heading.
 - A module that is not built yet points to `/m/<id>`, a placeholder screen that shows its name and
   what it will do. When the real screen exists, change `route` and set `built: true`.
-- Switching a module off (Settings → Modules) removes it from the navigation, Today, "+" and search.
+- Switching a module off (Settings → Modules) removes it from the navigation, Today and "+".
   The choice is stored on the device (`lib/preferences.ts`). Modules with `required: true` (settings,
   household, the modules page itself) cannot be switched off.
 
@@ -46,8 +46,6 @@ registry entry. No navigation code changes.
    screen shows items in sections: add a section id to `todaySectionIds` and map your kind to it
    in `sectionOf` (both in `lib/today.ts`), and add its title under `today.sections` in every
    language file of `locales/*/modules.json`. A section without items is not shown.
-6. **Search results (optional).** Search finds modules by name and description today. Results from
-   inside a module (a recipe, a task) come later; see `components/shell-sheets.tsx`.
 
 ## What a module must provide
 
@@ -64,7 +62,7 @@ registry entry. No navigation code changes.
 
 ## Area settings
 
-An area can have a settings button (the gear next to search in its header). Money (currency and
+An area can have a settings button (the gear in its header). Money (currency and
 categories) and Food (units, pantry staples) have one. To add one, render an `AreaSettingsButton`
 (`components/area-settings-button.tsx`) for the area in `AreaSettings` in
 `components/area-screen.tsx`, with the area's sheet as its child. Settings that belong to one area
