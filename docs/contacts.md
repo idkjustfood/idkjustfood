@@ -6,7 +6,7 @@ the cloud edition, so self-hosted installs have it too.
 
 ## In the app
 
-- **Home → Contacts.** The dropdown at the top switches between your own contacts and the contacts
+- **Life → Contacts.** The dropdown at the top switches between your own contacts and the contacts
   of a household, like shopping lists.
 - A contact has a name, what they do (a role, like "Plumber"), a phone number, an email address and
   a note. Only the name is required. An email address must look like one or stay empty.

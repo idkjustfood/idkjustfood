@@ -7,7 +7,7 @@ cloud edition, so self-hosted installs have it too.
 
 ## In the app
 
-- **Home → Tasks** (also in the "+" sheet as "Add task"). The screen shows the tasks of the space
+- **Life → Tasks** (also in the "+" sheet as "Add task"). The screen shows the tasks of the space
   selected at the top: your personal tasks, or the tasks of one household. A new task goes to that
   space.
 - Open tasks come first, the soonest due day first, tasks without a day last. Done tasks are listed

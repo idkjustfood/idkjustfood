@@ -27,13 +27,13 @@ describe("module registry", () => {
     expect(areas.length % 2).toBe(0)
   })
 
-  test("tasks are in home, the meal planner in food, life keeps calendar, notes and wishlists", () => {
+  test("tasks and contacts are in life, the meal planner in food", () => {
     const ids = (area: "life" | "home" | "food") =>
       modulesInArea(area, []).map((m) => m.id)
     expect(ids("home").sort()).toEqual(
-      ["chores", "contacts", "documents", "inventory", "maintenance", "pets", "plants", "tasks"].sort()
+      ["chores", "documents", "inventory", "maintenance", "pets", "plants"].sort()
     )
-    expect(ids("life").sort()).toEqual(["calendar", "notes", "wishlists"])
+    expect(ids("life").sort()).toEqual(["calendar", "contacts", "notes", "tasks", "wishlists"])
     expect(ids("food")).toContain("planner")
   })
 
@@ -95,13 +95,13 @@ describe("areaOfRoute", () => {
     expect(areaOfRoute("(recipes)")).toBe("food")
     expect(areaOfRoute("planner")).toBe("food")
     expect(areaOfRoute("calendar")).toBe("life")
-    expect(areaOfRoute("tasks")).toBe("home")
+    expect(areaOfRoute("tasks")).toBe("life")
     expect(areaOfRoute("settings")).toBe("more")
   })
 
   test("a placeholder belongs to the area of its module", () => {
     expect(areaOfRoute("m/[id]", { id: "budget" })).toBe("money")
-    expect(areaOfRoute("m/[id]", { id: "tasks" })).toBe("home")
+    expect(areaOfRoute("m/[id]", { id: "tasks" })).toBe("life")
     expect(areaOfRoute("m/[id]", { id: "chores" })).toBe("home")
     expect(areaOfRoute("home")).toBe("home")
     expect(areaOfRoute("m/[id]", { id: "nope" })).toBe("more")
