@@ -62,7 +62,7 @@ export default function Inventory() {
       }
       actions={
         <Button
-          size="sm"
+          size="header"
           icon={Plus}
           label={t("add")}
           onPress={() => setForm("new")}

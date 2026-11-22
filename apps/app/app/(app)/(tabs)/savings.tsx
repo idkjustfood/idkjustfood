@@ -34,7 +34,7 @@ export default function Savings() {
       title={t("savings.title")}
       subtitle={t("savings.subtitle")}
       actions={
-        <Button size="sm" icon={Plus} label={t("savings.add")} onPress={() => setForm("new")} />
+        <Button size="header" icon={Plus} label={t("savings.add")} onPress={() => setForm("new")} />
       }
     >
       {(context) => (

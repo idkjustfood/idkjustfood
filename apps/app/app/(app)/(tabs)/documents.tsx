@@ -164,7 +164,7 @@ export default function Documents() {
         <View className="flex-row gap-2">
           {!current && (
             <Button
-              size={wide ? "sm" : "icon"}
+              size="header"
               variant="outline"
               icon={FolderPlus}
               label={t("documents:newFolder")}
@@ -173,7 +173,7 @@ export default function Documents() {
             />
           )}
           <Button
-            size={wide ? "sm" : "icon"}
+            size="header"
             icon={Plus}
             label={t("documents:upload")}
             disabled={!ready || upload.isPending}

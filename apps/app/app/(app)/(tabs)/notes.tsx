@@ -57,7 +57,7 @@ export default function Notes() {
       }
       actions={
         <Button
-          size="sm"
+          size="header"
           icon={Plus}
           label={t("add")}
           onPress={() => setForm("new")}

@@ -58,7 +58,7 @@ export function TaskScreen({ kind }: { kind: ChoreKind }) {
       toolbar={!wide && <SpaceSwitcher />}
       actions={
         <Button
-          size="sm"
+          size="header"
           icon={Plus}
           label={t(`chores:kinds.${kind}.add`)}
           onPress={() => setForm("new")}

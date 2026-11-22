@@ -57,7 +57,7 @@ export default function ShoppingLists() {
       toolbar={!wide && <SpaceSwitcher />}
       actions={
         <Button
-          size="sm"
+          size="header"
           icon={Plus}
           label={t("shopping:newList")}
           onPress={() => setNewOpen(true)}
