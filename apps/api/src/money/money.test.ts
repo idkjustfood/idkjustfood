@@ -208,6 +208,47 @@ describe("expenses", () => {
     ).toBe(404)
   })
 
+  test("an expense can be split by percentages, or not shared, or paid by the other", async () => {
+    const { id, member } = await household(olivia)
+    const me = (await addExpense({ householdId: id })).paidBy
+    const other = (
+      await body<{ expense: Expense }>(
+        await api.post("/api/money/expenses", member, {
+          householdId: id,
+          amountCents: 100,
+          date: "2026-11-20",
+        })
+      )
+    ).expense.paidBy
+
+    // Default: no split, which means equally.
+    expect((await overview()).expenses[0]!.split).toBeNull()
+
+    const seventy = await addExpense({ householdId: id, split: { [me]: 70, [other]: 30 } })
+    expect(seventy.split).toEqual({ [me]: 70, [other]: 30 })
+
+    // Paid by the other, for me only.
+    const forMe = await addExpense({ householdId: id, paidBy: other, split: { [me]: 100 } })
+    expect(forMe).toMatchObject({ paidBy: other, split: { [me]: 100 } })
+
+    // Change it later, and back to equally.
+    expect((await patch(`expenses/${seventy.id}`, { split: { [me]: 100 } })).status).toBe(200)
+    expect((await patch(`expenses/${seventy.id}`, { split: null })).status).toBe(200)
+    expect((await overview()).expenses.find((e) => e.id === seventy.id)!.split).toBeNull()
+
+    // Must add up to 100, and only members can take part.
+    for (const split of [{ [me]: 70, [other]: 20 }, { [me]: 50, stranger: 50 }]) {
+      expect(
+        (await api.post("/api/money/expenses", olivia, {
+          householdId: id,
+          amountCents: 100,
+          date: "2026-11-20",
+          split,
+        })).status
+      ).toBe(400)
+    }
+  })
+
   test("a household category can't be used for a personal expense", async () => {
     const { id } = await household(olivia)
     const shared = (await overview()).categories.find((c) => c.householdId === id)!
@@ -259,6 +300,47 @@ describe("budgets", () => {
 })
 
 describe("bills", () => {
+  test("a household bill can be paid by someone else and split", async () => {
+    const { id, member } = await household(olivia)
+    const other = (
+      await body<{ expense: Expense }>(
+        await api.post("/api/money/expenses", member, {
+          householdId: id,
+          amountCents: 100,
+          date: "2026-11-20",
+        })
+      )
+    ).expense.paidBy
+    const bill = (
+      await body<{ bill: Bill }>(
+        await api.post("/api/money/bills", olivia, {
+          householdId: id,
+          title: "Rent",
+          amountCents: 90000,
+          repeat: "monthly",
+          nextDue: "2026-11-30",
+        })
+      )
+    ).bill
+    const res = await api.post(`/api/money/bills/${bill.id}/pay`, olivia, {
+      expenseId: "pay-split",
+      date: "2026-11-30",
+      paidBy: other,
+      split: { [other]: 30, stranger: 70 },
+    })
+    expect(res.status).toBe(400)
+    const ok = await api.post(`/api/money/bills/${bill.id}/pay`, olivia, {
+      expenseId: "pay-split",
+      date: "2026-11-30",
+      paidBy: other,
+      split: { [other]: 100 },
+    })
+    expect(ok.status).toBe(200)
+    expect(
+      (await overview()).expenses.find((e) => e.id === "pay-split")
+    ).toMatchObject({ paidBy: other, split: { [other]: 100 }, billId: bill.id })
+  })
+
   async function addBill(extra: object = {}) {
     const res = await api.post("/api/money/bills", olivia, {
       title: "Rent",

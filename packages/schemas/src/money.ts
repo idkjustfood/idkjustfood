@@ -105,6 +105,26 @@ export function splitCents(total: number, parts: number): number[] {
   return Array.from({ length: count }, (_, i) => base + (i < extra ? 1 : 0))
 }
 
+/**
+ * Splits an amount by weights in whole cents (70 and 30 of 1001 is 701 + 300). The parts always
+ * add up to the amount exactly: leftover cents go to the biggest remainders, first come first.
+ */
+export function splitCentsBy(total: number, weights: readonly number[]): number[] {
+  const sum = weights.reduce((a, b) => a + b, 0)
+  if (weights.length === 0 || sum <= 0) return weights.map(() => 0)
+  const parts = weights.map((w) => Math.floor((total * w) / sum))
+  const order = weights
+    .map((w, index) => ({ index, rest: (total * w) % sum }))
+    .sort((a, b) => b.rest - a.rest || a.index - b.index)
+  let left = total - parts.reduce((a, b) => a + b, 0)
+  for (const { index } of order) {
+    if (left <= 0) break
+    parts[index]! += 1
+    left--
+  }
+  return parts
+}
+
 // ---------------------------------------------------------------------------
 // Categories
 // ---------------------------------------------------------------------------
@@ -151,6 +171,22 @@ export type MoneyCategoryUpdate = z.infer<typeof MoneyCategoryUpdateSchema>
 // Expenses
 // ---------------------------------------------------------------------------
 
+/**
+ * How an expense is shared: a percentage per person (whole numbers that add up to 100). Only the
+ * people in it carry a part, so `{ me: 100 }` is not shared at all, `{ me: 70, you: 30 }` is
+ * 70/30, and `{ you: 100 }` is paid for the other. `null` means equally between all members.
+ */
+export const ExpenseSplitSchema = z
+  .record(z.string(), z.number().int().min(1).max(100))
+  .refine(
+    (split) => {
+      const values = Object.values(split)
+      return values.length > 0 && values.reduce((a, b) => a + b, 0) === 100
+    },
+    { message: "The shares must add up to 100" }
+  )
+export type ExpenseSplit = z.infer<typeof ExpenseSplitSchema>
+
 export const ExpenseSchema = z.object({
   id: z.string(),
   amountCents: PositiveCentsSchema,
@@ -161,6 +197,8 @@ export const ExpenseSchema = z.object({
   note: z.string().max(500),
   /** Who paid. Matters in a household, where it decides who owes whom. */
   paidBy: z.string(),
+  /** How it is shared between household members, or null for equally between all of them. */
+  split: ExpenseSplitSchema.nullable(),
   /** The bill this expense paid, or null. */
   billId: z.string().nullable(),
   /** The receipt this expense came from, or null. */
@@ -178,6 +216,8 @@ export const ExpenseInputSchema = z.object({
   note: z.string().max(500).optional(),
   /** Left out means the person who adds it. */
   paidBy: z.string().optional(),
+  /** Left out or null means equally between all members. */
+  split: ExpenseSplitSchema.nullable().optional(),
   receiptId: z.string().nullable().optional(),
   householdId: householdId.optional(),
 })
@@ -189,6 +229,7 @@ export const ExpenseUpdateSchema = z.object({
   date: DateSchema.optional(),
   note: z.string().max(500).optional(),
   paidBy: z.string().optional(),
+  split: ExpenseSplitSchema.nullable().optional(),
 })
 export type ExpenseUpdate = z.infer<typeof ExpenseUpdateSchema>
 
@@ -222,28 +263,30 @@ export function spendingByCategory(
 }
 
 /**
- * Who owes whom in a household. Every expense is shared equally between all `members`, and the
- * person who paid is owed the other members' parts. Returns the net balance per member in cents:
- * positive means they are owed money, negative means they owe. The balances add up to zero.
+ * Who owes whom in a household. An expense is shared as its `split` says, or equally between all
+ * `members` when it has none. The person who paid is owed everyone else's part. Returns the net
+ * balance per member in cents: positive means they are owed money, negative means they owe. The
+ * balances add up to zero. An expense of someone who is not a member (any more), or shared with
+ * one, is left out.
  */
 export function balances(
-  expenses: readonly Pick<Expense, "amountCents" | "paidBy">[],
+  expenses: readonly (Pick<Expense, "amountCents" | "paidBy"> &
+    Partial<Pick<Expense, "split">>)[],
   members: readonly string[]
 ): Map<string, number> {
   const result = new Map(members.map((member) => [member, 0]))
   if (members.length === 0) return result
   for (const expense of expenses) {
     if (!result.has(expense.paidBy)) continue
-    const shares = splitCents(expense.amountCents, members.length)
-    // The payer's own share is the first one, so the extra cents are not always the same person's.
-    const others = members.filter((member) => member !== expense.paidBy)
-    const ownShare = shares[0]!
-    result.set(
-      expense.paidBy,
-      result.get(expense.paidBy)! + expense.amountCents - ownShare
+    const people = expense.split ? Object.keys(expense.split) : [...members]
+    if (people.some((person) => !result.has(person))) continue
+    const shares = splitCentsBy(
+      expense.amountCents,
+      people.map((person) => (expense.split ? expense.split[person]! : 1))
     )
-    others.forEach((member, index) => {
-      result.set(member, result.get(member)! - shares[index + 1]!)
+    result.set(expense.paidBy, result.get(expense.paidBy)! + expense.amountCents)
+    people.forEach((person, index) => {
+      result.set(person, result.get(person)! - shares[index]!)
     })
   }
   return result
@@ -406,6 +449,8 @@ export const BillPaySchema = z.object({
   /** The day it was paid. */
   date: DateSchema,
   paidBy: z.string().optional(),
+  /** How the expense is shared, like on an expense. Left out means equally. */
+  split: ExpenseSplitSchema.nullable().optional(),
 })
 export type BillPay = z.infer<typeof BillPaySchema>
 

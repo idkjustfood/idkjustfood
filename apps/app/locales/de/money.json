@@ -52,7 +52,7 @@
     "whoOwes": "Wer schuldet wem",
     "allEven": "Alle sind quitt.",
     "owes": "{{from}} schuldet {{to}} {{amount}}",
-    "splitNote": "Jede Ausgabe wird gleichmäßig auf alle Mitglieder des Haushalts verteilt.",
+    "splitNote": "Ausgaben werden gleichmäßig geteilt, sofern du keine andere Aufteilung wählst.",
     "search": "Ausgaben durchsuchen",
     "allCategories": "Alle",
     "empty": {
@@ -67,8 +67,24 @@
       "note": "Notiz",
       "notePlaceholder": "Zum Beispiel: Wocheneinkauf",
       "paidBy": "Bezahlt von",
-      "create": "Ausgabe hinzufügen"
-    }
+      "create": "Ausgabe hinzufügen",
+      "sharing": "Aufgeteilt auf",
+      "mode": {
+        "equal": "Gleichmäßig",
+        "alone": "Nicht geteilt",
+        "others": "Für die anderen",
+        "custom": "Prozente"
+      },
+      "modeHint": {
+        "equal": "Gleichmäßig auf alle Mitglieder aufgeteilt.",
+        "alone": "Nur für die Person, die bezahlt hat. Niemand schuldet etwas.",
+        "others": "Alle außer der zahlenden Person schulden ihren Anteil.",
+        "custom": "Lege fest, wie viel jede Person trägt."
+      },
+      "percentFor": "Anteil von {{name}} (%)",
+      "percentTotal": "Summe: {{total}} von 100 %"
+    },
+    "sharedList": "Geteilt: {{names}}"
   },
   "budget": {
     "title": "Budget",
@@ -131,6 +147,10 @@
       "nextDue": "Nächster Fälligkeitstag",
       "firstDue": "Erster Fälligkeitstag",
       "create": "Rechnung hinzufügen"
+    },
+    "pay": {
+      "title": "Rechnung bezahlen",
+      "confirm": "Als bezahlt markieren"
     }
   },
   "savings": {

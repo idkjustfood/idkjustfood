@@ -22,14 +22,15 @@ a time, the one selected at the top, because of this.
 
 - **Expenses** (also "Add expense" in the "+" sheet). A month at a time, with the total, the spending
   per category, a search field and category filters. Tap an expense to change or delete it. In a
-  household every expense says who paid, and "Who owes whom" splits all expenses equally between the
-  members and shows the payments that settle it (`balances` and `settleUp`).
+  household every expense says who paid and how it is shared, and "Who owes whom" adds that up and
+  shows the payments that settle it (`balances` and `settleUp`). See "Sharing expenses" below.
 - **Budget.** A monthly budget in total and per category. A card shows what is spent and what is left
   or over, with a bar and a word ("On track", "Nearly used" from 80 %, "Over budget"). The spending
   comes from the expenses, so nothing is entered twice. A budget applies to every month.
 - **Bills.** Rent, phone, insurance: an amount, the next due day and how often it comes back (weekly,
   monthly, every 3 months, yearly, or once). "Mark as paid" adds the expense (same amount and
-  category) and moves the bill to its next day in one step. A monthly bill keeps its day, also after a
+  category) and moves the bill to its next day in one step. In a household it first asks who paid and
+  how it is shared, starting from how the last payment of that bill was. A monthly bill keeps its day, also after a
   short month (31 January, 28 February, 31 March). Due and overdue bills also show on **Today**, where
   they can be marked as paid too.
 - **Savings.** Goals with a target amount and an optional day. Money is put into a goal or taken out
@@ -45,6 +46,23 @@ a time, the one selected at the top, because of this.
   there is a connection again, the same way as shopping lists (`lib/money-store.ts`, see
   [shopping-lists.md](shopping-lists.md)). Every change uses ids chosen on the device, so a retry
   never adds something twice.
+
+## Sharing expenses
+
+An expense in a household has a **payer** (`paidBy`) and a **split**: a percentage per person, whole
+numbers that add up to 100, only for the people who take part. No split (`null`, the default) means
+equally between all members. In the form:
+
+- **Equally**: between all members.
+- **Not shared**: `{ payer: 100 }`. Only the payer's own expense, nobody owes anything.
+- **For the others**: everyone but the payer shares it. Choose the other person as payer to
+  say "paid by the other" the same way, or use this when you paid for someone else.
+- **Percentages**: for example 70/30, one field per member.
+
+Bills use the same fields when they are paid (`POST /api/money/bills/{id}/pay` takes `paidBy` and
+`split`), and so does turning a receipt into expenses. Cents that do not divide evenly go to the
+biggest remainders (`splitCentsBy`), so every cent is counted. A payer or a person in the split who is
+not a member is refused (`400`); an old expense whose people have left is left out of "Who owes whom".
 
 ## Receipts
 
@@ -122,5 +140,5 @@ belongs to someone else gives `409`.
 ## Not built yet
 
 Reading the quantity or the unit price of an item, bank import, several currencies in one space,
-unequal splits between household members, reminders before a bill is due, a photo of the receipt in
+reminders before a bill is due, a photo of the receipt in
 the app, and adding a receipt from the phone's share sheet.

@@ -13,6 +13,7 @@ import {
   todayString,
   type Currency,
   type Expense,
+  type ExpenseSplit,
 } from "@workspace/schemas"
 
 import {
@@ -24,6 +25,7 @@ import {
 } from "@/components/money-parts"
 import { MoneyScreen, type MoneyContext } from "@/components/money-screen"
 import { MoneySettingsSheet } from "@/components/money-settings-sheet"
+import { ShareFields, useShare } from "@/components/share-fields"
 import { EmptyState } from "@/components/states"
 import { Button } from "@/components/ui/button"
 import { Chip } from "@/components/ui/chip"
@@ -235,6 +237,13 @@ function ExpensesBody({
                     shortDay(expense.date),
                     expense.note ? nameOf(expense.categoryId) : null,
                     householdId ? memberName(expense.paidBy) : null,
+                    householdId && expense.split
+                      ? t("expenses.sharedList", {
+                          names: Object.entries(expense.split)
+                            .map(([id, p]) => `${memberName(id)} ${p}%`)
+                            .join(", "),
+                        })
+                      : null,
                   ]
                     .filter(Boolean)
                     .join(" · ")}
@@ -282,6 +291,8 @@ type Values = {
   date: string
   note: string
   paidBy: string
+  /** Null is equally between all members. */
+  split: ExpenseSplit | null
 }
 
 function ExpenseForm({
@@ -311,12 +322,24 @@ function ExpenseForm({
   )
   const [date, setDate] = useState(expense?.date ?? todayString())
   const [note, setNote] = useState(expense?.note ?? "")
-  const [paidBy, setPaidBy] = useState(expense?.paidBy ?? actions.me)
+  const share = useShare(members, {
+    paidBy: expense?.paidBy ?? actions.me,
+    split: expense?.split ?? null,
+  })
 
   const cents = parseCents(amount)
-  const valid = cents !== null && cents > 0
+  const shared = !!householdId && members.length > 0
+  const valid = cents !== null && cents > 0 && (!shared || share.valid)
   const save = () => {
-    if (valid) onSave({ amountCents: cents, categoryId, date, note: note.trim(), paidBy })
+    if (!valid) return
+    onSave({
+      amountCents: cents,
+      categoryId,
+      date,
+      note: note.trim(),
+      paidBy: share.paidBy,
+      split: shared ? share.split : null,
+    })
   }
 
   return (
@@ -346,23 +369,7 @@ function ExpenseForm({
         maxLength={500}
         onSubmitEditing={save}
       />
-      {householdId && members.length > 0 && (
-        <View className="gap-2">
-          <Text className="text-sm font-medium text-foreground">
-            {t("expenses.form.paidBy")}
-          </Text>
-          <View className="flex-row flex-wrap gap-2">
-            {members.map((member) => (
-              <Chip
-                key={member.id}
-                label={member.name}
-                selected={paidBy === member.id}
-                onPress={() => setPaidBy(member.id)}
-              />
-            ))}
-          </View>
-        </View>
-      )}
+      {shared && <ShareFields share={share} />}
       <View className={cn("flex-row gap-3")}>
         {expense && (
           <Button

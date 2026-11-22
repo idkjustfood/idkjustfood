@@ -52,7 +52,7 @@
     "whoOwes": "Quién debe a quién",
     "allEven": "Todos están en paz.",
     "owes": "{{from}} debe {{amount}} a {{to}}",
-    "splitNote": "Cada gasto se reparte a partes iguales entre todos los miembros del hogar.",
+    "splitNote": "Los gastos se reparten a partes iguales, salvo que elijas otro reparto.",
     "search": "Buscar gastos",
     "allCategories": "Todas",
     "empty": {
@@ -67,8 +67,24 @@
       "note": "Nota",
       "notePlaceholder": "Por ejemplo: Compra semanal",
       "paidBy": "Pagado por",
-      "create": "Añadir gasto"
-    }
+      "create": "Añadir gasto",
+      "sharing": "Repartido entre",
+      "mode": {
+        "equal": "A partes iguales",
+        "alone": "No compartido",
+        "others": "Para los demás",
+        "custom": "Porcentajes"
+      },
+      "modeHint": {
+        "equal": "Se reparte a partes iguales entre todos los miembros.",
+        "alone": "Solo para quien pagó. Nadie debe nada.",
+        "others": "Todos menos quien pagó deben su parte.",
+        "custom": "Elige cuánto asume cada persona."
+      },
+      "percentFor": "Parte de {{name}} (%)",
+      "percentTotal": "Total: {{total}} de 100 %"
+    },
+    "sharedList": "Compartido: {{names}}"
   },
   "budget": {
     "title": "Presupuesto",
@@ -131,6 +147,10 @@
       "nextDue": "Próximo vencimiento",
       "firstDue": "Primer vencimiento",
       "create": "Añadir factura"
+    },
+    "pay": {
+      "title": "Pagar factura",
+      "confirm": "Marcar como pagada"
     }
   },
   "savings": {

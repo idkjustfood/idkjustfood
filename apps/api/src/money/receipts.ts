@@ -13,6 +13,7 @@ import {
 import {
   DateSchema,
   ExpenseSchema,
+  ExpenseSplitSchema,
   ReceiptCreateSchema,
   ReceiptSchema,
   ReceiptUpdateSchema,
@@ -159,6 +160,7 @@ const ToExpense = z
     expenseId: z.string().min(1).max(100),
     categoryId: z.string().nullable().optional(),
     paidBy: z.string().optional(),
+    split: ExpenseSplitSchema.nullable().optional(),
     date: DateSchema.optional().openapi({
       description: "Used when the receipt has no date of its own.",
     }),
@@ -424,7 +426,8 @@ export function receiptRoutes(
     if (
       (input.categoryId &&
         !(await store.categoryInSpace(input.categoryId, userId, receipt.organizationId))) ||
-      !(await store.mayPay(receipt.organizationId, userId, paidBy))
+      !(await store.mayPay(receipt.organizationId, userId, paidBy)) ||
+      !(await store.mayShare(receipt.organizationId, userId, input.split))
     ) {
       return c.json({ error: "Category or payer not found" }, 400)
     }
@@ -440,6 +443,7 @@ export function receiptRoutes(
       parts,
       date,
       paidBy,
+      split: input.split ?? null,
     })
     if (result.conflict) {
       return c.json({ error: "That id is already in use" }, 409)

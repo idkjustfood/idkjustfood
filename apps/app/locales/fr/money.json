@@ -52,7 +52,7 @@
     "whoOwes": "Qui doit quoi à qui",
     "allEven": "Tout le monde est à égalité.",
     "owes": "{{from}} doit {{amount}} à {{to}}",
-    "splitNote": "Chaque dépense est partagée à parts égales entre tous les membres du foyer.",
+    "splitNote": "Les dépenses sont partagées à parts égales, sauf si tu choisis un autre partage.",
     "search": "Rechercher des dépenses",
     "allCategories": "Toutes",
     "empty": {
@@ -67,8 +67,24 @@
       "note": "Note",
       "notePlaceholder": "Par exemple : Courses de la semaine",
       "paidBy": "Payé par",
-      "create": "Ajouter la dépense"
-    }
+      "create": "Ajouter la dépense",
+      "sharing": "Partagé entre",
+      "mode": {
+        "equal": "À parts égales",
+        "alone": "Non partagé",
+        "others": "Pour les autres",
+        "custom": "Pourcentages"
+      },
+      "modeHint": {
+        "equal": "Partagé à parts égales entre tous les membres.",
+        "alone": "Uniquement pour la personne qui a payé. Personne ne doit rien.",
+        "others": "Tous sauf la personne qui a payé doivent leur part.",
+        "custom": "Choisis la part de chaque personne."
+      },
+      "percentFor": "Part de {{name}} (%)",
+      "percentTotal": "Total : {{total}} sur 100 %"
+    },
+    "sharedList": "Partagé : {{names}}"
   },
   "budget": {
     "title": "Budget",
@@ -131,6 +147,10 @@
       "nextDue": "Prochaine échéance",
       "firstDue": "Première échéance",
       "create": "Ajouter la facture"
+    },
+    "pay": {
+      "title": "Payer la facture",
+      "confirm": "Marquer comme payée"
     }
   },
   "savings": {

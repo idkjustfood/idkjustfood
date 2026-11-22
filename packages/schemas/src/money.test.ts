@@ -2,6 +2,8 @@ import { describe, expect, test } from "bun:test"
 
 import {
   balances,
+  ExpenseSplitSchema,
+  splitCentsBy,
   budgetProgress,
   cleanReading,
   dueAfterPaying,
@@ -88,6 +90,61 @@ describe("balances", () => {
     }
     expect([...after.values()].every((v) => v === 0)).toBe(true)
     expect(payments.length).toBeLessThanOrEqual(2)
+  })
+
+  test("a 70/30 split makes the payer owed 30 %", () => {
+    const result = balances(
+      [{ amountCents: 10000, paidBy: "a", split: { a: 70, b: 30 } }],
+      ["a", "b"]
+    )
+    expect(result.get("a")).toBe(3000)
+    expect(result.get("b")).toBe(-3000)
+  })
+
+  test("an expense that is not shared changes nothing", () => {
+    const result = balances(
+      [{ amountCents: 4500, paidBy: "a", split: { a: 100 } }],
+      ["a", "b"]
+    )
+    expect(result.get("a")).toBe(0)
+    expect(result.get("b")).toBe(0)
+  })
+
+  test("paid by the other for me: I owe it all", () => {
+    const result = balances(
+      [{ amountCents: 4500, paidBy: "b", split: { a: 100 } }],
+      ["a", "b"]
+    )
+    expect(result.get("a")).toBe(-4500)
+    expect(result.get("b")).toBe(4500)
+  })
+
+  test("uneven splits still add up to zero", () => {
+    const result = balances(
+      [{ amountCents: 1001, paidBy: "a", split: { a: 33, b: 33, c: 34 } }],
+      ["a", "b", "c"]
+    )
+    expect([...result.values()].reduce((x, y) => x + y, 0)).toBe(0)
+  })
+
+  test("an expense shared with a non-member is ignored", () => {
+    const result = balances(
+      [{ amountCents: 500, paidBy: "a", split: { a: 50, x: 50 } }],
+      ["a", "b"]
+    )
+    expect(result.get("a")).toBe(0)
+  })
+
+  test("splitCentsBy keeps every cent", () => {
+    expect(splitCentsBy(1001, [70, 30])).toEqual([701, 300])
+    expect(splitCentsBy(100, [1, 1, 1])).toEqual([34, 33, 33])
+    expect(splitCentsBy(5, [100])).toEqual([5])
+  })
+
+  test("the split must add up to 100", () => {
+    expect(ExpenseSplitSchema.safeParse({ a: 70, b: 30 }).success).toBe(true)
+    expect(ExpenseSplitSchema.safeParse({ a: 70, b: 20 }).success).toBe(false)
+    expect(ExpenseSplitSchema.safeParse({}).success).toBe(false)
   })
 
   test("expenses of people who are not members are ignored", () => {

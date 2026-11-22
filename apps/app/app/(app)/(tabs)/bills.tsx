@@ -18,6 +18,7 @@ import {
   categoryName,
   DayField,
 } from "@/components/money-parts"
+import { PayBillSheet } from "@/components/pay-bill-sheet"
 import { StateTag } from "@/components/money-progress"
 import { MoneyScreen, type MoneyContext } from "@/components/money-screen"
 import { EmptyState } from "@/components/states"
@@ -58,6 +59,7 @@ function BillsBody({
   setForm: (form: Bill | "new" | null) => void
 }) {
   const { t } = useTranslation("money")
+  const [paying, setPaying] = useState<Bill | null>(null)
   const { money, householdId, actions, today } = context
   const bills = billsByDue(money.bills)
 
@@ -133,7 +135,9 @@ function BillsBody({
                       icon={Check}
                       label={t("bills.markPaid")}
                       accessibilityLabel={t("bills.markPaidFor", { name: bill.title })}
-                      onPress={() => actions.payBill(bill.id, today)}
+                      onPress={() =>
+                        bill.householdId ? setPaying(bill) : actions.payBill(bill.id, today)
+                      }
                     />
                   )}
                 </View>
@@ -143,6 +147,7 @@ function BillsBody({
         </View>
       )}
 
+      <PayBillSheet bill={paying} onClose={() => setPaying(null)} />
       <BillForm
         key={form === null ? "closed" : form === "new" ? "new" : form.id}
         bill={form === null || form === "new" ? null : form}

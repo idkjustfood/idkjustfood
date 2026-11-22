@@ -7499,6 +7499,9 @@ export interface components {
             date: string;
             note: string;
             paidBy: string;
+            split: {
+                [key: string]: number;
+            } | null;
             billId: string | null;
             receiptId: string | null;
             householdId: string | null;
@@ -7575,6 +7578,9 @@ export interface components {
             date: string;
             note?: string;
             paidBy?: string;
+            split?: {
+                [key: string]: number;
+            } | null;
             receiptId?: string | null;
             householdId?: string | null;
         };
@@ -7584,6 +7590,9 @@ export interface components {
             date?: string;
             note?: string;
             paidBy?: string;
+            split?: {
+                [key: string]: number;
+            } | null;
         };
         BudgetInput: {
             id?: string;
@@ -7613,6 +7622,9 @@ export interface components {
             expenseId: string;
             date: string;
             paidBy?: string;
+            split?: {
+                [key: string]: number;
+            } | null;
         };
         SavingsGoalInput: {
             id?: string;
@@ -7971,6 +7983,9 @@ export interface components {
             expenseId: string;
             categoryId?: string | null;
             paidBy?: string;
+            split?: {
+                [key: string]: number;
+            } | null;
             /** @description Used when the receipt has no date of its own. */
             date?: string;
         };
