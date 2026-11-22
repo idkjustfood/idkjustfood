@@ -86,6 +86,8 @@ how offline works.
 Entries with a title and a colour on a day, in a month view. Personal or for a household, offline on
 the phone. Today shows the entries of today and tomorrow. See [calendar](docs/calendar.md).
 
+Tasks (one-off to-dos, personal or for a household, offline on the phone, assignable in a household) work end to end. See [tasks](docs/tasks.md).
+
 ## Money
 
 Expenses, budgets, bills, savings goals and receipts, personal or for a household, offline on the

@@ -1,0 +1,49 @@
+{
+  "title": "Tareas",
+  "ownTasks": "Tus propias tareas",
+  "sharedWith": "Compartido con {{name}}",
+  "add": "Añadir tarea",
+  "loading": "Cargando tareas",
+  "loadError": {
+    "title": "No se pudieron cargar tus tareas",
+    "message": "Tus tareas se guardan en este teléfono una vez cargadas. Inténtalo de nuevo cuando estés conectado."
+  },
+  "empty": {
+    "title": "Aún no hay tareas",
+    "message": "Añade cosas que quieres hacer una vez, como llamar al fontanero. Una tarea puede tener un día."
+  },
+  "open_one": "Por hacer · {{count}}",
+  "open_other": "Por hacer · {{count}}",
+  "done_one": "Hecha · {{count}}",
+  "done_other": "Hechas · {{count}}",
+  "allDone": {
+    "title": "Nada pendiente",
+    "message": "Todas tus tareas están hechas."
+  },
+  "dueToday": "Vence hoy",
+  "due": "Vence {{day}}",
+  "overdue": "Venció {{day}}",
+  "assignedTo": "Para {{name}}",
+  "markDone": "Marcar {{title}} como hecha",
+  "reopen": "Abrir {{title}} de nuevo, no está hecha",
+  "edit": "Editar {{title}}",
+  "form": {
+    "newTitle": "Nueva tarea",
+    "editTitle": "Editar tarea",
+    "title": "Tarea",
+    "placeholder": "Por ejemplo: Llamar al fontanero",
+    "note": "Nota",
+    "day": "Día de vencimiento",
+    "addDay": "Añadir un día",
+    "removeDay": "Sin día",
+    "dayBefore": "Día anterior",
+    "dayAfter": "Día siguiente",
+    "assignee": "Asignada a",
+    "nobody": "Nadie",
+    "visiblePersonal": "Solo tú puedes ver esta tarea.",
+    "visibleHousehold": "Todos en {{name}} pueden ver y cambiar esta tarea.",
+    "create": "Añadir tarea",
+    "save": "Guardar",
+    "delete": "Eliminar"
+  }
+}

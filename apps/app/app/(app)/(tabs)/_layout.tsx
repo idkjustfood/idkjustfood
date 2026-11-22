@@ -33,6 +33,7 @@ export default function TabsLayout() {
         <Tabs.Screen name="add" />
         <Tabs.Screen name="planner" />
         <Tabs.Screen name="calendar" />
+        <Tabs.Screen name="tasks" />
         <Tabs.Screen name="chores" />
         <Tabs.Screen name="maintenance" />
         <Tabs.Screen name="plants" />

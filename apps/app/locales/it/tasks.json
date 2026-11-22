@@ -1,0 +1,49 @@
+{
+  "title": "Attività",
+  "ownTasks": "Le tue attività",
+  "sharedWith": "Condiviso con {{name}}",
+  "add": "Aggiungi attività",
+  "loading": "Caricamento delle attività",
+  "loadError": {
+    "title": "Impossibile caricare le tue attività",
+    "message": "Le tue attività vengono salvate su questo telefono dopo il caricamento. Riprova quando sei online."
+  },
+  "empty": {
+    "title": "Ancora nessuna attività",
+    "message": "Aggiungi le cose che vuoi fare una sola volta, come chiamare l'idraulico. Un'attività può avere un giorno."
+  },
+  "open_one": "Da fare · {{count}}",
+  "open_other": "Da fare · {{count}}",
+  "done_one": "Fatta · {{count}}",
+  "done_other": "Fatte · {{count}}",
+  "allDone": {
+    "title": "Niente da fare",
+    "message": "Tutte le tue attività sono fatte."
+  },
+  "dueToday": "Scade oggi",
+  "due": "Scade {{day}}",
+  "overdue": "Scadeva {{day}}",
+  "assignedTo": "Per {{name}}",
+  "markDone": "Segna {{title}} come fatta",
+  "reopen": "Riapri {{title}}, non è fatta",
+  "edit": "Modifica {{title}}",
+  "form": {
+    "newTitle": "Nuova attività",
+    "editTitle": "Modifica attività",
+    "title": "Attività",
+    "placeholder": "Per esempio: Chiamare l'idraulico",
+    "note": "Nota",
+    "day": "Giorno di scadenza",
+    "addDay": "Aggiungi un giorno",
+    "removeDay": "Nessun giorno",
+    "dayBefore": "Giorno prima",
+    "dayAfter": "Giorno dopo",
+    "assignee": "Assegnata a",
+    "nobody": "Nessuno",
+    "visiblePersonal": "Solo tu puoi vedere questa attività.",
+    "visibleHousehold": "Tutti in {{name}} possono vedere e modificare questa attività.",
+    "create": "Aggiungi attività",
+    "save": "Salva",
+    "delete": "Elimina"
+  }
+}

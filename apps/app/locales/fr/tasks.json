@@ -1,0 +1,49 @@
+{
+  "title": "Tâches",
+  "ownTasks": "Tes propres tâches",
+  "sharedWith": "Partagé avec {{name}}",
+  "add": "Ajouter une tâche",
+  "loading": "Chargement des tâches",
+  "loadError": {
+    "title": "Impossible de charger tes tâches",
+    "message": "Tes tâches sont enregistrées sur ce téléphone une fois chargées. Réessaie quand tu es en ligne."
+  },
+  "empty": {
+    "title": "Pas encore de tâches",
+    "message": "Ajoute ce que tu veux faire une seule fois, par exemple appeler le plombier. Une tâche peut avoir un jour."
+  },
+  "open_one": "À faire · {{count}}",
+  "open_other": "À faire · {{count}}",
+  "done_one": "Terminée · {{count}}",
+  "done_other": "Terminées · {{count}}",
+  "allDone": {
+    "title": "Plus rien à faire",
+    "message": "Toutes tes tâches sont terminées."
+  },
+  "dueToday": "À faire aujourd'hui",
+  "due": "Pour le {{day}}",
+  "overdue": "Était prévue le {{day}}",
+  "assignedTo": "Pour {{name}}",
+  "markDone": "Marquer {{title}} comme terminée",
+  "reopen": "Rouvrir {{title}}, elle n'est pas terminée",
+  "edit": "Modifier {{title}}",
+  "form": {
+    "newTitle": "Nouvelle tâche",
+    "editTitle": "Modifier la tâche",
+    "title": "Tâche",
+    "placeholder": "Par exemple : Appeler le plombier",
+    "note": "Note",
+    "day": "Jour prévu",
+    "addDay": "Ajouter un jour",
+    "removeDay": "Aucun jour",
+    "dayBefore": "Jour précédent",
+    "dayAfter": "Jour suivant",
+    "assignee": "Attribuée à",
+    "nobody": "Personne",
+    "visiblePersonal": "Toi seul peux voir cette tâche.",
+    "visibleHousehold": "Tous les membres de {{name}} peuvent voir et modifier cette tâche.",
+    "create": "Ajouter la tâche",
+    "save": "Enregistrer",
+    "delete": "Supprimer"
+  }
+}

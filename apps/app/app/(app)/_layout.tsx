@@ -9,6 +9,7 @@ import { InventoryProvider } from "@/lib/inventory"
 import { MoneyProvider } from "@/lib/money"
 import { takePendingInvite } from "@/lib/pending-invite"
 import { ShoppingProvider } from "@/lib/shopping"
+import { TodoProvider } from "@/lib/todos"
 
 export default function AppLayout() {
   // Someone opened an invite link, then logged in: take them back to it.
@@ -21,6 +22,7 @@ export default function AppLayout() {
     <ShoppingProvider>
       <ChoreProvider>
       <CalendarProvider>
+      <TodoProvider>
       <InventoryProvider>
       <ContactProvider>
       <MoneyProvider>
@@ -39,6 +41,7 @@ export default function AppLayout() {
       </MoneyProvider>
       </ContactProvider>
       </InventoryProvider>
+      </TodoProvider>
       </CalendarProvider>
       </ChoreProvider>
     </ShoppingProvider>

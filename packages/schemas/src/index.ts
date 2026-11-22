@@ -2,6 +2,7 @@
 // The API and the app both use this package, so they agree on what a recipe is.
 export * from "./autoplan.js"
 export * from "./calendar.js"
+export * from "./tasks.js"
 export * from "./contacts.js"
 export * from "./inventory.js"
 export * from "./chores.js"

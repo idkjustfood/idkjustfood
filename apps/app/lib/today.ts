@@ -14,6 +14,8 @@ import {
   type ChoreKind,
   type Meal,
   type MealSlot,
+  type Task,
+  tasksDue,
 } from "@workspace/schemas"
 
 import { kindOf, taskKinds, type TaskModuleId } from "./task-kinds"
@@ -32,6 +34,16 @@ export type TodayItem =
       /** Whether the entry is today or tomorrow. Tomorrow's entries are shown in their own section. */
       day: "today" | "tomorrow"
       /** The household the entry is for, or null for a personal entry. */
+      householdId: string | null
+    }
+  | {
+      kind: "todo"
+      id: string
+      moduleId: "tasks"
+      title: string
+      /** How many days ago the task was due. 0 when it is due today. */
+      overdueDays: number
+      /** The household the task is for, or null for a personal task. */
       householdId: string | null
     }
   | {
@@ -98,6 +110,37 @@ export function calendarItems(
     ...entriesOn(entries, today).map(toItem("today")),
     ...entriesOn(entries, addDays(today, 1)).map(toItem("tomorrow")),
   ]
+}
+
+/**
+ * To-do tasks that are open and due today or earlier, the most overdue first. Tasks without a
+ * day, tasks due later and tasks that are done are left out. Personal and household tasks come
+ * together, and each says which it is.
+ */
+export function todoItems(
+  tasks: readonly Pick<
+    Task,
+    "id" | "title" | "dueDate" | "doneAt" | "householdId"
+  >[],
+  today: string
+): TodayItem[] {
+  return tasksDue(tasks, today)
+    .map((task) => ({
+      kind: "todo" as const,
+      id: task.id,
+      moduleId: "tasks" as const,
+      title: task.title,
+      overdueDays: Math.max(0, daysBetween(task.dueDate!, today)),
+      householdId: task.householdId,
+    }))
+    .sort((a, b) => b.overdueDays - a.overdueDays)
+}
+
+/** How many days `to` is after `from` (both `YYYY-MM-DD`). */
+function daysBetween(from: string, to: string) {
+  return Math.round(
+    (Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000
+  )
 }
 
 /** Meals eaten on `date`, in the order of the day. */
@@ -195,6 +238,7 @@ export const todaySectionIds = [
   "calendar",
   "meals",
   "shopping",
+  "todos",
   "tasks",
   "bills",
   "tomorrow",
@@ -209,6 +253,8 @@ const sectionOf = (item: TodayItem): TodaySectionId => {
       return "meals"
     case "shopping":
       return "shopping"
+    case "todo":
+      return "todos"
     case "chore":
       return "tasks"
     case "bill":

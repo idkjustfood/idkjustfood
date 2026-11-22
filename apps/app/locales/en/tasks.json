@@ -1,0 +1,49 @@
+{
+  "title": "Tasks",
+  "ownTasks": "Your own tasks",
+  "sharedWith": "Shared with {{name}}",
+  "add": "Add task",
+  "loading": "Loading tasks",
+  "loadError": {
+    "title": "Could not load your tasks",
+    "message": "Your tasks are saved on this phone once they have loaded. Try again when you are online."
+  },
+  "empty": {
+    "title": "No tasks yet",
+    "message": "Add things you want to do once, like calling the plumber. A task can have a day."
+  },
+  "open_one": "To do · {{count}}",
+  "open_other": "To do · {{count}}",
+  "done_one": "Done · {{count}}",
+  "done_other": "Done · {{count}}",
+  "allDone": {
+    "title": "Nothing left to do",
+    "message": "All your tasks are done."
+  },
+  "dueToday": "Due today",
+  "due": "Due {{day}}",
+  "overdue": "Was due {{day}}",
+  "assignedTo": "For {{name}}",
+  "markDone": "Mark {{title}} as done",
+  "reopen": "Open {{title}} again, it is not done",
+  "edit": "Edit {{title}}",
+  "form": {
+    "newTitle": "New task",
+    "editTitle": "Edit task",
+    "title": "Task",
+    "placeholder": "For example: Call the plumber",
+    "note": "Note",
+    "day": "Due day",
+    "addDay": "Add a day",
+    "removeDay": "No day",
+    "dayBefore": "Day before",
+    "dayAfter": "Day after",
+    "assignee": "Assigned to",
+    "nobody": "Nobody",
+    "visiblePersonal": "Only you can see this task.",
+    "visibleHousehold": "Everyone in {{name}} can see and change this task.",
+    "create": "Add task",
+    "save": "Save",
+    "delete": "Delete"
+  }
+}
