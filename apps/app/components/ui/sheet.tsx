@@ -1,6 +1,12 @@
 import type { ReactNode } from "react"
 import { useTranslation } from "react-i18next"
-import { Modal, Pressable, Text, View } from "react-native"
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  useWindowDimensions,
+  View,
+} from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { useIsWide } from "@/lib/layout"
@@ -24,6 +30,8 @@ export function Sheet({
   const { t } = useTranslation("common")
   const wide = useIsWide()
   const insets = useSafeAreaInsets()
+  const { height } = useWindowDimensions()
+  const maxHeight = Math.round(height * (wide ? 0.85 : 0.9))
 
   return (
     <Modal
@@ -46,7 +54,10 @@ export function Sheet({
         <View
           role="dialog"
           aria-label={title}
-          style={wide ? undefined : { paddingBottom: insets.bottom + 16 }}
+          style={{
+            maxHeight,
+            ...(wide ? null : { paddingBottom: insets.bottom + 16 }),
+          }}
           className={cn(
             "w-full gap-4 border-border bg-background p-5",
             wide ? "max-w-md rounded-lg border" : "rounded-t-2xl border-t"
@@ -56,12 +67,18 @@ export function Sheet({
             <View className="h-1.5 w-10 self-center rounded-full bg-muted" />
           )}
           <Heading
-           
             className="text-lg font-semibold text-foreground"
           >
             {title}
           </Heading>
-          {children}
+          <ScrollView
+            className="shrink"
+            contentContainerClassName="gap-4"
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            {children}
+          </ScrollView>
         </View>
       </View>
     </Modal>
