@@ -115,7 +115,7 @@ export const openrouter: AiProvider = {
 
   imageReader(options) {
     return {
-      async readImages(images) {
+      async readImages(images, readOptions) {
         try {
           const { text } = await generateText({
             model: modelFor(options),
@@ -130,7 +130,10 @@ export const openrouter: AiProvider = {
                     image: image.data,
                     mediaType: image.mediaType,
                   })),
-                  { type: "text" as const, text: readImagesPrompt },
+                  {
+                    type: "text" as const,
+                    text: readOptions?.instruction ?? readImagesPrompt,
+                  },
                 ],
               },
             ],

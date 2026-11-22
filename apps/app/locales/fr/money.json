@@ -1,0 +1,201 @@
+{
+  "loading": "Chargement de votre argent",
+  "loadError": {
+    "title": "Impossible de charger votre argent",
+    "message": "Votre argent est conservé sur ce téléphone une fois chargé. Réessayez quand vous êtes en ligne."
+  },
+  "previousMonth": "Mois précédent",
+  "nextMonth": "Mois suivant",
+  "dayBefore": "Jour précédent",
+  "dayAfter": "Jour suivant",
+  "day": "Jour",
+  "category": "Catégorie",
+  "uncategorized": "Sans catégorie",
+  "categories": {
+    "groceries": "Courses",
+    "eatingOut": "Restaurants",
+    "home": "Maison",
+    "transport": "Transport",
+    "health": "Santé",
+    "fun": "Loisirs",
+    "clothing": "Vêtements",
+    "gifts": "Cadeaux",
+    "other": "Autre"
+  },
+  "amountIn": "Montant ({{currency}})",
+  "amountInvalid": "Saisissez un montant comme 12,50",
+  "form": {
+    "save": "Enregistrer",
+    "delete": "Supprimer"
+  },
+  "settings": {
+    "title": "Réglages de l’argent",
+    "forHousehold": "Ces réglages sont pour {{name}}. Tout le foyer les utilise.",
+    "forPersonal": "Ces réglages sont pour votre argent personnel.",
+    "currency": "Devise",
+    "categories": "Catégories",
+    "categoryName": "Nom de la catégorie",
+    "rename": "Renommer {{name}}",
+    "deleteCategory": "Supprimer {{name}}",
+    "deleteHint": "Supprimer une catégorie conserve ses dépenses et ses factures, elles n’ont simplement plus de catégorie.",
+    "newCategory": "Nouvelle catégorie",
+    "addCategory": "Ajouter"
+  },
+  "expenses": {
+    "title": "Dépenses",
+    "subtitle": "Ce que vous dépensez, mois par mois",
+    "add": "Ajouter une dépense",
+    "spent": "Dépensé ce mois-ci",
+    "spentTotal": "Dépensé ce mois-ci : {{amount}}",
+    "someone": "Quelqu’un",
+    "whoOwes": "Qui doit quoi à qui",
+    "allEven": "Tout le monde est à égalité.",
+    "owes": "{{from}} doit {{amount}} à {{to}}",
+    "splitNote": "Chaque dépense est partagée à parts égales entre tous les membres du foyer.",
+    "search": "Rechercher des dépenses",
+    "allCategories": "Toutes",
+    "empty": {
+      "title": "Pas encore de dépenses",
+      "message": "Ajoutez ce que vous dépensez et voyez où va votre argent.",
+      "filtered": "Aucune dépense ne correspond. Essayez un autre mois ou une autre catégorie."
+    },
+    "edit": "Modifier {{name}}",
+    "form": {
+      "newTitle": "Nouvelle dépense",
+      "editTitle": "Modifier la dépense",
+      "note": "Note",
+      "notePlaceholder": "Par exemple : Courses de la semaine",
+      "paidBy": "Payé par",
+      "create": "Ajouter la dépense"
+    }
+  },
+  "budget": {
+    "title": "Budget",
+    "subtitle": "Combien vous voulez dépenser chaque mois",
+    "add": "Définir un budget",
+    "total": "Total",
+    "empty": {
+      "title": "Pas encore de budget",
+      "message": "Définissez combien vous voulez dépenser chaque mois, au total ou par catégorie."
+    },
+    "edit": "Modifier le budget de {{name}}",
+    "state": {
+      "ok": "Dans les clous",
+      "nearly": "Presque épuisé",
+      "over": "Dépassé"
+    },
+    "percent": "{{percent}} pour cent dépensés",
+    "spentOf": "{{spent}} sur {{budget}}",
+    "left": "{{amount}} restants",
+    "overBy": "{{amount}} de trop",
+    "form": {
+      "newTitle": "Définir un budget",
+      "editTitle": "Modifier le budget",
+      "for": "Budget pour",
+      "alreadySet": "Ce budget est de {{amount}} actuellement. Enregistrer le modifie.",
+      "perMonth": "Montant par mois ({{currency}})",
+      "hint": "Le budget s’applique à chaque mois. Ce que vous dépensez vient de vos dépenses."
+    }
+  },
+  "bills": {
+    "title": "Factures",
+    "subtitle": "Ce qu’il faut payer, et quand",
+    "add": "Ajouter une facture",
+    "empty": {
+      "title": "Pas encore de factures",
+      "message": "Ajoutez le loyer, le téléphone ou l’assurance, et ne ratez plus une échéance."
+    },
+    "edit": "Modifier {{name}}",
+    "repeat": {
+      "weekly": "Chaque semaine",
+      "monthly": "Chaque mois",
+      "quarterly": "Tous les 3 mois",
+      "yearly": "Chaque année",
+      "never": "Une fois"
+    },
+    "paid": "Payée",
+    "overdue_one": "En retard de {{count}} jour",
+    "overdue_other": "En retard de {{count}} jours",
+    "dueToday": "À payer aujourd’hui",
+    "dueIn_one": "À payer dans {{count}} jour",
+    "dueIn_other": "À payer dans {{count}} jours",
+    "markPaid": "Marquer comme payée",
+    "markPaidFor": "Marquer {{name}} comme payée",
+    "form": {
+      "newTitle": "Nouvelle facture",
+      "editTitle": "Modifier la facture",
+      "title": "Nom",
+      "placeholder": "Par exemple : Loyer",
+      "repeat": "Se répète",
+      "nextDue": "Prochaine échéance",
+      "firstDue": "Première échéance",
+      "create": "Ajouter la facture"
+    }
+  },
+  "savings": {
+    "title": "Épargne",
+    "subtitle": "Épargner pour quelque chose",
+    "add": "Ajouter un objectif",
+    "empty": {
+      "title": "Pas encore d’objectifs d’épargne",
+      "message": "Choisissez ce pour quoi épargner et voyez où vous en êtes."
+    },
+    "open": "Ouvrir {{name}}",
+    "reached": "Atteint",
+    "percent": "{{percent}} pour cent épargnés",
+    "savedOf": "{{saved}} épargnés sur {{target}}",
+    "perMonth": "Mettez {{amount}} de côté par mois pour l’atteindre d’ici le {{day}}.",
+    "byDay": "Date de l’objectif : {{day}}",
+    "dayPassed": "La date de l’objectif, {{day}}, est passée.",
+    "putIn": "Verser",
+    "takeOut": "Retirer",
+    "history": "Historique",
+    "noHistory": "Rien de versé pour l’instant.",
+    "putInEntry": "{{amount}} versés",
+    "takeOutEntry": "{{amount}} retirés",
+    "deleteEntry": "Supprimer cette ligne",
+    "editGoal": "Modifier l’objectif",
+    "form": {
+      "newTitle": "Nouvel objectif d’épargne",
+      "editTitle": "Modifier l’objectif d’épargne",
+      "name": "Nom",
+      "placeholder": "Par exemple : Voyage d’été",
+      "target": "Montant visé ({{currency}})",
+      "addDay": "Ajouter une date",
+      "day": "Date de l’objectif",
+      "noDay": "Pas de date",
+      "create": "Ajouter l’objectif"
+    }
+  },
+  "receipts": {
+    "title": "Tickets",
+    "subtitle": "Des photos de tickets, transformées en dépenses",
+    "cameraDenied": "Autorisez l’appareil photo dans les réglages pour prendre une photo, ou choisissez-en une.",
+    "photoFailed": "Impossible d’utiliser cette photo. Essayez-en une autre.",
+    "takePhoto": "Prendre une photo",
+    "choosePhoto": "Choisir une photo",
+    "reading": "Lecture du ticket. Cela prend quelques secondes.",
+    "needsConnection": "L’IA lit le ticket sur le serveur, il faut donc une connexion pour en ajouter un. Ce qu’elle ne peut pas lire reste vide. Vérifiez les valeurs avant de les utiliser.",
+    "empty": {
+      "title": "Pas encore de tickets",
+      "message": "Prenez un ticket en photo et transformez-le en dépense."
+    },
+    "open": "Ouvrir le ticket de {{name}}",
+    "unknownShop": "Magasin inconnu",
+    "noDate": "Pas de date",
+    "noTotal": "Pas de total",
+    "status": {
+      "added": "Ajouté comme dépense",
+      "failed": "Vérifiez les valeurs"
+    },
+    "form": {
+      "title": "Ticket",
+      "check": "Ces valeurs ont été lues par une IA et peuvent être fausses. Vérifiez-les et corrigez ce qui ne va pas.",
+      "shop": "Magasin",
+      "addDate": "Ajouter une date",
+      "date": "Date",
+      "alreadyAdded": "Ce ticket est déjà une dépense.",
+      "addExpense": "Ajouter comme dépense"
+    }
+  }
+}

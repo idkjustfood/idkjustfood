@@ -4,10 +4,13 @@ import { useAppState } from "@/lib/app-state"
 import { useCalendarState } from "@/lib/calendar"
 import { useChoreState, useToday } from "@/lib/chores"
 import { useHousehold } from "@/lib/households"
+import { useMoneyState } from "@/lib/money"
+import { moneyOfSpace } from "@/lib/money-view"
 import { usePlans, useWeek } from "@/lib/planner"
 import { useShoppingState } from "@/lib/shopping"
 import { inSpace } from "@/lib/space"
 import {
+  billItems,
   calendarItems,
   choreItems,
   mealItems,
@@ -17,7 +20,7 @@ import {
 
 /**
  * What is on today, from every enabled module that provides items (the calendar, the meal
- * planner, shopping and chores for now). The calendar also brings tomorrow's entries, and shows
+ * planner, shopping, chores and bills for now). The calendar also brings tomorrow's entries, and shows
  * personal and household entries together, whichever space is selected. To add a module, add its items here; see `docs/adding-a-module.md`.
  */
 export function useTodayItems() {
@@ -32,6 +35,7 @@ export function useTodayItems() {
   const { lists } = useShoppingState()
   const { chores } = useChoreState()
   const { entries } = useCalendarState()
+  const money = useMoneyState().data
   const choreDay = useToday()
 
   const items = timeline(
@@ -40,6 +44,7 @@ export function useTodayItems() {
       ...mealItems(week.data?.meals ?? [], today),
       ...shoppingItems(inSpace(lists, space)),
       ...choreItems(inSpace(chores, space), choreDay),
+      ...billItems(moneyOfSpace(money, space).bills, choreDay),
     ],
     disabledModules
   )

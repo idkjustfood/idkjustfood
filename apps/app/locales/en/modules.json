@@ -36,6 +36,7 @@
       "meals": "Meals",
       "shopping": "Shopping",
       "tasks": "Tasks",
+      "bills": "Bills",
       "tomorrow": "Tomorrow"
     },
     "slots": {
@@ -154,29 +155,24 @@
   },
   "budget": {
     "name": "Budget",
-    "description": "Spending by category.",
-    "soon": "See what you spend by category and stay within your budget."
+    "description": "Monthly budgets, in total and per category."
   },
   "expenses": {
     "name": "Expenses",
-    "description": "Personal and shared, who owes whom.",
-    "soon": "Track expenses and see who owes whom in the household.",
+    "description": "What you spend, personal or shared with your household.",
     "quickAction": "Add expense"
   },
   "bills": {
     "name": "Bills and subscriptions",
-    "description": "Due dates for bills and subscriptions.",
-    "soon": "Keep bills and subscriptions with their due dates."
+    "description": "Bills that come back, with their due days."
   },
   "savings": {
     "name": "Savings goals",
-    "description": "Save towards something together.",
-    "soon": "Set savings goals and follow your progress."
+    "description": "Savings goals, and how much to put aside each month."
   },
   "receipts": {
     "name": "Receipts",
-    "description": "Receipts and grocery spending.",
-    "soon": "Scan receipts and see what you spend on groceries.",
+    "description": "Photos of receipts, turned into expenses.",
     "quickAction": "Add receipt"
   },
   "notes": {

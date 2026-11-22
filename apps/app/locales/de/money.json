@@ -1,0 +1,201 @@
+{
+  "loading": "Dein Geld wird geladen",
+  "loadError": {
+    "title": "Dein Geld konnte nicht geladen werden",
+    "message": "Dein Geld wird auf diesem Handy gespeichert, sobald es geladen ist. Versuche es erneut, wenn du online bist."
+  },
+  "previousMonth": "Voriger Monat",
+  "nextMonth": "Nächster Monat",
+  "dayBefore": "Tag davor",
+  "dayAfter": "Tag danach",
+  "day": "Tag",
+  "category": "Kategorie",
+  "uncategorized": "Keine Kategorie",
+  "categories": {
+    "groceries": "Lebensmittel",
+    "eatingOut": "Auswärts essen",
+    "home": "Zuhause",
+    "transport": "Verkehr",
+    "health": "Gesundheit",
+    "fun": "Freizeit",
+    "clothing": "Kleidung",
+    "gifts": "Geschenke",
+    "other": "Sonstiges"
+  },
+  "amountIn": "Betrag ({{currency}})",
+  "amountInvalid": "Gib einen Betrag wie 12,50 ein",
+  "form": {
+    "save": "Speichern",
+    "delete": "Löschen"
+  },
+  "settings": {
+    "title": "Geld-Einstellungen",
+    "forHousehold": "Diese Einstellungen gelten für {{name}}. Alle im Haushalt nutzen sie.",
+    "forPersonal": "Diese Einstellungen gelten für dein eigenes Geld.",
+    "currency": "Währung",
+    "categories": "Kategorien",
+    "categoryName": "Name der Kategorie",
+    "rename": "{{name}} umbenennen",
+    "deleteCategory": "{{name}} löschen",
+    "deleteHint": "Beim Löschen einer Kategorie bleiben ihre Ausgaben und Rechnungen erhalten, sie haben dann nur keine Kategorie.",
+    "newCategory": "Neue Kategorie",
+    "addCategory": "Hinzufügen"
+  },
+  "expenses": {
+    "title": "Ausgaben",
+    "subtitle": "Was du ausgibst, Monat für Monat",
+    "add": "Ausgabe hinzufügen",
+    "spent": "Diesen Monat ausgegeben",
+    "spentTotal": "Diesen Monat ausgegeben: {{amount}}",
+    "someone": "Jemand",
+    "whoOwes": "Wer schuldet wem",
+    "allEven": "Alle sind quitt.",
+    "owes": "{{from}} schuldet {{to}} {{amount}}",
+    "splitNote": "Jede Ausgabe wird gleichmäßig auf alle Mitglieder des Haushalts verteilt.",
+    "search": "Ausgaben durchsuchen",
+    "allCategories": "Alle",
+    "empty": {
+      "title": "Noch keine Ausgaben",
+      "message": "Trage ein, was du ausgibst, und sieh, wohin dein Geld geht.",
+      "filtered": "Keine passenden Ausgaben. Probiere einen anderen Monat oder eine andere Kategorie."
+    },
+    "edit": "{{name}} bearbeiten",
+    "form": {
+      "newTitle": "Neue Ausgabe",
+      "editTitle": "Ausgabe bearbeiten",
+      "note": "Notiz",
+      "notePlaceholder": "Zum Beispiel: Wocheneinkauf",
+      "paidBy": "Bezahlt von",
+      "create": "Ausgabe hinzufügen"
+    }
+  },
+  "budget": {
+    "title": "Budget",
+    "subtitle": "Wie viel du jeden Monat ausgeben willst",
+    "add": "Budget festlegen",
+    "total": "Gesamt",
+    "empty": {
+      "title": "Noch kein Budget",
+      "message": "Lege fest, wie viel du jeden Monat ausgeben willst, insgesamt oder für eine Kategorie."
+    },
+    "edit": "Budget für {{name}} ändern",
+    "state": {
+      "ok": "Im Plan",
+      "nearly": "Fast aufgebraucht",
+      "over": "Über dem Budget"
+    },
+    "percent": "{{percent}} Prozent ausgegeben",
+    "spentOf": "{{spent}} von {{budget}}",
+    "left": "{{amount}} übrig",
+    "overBy": "{{amount}} drüber",
+    "form": {
+      "newTitle": "Budget festlegen",
+      "editTitle": "Budget ändern",
+      "for": "Budget für",
+      "alreadySet": "Dieses Budget beträgt jetzt {{amount}}. Beim Speichern wird es geändert.",
+      "perMonth": "Betrag pro Monat ({{currency}})",
+      "hint": "Das Budget gilt für jeden Monat. Was du ausgibst, kommt aus deinen Ausgaben."
+    }
+  },
+  "bills": {
+    "title": "Rechnungen",
+    "subtitle": "Was bezahlt werden muss, und wann",
+    "add": "Rechnung hinzufügen",
+    "empty": {
+      "title": "Noch keine Rechnungen",
+      "message": "Trage Miete, Handy oder Versicherung ein und verpasse keinen Fälligkeitstag."
+    },
+    "edit": "{{name}} bearbeiten",
+    "repeat": {
+      "weekly": "Jede Woche",
+      "monthly": "Jeden Monat",
+      "quarterly": "Alle 3 Monate",
+      "yearly": "Jedes Jahr",
+      "never": "Einmalig"
+    },
+    "paid": "Bezahlt",
+    "overdue_one": "{{count}} Tag überfällig",
+    "overdue_other": "{{count}} Tage überfällig",
+    "dueToday": "Heute fällig",
+    "dueIn_one": "In {{count}} Tag fällig",
+    "dueIn_other": "In {{count}} Tagen fällig",
+    "markPaid": "Als bezahlt markieren",
+    "markPaidFor": "{{name}} als bezahlt markieren",
+    "form": {
+      "newTitle": "Neue Rechnung",
+      "editTitle": "Rechnung bearbeiten",
+      "title": "Name",
+      "placeholder": "Zum Beispiel: Miete",
+      "repeat": "Wiederholt sich",
+      "nextDue": "Nächster Fälligkeitstag",
+      "firstDue": "Erster Fälligkeitstag",
+      "create": "Rechnung hinzufügen"
+    }
+  },
+  "savings": {
+    "title": "Sparen",
+    "subtitle": "Auf etwas hinsparen",
+    "add": "Ziel hinzufügen",
+    "empty": {
+      "title": "Noch keine Sparziele",
+      "message": "Wähle etwas, wofür du sparen willst, und sieh, wie nah du bist."
+    },
+    "open": "{{name}} öffnen",
+    "reached": "Erreicht",
+    "percent": "{{percent}} Prozent gespart",
+    "savedOf": "{{saved}} von {{target}} gespart",
+    "perMonth": "Lege {{amount}} im Monat zur Seite, um es bis {{day}} zu erreichen.",
+    "byDay": "Zieltag: {{day}}",
+    "dayPassed": "Der Zieltag, {{day}}, ist vorbei.",
+    "putIn": "Einzahlen",
+    "takeOut": "Entnehmen",
+    "history": "Verlauf",
+    "noHistory": "Noch nichts eingezahlt.",
+    "putInEntry": "{{amount}} eingezahlt",
+    "takeOutEntry": "{{amount}} entnommen",
+    "deleteEntry": "Diesen Eintrag löschen",
+    "editGoal": "Ziel bearbeiten",
+    "form": {
+      "newTitle": "Neues Sparziel",
+      "editTitle": "Sparziel bearbeiten",
+      "name": "Name",
+      "placeholder": "Zum Beispiel: Sommerreise",
+      "target": "Zielbetrag ({{currency}})",
+      "addDay": "Zieltag hinzufügen",
+      "day": "Zieltag",
+      "noDay": "Kein Zieltag",
+      "create": "Ziel hinzufügen"
+    }
+  },
+  "receipts": {
+    "title": "Belege",
+    "subtitle": "Fotos von Belegen, zu Ausgaben gemacht",
+    "cameraDenied": "Erlaube die Kamera in den Einstellungen, um ein Foto zu machen, oder wähle stattdessen eins aus.",
+    "photoFailed": "Das Foto konnte nicht verwendet werden. Probiere ein anderes.",
+    "takePhoto": "Foto aufnehmen",
+    "choosePhoto": "Foto auswählen",
+    "reading": "Der Beleg wird gelesen. Das dauert ein paar Sekunden.",
+    "needsConnection": "Die KI liest den Beleg auf dem Server, deshalb brauchst du zum Hinzufügen eine Verbindung. Was sie nicht lesen kann, bleibt leer. Prüfe die Werte, bevor du sie verwendest.",
+    "empty": {
+      "title": "Noch keine Belege",
+      "message": "Fotografiere einen Beleg und mach daraus eine Ausgabe."
+    },
+    "open": "Beleg von {{name}} öffnen",
+    "unknownShop": "Unbekanntes Geschäft",
+    "noDate": "Kein Datum",
+    "noTotal": "Keine Summe",
+    "status": {
+      "added": "Als Ausgabe hinzugefügt",
+      "failed": "Werte prüfen"
+    },
+    "form": {
+      "title": "Beleg",
+      "check": "Diese Werte wurden von einer KI gelesen und können falsch sein. Prüfe sie und korrigiere, was nicht stimmt.",
+      "shop": "Geschäft",
+      "addDate": "Datum hinzufügen",
+      "date": "Datum",
+      "alreadyAdded": "Dieser Beleg ist schon eine Ausgabe.",
+      "addExpense": "Als Ausgabe hinzufügen"
+    }
+  }
+}

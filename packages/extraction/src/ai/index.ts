@@ -115,9 +115,9 @@ export function createAi(env: AiEnv, registry = providers): Ai {
       const { provider, options } = settings("transcription")
       return provider.transcriber(options).transcribe(audio)
     },
-    async readImages(images) {
+    async readImages(images, readOptions) {
       const { provider, options } = settings("vision")
-      return provider.imageReader(options).readImages(images)
+      return provider.imageReader(options).readImages(images, readOptions)
     },
     async parseRecipe(material, parseOptions) {
       const { provider, options } = settings("parsing")

@@ -1361,6 +1361,799 @@
           }
         }
       },
+      "MoneyOverview": {
+        "type": "object",
+        "properties": {
+          "settings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MoneySettings"
+            }
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MoneyCategory"
+            }
+          },
+          "expenses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Expense"
+            }
+          },
+          "budgets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Budget"
+            }
+          },
+          "bills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bill"
+            }
+          },
+          "goals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SavingsGoal"
+            }
+          },
+          "savingsEntries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SavingsEntry"
+            }
+          },
+          "receipts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Receipt"
+            }
+          }
+        },
+        "required": [
+          "settings",
+          "categories",
+          "expenses",
+          "budgets",
+          "bills",
+          "goals",
+          "savingsEntries",
+          "receipts"
+        ]
+      },
+      "MoneySettings": {
+        "type": "object",
+        "properties": {
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "EUR",
+              "USD",
+              "GBP",
+              "CHF",
+              "CAD",
+              "AUD",
+              "SEK",
+              "NOK",
+              "DKK",
+              "PLN",
+              "CZK"
+            ]
+          }
+        },
+        "required": [
+          "householdId",
+          "currency"
+        ]
+      },
+      "MoneyCategory": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "key": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "key",
+          "name",
+          "householdId"
+        ]
+      },
+      "Expense": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "categoryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "paidBy": {
+            "type": "string"
+          },
+          "billId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "receiptId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "amountCents",
+          "categoryId",
+          "date",
+          "note",
+          "paidBy",
+          "billId",
+          "receiptId",
+          "householdId",
+          "createdAt"
+        ]
+      },
+      "Budget": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "categoryId",
+          "amountCents",
+          "householdId"
+        ]
+      },
+      "Bill": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "categoryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "repeat": {
+            "type": "string",
+            "enum": [
+              "weekly",
+              "monthly",
+              "quarterly",
+              "yearly",
+              "never"
+            ]
+          },
+          "nextDue": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "dayOfMonth": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 31
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "amountCents",
+          "categoryId",
+          "repeat",
+          "nextDue",
+          "dayOfMonth",
+          "householdId",
+          "createdAt"
+        ]
+      },
+      "SavingsGoal": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "targetCents": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "targetDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "targetCents",
+          "targetDate",
+          "householdId",
+          "createdAt"
+        ]
+      },
+      "SavingsEntry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "goalId": {
+            "type": "string"
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": -10000000000,
+            "maximum": 10000000000
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        },
+        "required": [
+          "id",
+          "goalId",
+          "amountCents",
+          "date"
+        ]
+      },
+      "Receipt": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "fileId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "reading",
+              "ready",
+              "failed"
+            ]
+          },
+          "shop": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "totalCents": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "expenseId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "fileId",
+          "status",
+          "shop",
+          "date",
+          "totalCents",
+          "expenseId",
+          "error",
+          "householdId",
+          "createdAt"
+        ]
+      },
+      "MoneySettingsUpdate": {
+        "type": "object",
+        "properties": {
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "EUR",
+              "USD",
+              "GBP",
+              "CHF",
+              "CAD",
+              "AUD",
+              "SEK",
+              "NOK",
+              "DKK",
+              "PLN",
+              "CZK"
+            ]
+          }
+        },
+        "required": [
+          "currency"
+        ]
+      },
+      "MoneyCategoryInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "MoneyCategoryUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ExpenseInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "categoryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "paidBy": {
+            "type": "string"
+          },
+          "receiptId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "amountCents",
+          "date"
+        ]
+      },
+      "ExpenseUpdate": {
+        "type": "object",
+        "properties": {
+          "amountCents": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "categoryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "paidBy": {
+            "type": "string"
+          }
+        }
+      },
+      "BudgetInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "categoryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "categoryId",
+          "amountCents"
+        ]
+      },
+      "BillInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "categoryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "repeat": {
+            "type": "string",
+            "enum": [
+              "weekly",
+              "monthly",
+              "quarterly",
+              "yearly",
+              "never"
+            ]
+          },
+          "nextDue": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "amountCents",
+          "repeat",
+          "nextDue"
+        ]
+      },
+      "BillUpdate": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "categoryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "repeat": {
+            "type": "string",
+            "enum": [
+              "weekly",
+              "monthly",
+              "quarterly",
+              "yearly",
+              "never"
+            ]
+          },
+          "nextDue": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        }
+      },
+      "BillPay": {
+        "type": "object",
+        "properties": {
+          "expenseId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "paidBy": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "expenseId",
+          "date"
+        ]
+      },
+      "SavingsGoalInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "targetCents": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "targetDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "householdId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "targetCents"
+        ]
+      },
+      "SavingsGoalUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "targetCents": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10000000000
+          },
+          "targetDate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        }
+      },
+      "SavingsEntryInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "amountCents": {
+            "type": "integer",
+            "minimum": -10000000000,
+            "maximum": 10000000000
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        },
+        "required": [
+          "amountCents",
+          "date"
+        ]
+      },
       "InventoryItem": {
         "type": "object",
         "properties": {
@@ -2448,6 +3241,83 @@
         },
         "required": [
           "listId"
+        ]
+      },
+      "ReceiptUpload": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "description": "A photo of the receipt: JPEG, PNG, WebP or GIF, up to 10 MB."
+          },
+          "householdId": {
+            "type": "string",
+            "description": "Put the receipt in this household. Leave out to keep it personal."
+          },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "You may choose the receipt's id. Sending an id that already exists returns that receipt and reads nothing again."
+          }
+        },
+        "required": [
+          "file"
+        ]
+      },
+      "ReceiptUpdate": {
+        "type": "object",
+        "properties": {
+          "shop": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 200
+          },
+          "date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "totalCents": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 10000000000
+          }
+        }
+      },
+      "ReceiptToExpense": {
+        "type": "object",
+        "properties": {
+          "expenseId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "categoryId": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "paidBy": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "Used when the receipt has no date of its own."
+          }
+        },
+        "required": [
+          "expenseId"
         ]
       },
       "CompletedRecipe": {
@@ -5479,6 +6349,1342 @@
         }
       }
     },
+    "/api/money": {
+      "get": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Everything about money",
+        "description": "The currency, categories, expenses, budgets, bills, savings goals and receipts of the person and of their households, in one answer, so the app can keep it on the phone. A space that has no categories yet gets the built-in ones.",
+        "responses": {
+          "200": {
+            "description": "Everything the person can see",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MoneyOverview"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/settings": {
+      "put": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Set the currency",
+        "description": "Sets the currency of the person's own money, or of a household with `householdId`.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoneySettingsUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The settings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "settings": {
+                      "$ref": "#/components/schemas/MoneySettings"
+                    }
+                  },
+                  "required": [
+                    "settings"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid settings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/categories": {
+      "post": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add a category",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoneyCategoryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added, or already there",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "$ref": "#/components/schemas/MoneyCategory"
+                    }
+                  },
+                  "required": [
+                    "category"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id is already used by someone else's entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/categories/{categoryId}": {
+      "patch": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Rename a category",
+        "description": "Also works for the built-in categories: the new name replaces the translated one.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "categoryId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MoneyCategoryUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "$ref": "#/components/schemas/MoneyCategory"
+                    }
+                  },
+                  "required": [
+                    "category"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The category doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a category",
+        "description": "Expenses and bills in it keep existing and have no category afterwards. Its budget is deleted.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "categoryId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The category doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/expenses": {
+      "post": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add an expense",
+        "description": "`householdId` adds it to a household's money; without it the expense is personal. `paidBy` is the person who paid (in a household, any member). You may choose the `id`: sending an id that already exists returns that expense and changes nothing.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpenseInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added, or already there",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "expense": {
+                      "$ref": "#/components/schemas/Expense"
+                    }
+                  },
+                  "required": [
+                    "expense"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid expense",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id is already used by someone else's entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/expenses/{expenseId}": {
+      "patch": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Change an expense",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "expenseId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpenseUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The changed expense",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "expense": {
+                      "$ref": "#/components/schemas/Expense"
+                    }
+                  },
+                  "required": [
+                    "expense"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The expense doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete an expense",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "expenseId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The expense doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/budgets": {
+      "post": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Set a monthly budget",
+        "description": "Sets the budget of one category, or in total when `categoryId` is null. There is one budget per category: setting it again changes the amount.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BudgetInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The budget",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "budget": {
+                      "$ref": "#/components/schemas/Budget"
+                    }
+                  },
+                  "required": [
+                    "budget"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid budget",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household or category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id is already used by someone else's entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/budgets/{budgetId}": {
+      "delete": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a budget",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "budgetId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The budget doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/bills": {
+      "post": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add a bill",
+        "description": "A bill with an amount, the first day it is due and how often it comes back.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added, or already there",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bill": {
+                      "$ref": "#/components/schemas/Bill"
+                    }
+                  },
+                  "required": [
+                    "bill"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid bill",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household or category not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id is already used by someone else's entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/bills/{billId}": {
+      "patch": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Change a bill",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "billId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The changed bill",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bill": {
+                      "$ref": "#/components/schemas/Bill"
+                    }
+                  },
+                  "required": [
+                    "bill"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The bill doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a bill",
+        "description": "Expenses that paid the bill stay.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "billId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The bill doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/bills/{billId}/pay": {
+      "post": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Mark a bill as paid",
+        "description": "Adds an expense for the bill (same amount and category) and moves the bill to its next due day, in one step. You choose the expense's `id`: paying again with the same id changes nothing.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "billId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillPay"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The bill, and the expense (null when it was already paid with this id)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "bill": {
+                      "$ref": "#/components/schemas/Bill"
+                    },
+                    "expense": {
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/Expense"
+                        },
+                        {
+                          "type": [
+                            "object",
+                            "null"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bill",
+                    "expense"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The bill doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/savings": {
+      "post": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add a savings goal",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SavingsGoalInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added, or already there",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "goal": {
+                      "$ref": "#/components/schemas/SavingsGoal"
+                    }
+                  },
+                  "required": [
+                    "goal"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid goal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id is already used by someone else's entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/savings/{goalId}": {
+      "patch": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Change a savings goal",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "goalId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SavingsGoalUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The changed goal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "goal": {
+                      "$ref": "#/components/schemas/SavingsGoal"
+                    }
+                  },
+                  "required": [
+                    "goal"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The savings goal doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a savings goal",
+        "description": "Its entries are deleted with it.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "goalId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The savings goal doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/savings/{goalId}/entries": {
+      "post": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Put money into a goal, or take it out",
+        "description": "A positive `amountCents` puts money in, a negative one takes it out. Sending an id that already exists returns that entry and changes nothing.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "goalId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SavingsEntryInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Added, or already there",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "entry": {
+                      "$ref": "#/components/schemas/SavingsEntry"
+                    }
+                  },
+                  "required": [
+                    "entry"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid entry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The savings goal doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id belongs to another goal",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/savings/entries/{entryId}": {
+      "delete": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a savings entry",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "entryId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The entry doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/inventory": {
       "get": {
         "tags": [
@@ -8181,6 +10387,315 @@
           },
           "404": {
             "description": "The plan or the list doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/receipts": {
+      "post": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Add a receipt from a photo",
+        "description": "Stores the photo on the server's own disk (it also shows in the documents) and has the AI read the shop, the date and the total. A value the AI cannot clearly read stays empty: it never guesses. When reading fails, the receipt is still saved with status `failed`, and the values can be typed in. Reading takes a few seconds.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptUpload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Saved, read or not",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "receipt": {
+                      "$ref": "#/components/schemas/Receipt"
+                    }
+                  },
+                  "required": [
+                    "receipt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not an image, empty, or too large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Household not found, or you are not a member",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That id is already used by someone else's receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/receipts/{receiptId}": {
+      "patch": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Correct a receipt",
+        "description": "Change what was read. Send `null` to clear a value.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "receiptId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The corrected receipt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "receipt": {
+                      "$ref": "#/components/schemas/Receipt"
+                    }
+                  },
+                  "required": [
+                    "receipt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid change",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The receipt doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a receipt",
+        "description": "Deletes the receipt and its photo. An expense made from it stays, without the link.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "receiptId",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The receipt doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/money/receipts/{receiptId}/expense": {
+      "post": {
+        "tags": [
+          "Money"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Turn a receipt into an expense",
+        "description": "Adds an expense with the receipt's total and date, with the shop as its note. The receipt needs a total, and a date (its own or `date`). You choose the expense's `id`: sending it again returns that expense and changes nothing.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "receiptId",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiptToExpense"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The expense",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "expense": {
+                      "$ref": "#/components/schemas/Expense"
+                    }
+                  },
+                  "required": [
+                    "expense"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The receipt has no total or date yet, or the category or payer is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not signed in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The receipt doesn't exist, or you can't see it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "That expense id is already used for something else",
             "content": {
               "application/json": {
                 "schema": {

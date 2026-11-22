@@ -36,6 +36,7 @@
       "meals": "Pasti",
       "shopping": "Spesa",
       "tasks": "Faccende",
+      "bills": "Bollette",
       "tomorrow": "Domani"
     },
     "slots": {
@@ -154,29 +155,24 @@
   },
   "budget": {
     "name": "Budget",
-    "description": "Spese per categoria.",
-    "soon": "Guarda quanto spendi per categoria e resta nel budget."
+    "description": "Budget mensili, in totale e per categoria."
   },
   "expenses": {
     "name": "Spese",
-    "description": "Personali e condivise, chi deve a chi.",
-    "soon": "Registra le spese e guarda chi deve soldi a chi in famiglia.",
+    "description": "Quanto spendi, in privato o condiviso con la tua casa.",
     "quickAction": "Aggiungi spesa"
   },
   "bills": {
     "name": "Bollette e abbonamenti",
-    "description": "Scadenze di bollette e abbonamenti.",
-    "soon": "Tieni bollette e abbonamenti con le loro scadenze."
+    "description": "Bollette ricorrenti, con le scadenze."
   },
   "savings": {
     "name": "Obiettivi di risparmio",
-    "description": "Risparmiare insieme per qualcosa.",
-    "soon": "Imposta obiettivi di risparmio e segui i progressi."
+    "description": "Obiettivi di risparmio e quanto mettere da parte ogni mese."
   },
   "receipts": {
     "name": "Scontrini",
-    "description": "Scontrini e spesa alimentare.",
-    "soon": "Scansiona gli scontrini e guarda quanto spendi per la spesa.",
+    "description": "Foto di scontrini, trasformate in spese.",
     "quickAction": "Aggiungi scontrino"
   },
   "notes": {

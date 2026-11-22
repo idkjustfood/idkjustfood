@@ -113,6 +113,10 @@ TypeScript everywhere, in one monorepo.
   `docs/calendar.md`.
 - Household chores work end to end: tasks that come back after a number of days, personal or
   shared with a household, offline on the phone. See `docs/household-tasks.md`.
+- Money works end to end: Expenses (with who owes whom in a household), Budget, Bills (due ones show
+  on Today), Savings and Receipts (a photo read by the AI, checked by the person), personal or for a
+  household, offline on the phone except adding a receipt. Amounts are whole cents. See
+  `docs/money.md`.
 - Every Home module works. Home maintenance, Plants and Pets work like chores (tasks that come
   back after a number of days, one shared engine with a `kind`), and the due ones show on Today.
   Home inventory and Contacts are lists, personal or for a household, offline on the phone. See

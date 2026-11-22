@@ -36,6 +36,7 @@
       "meals": "Mahlzeiten",
       "shopping": "Einkaufen",
       "tasks": "Aufgaben",
+      "bills": "Rechnungen",
       "tomorrow": "Morgen"
     },
     "slots": {
@@ -154,29 +155,24 @@
   },
   "budget": {
     "name": "Budget",
-    "description": "Ausgaben nach Kategorie.",
-    "soon": "Sieh, was du pro Kategorie ausgibst, und bleib im Budget."
+    "description": "Monatsbudgets, insgesamt und pro Kategorie."
   },
   "expenses": {
     "name": "Ausgaben",
-    "description": "Persönlich und gemeinsam, wer wem etwas schuldet.",
-    "soon": "Erfasse Ausgaben und sieh, wer im Haushalt wem etwas schuldet.",
+    "description": "Was du ausgibst, persönlich oder mit deinem Haushalt geteilt.",
     "quickAction": "Ausgabe hinzufügen"
   },
   "bills": {
     "name": "Rechnungen und Abos",
-    "description": "Fälligkeiten von Rechnungen und Abos.",
-    "soon": "Behalte Rechnungen und Abos mit ihren Fälligkeitsdaten im Blick."
+    "description": "Rechnungen, die wiederkommen, mit ihren Fälligkeitstagen."
   },
   "savings": {
     "name": "Sparziele",
-    "description": "Gemeinsam auf etwas sparen.",
-    "soon": "Lege Sparziele fest und verfolge deinen Fortschritt."
+    "description": "Sparziele und wie viel du jeden Monat zurücklegen solltest."
   },
   "receipts": {
     "name": "Belege",
-    "description": "Belege und Ausgaben für Lebensmittel.",
-    "soon": "Scanne Belege und sieh, was du für Lebensmittel ausgibst.",
+    "description": "Fotos von Belegen, zu Ausgaben gemacht.",
     "quickAction": "Beleg hinzufügen"
   },
   "notes": {

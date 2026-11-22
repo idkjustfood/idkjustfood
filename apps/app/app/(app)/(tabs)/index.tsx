@@ -16,6 +16,9 @@ import { CheckboxBox } from "@/components/ui/checkbox"
 import { useChoreActions, useToday } from "@/lib/chores"
 import { useHouseholds } from "@/lib/households"
 import { useIsWide } from "@/lib/layout"
+import { useMoneyActions, useMoneyState } from "@/lib/money"
+import { formatMoney } from "@/lib/money-format"
+import { moneyOfSpace } from "@/lib/money-view"
 import { moduleIcons } from "@/lib/module-icons"
 import { taskKinds } from "@/lib/task-kinds"
 import { todaySections, type TodayItem } from "@/lib/today"
@@ -23,7 +26,7 @@ import { useTodayItems } from "@/lib/use-today"
 
 /** Today: a timeline that collects what is on from the modules that provide items. */
 export default function Today() {
-  const { t } = useTranslation(["modules", "chores", "calendar"])
+  const { t } = useTranslation(["modules", "chores", "calendar", "money"])
   const wide = useIsWide()
   const { items, loading, error, retry } = useTodayItems()
   const sections = todaySections(items)
@@ -74,6 +77,36 @@ function TimelineRow({ item }: { item: TodayItem }) {
   const actions = useChoreActions()
   const today = useToday()
   const { households } = useHouseholds()
+  const money = useMoneyActions()
+  const moneyData = useMoneyState().data
+  if (item.kind === "bill") {
+    const bill = moneyData.bills.find((b) => b.id === item.id)
+    const currency = moneyOfSpace(moneyData, bill?.householdId ?? null).currency
+    return (
+      <ListRow
+        icon={moduleIcons.bills}
+        title={item.title}
+        detail={`${formatMoney(item.amountCents, currency)} · ${
+          item.overdueDays > 0
+            ? t("money:bills.overdue", { count: item.overdueDays })
+            : t("money:bills.dueToday")
+        }`}
+        onPress={() => router.push("/bills" as Href)}
+        right={
+          <Pressable
+            role="checkbox"
+            aria-checked={false}
+            accessibilityLabel={t("money:bills.markPaidFor", { name: item.title })}
+            onPress={() => money.payBill(item.id, today)}
+            hitSlop={8}
+            className="-my-3 -mr-4 min-h-14 min-w-14 items-center justify-center"
+          >
+            <CheckboxBox checked={false} />
+          </Pressable>
+        }
+      />
+    )
+  }
   if (item.kind === "calendar") {
     // Personal and household entries come together here, so each says which one it is.
     const owner = item.householdId
